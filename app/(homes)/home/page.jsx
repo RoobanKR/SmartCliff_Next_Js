@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from 'react'
 import HeroTwo from '@/components/homes/heros/HeroTwo'
 
 import CategoriesTwo from '@/components/homes/categories/Categories'
@@ -10,6 +9,7 @@ import BecomeStudent from '../../../components/common/BecomeStudent'
 import FooterTwo from '@/components/layout/footers/Footer'
 import Preloader from '@/components/common/Preloader'
 import HeaderSeven from '@/components/layout/headers/HeaderSeven'
+import { useState } from 'react';
 
 export default function page() {
   const [selectedCategory, setSelectedCategory] = useState("");
