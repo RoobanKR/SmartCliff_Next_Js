@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchCourses = createAsyncThunk(
   "courses/fetchCourses",
   async () => {
-    const response = await axios.get(`${getAPIURL()}/getAll/course`);
+    const response = await axios.get(`https://smartcliff-server.onrender.com/getAll/course`);
     return response.data.courses;
   }
 );
@@ -14,7 +14,7 @@ export const fetchCourseById = createAsyncThunk(
   "courses/fetchCourseById",
   async (id) => {
     try {
-      const response = await axios.get(`${getAPIURL()}/getById/course/${id}`);
+      const response = await axios.get(`https://smartcliff-server.onrender.com/getById/course/${id}`);
       if (response.data && response.data.courses) {
         return response.data.courses;
       } else {
