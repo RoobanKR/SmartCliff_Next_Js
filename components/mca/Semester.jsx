@@ -1,9 +1,9 @@
 "use client"
-import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSemesters } from "@/redux/slices/mca/semester/Semester";
 import "./Semester.css";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 const Semester = () => {
   const dispatch = useDispatch();
