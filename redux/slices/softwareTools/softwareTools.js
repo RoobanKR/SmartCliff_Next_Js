@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -14,7 +15,7 @@ export const addSoftwareTools = createAsyncThunk(
       }
 
       const response = await axios.post(
-        "http://localhost:5353/create/toolSoftware",
+        `${getAPIURL()}/create/toolSoftware`,
         formData,
         {
           headers: {
@@ -33,9 +34,7 @@ export const fetchSoftwareTools = createAsyncThunk(
   "softwareTools/fetchSoftwareTools",
   async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5353/getAll/toolSoftware"
-      );
+      const response = await axios.get(`${getAPIURL()}/getAll/toolSoftware`);
       return response.data.careerOpportunities;
     } catch (error) {
       throw error;

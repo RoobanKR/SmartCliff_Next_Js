@@ -37,7 +37,10 @@ export default function AdmissionProcess() {
   }, [dispatch]);
 
   return (
-    <section className="layout-pt-mb layout-pb-lg mt-50">
+    <section
+      className="layout-pt-sm layout-pb-sm mt-5"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-xl-6 col-lg-7">

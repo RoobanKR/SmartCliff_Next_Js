@@ -9,7 +9,6 @@ export default function Page() {
       <main className="main-content">
         <Preloader />
         <HeaderSeven />
-
         <div
           className="content-wrapper js-content-wrapper overflow-hidden"
           style={{ background: "#f4f1fe" }}

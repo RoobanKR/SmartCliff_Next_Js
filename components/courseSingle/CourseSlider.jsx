@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
- 
+
 export default function CourseSlider() {
   const dispatch = useDispatch();
   const courses = useSelector(selectCourses);
@@ -15,13 +15,13 @@ export default function CourseSlider() {
   const { id } = useParams();
   const [matchedCourse, setMatchedCourse] = useState(null);
   const [coursesWithSameCategory, setCoursesWithSameCategory] = useState([]);
- 
+
   useEffect(() => {
     dispatch(fetchCourses())
       .then(() => setShowSlider(true))
       .catch((error) => console.error("Error fetching courses:", error));
   }, [dispatch]);
- 
+
   useEffect(() => {
     if (id && courses.length > 0) {
       const matched = courses.find((course) => course._id === id);
@@ -29,24 +29,21 @@ export default function CourseSlider() {
       if (matched && matched.category) {
         const categoryID = matched.category._id;
         const filteredCourses = courses.filter(
-          (course) => course.category && course.category._id === categoryID
+          (course) =>
+            course.category &&
+            course.category._id === categoryID &&
+            course._id !== id
         );
         setCoursesWithSameCategory(filteredCourses);
       }
     }
   }, [id, courses]);
- 
-  console.log("Fetched Id courses:", courses);
-  console.log("Matched Id course:", matchedCourse);
-  console.log("Id", id);
-  console.log(
-    "Matched course category ID:",
-    matchedCourse && matchedCourse.category ? matchedCourse.category._id : null
-  );
-  console.log("Courses with the same category ID:", coursesWithSameCategory);
- 
+
   return (
-    <section className="layout-pt-md layout-pb-lg">
+    <section
+      className="layout-pt-md layout-pb-lg"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         <div className="row">
           <div className="col-auto">
@@ -80,15 +77,17 @@ export default function CourseSlider() {
                     <div className="swiper-slide">
                       <div className="coursesCard -type-1">
                         <div className="relative">
-                          <div className="coursesCard__image overflow-hidden rounded-8">
+                          <div
+                            className="coursesCard__image overflow-hidden rounded-8"
+                            style={{ width: "510px", height: "100px" }}
+                          >
                             <Image
-                              width={510}
-                              height={360}
-                              className="w-1/1"
-                              src={course.images[0]} // Accessing the first image URL from the array
+                              src={course.images[0]}
                               alt="image"
+                              className="w-1/1"
+                              layout="fill"
+                              objectFit="cover"
                             />
- 
                             <div className="coursesCard__image_overlay rounded-8"></div>
                           </div>
                         </div>
@@ -96,7 +95,7 @@ export default function CourseSlider() {
                           <div className="text-17 lh-15 fw-500 text-dark-1 mt-10">
                             <Link
                               className="linkCustom"
-                              href={`/courses/${course._id}`}
+                              href={`/courses/${course.slug}/${course._id}`}
                             >
                               {course.course_name}
                             </Link>
@@ -115,7 +114,7 @@ export default function CourseSlider() {
                                 {course.number_of_assesment} lesson
                               </div>
                             </div>
- 
+
                             <div className="d-flex items-center">
                               <div className="mr-8">
                                 <Image
@@ -129,7 +128,7 @@ export default function CourseSlider() {
                                 course.duration / 60
                               )}h ${Math.floor(course.duration % 60)}m`}</div>
                             </div>
- 
+
                             <div className="d-flex items-center">
                               <div className="mr-8">
                                 <Image
@@ -146,13 +145,30 @@ export default function CourseSlider() {
                           </div>
                           <div className="coursesCard-footer">
                             <div className="coursesCard-footer__author">
-                              <Image
-                                width={30}
-                                height={30}
-                                src={course.authorImageSrc}
-                                alt="image"
-                              />
-                              <div>{course.authorName}</div>
+                              {course.instructor &&
+                                course.instructor.length > 0 && (
+                                  <>
+                                    {course.instructor
+                                      .slice(0, 3)
+                                      .map((instructor, index) => (
+                                        <div
+                                          key={index}
+                                          className="d-flex align-items-center"
+                                        >
+                                          <img
+                                            width={30}
+                                            height={30}
+                                            src={instructor.profile_pic}
+                                            alt={`Instructor ${index + 1}`}
+                                          />
+                                        </div>
+                                      ))}
+                                    {course.instructor.length > 3 && (
+                                      <button className="ml-2">+</button>
+                                    )}
+                                  </>
+                                )}
+                              <div>{course.instructor.name}</div>
                             </div>
                             <div className="coursesCard-footer__price">
                               {course.paid ? (

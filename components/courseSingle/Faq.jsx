@@ -16,7 +16,10 @@ export default function FAQComponent({ faq }) {
         <div className="row y-gap-20 justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle ">
-              <h2 className="sectionTitle__title ">
+              <h2
+                className="sectionTitle__title "
+                style={{ fontFamily: "Serif" }}
+              >
                 Frequently Asked Questions
               </h2>
               <br></br>
@@ -46,7 +49,10 @@ export default function FAQComponent({ faq }) {
                             <FontAwesomeIcon icon={faChevronUp} />
                           </div>
                         </div>
-                        <span className="text-17 fw-500 text-dark-1">
+                        <span
+                          className="text-17 fw-500 text-dark-1"
+                          style={{ fontFamily: "Serif" }}
+                        >
                           {faqItem.question}
                         </span>
                       </div>
@@ -69,7 +75,9 @@ export default function FAQComponent({ faq }) {
                               <div className="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
                                 <div className="icon-play text-9"></div>
                               </div>
-                              <div>{faqItem.answer}</div>
+                              <div style={{ fontFamily: "Serif" }}>
+                                {faqItem.answer}
+                              </div>
                             </div>
                           </div>
                         </div>

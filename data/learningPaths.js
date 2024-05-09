@@ -24,7 +24,7 @@ export const learningPath = [
       "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries",
   },
 ];
-
+ 
 export const learningPathTwo = [
   {
     id: 1,
@@ -55,7 +55,7 @@ export const learningPathTwo = [
     bgColor: "bg-orange-3",
   },
 ];
-
+ 
 export const learningPathFive = [
   {
     id: 1,
@@ -82,7 +82,7 @@ export const learningPathFive = [
     description: "Grursus mal suada faci lisis that ipsum ameti consecte.",
   },
 ];
-
+ 
 export const learningPathSix = [
   {
     id: 1,
@@ -113,7 +113,7 @@ export const learningPathSix = [
       "The latest design trends meet hand-crafted templates in Sassio Collection.",
   },
 ];
-
+ 
 export const learningfeatures = [
   {
     id: 1,
@@ -132,7 +132,7 @@ export const learningfeatures = [
     title: "Money-back guarantee",
   },
 ];
-
+ 
 export const features = [
   {
     id: 1,
@@ -170,7 +170,7 @@ export const features = [
       "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries",
   },
 ];
-
+ 
 export const learningJourney = [
   {
     id: 1,
@@ -201,3 +201,4 @@ export const learningJourney = [
     delay: 4,
   },
 ];
+ 

@@ -7,12 +7,9 @@ export const featureOne = [
     id: 2,
     title: "Easy to follow curriculum",
   },
+
   {
     id: 3,
-    title: "Free courses",
-  },
-  {
-    id: 4,
     title: "Money-back guarantee",
   },
 ];
@@ -20,20 +17,20 @@ export const featureOne = [
 export const featureTwo = [
   {
     id: 1,
-    imgSrc: "/assets/img/home-3/masthead/icons/1.svg",
-    title: "100,000 online courses",
+    imgSrc: "/assets/img/home-3/masthead/icons/placements.png",
+    title: "1,000 Placememts Student",
     description: "Explore a variety of fresh topics",
   },
   {
     id: 2,
-    imgSrc: "/assets/img/home-3/masthead/icons/2.svg",
+    imgSrc: "/assets/img/home-3/masthead/icons/instructors.png",
     title: "Expert instruction",
     description: "Find the right instructor for you",
   },
   {
     id: 3,
-    imgSrc: "/assets/img/home-3/masthead/icons/3.svg",
-    title: "Lifetime access",
+    imgSrc: "/assets/img/home-3/masthead/icons/certificate.png",
+    title: "Lifetime access Certificate",
     description: "Learn on your schedule",
   },
 ];

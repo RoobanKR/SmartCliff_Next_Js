@@ -17,7 +17,10 @@ export default function Outcomes() {
   }, [dispatch]);
 
   return (
-    <section className="layout-pt-md layout-pb-md">
+    <section
+      className="layout-pt-md layout-pb-md"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         <div className="row y-gap-20 justify-center text-center">
           <div className="col-auto">

@@ -1,12 +1,13 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
- 
+
 export const addAssessment = createAsyncThunk(
   "assessments/addAssessment",
   async (assessmentData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:5353/create/assesment",
+        `${getAPIURL()}/create/assesment`,
         assessmentData
       );
       return response.data;
@@ -15,27 +16,25 @@ export const addAssessment = createAsyncThunk(
     }
   }
 );
- 
+
 export const fetchAssessments = createAsyncThunk(
   "assessments/fetchAssessments",
   async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5353/getAll/assesment"
-      );
+      const response = await axios.get(`${getAPIURL()}/getAll/assesment`);
       return response.data.assessments;
     } catch (error) {
       throw error;
     }
   }
 );
- 
+
 export const fetchAssessmentById = createAsyncThunk(
   "assessments/fetchById",
   async (assessmentId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5353/getById/assesment/${assessmentId}`
+        `${getAPIURL()}/getById/assesment/${assessmentId}`
       );
       return response.data.assessment;
     } catch (error) {
@@ -43,13 +42,13 @@ export const fetchAssessmentById = createAsyncThunk(
     }
   }
 );
- 
+
 export const updateAssessment = createAsyncThunk(
   "assessments/update",
   async ({ assessmentId, assessmentData }) => {
     try {
       const response = await axios.put(
-        `http://localhost:5353/update/assesment/${assessmentId}`,
+        `${getAPIURL()}update/assesment/${assessmentId}`,
         assessmentData
       );
       return response.data.assessment;
@@ -58,28 +57,26 @@ export const updateAssessment = createAsyncThunk(
     }
   }
 );
- 
+
 export const deleteAssessment = createAsyncThunk(
   "assessments/delete",
   async (assessmentId) => {
     try {
-      await axios.delete(
-        `http://localhost:5353/delete/assesment/${assessmentId}`
-      );
+      await axios.delete(`${getAPIURL()}/delete/assesment/${assessmentId}`);
       return assessmentId;
     } catch (error) {
       throw Error("Error deleting assessment");
     }
   }
 );
- 
+
 const initialState = {
   status: "idle",
   error: null,
   assessments: [],
   selectedAssessment: {},
 };
- 
+
 const assessmentSlice = createSlice({
   name: "assessments",
   initialState,
@@ -136,9 +133,10 @@ const assessmentSlice = createSlice({
       });
   },
 });
- 
+
 export default assessmentSlice.reducer;
 export const selectAssessments = (state) => state.assessments.assessments;
 export const selectAssessmentStatus = (state) => state.assessments.status;
 export const selectAssessmentError = (state) => state.assessments.error;
-export const selectSelectedAssessment = (state) => state.assessments.selectedAssessment;
+export const selectSelectedAssessment = (state) =>
+  state.assessments.selectedAssessment;

@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Axios from "axios";
 
@@ -5,7 +6,7 @@ export const fetchServices = createAsyncThunk(
   "service/fetchServices",
   async () => {
     try {
-      const response = await Axios.get("http://localhost:5353/getAll/service");
+      const response = await Axios.get(`${getAPIURL()}/getAll/service`);
       return response.data.get_all_services;
     } catch (error) {
       throw error;
@@ -18,7 +19,7 @@ export const fetchServiceById = createAsyncThunk(
   async (serviceId) => {
     try {
       const response = await Axios.get(
-        `http://localhost:5353/getById/service/${serviceId}`
+        `${getAPIURL()}/getById/service/${serviceId}`
       );
       return response.data.serviceById;
     } catch (error) {
@@ -27,7 +28,6 @@ export const fetchServiceById = createAsyncThunk(
   }
 );
 
-// Create the category reducer
 const serviceReducer = createSlice({
   name: "service",
   initialState: {

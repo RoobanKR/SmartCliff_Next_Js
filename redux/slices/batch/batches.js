@@ -14,7 +14,7 @@ export const fetchBatches = createAsyncThunk(
     "batches/fetchBatches",
     async (_, { rejectWithValue }) => {
       try {
-        const response = await axios.get(`${getAPIURL()}/getAll/batches`); // Adjust the API endpoint accordingly
+        const response = await axios.get(`${getAPIURL()}/getAll/batches`);
         return response.data.All_batches;
       } catch (error) {
         return rejectWithValue(error.response.data);

@@ -7,7 +7,11 @@ export default function Reviews() {
     e.preventDefault();
   };
   return (
-    <div id="reviews" className="pt-60 lg:pt-40">
+    <div
+      id="reviews"
+      className="pt-60 lg:pt-40"
+      style={{ fontFamily: "serif" }}
+    >
       <div className="blogPost -comments">
         <div className="blogPost__content">
           <h2 className="text-20 fw-500">Student feedback</h2>

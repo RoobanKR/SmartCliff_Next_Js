@@ -1,26 +1,25 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
- 
+
 export const fetchProgramMentors = createAsyncThunk(
   "programMentors/fetchProgramMentors",
   async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5353/getAll/program_mentor"
-      );
+      const response = await axios.get(`${getAPIURL()}/getAll/program_mentor`);
       return response.data.programMentor;
     } catch (error) {
       throw error;
     }
   }
 );
- 
+
 export const fetchProgramMentorById = createAsyncThunk(
   "programMentors/fetchById",
   async (mentorId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5353/getById/program_mentor/${mentorId}`
+        `${getAPIURL()}/getById/program_mentor/${mentorId}`
       );
       return response.data.programMentor;
     } catch (error) {
@@ -28,14 +27,14 @@ export const fetchProgramMentorById = createAsyncThunk(
     }
   }
 );
- 
+
 const initialState = {
   status: "idle",
   error: null,
   programMentors: [],
   selectedProgramMentor: {},
 };
- 
+
 const programMentorSlice = createSlice({
   name: "programMentors",
   initialState,
@@ -65,12 +64,14 @@ const programMentorSlice = createSlice({
       .addCase(fetchProgramMentorById.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      })
+      });
   },
 });
- 
+
 export default programMentorSlice.reducer;
-export const selectProgramMentors = (state) => state.programMentors.programMentors;
+export const selectProgramMentors = (state) =>
+  state.programMentors.programMentors;
 export const selectProgramMentorStatus = (state) => state.programMentors.status;
 export const selectProgramMentorError = (state) => state.programMentors.error;
-export const selectSelectedProgramMentor = (state) => state.programMentors.selectedProgramMentor;
+export const selectSelectedProgramMentor = (state) =>
+  state.programMentors.selectedProgramMentor;

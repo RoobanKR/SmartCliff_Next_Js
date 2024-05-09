@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Axios from "axios";
 
@@ -6,9 +7,9 @@ export const fetchCareerOpportunities = createAsyncThunk(
   async () => {
     try {
       const response = await Axios.get(
-        "http://localhost:5353/getAll/careeroppertunities"
+        `${getAPIURL()}/getAll/careeroppertunities`
       );
-      return response.data; // Assuming the API returns data directly
+      return response.data;
     } catch (error) {
       throw error;
     }
@@ -20,7 +21,7 @@ const careerOpportunitiesSlice = createSlice({
   initialState: {
     status: "idle",
     error: null,
-    opportunitiesData: [], // Update initial state to an empty array
+    opportunitiesData: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -31,7 +32,7 @@ const careerOpportunitiesSlice = createSlice({
       })
       .addCase(fetchCareerOpportunities.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.opportunitiesData = action.payload; // Update opportunitiesData with fetched data
+        state.opportunitiesData = action.payload;
       })
       .addCase(fetchCareerOpportunities.rejected, (state, action) => {
         state.status = "failed";
@@ -39,7 +40,9 @@ const careerOpportunitiesSlice = createSlice({
       });
   },
 });
-export const selectCareerOpportunities = (state) => state.careerOpportunities.opportunitiesData;
-export const selectCareerOpportunitiesError = (state) => state.careerOpportunities.error;
+export const selectCareerOpportunities = (state) =>
+  state.careerOpportunities.opportunitiesData;
+export const selectCareerOpportunitiesError = (state) =>
+  state.careerOpportunities.error;
 
 export default careerOpportunitiesSlice.reducer;

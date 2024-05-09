@@ -24,7 +24,10 @@ export default function Highlights() {
   };
 
   return (
-    <section className="layout-pt-md layout-pb-md bg-light-3">
+    <section
+      className="layout-pt-md layout-pb-md bg-light-3"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-auto">

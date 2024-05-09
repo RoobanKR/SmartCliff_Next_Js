@@ -1,6 +1,6 @@
 "use client";
 
-import { Navigation, Pagination } from "swiper";
+import { Autoplay, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBatches } from "@/redux/slices/batch/batches";
-import { isAfter, parseISO } from 'date-fns';
+import { isAfter, parseISO } from "date-fns";
 
 export default function Batches() {
   const dispatch = useDispatch();
@@ -21,22 +21,24 @@ export default function Batches() {
   useEffect(() => {
     dispatch(fetchBatches());
   }, [dispatch]);
-  
-const currentDate = new Date(); 
-currentDate.setHours(0, 0, 0, 0);
-const filteredBatches = batches.filter(batch => {
-  const batchStartDate = new Date(batch.start_date);
-  batchStartDate.setHours(0, 0, 0, 0); 
-  return batchStartDate >= currentDate;
-});
-filteredBatches.sort((a, b) => {
-  const startDateA = new Date(a.start_date);
-  const startDateB = new Date(b.start_date);
-  return startDateA - startDateB;
-});
 
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+  const filteredBatches = batches.filter((batch) => {
+    const batchStartDate = new Date(batch.start_date);
+    batchStartDate.setHours(0, 0, 0, 0);
+    return batchStartDate >= currentDate;
+  });
+  filteredBatches.sort((a, b) => {
+    const startDateA = new Date(a.start_date);
+    const startDateB = new Date(b.start_date);
+    return startDateA - startDateB;
+  });
   return (
-    <section className="layout-pt-lg layout-pb-xl bg-light-3">
+    <section
+      className="layout-pt-sm layout-pb-sm bg-light-3"
+      style={{ fontFamily: "serif" }}
+    >
       <div className="container">
         <div className="row y-gap-15 justify-between items-end">
           <div className="col-lg-6">
@@ -44,7 +46,7 @@ filteredBatches.sort((a, b) => {
               <h2 className="sectionTitle__title ">Upcoming Batchs</h2>
 
               <p className="sectionTitle__text ">
-              Upcoming Batches of Courses around the Tamil Nadu
+                Upcoming Batches of Courses around the Tamil Nadu
               </p>
             </div>
           </div>
@@ -68,12 +70,12 @@ filteredBatches.sort((a, b) => {
           </div>
         </div>
 
-        <div className="pt-40 lg:pt-10 js-section-slider">
+        <div className="pt-60 lg:pt-40 js-section-slider">
           {showSlider && (
             <Swiper
               className="overflow-visible"
               // {...setting}
-              modules={[Navigation, Pagination]}
+              modules={[Navigation, Pagination, Autoplay]}
               pagination={{
                 el: ".event-pagination",
                 clickable: true,
@@ -83,6 +85,7 @@ filteredBatches.sort((a, b) => {
                 prevEl: ".event-slide-prev",
               }}
               // loop={true}
+              autoplay={{ delay: 8000 }}
               spaceBetween={30}
               slidesPerView={1}
               breakpoints={{
@@ -100,28 +103,34 @@ filteredBatches.sort((a, b) => {
                 },
               }}
             >
-              {filteredBatches.slice(0, 5).map((batch) => (
-                <SwiperSlide key={batch._id}>
-                  <Link href={`/courses/${batch.course._id}`}>
+              {filteredBatches.slice(0, 5).map((batch, i) => (
+                <SwiperSlide key={i}>
+                  <Link
+                    href={`/courses/${batch.course.slug}/${batch.course._id}`}
+                  >
                     <div className="swiper-slide">
-                      <div className="eventCard -type-1" >
-                        <div className="eventCard__img" >
+                      <div
+                        className="eventCard -type-1"
+                        data-aos="fade-left"
+                        data-aos-duration={(i + 1) * 500}
+                      >
+                        <div className="eventCard__img">
                           <Image
-                            width={300}
-                            height={210}
-                            style={{position:'absolute',width:'410px', height:'210px'}}
+                            style={{ width: "730px", height: "200px" }}
                             src={batch.image}
-                            alt="Batch Image"
-
+                            width={730}
+                            height={530}
+                            alt="image"
                           />
                         </div>
-                        <div className="eventCard__bg bg-white" style={{position:'relative',top:'170px'}}>
+
+                        <div className="eventCard__bg bg-white">
                           <div className="eventCard__content y-gap-10">
-                            <div className="eventCard__inner " >
+                            <div className="eventCard__inner">
                               <h4 className="eventCard__title text-17 fw-500">
                                 <Link
                                   className="linkCustom"
-                                  href={`/courses/${batch.course._id}`}
+                                  href={`/courses/${batch.course.slug}/${batch.course._id}`}
                                 >
                                   {batch.course.course_name}
                                 </Link>
@@ -135,20 +144,26 @@ filteredBatches.sort((a, b) => {
                                 </div>
                                 <div className="d-flex items-center">
                                   <div className="icon-location text-16 mr-8"></div>
-                                  <div className="text-14">{batch.branch}</div>
+                                  <div
+                                    className="text-14"
+                                    style={{ maxWidth: "150px" }}
+                                  >
+                                    {batch.branch}
+                                  </div>
                                 </div>
                               </div>
                               <div className="d-flex x-gap-15 pt-10">
                                 <div className="d-flex items-center">
                                   <div className="icon-person-3 text-16 mr-8"></div>
-                                  {batch.course.instructor.map((instructor) => (
-                                    <div
-                                      key={instructor._id}
-                                      className="text-14"
-                                    >
-                                     Trainer:{" "} {instructor.name}
-                                    </div>
-                                  ))}
+                                  <div className="text-14">
+                                    Trainer:{" "}
+                                    {batch.course.instructor
+                                      .map(
+                                        (instructor) =>
+                                          instructor.name.split(" ")[0]
+                                      )
+                                      .join(", ")}
+                                  </div>
                                 </div>
                                 <div className="d-flex items-center">
                                   <div className="icon-message text-16 mr-8"></div>
@@ -158,21 +173,12 @@ filteredBatches.sort((a, b) => {
                             </div>
                             <div className="eventCard__button">
                               <Link
-                                href={`/entrollBatch`}
+                                href={`applyProgram`}
                                 className="button -sm -rounded -purple-1 text-white px-25"
                               >
                                 Enroll
                               </Link>
                             </div>
-                            <div className="eventCard__button">
-                              <Link
-                                href={`/courses/${batch.course._id}`}
-                                className="button -sm -rounded -purple-1 text-white px-25"
-                              >
-                                Details
-                              </Link>
-                            </div>
-                            
                           </div>
                         </div>
                       </div>
@@ -185,10 +191,10 @@ filteredBatches.sort((a, b) => {
         </div>
 
         <div className="row pt-60 lg:pt-40">
-          <div className="col-auto" style={{position:'relative',top:'120px'}}>
+          <div className="col-auto">
             <Link
               href="allBatches"
-              className="button -icon -outline-purple-1 text-purple-1 fw-500"
+              className="button -icon -outline-purple-6 text-purple-1 fw-500"
             >
               View All Batches
               <span className="icon-arrow-top-right text-14 ml-10"></span>

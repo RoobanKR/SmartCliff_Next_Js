@@ -1,14 +1,12 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Async thunk to fetch all eligibility criteria
 export const getAllEligibilityCriteria = createAsyncThunk(
   "eligibilityCriteria/getAll",
   async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5353/getAll/eligibility"
-      );
+      const response = await axios.get(`${getAPIURL()}/getAll/eligibility`);
       return response.data.allEligibilityCriteria;
     } catch (error) {
       throw error;
@@ -16,13 +14,12 @@ export const getAllEligibilityCriteria = createAsyncThunk(
   }
 );
 
-// Async thunk to fetch eligibility criteria by ID
 export const getEligibilityCriteriaById = createAsyncThunk(
   "eligibilityCriteria/getById",
   async (criteriaId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5353/getById/eligibility/${criteriaId}`
+        `${getAPIURL()}/getById/eligibility/${criteriaId}`
       );
       return response.data.eligibilityCriteriaById;
     } catch (error) {
@@ -31,16 +28,14 @@ export const getEligibilityCriteriaById = createAsyncThunk(
   }
 );
 
-// Define the initial state
 const initialState = {
   loading: false,
   error: null,
   successMessage: "",
-  eligibilityCriteria: [], // Updated key name
+  eligibilityCriteria: [],
   eligibilityCriteriaById: null,
 };
 
-// Create an eligibilityCriteria slice
 const eligibilityCriteriaSlice = createSlice({
   name: "eligibilityCriteria",
   initialState,
@@ -54,7 +49,7 @@ const eligibilityCriteriaSlice = createSlice({
       .addCase(getAllEligibilityCriteria.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.eligibilityCriteria = action.payload; // Updated state key
+        state.eligibilityCriteria = action.payload;
       })
       .addCase(getAllEligibilityCriteria.rejected, (state, action) => {
         state.loading = false;

@@ -118,39 +118,17 @@ export const menuList = [
     ],
   },
   {
-    title: "Pages",
+    title: "Business",
     links: [
       {
-        title: "About Us",
+        title: "Corporate",
         links: [
-          { href: "/about-1", label: "About 1" },
-          { href: "/about-2", label: "About 2" },
+          { href: "/hirefromus", label: "Hire From Us" },
+          { href: "/trainfromus", label: "Train From Us" },
         ],
       },
-      {
-        title: "Contact",
-        links: [
-          { href: "/contact-1", label: "Contact 1" },
-          { href: "/contact-2", label: "Contact 2" },
-        ],
-      },
-      {
-        title: "Shop",
-        links: [
-          { href: "/shop-cart", label: "Shop Cart" },
-          { href: "/shop-checkout", label: "Shop Checkout" },
-          { href: "/shop-list", label: "Shop List" },
-          { href: "/shop-order", label: "Shop Order" },
-          { href: "/shop/3", label: "Shop Single" },
-        ],
-      },
-      { href: "/pricing", label: "Membership plans" },
-      { href: "/not-found", label: "404 Page" },
-      { href: "/terms", label: "FAQs" },
-      { href: "/help-center", label: "Help Center" },
-      { href: "/login", label: "Login" },
-      { href: "/signup", label: "Register" },
-      { href: "/ui-elements", label: "UI Elements" },
+
+      { href: "/institute", label: "Institute" },
     ],
   },
 ];

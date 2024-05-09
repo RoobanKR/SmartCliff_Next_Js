@@ -6,16 +6,15 @@ import { useParams } from "next/navigation";
 import { getAllClient } from "@/redux/slices/services/client/Client";
 import SwiperCore, { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import "swiper/swiper-bundle.min.css";
 
-// Initialize Swiper core modules
 SwiperCore.use([Autoplay]);
 
-export default function Clients1({ backgroundColor }) {
+export default function Clients({ backgroundColor, serviceId }) {
   const dispatch = useDispatch();
   const [showSlider, setShowSlider] = useState(false);
   const clients = useSelector((state) => state.clients.clients);
   const { id } = useParams();
+
   useEffect(() => {
     dispatch(getAllClient());
   }, [dispatch]);
@@ -31,6 +30,7 @@ export default function Clients1({ backgroundColor }) {
       className={`layout-pt-sm layout-pb-sm ${
         backgroundColor ? backgroundColor : ""
       }`}
+      style={{ fontFamily: "Serif" }}
     >
       <div className="container">
         <div className="row y-gap-20 justify-center text-center">
@@ -46,17 +46,19 @@ export default function Clients1({ backgroundColor }) {
           {showSlider && (
             <Swiper
               breakpoints={{
-                450: {
-                  slidesPerView: 1,
-                },
-                768: {
+                320: {
                   slidesPerView: 2,
                 },
-                1200: {
+                450: {
                   slidesPerView: 3,
                 },
+                768: {
+                  slidesPerView: 3,
+                },
+                1200: {
+                  slidesPerView: 4,
+                },
               }}
-              slidesPerView={4}
               spaceBetween={50}
               autoplay={{ delay: 8000 }}
             >
@@ -65,19 +67,22 @@ export default function Clients1({ backgroundColor }) {
                   <div className="teamCard -type-1 -teamCard-hover">
                     <div className="teamCard__image">
                       <div
+                        className="imageWrapper"
                         style={{
-                          width: "100%",
-                          height: "200px",
+                          width: "110px",
+                          height: "100px",
                           overflow: "hidden",
+                          position: "relative",
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
                         }}
                       >
                         <Image
                           src={elm.image}
                           alt="image"
                           layout="responsive"
-                          width={300} // Set width of the image
-                          height={200} // Set height of the image
-                          style={{ objectFit: "cover" }} // Maintain aspect ratio and cover the container
+                          width={300}
+                          height={200}
+                          style={{ objectFit: "cover" }}
                         />
                       </div>
                     </div>

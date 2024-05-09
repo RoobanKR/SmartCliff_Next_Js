@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Welcome to Our Services Page",
+    "description": "Discover available services.",
+    "imageUrl": "/assets/img/bannerimg.jpg"
+  },
+  {
+    "title": "Welcome to Our Courses Page",
+    "description": "Discover available Courses.",
+    "imageUrl": "/assets/img/bannerimg.jpg"
+  },
+  {
+    "title": "Welcome to Our Degree Program",
+    "description": "Discover available Programs.",
+    "imageUrl": "/assets/img/bannerimg.jpg"
+  },
+  {
+    "title": "About Us",
+    "description": "Discover available Programs.",
+    "imageUrl": "/assets/img/banner2.png"
+  },
+  {
+    "title": "Welcome to Our Hiring Page",
+    "description": "The hiring page provides a platform for individuals and businesses.",
+    "imageUrl": "/assets/img/bannerimg.jpg"
+  },
+  {
+    "title": "Welcome to Our Training Page",
+    "description": "The training page provides a platform for individuals and businesses.",
+    "imageUrl": "/assets/img/bannerimg.jpg"
+  },
+  {
+    "title": "Welcome to Our Institute Page",
+    "description": "The Institute page provides a platform for individuals and businesses.",
+    "imageUrl": "/assets/img/bannerimg.jpg"
+  }
+]

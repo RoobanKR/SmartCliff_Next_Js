@@ -1,29 +1,33 @@
-// qualificationLearningSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { getAPIURL } from "@/utils/utils";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const getAllQualificationLearning = createAsyncThunk(
-    'qualificationLearning/getAll',
-    async () => {
-      try {
-        const response = await axios.get('http://localhost:5353/getAll/qualification_learning');
-        return response.data.qualificatioLearning;
-      } catch (error) {
-        throw Error(error.response.data.message); // Throw error to be caught by rejected action
-      }
+  "qualificationLearning/getAll",
+  async () => {
+    try {
+      const response = await axios.get(
+        `${getAPIURL()}/getAll/qualification_learning`
+      );
+      return response.data.qualificatioLearning;
+    } catch (error) {
+      throw Error(error.response.data.message);
     }
-  );
-  export const getQualificationLearningById = createAsyncThunk(
-    'qualificationLearning/getById',
-    async (qualifylearnId) => {
-      try {
-        const response = await axios.get(`http://localhost:5353/getById/qualification_learning/${qualifylearnId}`);
-        return response.data.qualificatioLearning;
-      } catch (error) {
-        throw Error(error.response.data.message);
-      }
+  }
+);
+export const getQualificationLearningById = createAsyncThunk(
+  "qualificationLearning/getById",
+  async (qualifylearnId) => {
+    try {
+      const response = await axios.get(
+        `${getAPIURL()}/getById/qualification_learning/${qualifylearnId}`
+      );
+      return response.data.qualificatioLearning;
+    } catch (error) {
+      throw Error(error.response.data.message);
     }
-  );
+  }
+);
 
 const initialState = {
   loading: false,
@@ -34,7 +38,7 @@ const initialState = {
 };
 
 const qualificationLearningSlice = createSlice({
-  name: 'qualificationLearning',
+  name: "qualificationLearning",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -62,7 +66,7 @@ const qualificationLearningSlice = createSlice({
       .addCase(getQualificationLearningById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
-      })
+      });
   },
 });
 

@@ -164,6 +164,15 @@ export default function ApplyProgram() {
                     <h3 className="text-20 lh-12 fw-500">
                       Unlock Your Potential, Enroll Today!
                     </h3>
+                    <br></br>
+                    <div className="d-flex flex-column align-items-center">
+                      <img
+                        src="assets/img/qr.png"
+                        alt="QR code"
+                        style={{ width: "300px", height: "280px" }}
+                      />
+                      <p>Scan the QR code for payment</p>
+                    </div>
                   </div>
                 </div>
               </div>

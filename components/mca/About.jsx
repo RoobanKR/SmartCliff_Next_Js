@@ -54,7 +54,10 @@ export default function About() {
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error}</div>}
       {selectedAboutCollege && (
-        <section className="page-header -type-1">
+        <section
+          className="page-header -type-1"
+          style={{ fontFamily: "Serif" }}
+        >
           <div className="container">
             <div className="page-header__content">
               <div className="row justify-center text-center">
@@ -91,7 +94,7 @@ export default function About() {
                 </div>
               </div>
 
-              <div className="col-lg-5">
+              <div className="col-lg-5" style={{ fontFamily: "Serif" }}>
                 <h2 className="text-30 lh-16"> About Program</h2>
                 <p className="text-dark-1 mt-30">
                   {selectedAboutCollege.description}

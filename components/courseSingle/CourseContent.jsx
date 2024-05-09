@@ -20,7 +20,9 @@ export default function CourseContent({ filteredModules }) {
 
   // Extracting all modules from the filteredModules array
   const allModules =
-    filteredModules && filteredModules.length > 0 ? filteredModules[0].modules : [];
+    filteredModules && filteredModules.length > 0
+      ? filteredModules[0].modules
+      : [];
 
   const handleApply = () => {
     if (cookies.token) {
@@ -34,9 +36,19 @@ export default function CourseContent({ filteredModules }) {
 
   return (
     <>
-      <div id="course-content" className="pt-60 lg:pt-40">
-        <h2 className="text-20 fw-500">Course Content</h2>
+      <div
+        id="course-content"
+        className="pt-60 lg:pt-40"
+        style={{ fontFamily: "Serif" }}
+      >
+        <div className="sectionTitle ">
+          <h2 className="sectionTitle__title " style={{ fontFamily: "Serif" }}>
+            Course Content
+          </h2>
+          <br></br>
 
+          <p className="sectionTitle__text "></p>
+        </div>
         <div className="mt-10">
           {allModules.length > 0 ? (
             <div className="accordion -block-2 text-left js-accordion">
@@ -58,7 +70,9 @@ export default function CourseContent({ filteredModules }) {
                               <FontAwesomeIcon icon={faChevronUp} />
                             </div>
                           </div>
-                          <span className="text-17 fw-500 text-dark-1">{module.title}</span>
+                          <span className="text-17 fw-500 text-dark-1">
+                            {module.title}
+                          </span>
                         </div>
                       </div>
 
@@ -66,7 +80,11 @@ export default function CourseContent({ filteredModules }) {
                         className={`accordion__content ${
                           activeItemId === module._id ? "is-active" : ""
                         }`}
-                        style={activeItemId === module._id ? { maxHeight: "700px" } : {}}
+                        style={
+                          activeItemId === module._id
+                            ? { maxHeight: "700px" }
+                            : {}
+                        }
                       >
                         <div className="accordion__content__inner px-30 py-30">
                           <div className="y-gap-20">
@@ -112,7 +130,9 @@ export default function CourseContent({ filteredModules }) {
                               <FontAwesomeIcon icon={faChevronUp} />
                             </div>
                           </div>
-                          <span className="text-17 fw-500 text-dark-1">{module.title}</span>
+                          <span className="text-17 fw-500 text-dark-1">
+                            {module.title}
+                          </span>
                         </div>
                       </div>
 
@@ -120,7 +140,11 @@ export default function CourseContent({ filteredModules }) {
                         className={`accordion__content ${
                           activeItemId === module._id ? "is-active" : ""
                         }`}
-                        style={activeItemId === module._id ? { maxHeight: "700px" } : {}}
+                        style={
+                          activeItemId === module._id
+                            ? { maxHeight: "700px" }
+                            : {}
+                        }
                       >
                         <div className="accordion__content__inner px-30 py-30">
                           <div className="y-gap-20">

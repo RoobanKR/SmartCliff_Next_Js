@@ -11,14 +11,15 @@ export default function Testimonial() {
     setShowSlider(true);
   }, []);
   return (
-    <section className="layout-pt-lg layout-pb-lg bg-dark-5">
+    <section
+      className="layout-pt-lg layout-pb-lg bg-dark-5"
+      style={{ fontFamily: "serif" }}
+    >
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle ">
-              <h2 className="sectionTitle__title text-white">
-Testimonial
-              </h2>
+              <h2 className="sectionTitle__title text-white">Testimonial</h2>
 
               <p className="sectionTitle__text text-white">
                 {/* 100+ Experienced staff members */}

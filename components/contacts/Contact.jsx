@@ -20,20 +20,26 @@ export default function Contact() {
   return (
     <>
       <section>{showMap && <MapComponent />}</section>
-      <section className="layout-pt-md layout-pb-lg">
+      <section
+        className="layout-pt-sm layout-pb-sm"
+        style={{ fontFamily: "serif" }}
+      >
         <div className="container">
           <div className="row y-gap-50 justify-between">
             <div className="col-lg-4">
               <h3 className="text-24 fw-500">Keep In Touch With Us.</h3>
               <p className="mt-25">
-                Neque convallis a cras semper auctor. Libero id faucibus nisl
-                tincidunt egetnvallis.
+                Stay connected with us for the latest updates and news. Join our
+                community and be part of the conversation.
               </p>
 
               <div className="y-gap-30 pt-60 lg:pt-40">
                 {contactData.map((elm, i) => (
                   <div key={i} className="d-flex items-center">
-                    <div className="d-flex justify-center items-center size-60 rounded-full bg-light-7">
+                    <div
+                      className="d-flex justify-center items-center size-60 rounded-full"
+                      style={{ background: "#edecec" }}
+                    >
                       <Image width={30} height={30} src={elm.icon} alt="icon" />
                     </div>
                     <div className="ml-20">
@@ -55,8 +61,9 @@ export default function Contact() {
             <div className="col-lg-7">
               <h3 className="text-24 fw-500">Send a Message.</h3>
               <p className="mt-25">
-                Neque convallis a cras semper auctor. Libero id faucibus nisl
-                <br /> tincidunt egetnvallis.
+                Have a question or need assistance? Reach out to us anytime.
+                We're here to help and eager to <br />
+                hear from you!
               </p>
 
               <form

@@ -21,7 +21,10 @@ export default function OurProgram() {
   );
 
   return (
-    <section className="layout-pt-md layout-pb-md bg-dark-2">
+    <section
+      className="layout-pt-md layout-pb-md"
+      style={{ fontFamily: "Serif", background: "#9e7cb8" }}
+    >
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-auto">

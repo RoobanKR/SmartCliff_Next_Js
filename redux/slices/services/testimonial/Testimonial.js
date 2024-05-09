@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -6,7 +7,7 @@ export const createTestimonial = createAsyncThunk(
   async (formData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5353/create/service_testimonial",
+        `${getAPIURL()}/create/service_testimonial`,
         formData
       );
       return response.data;
@@ -23,7 +24,7 @@ export const getAllTestimonial = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5353/getAll/service_testimonial"
+        `${getAPIURL()}/getAll/service_testimonial`
       );
       return response.data.getAllTestimonial;
     } catch (error) {
@@ -36,7 +37,7 @@ export const getTestimonialById = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:5353/getById/service_testimonial/${id}`
+        `${getAPIURL()}/getById/service_testimonial/${id}`
       );
       return response.data;
     } catch (error) {
@@ -49,7 +50,7 @@ export const updateTestimonial = createAsyncThunk(
   async ({ id, formData }) => {
     try {
       const response = await axios.put(
-        `http://localhost:5353/update/client/${id}`,
+        `${getAPIURL()}/update/client/${id}`,
         formData
       );
       return response.data.testimonial;
@@ -63,9 +64,7 @@ export const deleteTestimonial = createAsyncThunk(
   "testimonial/deleteClient",
   async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5353/delete/client/${id}`
-      );
+      await axios.delete(`${getAPIURL()}/delete/client/${id}`);
       return id;
     } catch (error) {
       throw error;

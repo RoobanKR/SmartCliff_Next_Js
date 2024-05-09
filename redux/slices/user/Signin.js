@@ -1,7 +1,8 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const backendAPI = "http://localhost:5353";
+const backendAPI = `${getAPIURL()}`;
 
 export const postSignIn = createAsyncThunk(
   "postSignIn",

@@ -28,7 +28,7 @@ export default function Clients({ backgroundColor, serviceId }) {
 
   return (
     <section
-      className={`layout-pt-sm layout-pb-sm ${
+      className={`layout-pt-sm layout-pb-md ${
         backgroundColor ? backgroundColor : ""
       }`}
     >
@@ -36,54 +36,71 @@ export default function Clients({ backgroundColor, serviceId }) {
         <div className="row y-gap-20 justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle ">
-              <h2 className="sectionTitle__title ">Our Clients</h2>
-              <p className="sectionTitle__text "></p>
+              <h2
+                className="sectionTitle__title "
+                style={{ fontFamily: "Serif" }}
+              >
+                Our Clients
+              </h2>
+              <p
+                className="sectionTitle__text "
+                style={{ fontFamily: "Serif" }}
+              ></p>
             </div>
           </div>
         </div>
 
-        <div className="row y-gap-30 pt-50">
+        <div className="row y-gap-30 pt-50" style={{ alignItems: "center" }}>
           {showSlider && (
             <Swiper
               breakpoints={{
-                450: {
-                  slidesPerView: 1,
-                },
-                768: {
+                320: {
                   slidesPerView: 2,
                 },
-                1200: {
+                450: {
                   slidesPerView: 3,
                 },
+                768: {
+                  slidesPerView: 3,
+                },
+                1200: {
+                  slidesPerView: 4,
+                },
               }}
-              spaceBetween={50} // Increase the space between slides
+              spaceBetween={50}
               autoplay={{ delay: 8000 }}
             >
               {filteredClients.map((elm, i) => (
                 <SwiperSlide key={i}>
                   <div className="teamCard -type-1 -teamCard-hover">
-                    <div className="teamCard__image">
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "200px",
-                          overflow: "hidden",
-                        }}
-                      >
-                        <Image
-                          src={elm.image}
-                          alt="image"
-                          layout="responsive"
-                          width={300} // Set width of the image
-                          height={200} // Set height of the image
-                          style={{ objectFit: "cover" }} // Maintain aspect ratio and cover the container
-                        />
-                      </div>
+                    <div
+                      className="imageWrapper"
+                      style={{
+                        width: "110px",
+                        height: "100px",
+                        overflow: "hidden",
+                        position: "relative",
+                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                      }}
+                    >
+                      <Image
+                        src={elm.image}
+                        alt="image"
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition="center"
+                      />
                     </div>
+
                     <div className="teamCard__content">
                       <h4 className="teamCard__title">
-                        <div href={`/instructors/${elm.id}`}>
-                          <a className="linkCustom">{elm.name}</a>
+                        <div>
+                          <a
+                            className="linkCustom"
+                            style={{ fontFamily: "Serif" }}
+                          >
+                            {elm.name}
+                          </a>
                         </div>
                       </h4>
                     </div>

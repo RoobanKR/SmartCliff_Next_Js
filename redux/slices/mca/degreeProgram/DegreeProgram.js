@@ -1,41 +1,42 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
- 
+import { getAPIURL } from "@/utils/utils";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
 export const createDegreeProgram = createAsyncThunk(
-  'degreeProgram/create',
+  "degreeProgram/create",
   async (formData) => {
     const response = await axios.post(
-      'http://localhost:5353/create/degree_Program',
+      `${getAPIURL()}/create/degree_Program`,
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       }
     );
     return response.data;
   }
 );
- 
+
 export const fetchDegreeProgramData = createAsyncThunk(
-  'degreeProgram/fetchData',
+  "degreeProgram/fetchData",
   async () => {
     try {
-      const response = await fetch('http://localhost:5353/getAll/degree_Program');
+      const response = await fetch(`${getAPIURL()}/getAll/degree_Program`);
       const data = await response.json();
       return data.Degree_Program;
     } catch (error) {
-      throw Error('Error fetching data');
+      throw Error("Error fetching data");
     }
   }
 );
- 
+
 export const fetchDegreeProgramById = createAsyncThunk(
   "degreeProgram/fetchById",
   async (degreeProgramId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5353/getById/degree_Program/${degreeProgramId}`
+        `${getAPIURL()}/getById/degree_Program/${degreeProgramId}`
       );
       return response.data.Degree_Program;
     } catch (error) {
@@ -43,13 +44,13 @@ export const fetchDegreeProgramById = createAsyncThunk(
     }
   }
 );
- 
+
 export const updateDegreeProgram = createAsyncThunk(
   "degreeProgram/update",
   async ({ degreeProgramId, formData }) => {
     try {
       const response = await axios.put(
-        `http://localhost:5353/update/degree_Program/${degreeProgramId}`,
+        `${getAPIURL()}/update/degree_Program/${degreeProgramId}`,
         formData
       );
       return response.data.Degree_Program;
@@ -58,27 +59,29 @@ export const updateDegreeProgram = createAsyncThunk(
     }
   }
 );
- 
+
 export const deleteDegreeProgram = createAsyncThunk(
-  'degreeProgram/delete',
+  "degreeProgram/delete",
   async (degreeProgramId) => {
     try {
-      await axios.delete(`http://localhost:5353/delete/degree_Program/${degreeProgramId}`);
+      await axios.delete(
+        `${getAPIURL()}/delete/degree_Program/${degreeProgramId}`
+      );
       return degreeProgramId;
     } catch (error) {
-      throw Error('Error deleting Degree Program');
+      throw Error("Error deleting Degree Program");
     }
   }
 );
- 
+
 const degreeProgramSlice = createSlice({
-  name: 'degreeProgram',
+  name: "degreeProgram",
   initialState: {
     loading: false,
     error: null,
     success: false,
     degreeProgramData: [],
-    status: 'idle',
+    status: "idle",
     selectedDegreeProgram: null,
   },
   extraReducers: (builder) => {
@@ -99,14 +102,14 @@ const degreeProgramSlice = createSlice({
         state.success = false;
       })
       .addCase(fetchDegreeProgramData.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchDegreeProgramData.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.degreeProgramData = action.payload;
       })
       .addCase(fetchDegreeProgramData.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.error.message;
       })
       .addCase(fetchDegreeProgramById.pending, (state) => {
@@ -150,6 +153,5 @@ const degreeProgramSlice = createSlice({
       });
   },
 });
- 
+
 export default degreeProgramSlice.reducer;
- 

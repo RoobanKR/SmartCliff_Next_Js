@@ -8,6 +8,9 @@ import TestimonialCard from "../common/TestimonialCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "next/navigation";
 import { getAllTestimonial } from "@/redux/slices/services/testimonial/Testimonial";
+import SwiperCore, { Autoplay } from "swiper";
+
+SwiperCore.use([Autoplay]);
 
 export default function TestimonialsFour1() {
   const [showSlider, setShowSlider] = useState(false);
@@ -30,12 +33,15 @@ export default function TestimonialsFour1() {
   );
 
   return (
-    <section className="layout-pt-sm layout-pb-sm bg-dark-5">
+    <section
+      className="layout-pt-sm layout-pb-sm bg-beige-1"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle ">
-              <h2 className="sectionTitle__title text-white">
+              <h2 className="sectionTitle__title text-black">
                 People Say About SmartCliff Services
               </h2>
 
@@ -48,6 +54,7 @@ export default function TestimonialsFour1() {
           {showSlider && (
             <Swiper
               className="overflow-visible"
+              autoplay={{ delay: 4000 }}
               // {...setting}
               modules={[Navigation, Pagination]}
               pagination={{
@@ -67,11 +74,11 @@ export default function TestimonialsFour1() {
                 },
                 // when window width is >= 768px
                 768: {
-                  slidesPerView: 2,
+                  slidesPerView: 1,
                 },
                 1200: {
                   // when window width is >= 992px
-                  slidesPerView: 2,
+                  slidesPerView: 1,
                 },
               }}
             >

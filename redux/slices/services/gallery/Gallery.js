@@ -1,10 +1,11 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getAllGallery = createAsyncThunk("gallery/getAll", async () => {
   try {
     const response = await axios.get(
-      "http://localhost:5353/getAll/service_gallery"
+      `${getAPIURL()}/getAll/service_gallery`
     );
     return response.data.getAllGallery;
   } catch (error) {

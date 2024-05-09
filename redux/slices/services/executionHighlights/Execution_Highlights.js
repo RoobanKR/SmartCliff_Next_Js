@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "axios";
 
@@ -6,7 +7,7 @@ export const addExecutionHighlights = createAsyncThunk(
   async (formData) => {
     try {
       const response = await Axios.post(
-        "http://localhost:5353/create/execution_highlight",
+        `${getAPIURL()}/create/execution_highlight`,
         formData
       );
       return response.data;
@@ -21,7 +22,7 @@ export const fetchExecutionHighlights = createAsyncThunk(
   async () => {
     try {
       const response = await Axios.get(
-        "http://localhost:5353/getAll/execution_highlight"
+        `${getAPIURL()}/getAll/execution_highlight`
       );
       return response.data.getAllExecutionHighlight;
     } catch (error) {
@@ -34,7 +35,7 @@ export const fetchExecutionHighlightsById = createAsyncThunk(
   async (executionHighlightId) => {
     try {
       const response = await Axios.get(
-        `http://localhost:5353/getById/execution_highlight/${executionHighlightId}`
+        `${getAPIURL()}/getById/execution_highlight/${executionHighlightId}`
       );
       return response.data.serviceById;
     } catch (error) {
@@ -48,7 +49,7 @@ export const updateExecutionHighlights = createAsyncThunk(
   async ({ executionHighlightId, formData }) => {
     try {
       const response = await Axios.put(
-        `http://localhost:5353/update/execution_highlight/${executionHighlightId}`,
+        `${getAPIURL()}/update/execution_highlight/${executionHighlightId}`,
         formData
       );
       return response.data.executionHighlight;
@@ -63,7 +64,7 @@ export const deleteExecutionHighlights = createAsyncThunk(
   async (executionHighlightId) => {
     try {
       const response = await Axios.delete(
-        `http://localhost:5353/delete/execution_highlight/${executionHighlightId}`
+        `${getAPIURL()}/delete/execution_highlight/${executionHighlightId}`
       );
 
       return response.data;

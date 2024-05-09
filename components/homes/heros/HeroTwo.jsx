@@ -11,6 +11,7 @@ import React from "react";
 import { featureTwo } from "../../../data/features";
 import { slidesData } from "../../../data/hero";
 import { useRouter } from "next/navigation";
+
 export default function HeroTwo() {
   const router = useRouter();
   const [showSlider, setShowSlider] = useState(false);
@@ -66,50 +67,71 @@ export default function HeroTwo() {
       </div>
 
       <div className="container">
-        <div className="row justify-center text-center">
-          <div className="col-xl-6 col-lg-8">
+        <div className="row justify-center text-center ">
+          <div className="col-sm-6 col-sm-9">
             <div
               className="mainSlider__content"
               data-aos="fade-up"
               data-aos-delay="500"
             >
-              <h1 className="mainSlider__title text-white">
-                Learn Your Way With Educrat To{" "}
-                <span className="text-green-1 underline">Web Design</span>
+              <h1
+                className="mainSlider__title text-white"
+                style={{ fontFamily: "Serif" }}
+              >
+                Empowering{" "}
+                <span className="underline" style={{ color: "#f97c69" }}>
+                  10 Million +
+                </span>{" "}
+                youth to bridge the Digital Skills gap and forge{" "}
+                <span className="text-outline-yellowie-1 underline">
+                  Carrers
+                </span>{" "}
+                in future technology.{" "}
               </h1>
 
-              <p className="mainSlider__text text-white">
-                More than 6.500 online courses
+              <p
+                className="mainSlider__text text-white"
+                style={{ fontFamily: "Serif" }}
+              >
+                More than 1,000 Placements Student
               </p>
-
-              <div className="mainSlider__form">
-                <input
-                  required
-                  type="text"
-                  placeholder="What do you want to learn today?"
-                />
-
-                <button
-                  className="button -md -purple-1 text-white"
-                  onClick={() => router.push("/courses-list-1")}
-                >
-                  <i className="icon icon-search mr-15"></i>
-                  Search
-                </button>
-              </div>
             </div>
           </div>
         </div>
 
-        <div className="row y-gap-20 justify-center mainSlider__items">
+        <div className="row y-gap-20 justify-center mainSlider__items pt-30">
           {featureTwo.map((elm, i) => (
             <div key={i} className="col-xl-3 col-md-4 col-sm-6">
               <div className="mainSlider-item text-center">
-                <Image width={50} height={50} src={elm.imgSrc} alt="icon" />
-                <h4 className="text-20 fw-500 lh-18 text-white mt-8">
+                <div
+                  key={i}
+                  className="col-xl-3 col-md-4 col-sm-6"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "60px",
+                    height: "60px",
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                    margin: "0 auto",
+                  }}
+                >
+                  <Image width={30} height={30} src={elm.imgSrc} alt="icon" />
+                </div>
+
+                <h4
+                  className="text-20 fw-500 lh-18 text-white mt-8"
+                  style={{ fontFamily: "Serif" }}
+                >
                   {elm.title}
                 </h4>
-                <p className="text-15 text-white">{elm.description}</p>
+                <p
+                  className="text-15 text-white"
+                  style={{ fontFamily: "Serif" }}
+                >
+                  {elm.description}
+                </p>
               </div>
             </div>
           ))}

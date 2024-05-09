@@ -1,9 +1,10 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getAllClient = createAsyncThunk("client/getAll", async () => {
   try {
-    const response = await axios.get("http://localhost:5353/getAll/client");
+    const response = await axios.get(`${getAPIURL()}/getAll/client`);
     return response.data.AllCompanyLogos;
   } catch (error) {
     throw error;
@@ -11,9 +12,7 @@ export const getAllClient = createAsyncThunk("client/getAll", async () => {
 });
 export const getClientById = createAsyncThunk("client/getById", async (id) => {
   try {
-    const response = await axios.get(
-      `http://localhost:5353/getById/client/${id}`
-    );
+    const response = await axios.get(`${getAPIURL()}/getById/client/${id}`);
     return response.data;
   } catch (error) {
     throw error;

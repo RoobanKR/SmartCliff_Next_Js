@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -12,7 +13,7 @@ export const getAllSemesters = createAsyncThunk(
   "semester/getAllSemesters",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:5353/getAll/semester");
+      const response = await axios.get(`${getAPIURL()}/getAll/semester`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -24,9 +25,7 @@ export const getSemesterById = createAsyncThunk(
   "semester/getSemesterById",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5353/getById/semester/${id}`
-      );
+      const response = await axios.get(`${getAPIURL()}/getById/semester/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

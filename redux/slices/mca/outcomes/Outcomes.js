@@ -1,3 +1,4 @@
+import { getAPIURL } from '@/utils/utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
  
@@ -5,7 +6,7 @@ export const getAllOutcomes = createAsyncThunk(
     'outcome/getAll',
     async () => {
       try {
-        const response = await axios.get('http://localhost:5353/getAll/outcome');
+        const response = await axios.get(`${getAPIURL()}/getAll/outcome`);
         return response.data.AllOutcomes;
       } catch (error) {
         throw error;
@@ -16,7 +17,7 @@ export const getAllOutcomes = createAsyncThunk(
     'outcome/getById',
     async (outcomeId) => {
       try {
-        const response = await axios.get(`http://localhost:5353/getById/outcome/${outcomeId}`);
+        const response = await axios.get(`${getAPIURL()}/getById/outcome/${outcomeId}`);
         return response.data.outcomeById;
       } catch (error) {
         throw error;

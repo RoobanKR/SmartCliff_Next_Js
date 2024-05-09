@@ -21,7 +21,10 @@ export default function Gallery1() {
   );
 
   return (
-    <section className="layout-pt-md layout-pb-sm">
+    <section
+      className="layout-pt-md layout-pb-sm"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         <div className="row y-gap-20 justify-between items-center">
           <div className="col-lg-6">
@@ -59,7 +62,13 @@ export default function Gallery1() {
                 data-aos-duration={(i + 1) * 400}
               >
                 <div className="blogCard__image">
-                  <Image width={550} height={465} src={elm.image} alt="image" />
+                  <Image
+                    width={550}
+                    height={465}
+                    style={{ width: "550px", height: "200px" }}
+                    src={elm.image}
+                    alt="image"
+                  />
                 </div>
                 <div className="blogCard__content mt-20">
                   <div className="blogCard__category">{elm.name}</div>

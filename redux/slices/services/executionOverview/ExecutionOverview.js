@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Axios from "axios";
@@ -7,7 +8,7 @@ export const fetchExecutionOverview = createAsyncThunk(
   async () => {
     try {
       const response = await Axios.get(
-        "http://localhost:5353/getAll/execution_overview"
+        `${getAPIURL()}/getAll/execution_overview`
       );
       return response.data.getAllExecutionOverviews;
     } catch (error) {
@@ -21,7 +22,7 @@ export const createExecutionOverview = createAsyncThunk(
   async (executionOverviewData) => {
     try {
       const response = await Axios.post(
-        "http://localhost:5353/create/execution_overview",
+        `${getAPIURL()}/create/execution_overview`,
         executionOverviewData
       );
       return response.data;
@@ -36,7 +37,7 @@ export const deleteExecutionOverview = createAsyncThunk(
   async (id) => {
     try {
       const response = await Axios.delete(
-        `http://localhost:5353/delete/execution_highlight/${id}`
+        `${getAPIURL()}/delete/execution_highlight/${id}`
       );
 
       return response.data;
@@ -51,7 +52,7 @@ export const fetchExecutionOverviewById = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:5353/getById/execution_overview/${id}`
+        `${getAPIURL()}/getById/execution_overview/${id}`
       );
       return response.data.getExecutionOverviewById;
     } catch (error) {
@@ -65,7 +66,7 @@ export const updateExecutionOverview = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `http://localhost:5353/update/execution_overview/${data.id}`,
+        `${getAPIURL()}/update/execution_overview/${data.id}`,
         data.payload
       );
       return response.data;

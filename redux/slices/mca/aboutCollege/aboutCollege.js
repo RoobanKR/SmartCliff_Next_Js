@@ -1,3 +1,4 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -5,7 +6,7 @@ export const fetchAboutCollegeData = createAsyncThunk(
   "aboutCollege/fetchData",
   async () => {
     try {
-      const response = await axios.get("http://localhost:5353/getAll/degree_Program");
+      const response = await axios.get(`${getAPIURL()}/getAll/degree_Program`);
       const data = response.data;
       return data.Degree_Program;
     } catch (error) {

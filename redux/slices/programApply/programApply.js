@@ -1,46 +1,53 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
- 
-// Async thunk for creating/applying
+import { getAPIURL } from "@/utils/utils";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
 export const createProgramApply = createAsyncThunk(
-  'programApply/createProgramApply',
+  "programApply/createProgramApply",
   async (formData, thunkAPI) => {
     try {
-      const response = await axios.post('http://localhost:5353/create/programapply', formData);
-      return response.data; // Assuming the response contains relevant data
+      const response = await axios.post(
+        `${getAPIURL()}/create/programapply`,
+        formData
+      );
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
- 
+
 export const verifyOTP = createAsyncThunk(
-    'programApply/verifyOTP',
-    async ({ otp, email }, thunkAPI) => {
-      try {
-        const response = await axios.post('http://localhost:5353/programotp/verify', { otp, email });
-        return response.data; // Assuming the response contains relevant data
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data);
-      }
+  "programApply/verifyOTP",
+  async ({ otp, email }, thunkAPI) => {
+    try {
+      const response = await axios.post(`${getAPIURL()}/programotp/verify`, {
+        otp,
+        email,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  );
- 
-  export const resendOTP = createAsyncThunk(
-    'programApply/resendOTP',
-    async (email, thunkAPI) => {
-      try {
-        const response = await axios.post('http://localhost:5353/programotp/resend', { email });
-        return response.data; // Assuming the response contains relevant data
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data);
-      }
+  }
+);
+
+export const resendOTP = createAsyncThunk(
+  "programApply/resendOTP",
+  async (email, thunkAPI) => {
+    try {
+      const response = await axios.post(`${getAPIURL()}/programotp/resend`, {
+        email,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  );
- 
-// Create slice for programApply
+  }
+);
+
 const programApplySlice = createSlice({
-  name: 'programApply',
+  name: "programApply",
   initialState: {
     isLoading: false,
     error: null,
@@ -57,11 +64,13 @@ const programApplySlice = createSlice({
       })
       .addCase(createProgramApply.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.successMessage = action.payload.message; // Assuming API returns a message
+        state.successMessage = action.payload.message;
       })
       .addCase(createProgramApply.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload ? action.payload.error : 'Error creating/applying'; // Default error message
+        state.error = action.payload
+          ? action.payload.error
+          : "Error creating/applying";
       })
       .addCase(verifyOTP.pending, (state) => {
         state.isLoading = true;
@@ -73,7 +82,9 @@ const programApplySlice = createSlice({
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload ? action.payload.error : 'Error verifying OTP'; // Default error message
+        state.error = action.payload
+          ? action.payload.error
+          : "Error verifying OTP";
       })
       .addCase(resendOTP.pending, (state) => {
         state.isLoading = true;
@@ -85,9 +96,11 @@ const programApplySlice = createSlice({
       })
       .addCase(resendOTP.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload ? action.payload.error : 'Error resending OTP';
+        state.error = action.payload
+          ? action.payload.error
+          : "Error resending OTP";
       });
   },
 });
- 
+
 export default programApplySlice.reducer;

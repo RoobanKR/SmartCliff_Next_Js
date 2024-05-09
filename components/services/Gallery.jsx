@@ -26,9 +26,17 @@ export default function Gallery({ serviceId }) {
           <div className="row y-gap-20 justify-center text-center">
             <div className="col-auto">
               <div className="sectionTitle ">
-                <h2 className="sectionTitle__title ">Gallery</h2>
+                <h2
+                  className="sectionTitle__title "
+                  style={{ fontFamily: "Serif" }}
+                >
+                  Gallery
+                </h2>
 
-                <p className="sectionTitle__text ">
+                <p
+                  className="sectionTitle__text "
+                  style={{ fontFamily: "Serif" }}
+                >
                   A gallery presents a visually engaging collection of images
                   offering viewers an immersive experience to explore and
                   appreciate various subjects or themes.
@@ -41,6 +49,7 @@ export default function Gallery({ serviceId }) {
             <Link
               href="/service_Gallery"
               className="button -icon -purple-3 text-purple-1"
+              style={{ fontFamily: "Serif" }}
             >
               View all
               <i className="icon-arrow-top-right text-13 ml-10"></i>
@@ -62,14 +71,30 @@ export default function Gallery({ serviceId }) {
                 data-aos-duration={(i + 1) * 400}
               >
                 <div className="blogCard__image">
-                  <Image width={550} height={465} src={elm.image} alt="image" />
+                  <Image
+                    width={550}
+                    height={465}
+                    src={elm.image}
+                    style={{ width: "550px", height: "200px" }}
+                    alt="image"
+                  />
                 </div>
                 <div className="blogCard__content mt-20">
-                  <div className="blogCard__category">{elm.name}</div>
+                  <div
+                    className="blogCard__category"
+                    style={{ fontFamily: "Serif" }}
+                  >
+                    {elm.name}
+                  </div>
                   <h4 className="blogCard__title text-17 lh-15 mt-5">
-                    <div className="linkCustom">{elm.year} </div>
+                    <div className="linkCustom" style={{ fontFamily: "Serif" }}>
+                      {elm.year}{" "}
+                    </div>
                   </h4>
-                  <div className="blogCard__date text-14 mt-5">
+                  <div
+                    className="blogCard__date text-14 mt-5"
+                    style={{ fontFamily: "Serif" }}
+                  >
                     {elm.service.title}
                   </div>
                 </div>

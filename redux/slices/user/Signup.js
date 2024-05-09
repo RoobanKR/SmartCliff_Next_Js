@@ -1,4 +1,3 @@
-// signup.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -6,27 +5,25 @@ export const postSignUp = createAsyncThunk(
   "postSignUp",
   async (values, { rejectWithValue }) => {
     let data = {
-      userName : values.userName,
-      email : values.email,
-      phone : values.phone,
+      userName: values.userName,
+      email: values.email,
+      phone: values.phone,
       gender: values.gender,
-      password : values.password,
-    }
+      password: values.password,
+    };
     try {
-      const res = await  axios.post(  "http://localhost:5353/signup", data, 
-    {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    return res.data;
+      const res = await axios.post(`${getAPIURL()}/signup`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return res.data;
     } catch (err) {
       if (!err.response) {
-        throw err
+        throw err;
       }
-      return rejectWithValue(err.response.data)
+      return rejectWithValue(err.response.data);
     }
-    
   }
 );
 

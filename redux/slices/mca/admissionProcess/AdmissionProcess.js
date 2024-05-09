@@ -1,10 +1,11 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
   loading: false,
   error: null,
-  admissions: [], // Include the admissions property in the initial state
+  admissions: [],
   admissionById: null,
   admissionById: null,
   successMessage: null,
@@ -14,9 +15,7 @@ export const getAllAdmissionProcess = createAsyncThunk(
   "admission/fetchAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        "http://localhost:5353/getAll/admission"
-      );
+      const response = await axios.get(`${getAPIURL()}/getAll/admission`);
       return response.data.admission;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -28,11 +27,10 @@ export const getAdmissionProcessById = createAsyncThunk(
   async (admissionId, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:5353/getById/admission/${admissionId}`
+        `${getAPIURL()}/getById/admission/${admissionId}`
       );
       const admissionData = response.data.admissionById;
 
-      // Modify the data structure if needed to match your Redux store
       const formattedData = {
         _id: admissionData._id,
         heading: admissionData.admission.map((item) => item.heading),

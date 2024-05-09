@@ -42,27 +42,28 @@ export default function EligibilityCriteria() {
     (eligibility) =>
       eligibility.degree_program && eligibility.degree_program._id === id
   );
- 
+
   return (
-    <section className="layout-pt-md layout-pb-lg">
+    <section
+      className="layout-pt-sm layout-pb-sm"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         {filteredcriteria.map((criteria, index, i) => (
-          <div key={index}>
-            <h2
-              className="text-45 lg:text-40 md:text-30 text-dark-1"
-              data-aos="fade-up"
-              data-aos-duration={300}
-            >
-              Qualification{" "}
-            </h2>      <br></br>
-
-            <p key={i}>{criteria.description}</p>
+          <div className="row justify-center text-center">
+            <div className="col-xl-6 col-lg-7">
+              <div className="sectionTitle ">
+                <h2 className="sectionTitle__title ">Qualification</h2>
+                <p className="sectionTitle__text ">
+                  Learn the data skills you need online at your own pace—from
+                  non-coding essentials to data science and machine learning.
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-      <br></br>      <br></br>
-
-
+      <br></br> <br></br>
       <div className="container">
         <Swiper
           onSwiper={(swiper) => setSwiper(swiper)}
@@ -75,7 +76,7 @@ export default function EligibilityCriteria() {
                 {criteria.eligibility.map((c, i) => (
                   <div className="col-xl-5 col-lg-6 order-2 order-lg-1">
                     <h2
-                      className="text-45 lg:text-40 md:text-30 text-dark-1"
+                      className="text-35 lg:text-40 md:text-30 text-dark-1"
                       data-aos="fade-up"
                       data-aos-duration={300}
                     >

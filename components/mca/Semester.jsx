@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSemesters } from "@/redux/slices/mca/semester/Semester";
-import "./semester.css";
+import "./Semester.css";
 import { useParams } from "next/navigation";
 
 const Semester = () => {
@@ -29,16 +29,21 @@ const Semester = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: "5%",
+        marginTop: "2%",
+        fontFamily: "serif",
       }}
     >
       <h1
-        className="text-45 lg:text-40 md:text-30 text-dark-1"
+        className="text-40 lg:text-40 md:text-30 text-dark-1"
         data-aos="fade-up"
         data-aos-duration={300}
       >
         Semester Details
       </h1>
+      <p className="sectionTitle__text ">
+        Learn the data skills you need online at your own pace—from non-coding
+        essentials to data science and machine learning.
+      </p>
       <br />
       <br />
       <div className="container">

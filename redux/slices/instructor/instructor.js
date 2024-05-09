@@ -1,21 +1,18 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "axios";
 
-// Async thunk for adding an instructor
 export const addInstructor = createAsyncThunk(
   "instructor/addInstructor",
   async (formData) => {
     try {
-      // Make a POST request to the backend API endpoint
       const response = await Axios.post(
-        "http://localhost:5353/create/instructor",
+        `${getAPIURL()}/create/instructor`,
         formData
       );
 
-      // Return the response data
       return response.data;
     } catch (error) {
-      // Throw an error with the response data if available
       throw error.response ? error.response.data : error;
     }
   }
@@ -26,7 +23,7 @@ export const fetchInstructors = createAsyncThunk(
   async () => {
     try {
       const response = await Axios.get(
-        "http://localhost:5353/getAll/instructor"
+        `${getAPIURL()}/getAll/instructor`
       );
       return response.data.Instructor;
     } catch (error) {
@@ -35,7 +32,6 @@ export const fetchInstructors = createAsyncThunk(
   }
 );
 
-// Instructor slice with initial state and reducers
 const instructorSlice = createSlice({
   name: "instructor",
   initialState: {
@@ -89,8 +85,6 @@ const instructorSlice = createSlice({
 
 export const { resetInstructor } = instructorSlice.actions;
 
-// Selector function to get the instructor state
 export const selectInstructorState = (state) => state.instructor;
 
-// Export the reducer
 export default instructorSlice.reducer;

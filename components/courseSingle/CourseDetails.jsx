@@ -1,5 +1,5 @@
 "use client";
- 
+
 import Instractor from "./Instractor";
 import Reviews from "./Reviews";
 import Overview from "./Overview";
@@ -7,7 +7,7 @@ import CourseContent from "./CourseContent";
 import Star from "../common/Star";
 import { coursesData } from "@/data/courses";
 import React, { useState, useEffect } from "react";
- 
+
 import ModalVideoComponent from "../common/ModalVideo";
 import Image from "next/image";
 import { useContextElement } from "@/context/Context";
@@ -24,7 +24,7 @@ import {
   selectCareerOpportunitiesError,
 } from "@/redux/slices/careerOppertunities/careerOppertunities";
 import Link from "next/link";
- 
+
 const menuItems = [
   { id: 1, href: "#overview", text: "Overview", isActive: true },
   { id: 2, href: "#course-content", text: "Course Content", isActive: false },
@@ -45,7 +45,7 @@ const getCookie = (name) => {
 };
 export default function CourseDetailsSix() {
   const router = useRouter();
- 
+
   const [discountedPrice, setDiscountedPrice] = useState(null);
   const { id } = useParams();
   const selectedCourse = useSelector((state) => state.courses.selectedCourse);
@@ -54,7 +54,7 @@ export default function CourseDetailsSix() {
   );
   const [pageItem, setPageItem] = useState(null);
   const [cartCourses, setCartCourses] = useState([]);
- 
+
   const faq = useSelector((state) => state.faq.faq);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(1);
@@ -64,7 +64,20 @@ export default function CourseDetailsSix() {
   const opportunities = useSelector(selectCareerOpportunities);
   const error = useSelector(selectCareerOpportunitiesError);
   const [filteredOpportunities, setFilteredOpportunities] = useState([]);
- 
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  const handleResize = () => {
+    setIsMobileView(window.innerWidth < 768); // Set mobile view based on window width
+  };
+
+  useEffect(() => {
+    handleResize(); // Check initial viewport size
+    window.addEventListener("resize", handleResize); // Listen to viewport changes
+    return () => {
+      window.removeEventListener("resize", handleResize); // Cleanup event listener
+    };
+  }, [dispatch]);
+
   const handleWishlistButtonClick = () => {
     if (isAddedToCartCourses(pageItem._id)) {
       console.log("Course is already added to cart");
@@ -74,7 +87,7 @@ export default function CourseDetailsSix() {
       if (cookiesToken) {
         // Add the course to the wishlist
         addCourseToCart(pageItem._id);
- 
+
         // Update the cartCourses state with the course details
         const updatedCartCourses = [
           ...cartCourses,
@@ -87,7 +100,7 @@ export default function CourseDetailsSix() {
           },
         ];
         setCartCourses(updatedCartCourses);
- 
+
         // Handle success (e.g., show a success message)
       } else {
         // Store the current URL before redirecting to the signup page
@@ -96,7 +109,7 @@ export default function CourseDetailsSix() {
       }
     }
   };
- 
+
   useEffect(() => {
     console.log("Fetching course...");
     if (id) {
@@ -112,7 +125,7 @@ export default function CourseDetailsSix() {
         });
     }
   }, [id, dispatch]);
- 
+
   useEffect(() => {
     console.log("Course modules:", courseModules);
     if (selectedCourse && courseModules) {
@@ -122,21 +135,21 @@ export default function CourseDetailsSix() {
       setFilteredModules(filteredModules);
     }
   }, [selectedCourse, courseModules]);
- 
+
   useEffect(() => {
     console.log("Fetching all course modules...");
     dispatch(getAllCourseModules());
   }, [dispatch]);
- 
+
   useEffect(() => {
     console.log("Fetching all faq...");
     dispatch(fetchAllFAQs());
   }, [dispatch]);
- 
+
   useEffect(() => {
     dispatch(fetchCareerOpportunities());
   }, [dispatch]);
- 
+
   useEffect(() => {
     console.log("Opportunities:", opportunities);
     console.log("Error:", error);
@@ -156,7 +169,7 @@ export default function CourseDetailsSix() {
       );
     }
   }, [opportunities, error, selectedCourse]);
- 
+
   useEffect(() => {
     console.log("FAQ:", faq);
     if (selectedCourse && faq) {
@@ -167,7 +180,7 @@ export default function CourseDetailsSix() {
       setFilteredFAQ(filteredFAQ);
     }
   }, [faq, selectedCourse]);
- 
+
   const calculateDiscountedPrice = (price) => {
     if (price) {
       const discount = price * 0.1; // 10% discount
@@ -175,17 +188,129 @@ export default function CourseDetailsSix() {
       setDiscountedPrice(discountedPrice);
     }
   };
- 
+
+  const renderTabs = () => {
+    if (isMobileView) {
+      return (
+        <>
+          <section className="pt-30 layout-pb-md">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
+                    {menuItems.map((elm) => (
+                      <div key={elm.id} className="mb-2">
+                        {" "}
+                        {/* Add a margin bottom */}
+                        <button
+                          onClick={() => setActiveTab(elm.id)}
+                          className="tabs__button js-tabs-button js-update-pin-scene"
+                          style={{
+                            textDecoration:
+                              activeTab === elm.id ? "underline" : "none",
+                            textDecorationColor:
+                              activeTab === elm.id ? "#f2775e" : "initial",
+                            textDecorationThickness:
+                              activeTab === elm.id ? "3px" : "initial",
+                          }}
+                          type="button"
+                        >
+                          {elm.text}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="pt-30 layout-pb-md">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
+                    {renderTabContent(activeTab)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </>
+      );
+    } else {
+      return (
+        <section className="pt-30 layout-pb-md">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
+                  <div className="tabs -active-purple-2 js-tabs pt-0">
+                    <div className="tabs__controls d-flex js-tabs-controls">
+                      {menuItems.map((elm, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setActiveTab(elm.id)}
+                          className={`tabs__button js-tabs-button js-update-pin-scene ${
+                            i !== 0 ? "ml-30" : ""
+                          } ${activeTab === elm.id ? "is-active" : ""} `}
+                          type="button"
+                        >
+                          {elm.text}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="tabs__content   js-tabs-content">
+                      {renderTabContent(activeTab)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+  };
+
+  const renderTabContent = (tabId) => {
+    switch (tabId) {
+      case 1:
+        return (
+          <Overview
+            objective={pageItem && pageItem.objective}
+            opportunities={filteredOpportunities}
+          />
+        );
+      case 2:
+        return <CourseContent filteredModules={filteredModules} />;
+      case 3:
+        return pageItem && <Instractor instructor={pageItem.instructor} />;
+      case 4:
+        return (
+          pageItem && <SoftwareTools softwareTools={pageItem.tool_software} />
+        );
+      case 5:
+        return <FAQComponent faq={filteredFAQ} />;
+      case 6:
+        return <Reviews />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
-      <section className="page-header -type-5 bg-dark-1">
+      <section
+        className="page-header -type-5 bg-dark-1"
+        style={{ fontFamily: "Serif" }}
+      >
         <div className="page-header__bg">
           <div
             className="bg-image js-lazy"
             data-bg="img/event-single/bg.png"
           ></div>
         </div>
- 
+
         <div className="container">
           <div className="page-header__content pt-80 pb-90">
             <div className="row y-gap-30 justify-between">
@@ -207,7 +332,7 @@ export default function CourseDetailsSix() {
                     </div>
                   </div> */}
                 </div>
- 
+
                 {pageItem && (
                   <div>
                     <h1 className="text-30 lh-14 text-white pr-60 lg:pr-0">
@@ -215,13 +340,13 @@ export default function CourseDetailsSix() {
                     </h1>
                   </div>
                 )}
- 
+
                 {pageItem && (
                   <p className="text-white mt-20">
                     {pageItem.short_description}
                   </p>
                 )}
- 
+
                 <div className="d-flex x-gap-30 y-gap-10 items-center flex-wrap pt-20">
                   <div className="d-flex x-gap-5 items-center">
                     <div className="text-14 lh-1 text-yellow-1 mr-10">5 </div>
@@ -233,7 +358,7 @@ export default function CourseDetailsSix() {
                       <i className="fa fa-star"></i>
                     </div>
                   </div>
- 
+
                   {/* <div className="d-flex items-center text-dark-3">
                     <div className="icon icon-person-3 text-13"></div>
                     <div className="text-14 ml-8">
@@ -246,7 +371,7 @@ export default function CourseDetailsSix() {
                     <div className="text-14 ml-8">Last updated 11/2021</div>
                   </div> */}
                 </div>
- 
+
                 <div className="d-flex items-center pt-20">
                   {selectedCourse &&
                     selectedCourse.instructor &&
@@ -274,7 +399,7 @@ export default function CourseDetailsSix() {
                       <button className="ml-2">+</button>
                     )}
                 </div>
- 
+
                 <div className="mt-30">
                   <div className="d-flex justify-between py-8 border-bottom-light-2">
                     <div className="d-flex items-center text-white">
@@ -305,7 +430,7 @@ export default function CourseDetailsSix() {
                       </div>
                     )}
                   </div>
- 
+
                   <div className="d-flex justify-between py-8 border-bottom-light-2">
                     <div className="d-flex items-center text-white">
                       <div className="icon-bar-chart-2"></div>
@@ -317,7 +442,7 @@ export default function CourseDetailsSix() {
                       </div>
                     )}
                   </div>
- 
+
                   <div className="d-flex justify-between py-8 border-bottom-light-2">
                     <div className="d-flex items-center text-white">
                       <div className="icon-translate"></div>
@@ -349,7 +474,7 @@ export default function CourseDetailsSix() {
                   </div>
                 </div>
               </div>
- 
+
               <div className="col-xl-5 col-lg-6">
                 <div className="relative">
                   {selectedCourse &&
@@ -362,20 +487,20 @@ export default function CourseDetailsSix() {
                         className="w-1/1"
                       />
                     ))}
- 
+
                   <div className="absolute-full-center d-flex justify-center items-center">
                     <div className="d-flex justify-center items-center size-60 js-gallery"></div>
                   </div>
                 </div>
- 
+
                 <div className="mt-30">
                   {pageItem && (
                     <div className="d-flex justify-between items-center">
                       <div className="text-24 lh-1 text-white fw-500">
-                        ${pageItem.cost}
+                        ₹{Math.round(pageItem.cost * 0.9)}
                       </div>
-                      <div className="lh-1 line-through text-white">
-                        ${Math.round(pageItem.cost * 0.9)} {/* 10% discount */}
+                      <div className="lh-1 text-20 line-through text-white">
+                        ₹{pageItem.cost} {/* 10% discount */}
                       </div>
                     </div>
                   )}
@@ -395,7 +520,10 @@ export default function CourseDetailsSix() {
                     </div> */}
                     <div className="col-sm-6">
                       {/* Buy Now button */}
-                      <Link href="/applyCourse" className="button -md -outline-green-1 text-green-1 w-1/1">
+                      <Link
+                        href="/applyCourse"
+                        className="button -md -outline-green-1 text-green-1 w-1/1"
+                      >
                         Apply Now
                       </Link>
                     </div>
@@ -406,91 +534,9 @@ export default function CourseDetailsSix() {
           </div>
         </div>
       </section>
- 
-      <section className="pt-30 layout-pb-md">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
-                <div className="tabs -active-purple-2 js-tabs pt-0">
-                  <div className="tabs__controls d-flex js-tabs-controls">
-                    {menuItems.map((elm, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setActiveTab(elm.id)}
-                        className={`tabs__button js-tabs-button js-update-pin-scene ${
-                          i != 0 ? "ml-30" : ""
-                        } ${activeTab == elm.id ? "is-active" : ""} `}
-                        type="button"
-                      >
-                        {elm.text}
-                      </button>
-                    ))}
-                  </div>
- 
-                  <div className="tabs__content   js-tabs-content">
-                    <div
-                      className={`tabs__pane -tab-item-1 ${
-                        activeTab == 1 ? "is-active" : ""
-                      } `}
-                    >
-                      <Overview
-                        objective={pageItem && pageItem.objective}
-                        opportunities={filteredOpportunities}
-                      />
-                    </div>
- 
-                    <div
-                      className={`tabs__pane -tab-item-2 ${
-                        activeTab == 2 ? "is-active" : ""
-                      } `}
-                    >
-                      <CourseContent filteredModules={filteredModules} />
-                    </div>
- 
-                    <div
-                      className={`tabs__pane -tab-item-3 ${
-                        activeTab == 3 ? "is-active" : ""
-                      } `}
-                    >
-                      {/* Pass instructor props to the Instructor component */}
-                      {pageItem && (
-                        <Instractor instructor={pageItem.instructor} />
-                      )}
-                    </div>
-                    <div
-                      className={`tabs__pane -tab-item-4 ${
-                        activeTab == 4 ? "is-active" : ""
-                      } `}
-                    >
-                      {pageItem && (
-                        <SoftwareTools softwareTools={pageItem.tool_software} />
-                      )}
-                    </div>
- 
-                    <div
-                      className={`tabs__pane -tab-item-5 ${
-                        activeTab === 5 ? "is-active" : ""
-                      } `}
-                    >
-                      <FAQComponent faq={filteredFAQ} />
-                    </div>
- 
-                    <div
-                      className={`tabs__pane -tab-item-5 ${
-                        activeTab == 6 ? "is-active" : ""
-                      } `}
-                    >
-                      <Reviews />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
- 
+
+      {renderTabs()}
+
       <ModalVideoComponent
         videoId={"LlCwHnp3kL4"}
         // isOpen={isOpen}

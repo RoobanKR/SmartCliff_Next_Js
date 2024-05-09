@@ -18,9 +18,12 @@ export default function ProgramFees() {
     (programFees) =>
       programFees.degree_program && programFees.degree_program._id === id
   );
-  
+
   return (
-    <section className="layout-pt-md layout-pb-lg">
+    <section
+      className="layout-pt-sm layout-pb-sm"
+      style={{ fontFamily: "Serif" }}
+    >
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-xl-6 col-lg-7">

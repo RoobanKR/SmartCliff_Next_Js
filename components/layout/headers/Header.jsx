@@ -3,7 +3,6 @@ import React from "react";
 // import { HeaderExplore } from "../component/header-explore";
 
 import SearchToggle from "../component/SearchToggle";
-import CartToggle from "../component/CartToggle";
 import Menu from "../component/Menu";
 import Link from "next/link";
 import Image from "next/image";
@@ -54,11 +53,6 @@ export default function Header() {
                   <SearchToggle />
                   {/* search toggle end */}
 
-                  {/* cart toggle start */}
-                  <CartToggle
-                    parentClassess={"relative ml-30 xl:ml-20"}
-                    allClasses={"d-flex items-center text-white"}
-                  />
                   {/* cart toggle end */}
 
                   <div className="d-none xl:d-block ml-20">

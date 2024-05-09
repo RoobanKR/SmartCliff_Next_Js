@@ -22,6 +22,7 @@ export default function QualificationLearningComponent() {
         alignItems: "center",
         textAlign: "center",
         paddingTop: "50px",
+        fontFamily: "serif",
       }}
     >
       {loading && <div>Loading...</div>}
@@ -62,7 +63,8 @@ export default function QualificationLearningComponent() {
               margin: "0 auto",
             }}
           >
-            <h3>Learning</h3><br></br>
+            <h3>Learning</h3>
+            <br></br>
             <p>{item.learning_description}</p>
           </div>
         </div>

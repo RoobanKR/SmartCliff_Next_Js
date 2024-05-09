@@ -1,6 +1,7 @@
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
- 
+
 const initialState = {
   status: "idle",
   error: null,
@@ -8,13 +9,13 @@ const initialState = {
   highlights: [],
   highlight: null,
 };
- 
+
 export const createHighlight = createAsyncThunk(
   "highlight/createHighlight",
   async (highlightData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5353/create/highlight",
+        `${getAPIURL()}/create/highlight`,
         highlightData
       );
       return response.data;
@@ -23,57 +24,62 @@ export const createHighlight = createAsyncThunk(
     }
   }
 );
- 
+
 export const fetchAllHighlights = createAsyncThunk(
-    "highlight/fetchAll",
-    async (_, { rejectWithValue }) => {
-      try {
-        const response = await axios.get("http://localhost:5353/getAll/highlight");
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data);
-      }
+  "highlight/fetchAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${getAPIURL()}/getAll/highlight`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
-  );
- 
- 
- 
-  export const getHighlightById = createAsyncThunk(
-    "highlight/fetchById",
-    async (highlightId, { rejectWithValue }) => {
-      try {
-        const response = await axios.get(`http://localhost:5353/getById/highlight/${highlightId}`);
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data);
-      }
+  }
+);
+
+export const getHighlightById = createAsyncThunk(
+  "highlight/fetchById",
+  async (highlightId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${getAPIURL()}/getById/highlight/${highlightId}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
-  );
- 
-  export const updateHighlight = createAsyncThunk(
-    "highlight/update",
-    async ({ highlightId, data }, { rejectWithValue }) => {
-      try {
-        const response = await axios.put(`http://localhost:5353/update/highlight/${highlightId}`, data);
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data);
-      }
+  }
+);
+
+export const updateHighlight = createAsyncThunk(
+  "highlight/update",
+  async ({ highlightId, data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${getAPIURL()}/update/highlight/${highlightId}`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
-  );
- 
-  export const deleteHighlight = createAsyncThunk(
-    "highlight/delete",
-    async (highlightId, { rejectWithValue }) => {
-      try {
-        const response = await axios.delete(`http://localhost:5353/delete/highlight/${highlightId}`);
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data);
-      }
+  }
+);
+
+export const deleteHighlight = createAsyncThunk(
+  "highlight/delete",
+  async (highlightId, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `${getAPIURL()}/delete/highlight/${highlightId}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
-  );
- 
+  }
+);
+
 const highlightsSlice = createSlice({
   name: "highlight",
   initialState,
@@ -102,7 +108,9 @@ const highlightsSlice = createSlice({
       })
       .addCase(fetchAllHighlights.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ? action.payload.message : "Something went wrong";
+        state.error = action.payload
+          ? action.payload.message
+          : "Something went wrong";
       })
       .addCase(getHighlightById.pending, (state) => {
         state.loading = true;
@@ -115,7 +123,9 @@ const highlightsSlice = createSlice({
       })
       .addCase(getHighlightById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ? action.payload.message : "Something went wrong";
+        state.error = action.payload
+          ? action.payload.message
+          : "Something went wrong";
       })
       .addCase(updateHighlight.pending, (state) => {
         state.loading = true;
@@ -128,7 +138,9 @@ const highlightsSlice = createSlice({
       })
       .addCase(updateHighlight.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ? action.payload.message : "Something went wrong";
+        state.error = action.payload
+          ? action.payload.message
+          : "Something went wrong";
       })
       .addCase(deleteHighlight.pending, (state) => {
         state.loading = true;
@@ -141,9 +153,11 @@ const highlightsSlice = createSlice({
       })
       .addCase(deleteHighlight.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ? action.payload.message : "Something went wrong";
+        state.error = action.payload
+          ? action.payload.message
+          : "Something went wrong";
       });
   },
 });
- 
+
 export default highlightsSlice.reducer;

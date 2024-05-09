@@ -5,8 +5,11 @@ import {
   selectServices,
 } from "@/redux/slices/services/services/Services";
 import { useParams } from "next/navigation";
-import SwiperCore, { Pagination } from "swiper";
+import { Autoplay, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
 import "swiper/swiper-bundle.min.css";
 
 SwiperCore.use([Pagination]);
@@ -25,7 +28,10 @@ export default function ServiceOverview1() {
   const swiperRef = useRef(null);
 
   return (
-    <section className="layout-pt-md layout-pb-sm bg-beige-1">
+    <section
+      className="layout-pt-sm layout-pb-sm bg-beige-1"
+      style={{ fontFamily: "Serif" }}
+    >
       {selectedService && (
         <div className="container">
           <div className="row y-gap-30 justify-between items-center">
@@ -35,7 +41,7 @@ export default function ServiceOverview1() {
                   className="about-content__title customSized"
                   data-aos="fade-up"
                 >
-                  <span>{selectedService.title}</span>
+                  <span className="text-purple-1">{selectedService.title}</span>
                 </h2>
                 <p className="about-content__text" data-aos="fade-up">
                   {selectedService.description}
@@ -49,16 +55,31 @@ export default function ServiceOverview1() {
             >
               <div className="about-image">
                 <Swiper
-                  slidesPerView={1}
+                  modules={[Navigation, Pagination,Autoplay]}
+                  navigation={{
+                    nextEl: ".swiper-next",
+                    prevEl: ".swiper-prev",
+                  }}
+                  autoplay={{ delay: 3000 }} // 3 seconds delay between slides
                   pagination={{ clickable: true }}
-                  ref={swiperRef}
+                  slidesPerView={1}
+                  spaceBetween={0}
+                  speed={1200}
                 >
                   {selectedService.videos?.map((video, index) => (
                     <SwiperSlide key={index}>
-                      <video controls>
-                        <source src={video} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
+                      <div className="swiper-slide-content">
+                        <button>
+                          {/* <i className="icon-arrow-left text-24"></i> */}
+                        </button>
+                        <video controls autoPlay>
+                          <source src={video} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                        <button>
+                          {/* <i className="icon-arrow-right text-24"></i> */}
+                        </button>
+                      </div>
                     </SwiperSlide>
                   ))}
                 </Swiper>
