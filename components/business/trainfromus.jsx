@@ -5,7 +5,8 @@ import Table from "./Table";
 import { coursesData } from "@/data/courses";
 import Advantage from "./Advantage";
 import TrainFromUs from "./TrainfromusAddForm";
-import Partnerships from "./TrustedComapnies";
+import KeyElements from "./KeyElements";
+import EngagementGovernance from "./EngagementGovernance";
 
 const Trainfromus = ({ path, id }) => {
   const [pageItem, setPageItem] = useState(coursesData[0]);
@@ -21,12 +22,12 @@ const Trainfromus = ({ path, id }) => {
           <div className="row y-gap-50">
             <div className="col">
               <TrainFromUs />
-              <div style={{ overflowX: "auto" }}>
+              {/* <div style={{ overflowX: "auto" }}>
                 <Table />
-              </div>
-              <br></br>
-              <Advantage />
-              <Partnerships />
+              </div> */}
+              {/* <Advantage /> */}
+              <KeyElements />
+              <EngagementGovernance />
             </div>
           </div>
         </div>

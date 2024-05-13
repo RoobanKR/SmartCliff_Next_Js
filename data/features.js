@@ -12,6 +12,32 @@ export const featureOne = [
     id: 3,
     title: "Money-back guarantee",
   },
+  {
+    id: 4,
+    title: "Hand-picked authors",
+  },
+  {
+    id: 5,
+    title: "Easy to follow curriculum",
+  },
+
+  {
+    id: 6,
+    title: "Money-back guarantee",
+  },
+  {
+    id: 7,
+    title: "Hand-picked authors",
+  },
+  {
+    id: 8,
+    title: "Easy to follow curriculum",
+  },
+
+  {
+    id: 9,
+    title: "Money-back guarantee",
+  },
 ];
 
 export const featureTwo = [

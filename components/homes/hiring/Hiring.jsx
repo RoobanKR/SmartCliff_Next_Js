@@ -9,16 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
 import PaginationTwo from "@/components/common/PaginationTwo";
 
-export default function EventsTwo() {
+export default function Hiring() {
   const [pageItems, setPageItems] = useState([]);
   const [ddActive, setDdActive] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState("All Categories");
   const [selectedStatus, setSelectedStatus] = useState("current");
   const [selectedTag, setSelectedTag] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [selectedStartDate, setSelectedStartDate] = useState("");
 
-  const [searchCompanyName, setSearchCompanyName] = useState("");
   const [searchRole, setSearchRole] = useState("");
+  const [showDateDropdown, setShowDateDropdown] = useState(false);
 
   const dispatch = useDispatch();
   const { allHiring } = useSelector((state) => state.hiring);
@@ -26,21 +26,16 @@ export default function EventsTwo() {
     new Set(allHiring.map((hiring) => hiring.status))
   );
 
-  const [dateSearch, setDateSearch] = useState("");
 
   // Filter function based on date
-  const filteredHiring = allHiring.filter((item) => {
-    if (dateSearch) {
-      return item.start_date <= dateSearch && item.end_date >= dateSearch;
-    } else {
-      return true; // Return all items if no date is selected
-    }
-  });
 
   const uniqueStatuses = [
     "All Statuses",
     ...new Set(allHiring.map((hiring) => hiring.status)),
   ];
+  const uniqueStartDates = ["All Dates", ...Array.from(
+    new Set(allHiring.map((hiring) => format(new Date(hiring.start_date), "d MMMM, yyyy")))
+  )];
 
   useEffect(() => {
     dispatch(getAllHiring());
@@ -58,14 +53,13 @@ export default function EventsTwo() {
     const statusMatch =
       selectedStatus === "All Statuses" || post.status === selectedStatus;
     const tagMatch = !selectedTag || post.eligibility.includes(selectedTag);
-    const companyNameMatch =
-      searchCompanyName === "" ||
-      post.company_name.toLowerCase().includes(searchCompanyName.toLowerCase());
     const roleMatch =
       searchRole === "" ||
       post.role.toLowerCase().includes(searchRole.toLowerCase());
+      const startDateMatch = selectedStartDate === "All Dates" || selectedStartDate === "" || 
+      format(new Date(post.start_date), "d MMMM, yyyy") === selectedStartDate;
 
-    return statusMatch && tagMatch && companyNameMatch && roleMatch;
+    return statusMatch && tagMatch  && roleMatch && startDateMatch;
   });
   const pageCapacity = 2;
 
@@ -109,24 +103,7 @@ export default function EventsTwo() {
                     {/* <h5 className="sidebar__title">Find Event</h5> */}
 
                     <div className="sidebar-content -event">
-                      <div className="sidebar-event">
-                        <input
-                          value={searchCompanyName}
-                          onChange={(e) => setSearchCompanyName(e.target.value)}
-                          placeholder={"Search by company_name"}
-                          style={{
-                            border: "none",
-                            outline: "none",
-                            backgroundColor: "#fff",
-                            maxWidth: "80%",
-                          }}
-                          className="sidebar-event__title text-14 lh-1"
-                        />
-
-                        <div className="sidebar-event__icon">
-                          <div className="icon icon-search"></div>
-                        </div>
-                      </div>
+                      
                       <div className="sidebar-event">
                         <select
                           value={searchRole}
@@ -159,23 +136,66 @@ export default function EventsTwo() {
                           <div className="icon icon-search"></div>
                         </div>
                       </div>
+          <div
+            className="sidebar-event"
+            onClick={() => setShowDateDropdown(!showDateDropdown)}
+          >
+            <input
+              value={selectedStartDate}
+              readOnly
+              placeholder="Search By start date"
+              className="sidebar-event__title text-14 lh-1"
+              style={{
+                border: "none",
+                outline: "none",
+                backgroundColor: "#fff",
+                width: "100%",
+                maxWidth: "80%",
+                padding: "0px 12px",
+                paddingRight: "0",
+                WebkitAppearance: "none",
+                MozAppearance: "none",
+                appearance: "none",
+              }}
+            />
+            <div className="sidebar-event__icon">
+              <div className="icon icon-calendar-2"></div>
+            </div>
+          </div>
 
-                      <div>
-                        {/* Date input for selecting the date */}
-                        <label>Date Search:</label>
-                        <input
-                          type="date"
-                          value={dateSearch}
-                          onChange={(e) => setDateSearch(e.target.value)}
-                        />
+          {showDateDropdown && (
+            <div
+            style={{
+              border: "none",
+              outline: "none",
+              backgroundColor: "#fff",
+              width: "100%",
+              maxWidth: "80%",
+              padding: "0px 12px",
+              paddingRight: "0",
+              WebkitAppearance: "none",
+              MozAppearance: "none",
+              appearance: "none",
+            }}
+            >
+              {uniqueStartDates.map((date, i) => (
+                <div
+                  key={i}
+                  onClick={() => {
+                    setSelectedStartDate(date);
+                    setShowDateDropdown(false);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  {date}
+                </div>
+              ))}
+            </div>
+          )}
+        {/* </div>
+      </div> */}
 
-                        {/* Display filtered date */}
-                        {filteredHiring.map((item) => (
-                          <div key={item.hiring_id}>
-                            {item.start_date} - {item.end_date}
-                          </div>
-                        ))}
-                      </div>
+
                     </div>
                   </div>
 

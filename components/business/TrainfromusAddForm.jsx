@@ -112,7 +112,7 @@ export default function TrainFromUsAddForm() {
   }, [dispatch]);
 
   return (
-    <div className="dashboard__content bg-light-4">
+    <div className="dashboard__content bg-light-4">duration_type
       <div className="row y-gap-60">
         <div className="col-12">
           <div className="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
@@ -316,15 +316,15 @@ export default function TrainFromUsAddForm() {
                         </div>
                         <div>
                           <label
-                            htmlFor="durationUnit"
+                            htmlFor="duration_type"
                             className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                           >
                             Choose Type
                           </label>
                           <Field
                             as="select"
-                            id="durationUnit"
-                            name="durationUnit"
+                            id="duration_type"
+                            name="duration_type"
                             className="mr-2"
                             style={{
                               WebkitAppearance: "none",

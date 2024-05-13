@@ -10,7 +10,7 @@ import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "next/navigation";
 import { fetchExecutionOverviews, fetchManagedCampus } from "@/redux/slices/services/managedCampus/managedCampus";
 SwiperCore.use([Autoplay]);
- 
+
 export default function TabComponent({ backgroundColor, serviceId }) {
   const [activeTab, setActiveTab] = useState(0);
   const [showSlider, setShowSlider] = useState(false);
@@ -19,27 +19,27 @@ export default function TabComponent({ backgroundColor, serviceId }) {
   const dispatch = useDispatch();
   const managedCampus = useSelector((state) => state.managedCampus.managedCampus);
   const executionOverviews = useSelector((state) => state.managedCampus.executionOverviews);
- 
+
   const { id } = useParams();
- 
+
   useEffect(() => {
     setShowSlider(true);
   }, []);
- 
+
   useEffect(() => {
     setShowSlider(true);
     dispatch(fetchManagedCampus(id));
     dispatch(fetchExecutionOverviews());
   }, [dispatch, id]);
- 
+
   const handleTabClick = (index) => {
     setActiveTab(index);
   };
- 
+
   const handleYearFilter = (year) => {
     setSelectedYear(year);
   };
- 
+
   const jumpAnimation = {
     animationName: {
       "0%": { transform: "translateY(0)" },
@@ -49,7 +49,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
     animationDuration: "1s",
     animationIterationCount: "infinite",
   };
- 
+
   const uniqueYears = new Set();
   if (Array.isArray(executionOverviews)) {
     executionOverviews.forEach((overview) => {
@@ -58,8 +58,8 @@ export default function TabComponent({ backgroundColor, serviceId }) {
   } else {
     console.error("executionOverviews is not an array");
   }
- 
- 
+  
+
   return (
     <section className="pt-30 layout-pb-md" style={{ fontFamily: "serif" }}>
       <div className="container">
@@ -114,7 +114,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                                   </div>
                                 </div>
                               </div>
- 
+
                               <Swiper
                                 modules={[Navigation, Pagination, Autoplay]}
                                 autoplay={{ delay: 3000 }} // 3 seconds delay for autoplay
@@ -156,7 +156,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                             </div>
                           </section>
                         )}
- 
+
                         <section
                           className={`layout-pt-sm layout-pb-sm ${
                             backgroundColor ? backgroundColor : ""
@@ -173,7 +173,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                                 </div>
                               </div>
                             </div>
- 
+
                             <div className="row y-gap-30 pt-50">
                               {showSlider && (
                                 <Swiper
@@ -233,7 +233,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                             </div>
                           </div>
                         </section>
- 
+
                         <section className="layout-pt-sm layout-pb-sm bg-light-4">
                           <div className="container">
                             <div className="row y-gap-20 justify-between items-center">
@@ -310,7 +310,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                                     ))}
                                   </div>
                                   <br />
- 
+
                                   <Swiper
                                     className="overflow-visible"
                                     // {...setting}
@@ -356,7 +356,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                                                 <div className="text-17 lh-15 text-white fw-500">
                                                   {elm.year}
                                                 </div>
- 
+
                                                 {/* <div className="lh-1 text-white fw-500">
                               {elm.date
                                 .split(" ")[1]
@@ -435,4 +435,3 @@ export default function TabComponent({ backgroundColor, serviceId }) {
     </section>
   );
 }
- 

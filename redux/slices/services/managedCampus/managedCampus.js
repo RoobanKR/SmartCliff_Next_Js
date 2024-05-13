@@ -1,22 +1,21 @@
 import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
- 
+
 export const fetchManagedCampus = createAsyncThunk(
   "managedCampus/fetchManagedCampus",
-  async (id, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const response = await axios.get(`${getAPIURL()}/getAll/managed_campus`);
-      const filteredCampus = response.data.getAllManagedCampus.filter(
-        (campus) => campus.service._id === id
+      const response = await axios.get(
+        "http://localhost:5353/getAll/managed_campus"
       );
-      return filteredCampus;
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
- 
+
 // Async thunk for fetching execution overviews
 export const fetchExecutionOverviews = createAsyncThunk(
   "managedCampus/fetchExecutionOverviews",
@@ -31,7 +30,7 @@ export const fetchExecutionOverviews = createAsyncThunk(
     }
   }
 );
- 
+
 // Initial state
 const initialState = {
   managedCampus: [],
@@ -39,7 +38,7 @@ const initialState = {
   status: "idle",
   error: null,
 };
- 
+
 // Slice
 const managedCampusSlice = createSlice({
   name: "managedCampus",
@@ -84,9 +83,8 @@ const managedCampusSlice = createSlice({
       });
   },
 });
- 
+
 export const { setActiveTab, setShowSlider, setSelectedYear, setHoveredCard } =
   managedCampusSlice.actions;
- 
+
 export default managedCampusSlice.reducer;
- 

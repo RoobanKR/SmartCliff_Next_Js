@@ -7,6 +7,7 @@ import {
   fetchCategories,
   selectCategories,
 } from "@/redux/slices/category/category";
+import { fetchManagedCampus } from "@/redux/slices/services/managedCampus/managedCampus";
 
 export default function InstituteAddForm() {
   const formData = useSelector((state) => state.hirefromus.formData);
@@ -15,6 +16,9 @@ export default function InstituteAddForm() {
   const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const categories = useSelector(selectCategories);
+  const managedCampus = useSelector(
+    (state) => state.managedCampus.managedCampus
+  );
 
   const initialValues = formData;
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -109,6 +113,12 @@ export default function InstituteAddForm() {
     dispatch(fetchCourses()).then(() => setLoading(false));
     dispatch(fetchCategories());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchManagedCampus());
+  }, [dispatch]);
+
+  console.log("managedCampusmanagedCampus", managedCampus);
 
   return (
     <div className="dashboard__content bg-light-4">
@@ -379,6 +389,37 @@ export default function InstituteAddForm() {
                         />
                       </div>
                     ) : null}
+
+                    <div className="col-md-6 mb-3">
+                      <label
+                        htmlFor="category"
+                        className="text-16 lh-1 fw-500 text-dark-1 mb-10"
+                      >
+                        Services
+                      </label>
+                      <select
+                        id="services"
+                        required
+                        name="services"
+                        disabled={loading}
+                        onChange={handleCategoryChange}
+                      >
+                        <option value="">Select services</option>
+                        {managedCampus &&
+                          managedCampus.getAllManagedCampus &&
+                          managedCampus.getAllManagedCampus.map((campus) => (
+                            <option key={campus._id} value={campus._id}>
+                              {campus.sub_title}
+                            </option>
+                          ))}
+                      </select>
+                      <ErrorMessage
+                        name="services"
+                        component="div"
+                        className="error-message"
+                        style={{ color: "red" }}
+                      />
+                    </div>
                     <div className="col-md-6 mb-3">
                       <label
                         htmlFor="category"
@@ -454,13 +495,13 @@ export default function InstituteAddForm() {
                         htmlFor="enquiry"
                         className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                       >
-                        Hiring Enquiry
+                        Institute Enquiry
                       </label>
                       <Field
                         as="textarea"
                         id="enquiry"
                         name="enquiry"
-                        placeholder="Hiring Enquiry..."
+                        placeholder="Institute Enquiry..."
                         rows="4"
                       />
                       <ErrorMessage

@@ -5,10 +5,9 @@ import HeaderSeven from "@/components/layout/headers/HeaderSeven";
 import FooterTwo from "@/components/layout/footers/Footer";
 import Banner from "@/components/common/Banner";
 import jsonData from "../../../public/assets/json/Banner.json";
-import Partnerships from "@/components/business/TrustedComapnies";
-import InstitutServices from "@/components/business/InstituteService";
 import InstituteAddForm from "@/components/business/InstituteAddForm";
-import Instituteabout1 from "@/components/business/Instituteabout1";
+import KeyElements from "@/components/business/KeyElements";
+import InstituteTestimonial from "@/components/business/InstituteTestimonial";
 
 export default function page() {
   return (
@@ -23,9 +22,10 @@ export default function page() {
       </div>
       <div className="main-content overflow-hidden   ">
         <InstituteAddForm />
-        <Instituteabout1 />
-        <InstitutServices />
-        <Partnerships />
+        <KeyElements />
+        <div className="content-wrapper  js-content-wrapper overflow-hidden">
+          <InstituteTestimonial />
+        </div>
         <FooterTwo />
       </div>
     </>

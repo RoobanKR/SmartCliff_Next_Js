@@ -1,5 +1,5 @@
 import Preloader from "@/components/common/Preloader";
-import EventsTwo from "@/components/homes/event/Event";
+import Hiring from "@/components/homes/hiring/Hiring";
 import FooterTwo from "@/components/layout/footers/Footer";
 import HeaderSeven from "@/components/layout/headers/HeaderSeven";
 import React from "react";
@@ -12,7 +12,7 @@ export default function page() {
       <HeaderSeven />
       <div className="content-wrapper js-content-wrapper overflow-hidden">
         <br></br> <br></br>
-        <EventsTwo />
+        <Hiring />
         <FooterTwo />
       </div>
     </div>

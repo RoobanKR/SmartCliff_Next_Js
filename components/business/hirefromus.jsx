@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import { coursesData } from "@/data/courses";
-import Advantage from "./Advantage";
 import HirefromusAddForm from "./HirefromusAddForm";
-import Partnerships from "./TrustedComapnies";
+import KeyElements from "./KeyElements";
+import EngagementGovernance from "./EngagementGovernance";
+import PlacementTestimonial from "./PlacementTestimonial";
 
 const Hirefromus = ({ path, id }) => {
   const [pageItem, setPageItem] = useState(coursesData[0]);
@@ -22,12 +23,14 @@ const Hirefromus = ({ path, id }) => {
             <div className="col">
               <HirefromusAddForm />
               {/* <TrainFromUs /> */}
-              <div style={{ overflowX: "auto" }}>
+              {/* <div style={{ overflowX: "auto" }}>
                 <Table />
+              </div> */}
+              {/* <Advantage /> */}
+              <KeyElements />
+              <div className="content-wrapper  js-content-wrapper overflow-hidden">
+                <PlacementTestimonial />
               </div>
-              <br></br>
-              <Advantage />
-              <Partnerships />
             </div>
           </div>
         </div>
