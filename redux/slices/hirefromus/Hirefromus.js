@@ -36,7 +36,7 @@ const initialState = {
     mobile: "",
     email: "",
     enquiry: "",
-    batch_size: "",
+    count: "",
     course: "",
   },
 };

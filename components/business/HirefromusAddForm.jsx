@@ -52,8 +52,8 @@ export default function HirefromusAddForm() {
     if (!values.enquiry) {
       errors.enquiry = "Enquiry is required";
     }
-    if (!values.batch_size) {
-      errors.batch_size = "batch size is required";
+    if (!values.count) {
+      errors.count = "batch size is required";
     }
     return errors;
   };
@@ -207,7 +207,7 @@ export default function HirefromusAddForm() {
                   </div>
                   <div className="col-md-6 mb-3">
                     <label
-                      htmlFor="batch_size"
+                      htmlFor="count"
                       className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                       required
                     >
@@ -215,8 +215,8 @@ export default function HirefromusAddForm() {
                     </label>
                     <Field
                       as="select"
-                      id="batch_size"
-                      name="batch_size"
+                      id="count"
+                      name="count"
                       required
                     >
                       <option value="">Select Batch Size</option>
@@ -225,7 +225,7 @@ export default function HirefromusAddForm() {
                       <option value="20-30">20-30</option>
                     </Field>
                     <ErrorMessage
-                      name="batch_size"
+                      name="count"
                       component="div"
                       className="error-message"
                       style={{ color: "red" }}
