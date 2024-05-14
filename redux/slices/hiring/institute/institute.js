@@ -5,7 +5,7 @@ export const createInstitute = createAsyncThunk(
   "institute/addForm",
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:5353/create/institute`, {
+      const response = await fetch(`${getAPIURL()}/create/institute`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
