@@ -7,7 +7,7 @@ export const fetchManagedCampus = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get(
-        "http://localhost:5353/getAll/managed_campus"
+        `${getAPIURL()}/getAll/managed_campus`
       );
       return response.data;
     } catch (error) {
