@@ -82,7 +82,7 @@ export default function HirefromusAddForm() {
   useEffect(() => {
     dispatch(fetchCourses()).then(() => setLoading(false));
   }, [dispatch]);
-  console.log("courseskjsx", courses);
+
   return (
     <div className="dashboard__content bg-light-4">
       <div className="row y-gap-60">

@@ -1,12 +1,12 @@
 import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+ 
 export const createTrainFromUs = createAsyncThunk(
   "trainfromus/addForm",
   async (formData, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `${getAPIURL()}/create/train_from_us`,
+        `http://localhost:5353/create/train_from_us`,
         {
           method: "POST",
           headers: {
@@ -25,7 +25,7 @@ export const createTrainFromUs = createAsyncThunk(
     }
   }
 );
-
+ 
 const initialState = {
   status: "idle",
   error: null,
@@ -40,7 +40,7 @@ const initialState = {
     course: "",
   },
 };
-
+ 
 const trainfromusSlice = createSlice({
   name: "trainfromus",
   initialState,
@@ -65,7 +65,7 @@ const trainfromusSlice = createSlice({
       });
   },
 });
-
+ 
 export const { updateFormData } = trainfromusSlice.actions;
-
+ 
 export default trainfromusSlice.reducer;

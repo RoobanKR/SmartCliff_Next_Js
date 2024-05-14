@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { submitForm } from "@/redux/slices/hirefromus/Hirefromus";
 import { fetchCourses } from "@/redux/slices/course/course";
 import {
   fetchCategories,
   selectCategories,
 } from "@/redux/slices/category/category";
+import { createInstitute } from "@/redux/slices/hiring/institute/institute";
 import { fetchManagedCampus } from "@/redux/slices/services/managedCampus/managedCampus";
 
-export default function InstituteAddForm() {
-  const formData = useSelector((state) => state.hirefromus.formData);
+export default function TrainFromUsAddForm() {
+  const formData = useSelector((state) => state.institute.formData);
   const courses = useSelector((state) => state.courses.courses);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -19,11 +19,11 @@ export default function InstituteAddForm() {
   const managedCampus = useSelector(
     (state) => state.managedCampus.managedCampus
   );
-
   const initialValues = formData;
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredCourses, setFilteredCourses] = useState([]);
+  const [selectedService, setSelectedService] = useState("");
 
   const validate = (values) => {
     const errors = {};
@@ -43,10 +43,10 @@ export default function InstituteAddForm() {
       errors.designation = "Invalid designation";
     }
 
-    if (!values.company_name) {
-      errors.company_name = "Company name is required";
-    } else if (!nameRegex.test(values.company_name)) {
-      errors.company_name = "Invalid company name";
+    if (!values.institute_name) {
+      errors.institute_name = "institute name is required";
+    } else if (!nameRegex.test(values.institute_name)) {
+      errors.institute_name = "Invalid institute name";
     }
 
     if (!values.mobile) {
@@ -64,27 +64,27 @@ export default function InstituteAddForm() {
     if (!values.enquiry) {
       errors.enquiry = "Enquiry is required";
     }
-    if (!values.batch_size) {
-      errors.batch_size = "batch size is required";
-    }
     return errors;
   };
 
   const handleSubmit = async (values) => {
-    const selectedCourseName = values.course;
-    const selectedCourse = courses.find(
-      (course) => course.course_name === selectedCourseName
-    );
-    if (selectedCourse) {
-      const formDataWithCourseId = { ...values, course: selectedCourse._id };
-      dispatch(submitForm(formDataWithCourseId)).then(() => {
+    if (selectedCourse && selectedCategory && selectedService) {
+      const formDataWithIds = {
+        ...values,
+        course: selectedCourse,
+        category: selectedCategory,
+        service: selectedService,
+      };
+
+      dispatch(createInstitute(formDataWithIds)).then(() => {
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
         }, 3000);
+        console.log("Form submitted:", formDataWithIds);
       });
     } else {
-      console.error("Selected course not found.");
+      console.error("Selected course, category, or service not found.");
     }
   };
 
@@ -105,6 +105,11 @@ export default function InstituteAddForm() {
     filterCourses(categories.find((cat) => cat._id === categoryId));
   };
 
+  const handleServiceChange = (e) => {
+    const serviceId = e.target.value;
+    setSelectedService(serviceId);
+  };
+
   useEffect(() => {
     filterCourses(categories.find((cat) => cat._id === selectedCategory));
   }, [categories, courses]);
@@ -117,8 +122,6 @@ export default function InstituteAddForm() {
   useEffect(() => {
     dispatch(fetchManagedCampus());
   }, [dispatch]);
-
-  console.log("managedCampusmanagedCampus", managedCampus);
 
   return (
     <div className="dashboard__content bg-light-4">
@@ -183,28 +186,27 @@ export default function InstituteAddForm() {
 
                     <div className="col-md-6 mb-3">
                       <label
-                        htmlFor="company_name"
+                        htmlFor="institute_name"
                         className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                       >
                         Institute Name
                       </label>
                       <Field
                         type="text"
-                        id="company_name"
-                        name="company_name"
-                        placeholder="Company Name"
+                        id="institute_name"
+                        name="institute_name"
+                        placeholder="institute Name"
                       />
                       <ErrorMessage
-                        name="company_name"
+                        name="institute_name"
                         component="div"
                         className="error-message"
                         style={{ color: "red" }}
                       />
                     </div>
-
                     <div className="col-md-6 mb-3">
                       <label
-                        htmlFor="company_name"
+                        htmlFor="no_of_students"
                         className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                       >
                         number of students
@@ -243,7 +245,6 @@ export default function InstituteAddForm() {
                         style={{ color: "red" }}
                       />
                     </div>
-
                     <div className="col-md-6 mb-3">
                       <label
                         htmlFor="target_year"
@@ -311,15 +312,15 @@ export default function InstituteAddForm() {
                         </div>
                         <div>
                           <label
-                            htmlFor="durationUnit"
+                            htmlFor="duration_type"
                             className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                           >
                             Choose Type
                           </label>
                           <Field
                             as="select"
-                            id="durationUnit"
-                            name="durationUnit"
+                            id="duration_type"
+                            name="duration_type"
                             className="mr-2"
                             style={{
                               WebkitAppearance: "none",
@@ -335,61 +336,6 @@ export default function InstituteAddForm() {
                       </div>
                     </div>
 
-                    {values.type === "upskilling" ? (
-                      <div className="col-md-6 mb-3">
-                        <label
-                          htmlFor="count"
-                          className="text-16 lh-1 fw-500 text-dark-1 mb-10"
-                        >
-                          Count
-                        </label>
-                        <Field
-                          type="text"
-                          id="count"
-                          name="count"
-                          placeholder="Enter Count"
-                        />
-                        <ErrorMessage
-                          name="count"
-                          component="div"
-                          className="error-message"
-                          style={{ color: "red" }}
-                        />
-                      </div>
-                    ) : values.type === "fresher" ? (
-                      <div className="col-md-6 mb-3">
-                        <label
-                          htmlFor="batch_size"
-                          className="text-16 lh-1 fw-500 text-dark-1 mb-10"
-                          required
-                        >
-                          Batch Size
-                        </label>
-                        <Field
-                          as="select"
-                          id="batch_size"
-                          name="batch_size"
-                          required
-                          style={{
-                            WebkitAppearance: "none",
-                            MozAppearance: "none",
-                            appearance: "none",
-                          }}
-                        >
-                          <option value="">Select Batch Size</option>
-                          <option value="0-10">0-10</option>
-                          <option value="10-20">10-20</option>
-                          <option value="20-30">20-30</option>
-                        </Field>
-                        <ErrorMessage
-                          name="batch_size"
-                          component="div"
-                          className="error-message"
-                          style={{ color: "red" }}
-                        />
-                      </div>
-                    ) : null}
-
                     <div className="col-md-6 mb-3">
                       <label
                         htmlFor="category"
@@ -402,7 +348,7 @@ export default function InstituteAddForm() {
                         required
                         name="services"
                         disabled={loading}
-                        onChange={handleCategoryChange}
+                        onChange={handleServiceChange}
                       >
                         <option value="">Select services</option>
                         {managedCampus &&
@@ -420,6 +366,7 @@ export default function InstituteAddForm() {
                         style={{ color: "red" }}
                       />
                     </div>
+
                     <div className="col-md-6 mb-3">
                       <label
                         htmlFor="category"
@@ -477,7 +424,7 @@ export default function InstituteAddForm() {
                       >
                         <option value="">Select Course</option>
                         {filteredCourses.map((course) => (
-                          <option key={course._id} value={course.course_name}>
+                          <option key={course._id} value={course._id}>
                             {course.course_name}
                           </option>
                         ))}
@@ -495,13 +442,13 @@ export default function InstituteAddForm() {
                         htmlFor="enquiry"
                         className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                       >
-                        Institute Enquiry
+                        Hiring Enquiry
                       </label>
                       <Field
                         as="textarea"
                         id="enquiry"
                         name="enquiry"
-                        placeholder="Institute Enquiry..."
+                        placeholder="Hiring Enquiry..."
                         rows="4"
                       />
                       <ErrorMessage

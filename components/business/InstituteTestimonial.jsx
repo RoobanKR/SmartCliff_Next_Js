@@ -15,17 +15,14 @@ export default function InstituteTestimonial() {
   const [showSlider, setShowSlider] = useState(false);
   const dispatch = useDispatch();
 
-  // Fetch all testimonials from Redux
   useEffect(() => {
     dispatch(getAllTestimonials());
   }, [dispatch]);
 
-  // Access the Redux state for testimonials
   const allTestimonials = useSelector(
     (state) => state.placementTestimonial.placementTestimonials
   );
 
-  // Filter only testimonials with type 'hirefromus'
   const placementTestimonials = allTestimonials.filter(
     (testimonial) => testimonial.type === "institute"
   );

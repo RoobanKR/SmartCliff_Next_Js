@@ -6,7 +6,7 @@ import {
   fetchCategories,
   selectCategories,
 } from "@/redux/slices/category/category";
-import { createTrainFromUs } from "@/redux/slices/trainFromUs/trainFromUs";
+import { createTrainFromUs } from "@/redux/slices/hiring/trainFromUs/trainFromus";
 
 export default function TrainFromUsAddForm() {
   const formData = useSelector((state) => state.hirefromus.formData);
@@ -70,10 +70,10 @@ export default function TrainFromUsAddForm() {
     if (selectedCourse && selectedCategory) {
       const formDataWithIds = {
         ...values,
-        course: selectedCourse, 
-        category: selectedCategory, 
+        course: selectedCourse,
+        category: selectedCategory,
       };
-  
+
       dispatch(createTrainFromUs(formDataWithIds)).then(() => {
         setShowSuccess(true);
         setTimeout(() => {
@@ -112,13 +112,13 @@ export default function TrainFromUsAddForm() {
   }, [dispatch]);
 
   return (
-    <div className="dashboard__content bg-light-4">duration_type
+    <div className="dashboard__content bg-light-4">
       <div className="row y-gap-60">
         <div className="col-12">
           <div className="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
             <div className="d-flex items-center py-20 px-30 border-bottom-light">
               <h2 className="text-17 lh-1 fw-500">
-                Basic Information for Hiring Enquiry
+                Basic Information for Training Enquiry
               </h2>
             </div>
 
@@ -316,15 +316,15 @@ export default function TrainFromUsAddForm() {
                         </div>
                         <div>
                           <label
-                            htmlFor="duration_type"
+                            htmlFor="durationUnit"
                             className="text-16 lh-1 fw-500 text-dark-1 mb-10"
                           >
                             Choose Type
                           </label>
                           <Field
                             as="select"
-                            id="duration_type"
-                            name="duration_type"
+                            id="durationUnit"
+                            name="durationUnit"
                             className="mr-2"
                             style={{
                               WebkitAppearance: "none",

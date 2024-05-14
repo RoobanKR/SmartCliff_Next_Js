@@ -36,7 +36,9 @@ import hiringReducer from "./slices/hiring/hiring/hiring";
 import managedCampusReducer from "./slices/services/managedCampus/managedCampus";
 import keyElementsReducer from "./slices/bussiness/keyElements/keyElements";
 import placementTestimonialReducer from "./slices/bussiness/placementTestimonial/placementTestimonial";
-import trainfromusReducer from "./slices/trainFromUs/trainFromUs";
+import trainfromusReducer from "./slices/hiring/trainFromUs/trainFromus";
+import instituteReducer from "./slices/hiring/institute/institute";
+import engagedGovernanceReducer from "./slices/hiring/engagedGovernance/engagedGovernance";
 
 export default configureStore({
   reducer: {
@@ -74,10 +76,11 @@ export default configureStore({
     batches: batchesReducer,
     hirefromus: hirefromusReducer,
     trainfromus: trainfromusReducer,
-
     hiring: hiringReducer,
     managedCampus: managedCampusReducer,
     keyElements: keyElementsReducer,
     placementTestimonial: placementTestimonialReducer,
+    institute: instituteReducer,
+    engagedGovernance: engagedGovernanceReducer,
   },
 });
