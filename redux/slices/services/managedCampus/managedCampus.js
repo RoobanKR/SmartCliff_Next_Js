@@ -4,15 +4,13 @@ import axios from "axios";
 
 export const fetchManagedCampus = createAsyncThunk(
   "managedCampus/fetchManagedCampus",
-  async (_, thunkAPI) => {
-    try {
-      const response = await axios.get(
-        `${getAPIURL()}/getAll/managed_campus`
-      );
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
+  async (serviceId) => {
+    const response = await axios.get(
+      `${getAPIURL()}/getAll/managed_campus`
+    );
+    return response.data.getAllManagedCampus.filter(
+      (campus) => campus.service._id === serviceId
+    );
   }
 );
 
@@ -59,18 +57,18 @@ const managedCampusSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchManagedCampus.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchManagedCampus.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.managedCampus = action.payload;
-      })
-      .addCase(fetchManagedCampus.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-      .addCase(fetchExecutionOverviews.pending, (state) => {
+    .addCase(fetchManagedCampus.pending, (state) => {
+      state.status = 'loading';
+    })
+    .addCase(fetchManagedCampus.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.data = action.payload;
+    })
+    .addCase(fetchManagedCampus.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message;
+    })
+        .addCase(fetchExecutionOverviews.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchExecutionOverviews.fulfilled, (state, action) => {

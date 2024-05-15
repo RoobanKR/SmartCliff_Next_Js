@@ -12,14 +12,16 @@ import { fetchExecutionOverviews, fetchManagedCampus } from "@/redux/slices/serv
 SwiperCore.use([Autoplay]);
 
 export default function TabComponent({ backgroundColor, serviceId }) {
+  // State variables initialization
   const [activeTab, setActiveTab] = useState(0);
   const [showSlider, setShowSlider] = useState(false);
   const [selectedYear, setSelectedYear] = useState("");
   const [hoveredCard, setHoveredCard] = useState(null);
-  const dispatch = useDispatch();
-  const managedCampus = useSelector((state) => state.managedCampus.managedCampus);
   const executionOverviews = useSelector((state) => state.managedCampus.executionOverviews);
+  const dispatch = useDispatch();
+  const managedCampus = useSelector((state) => state.managedCampus.data);
 
+  // Fetch the id parameter from the URL
   const { id } = useParams();
 
   useEffect(() => {
@@ -27,10 +29,16 @@ export default function TabComponent({ backgroundColor, serviceId }) {
   }, []);
 
   useEffect(() => {
+    if (id) {
+      dispatch(fetchManagedCampus(id));
+    }
+  }, [id, dispatch]);
+
+  // Effect hook to fetch execution overviews based on the id parameter
+  useEffect(() => {
     setShowSlider(true);
-    dispatch(fetchManagedCampus(id));
     dispatch(fetchExecutionOverviews());
-  }, [dispatch, id]);
+  }, [dispatch]);
 
   const handleTabClick = (index) => {
     setActiveTab(index);
@@ -50,6 +58,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
     animationIterationCount: "infinite",
   };
 
+  // Create a Set to store unique years
   const uniqueYears = new Set();
   if (Array.isArray(executionOverviews)) {
     executionOverviews.forEach((overview) => {
@@ -58,7 +67,6 @@ export default function TabComponent({ backgroundColor, serviceId }) {
   } else {
     console.error("executionOverviews is not an array");
   }
-  
 
   return (
     <section className="pt-30 layout-pb-md" style={{ fontFamily: "serif" }}>
@@ -78,9 +86,10 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                         } ${index === activeTab ? "is-active" : ""}`}
                         type="button"
                         style={{
-                          whiteSpace: "normal",
-                          fontSize: "14px",
-                          padding: "10px",
+                          whiteSpace: "normal", // Allow text to wrap
+                          // wordBreak: "break-word", // Ensure text breaks properly
+                          fontSize: "14px", // Adjust font size for smaller screens
+                          padding: "10px", // Add padding for spacing
                         }}
                       >
                         {campus.sub_title}
@@ -88,6 +97,7 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                     ))}
                 </div>
                 <div className="tabs__content js-tabs-content">
+                  {/* Check if managedCampus is defined before rendering */}
                   {managedCampus &&
                     managedCampus.map((campus, index) => (
                       <div
@@ -97,64 +107,57 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                         }`}
                       >
                         {index === activeTab && (
-                          <section className="layout-pt-sm layout-pb-sm section-bg">
-                            <div className="container">
-                              <div className="row y-gap-20 justify-center text-center">
-                                <div className="col-auto">
-                                  <div className="sectionTitle">
-                                    <h2 className="sectionTitle__title">
-                                      Executive Highlights
-                                    </h2>
-                                    <p className="sectionTitle__text">
-                                      Executive highlights succinctly summarize
-                                      key accomplishments, providing
-                                      stakeholders with a snapshot of
-                                      significant developments and achievements.
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <Swiper
-                                modules={[Navigation, Pagination, Autoplay]}
-                                autoplay={{ delay: 3000 }} // 3 seconds delay for autoplay
-                                slidesPerView={1} // Display one slide
-                                centeredSlides={true} // Center the active slide
-                                spaceBetween={30} // Spacing between slides
-                                navigation={{
-                                  nextEl: ".swiper-next",
-                                  prevEl: ".swiper-prev",
-                                }}
-                                pagination={{ clickable: true }} // Pagination dots
-                                speed={1200} // Animation speed
-                                //  loop={true} // Enable looping for a smooth experience
-                              >
-                                {campus.execution_highlights.map(
-                                  (highlight, index) => (
-                                    <SwiperSlide key={index}>
-                                      <div className="infoCard -type-2 text-center py-40 -infoCard-hover">
-                                        <div className="infoCard__image">
-                                          <Image
-                                            width={50}
-                                            height={50}
-                                            style={{ objectFit: "cover" }}
-                                            src={highlight.image}
-                                            alt="Highlight Image"
-                                          />
-                                        </div>
-                                        <h5 className="infoCard__title text-24 lh-1 mt-25">
-                                          {highlight.stack}
-                                        </h5>
-                                        <p className="infoCard__text mt-5">
-                                          {highlight.count}
-                                        </p>
-                                      </div>
-                                    </SwiperSlide>
-                                  )
-                                )}
-                              </Swiper>
-                            </div>
-                          </section>
+                           <section className="layout-pt-sm layout-pb-sm section-bg">
+                           <div className="container">
+                             <div className="row y-gap-20 justify-center text-center">
+                               <div className="col-auto">
+                                 <div className="sectionTitle">
+                                   <h2 className="sectionTitle__title">Executive Highlights</h2>
+                                   <p className="sectionTitle__text">
+                                     Executive highlights succinctly summarize key accomplishments, providing stakeholders with a snapshot of significant developments and achievements.
+                                   </p>
+                                 </div>
+                               </div>
+                             </div>
+                       
+                             <Swiper
+                               modules={[Navigation, Pagination, Autoplay]}
+                               autoplay={{ delay: 3000 }} // 3 seconds delay for autoplay
+                               slidesPerView={1} // Display one slide
+                               centeredSlides={true} // Center the active slide
+                               spaceBetween={30} // Spacing between slides
+                               navigation={{
+                                 nextEl: ".swiper-next",
+                                 prevEl: ".swiper-prev",
+                               }}
+                               pagination={{ clickable: true }} // Pagination dots
+                               speed={1200} // Animation speed
+                              //  loop={true} // Enable looping for a smooth experience
+                             >
+    {campus.execution_highlights.map(
+                                  (highlight, index) => (                                 <SwiperSlide key={index}>
+                                   <div className="infoCard -type-2 text-center py-40 -infoCard-hover">
+                                     <div className="infoCard__image">
+                                       <Image
+                                         width={50}
+                                         height={50}
+                                         style={{ objectFit: 'cover' }}
+                                         src={highlight.image}
+                                         alt="Highlight Image"
+                                       />
+                                     </div>
+                                     <h5 className="infoCard__title text-24 lh-1 mt-25">
+                                       {highlight.stack}
+                                     </h5>
+                                     <p className="infoCard__text mt-5">
+                                       {highlight.count}
+                                     </p>
+                                   </div>
+                                 </SwiperSlide>
+                               ))}
+                             </Swiper>
+                           </div>
+                         </section>
                         )}
 
                         <section
@@ -177,7 +180,8 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                             <div className="row y-gap-30 pt-50">
                               {showSlider && (
                                 <Swiper
-                                  modules={[Autoplay]}
+                                modules={[Autoplay]}
+
                                   breakpoints={{
                                     450: {
                                       slidesPerView: 1,
