@@ -1,150 +1,172 @@
 "use client";
+import gsap from "gsap";
 import Image from "next/image";
-import { Navigation, Pagination } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from "swiper";
-import "swiper/css";
-import "swiper/css/pagination";
-import { useEffect, useState } from "react";
-
-import React from "react";
-import { featureTwo } from "../../../data/features";
-import { slidesData } from "../../../data/hero";
+import Link from "next/link";
+ 
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 export default function HeroTwo() {
   const router = useRouter();
-  const [showSlider, setShowSlider] = useState(false);
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   useEffect(() => {
-    setShowSlider(true);
+    const parallaxIt = () => {
+      const target = document.querySelectorAll(".js-mouse-move-container");
+ 
+      target.forEach((container) => {
+        const targets = container.querySelectorAll(".js-mouse-move");
+ 
+        targets.forEach((el) => {
+          const movement = el.getAttribute("data-move");
+ 
+          document.addEventListener("mousemove", (e) => {
+            const relX = e.pageX - container.offsetLeft;
+            const relY = e.pageY - container.offsetTop;
+ 
+            gsap.to(el, {
+              x:
+                ((relX - container.offsetWidth / 2) / container.offsetWidth) *
+                Number(movement),
+              y:
+                ((relY - container.offsetHeight / 2) / container.offsetHeight) *
+                Number(movement),
+              duration: 0.2,
+            });
+          });
+        });
+      });
+    };
+ 
+    parallaxIt();
   }, []);
   return (
-    <section className="mainSlider -type-1 js-mainSlider customizedHeroBackground">
-      <div className="swiper-wrapper-two">
-        {showSlider && (
-          <Swiper
-            // {...setting}
-
-            modules={[Navigation, Pagination]}
-            navigation={{
-              nextEl: ".hero-slider-next",
-              prevEl: ".hero-slider-prev",
-            }}
-            spaceBetween={0}
-            slidesPerView={1}
-            breakpoints={{
-              // when window width is >= 576px
-              450: {
-                slidesPerView: 1,
-              },
-              // when window width is >= 768px
-              768: {
-                slidesPerView: 1,
-              },
-              1200: {
-                // when window width is >= 992px
-                slidesPerView: 1,
-              },
-            }}
-            speed={1200}
+    <section className="masthead -type-3 bg-light-6 js-mouse-move-container">
+      <div className="container">
+        <div className="row y-gap-30 items-center justify-center">
+          <div
+            className="col-xl-7 col-lg-11 relative z-5"
+            data-aos="fade-up"
+            data-aos-delay="500"
           >
-            {slidesData.map((item, i) => (
-              <SwiperSlide key={i}>
-                <div className="swiper-slide hightFull">
-                  <div className="mainSlider__bg">
-                    <div
-                      className="bg-image js-lazy customedBg"
-                      style={{ backgroundImage: `url(${item.bgImage})` }}
-                    ></div>
+            <div className="masthead__content pl-32 lg:pl-0">
+              <h1 className="masthead__title">
+                Find Your Preferred
+                <br /> <span className="text-purple-1">Courses</span> & Improve
+                Your Skills
+              </h1>
+ 
+              <p className="masthead__text text-17 text-dark-1 mt-25">
+                Build skills with courses, certificates, and degrees online from
+                <br className="lg:d-none" />
+                world-class universities and companies.
+              </p>
+ 
+              <div className="masthead-search mt-30">
+                <div className="masthead-search__form">
+                  <form onSubmit={handleSubmit}>
+                    <input
+                      required
+                      type="text"
+                      placeholder="What do you want to learn today?"
+                    />
+ 
+                    <button
+                      className="button -purple-1 text-white"
+                      onClick={() => router.push("/courses-list-2")}
+                    >
+                      <i className="icon icon-search"></i>
+                    </button>
+                  </form>
+                </div>
+ 
+                <div className="masthead-search__searches mt-40">
+                  Trending Search:
+                  <Link href={`/courses/${6}`}>Development</Link>,
+                  <Link href="/courses-single-2/3">Business</Link>,
+                  <Link href="/courses-single-6/3">Design</Link>,
+                  <a href="#">Merketing</a>
+                </div>
+              </div>
+            </div>
+          </div>
+ 
+          <div
+            className="col-xl-5 col-lg-7 relative z-2"
+            data-aos="fade-up"
+            data-aos-delay="750"
+          >
+            <div className="masthead-image">
+              <div className="masthead-image__img1">
+                <div className="masthead-image__shape xl:d-none">
+                  <Image
+                    width={800}
+                    height={800}
+                    src="/assets/img/home-4/masthead/shape.svg"
+                    alt="image"
+                  />
+                </div>
+                <Image
+                  width={587}
+                  height={656}
+                  data-move="20"
+                  className="js-mouse-move"
+                  src="/assets/img/home-4/masthead/hummer.png"
+                  alt="image"
+                />
+              </div>
+ 
+              <div className="masthead-image__el1">
+                <div
+                  data-move="40"
+                  className="lg:d-none img-el -w-250 px-20 py-20 d-flex items-center bg-white rounded-8 js-mouse-move"
+                >
+                  <div className="size-50 d-flex justify-center items-center bg-red-2 rounded-full">
+                    <Image
+                      width={24}
+                      height={23}
+                      src="/assets/img/masthead/1.svg"
+                      alt="icon"
+                    />
+                  </div>
+                  <div className="ml-20">
+                    <div className="text-orange-1 text-16 fw-500 lh-1">
+                      3.000 +
+                    </div>
+                    <div className="mt-3">Free Courses</div>
                   </div>
                 </div>
-              </SwiperSlide>
-              // 140,90
-            ))}
-          </Swiper>
-        )}
-      </div>
-
-      <div className="container">
-        <div className="row justify-center text-center ">
-          <div className="col-sm-6 col-sm-9">
-            <div
-              className="mainSlider__content"
-              data-aos="fade-up"
-              data-aos-delay="500"
-            >
-              <h1
-                className="mainSlider__title text-white"
-                style={{ fontFamily: "Serif" }}
-              >
-                Empowering{" "}
-                <span className="underline" style={{ color: "#f97c69" }}>
-                  10 Million +
-                </span>{" "}
-                youth to bridge the Digital Skills gap and forge{" "}
-                <span className="text-outline-yellowie-1 underline">
-                  Carrers
-                </span>{" "}
-                in future technology.{" "}
-              </h1>
-
-              <p
-                className="mainSlider__text text-white"
-                style={{ fontFamily: "Serif" }}
-              >
-                More than 1,000 Placements Student
-              </p>
+              </div>
+ 
+              <div className="masthead-image__el2">
+                <div
+                  data-move="40"
+                  className="shadow-4 img-el -w-260 px-40 py-20 d-flex items-center bg-white rounded-8 js-mouse-move"
+                >
+                  <div className="img-el__side">
+                    <div className="size-50 d-flex justify-center items-center bg-dark-1 rounded-full">
+                      <Image
+                        width={20}
+                        height={27}
+                        src="/assets/img/masthead/2.svg"
+                        alt="icon"
+                      />
+                    </div>
+                  </div>
+                  <div className="">
+                    <div className="text-purple-1 text-16 fw-500 lh-1">
+                      Congrats!
+                    </div>
+                    <div className="mt-3">Your Admission Completed</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div className="row y-gap-20 justify-center mainSlider__items pt-30">
-          {featureTwo.map((elm, i) => (
-            <div key={i} className="col-xl-3 col-md-4 col-sm-6">
-              <div className="mainSlider-item text-center">
-                <div
-                  key={i}
-                  className="col-xl-3 col-md-4 col-sm-6"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "60px",
-                    height: "60px",
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    margin: "0 auto",
-                  }}
-                >
-                  <Image width={30} height={30} src={elm.imgSrc} alt="icon" />
-                </div>
-
-                <h4
-                  className="text-20 fw-500 lh-18 text-white mt-8"
-                  style={{ fontFamily: "Serif" }}
-                >
-                  {elm.title}
-                </h4>
-                <p
-                  className="text-15 text-white"
-                  style={{ fontFamily: "Serif" }}
-                >
-                  {elm.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
-
-      <button className="swiper-prev hero-slider-prev button -white-20 text-white size-60 rounded-full d-flex justify-center items-center js-prev">
-        <i className="icon icon-arrow-left text-24"></i>
-      </button>
-
-      <button className="swiper-next hero-slider-next button -white-20 text-white size-60 rounded-full d-flex justify-center items-center js-next">
-        <i className="icon icon-arrow-right text-24"></i>
-      </button>
     </section>
   );
 }
+ 
+ 

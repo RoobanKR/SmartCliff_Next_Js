@@ -11,7 +11,7 @@ import Hiring from "@/components/homes/heros/Hiring";
 export default function HomePage() {
   return (
     <>
-      <Preloader />
+      {/* <Preloader /> */}
       <HeaderTwo />
 
       <div className="content-wrapper  js-content-wrapper overflow-hidden">

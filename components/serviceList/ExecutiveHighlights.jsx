@@ -21,10 +21,10 @@ export default function ExecutiveHighlights1() {
     dispatch(fetchExecutionHighlights());
   }, [dispatch]);
 
-  useEffect(() => {}, [executionHighlights]);
+  useEffect(() => { }, [executionHighlights]);
 
   const filteredHighlights = executionHighlights.filter(
-    (executionHighlights) => executionHighlights.service._id === id
+    (executionHighlights) => executionHighlights?.service?._id === id
   );
 
   return (

@@ -43,7 +43,7 @@ export const featureSix = [
   {
     id: 1,
     imageSrc: "/assets/img/home-6/hero/icons/1.svg",
-    text: "Over 12 million students",
+    text: "s",
   },
   {
     id: 2,

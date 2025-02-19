@@ -26,7 +26,7 @@ export default function CategoriesTwo() {
   return (
     <section
       className="layout-pt-md layout-pb-md"
-      style={{ background: "#FFF0EE" }}
+      style={{ background: "#fff" }}
     >
       <div className="container">
         <div className="row justify-center text-center">

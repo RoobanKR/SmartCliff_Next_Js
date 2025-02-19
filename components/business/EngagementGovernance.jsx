@@ -14,7 +14,6 @@ export default function EngagementGovernance() {
     dispatch(getAlEngagedGovernance());
   }, [dispatch]);
 
-  console.log("engagedGovernance", engagedGovernance);
 
   return (
     <section className="layout-pt-sm layout-pb-sm">

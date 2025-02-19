@@ -3,24 +3,34 @@ import Link from "next/link";
 import MobileFooter from "./MobileFooter";
 import Image from "next/image";
 import { menuList } from "@/data/menu";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
+import { fetchServices } from "@/redux/slices/services/services/Services";
+import {
+  getAllBusinessServices,
+  selectBusinessServices,
+} from "@/redux/slices/services/services/businessServices";
 
-export default function Menu({ allClasses, headerPosition }) {
+export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
   const dispatch = useDispatch();
+  const router = useRouter();
   const [menuItem, setMenuItem] = useState("");
   const [submenu, setSubmenu] = useState("");
   const [hoveredLink, setHoveredLink] = useState(null);
   const pathname = usePathname();
+  const servicesBusiness = useSelector(selectBusinessServices);
   const degreeProgramData = useSelector(
     (state) => state.degreeProgram.degreeProgramData
   );
   const [hoveredProgram, setHoveredProgram] = useState("");
 
   useEffect(() => {
+    dispatch(getAllBusinessServices());
     dispatch(fetchDegreeProgramData());
+    dispatch(fetchServices());
   }, [dispatch]);
+
 
   useEffect(() => {
     menuList.forEach((elm) => {
@@ -38,6 +48,12 @@ export default function Menu({ allClasses, headerPosition }) {
       });
     });
   }, []);
+
+  const handleServiceClick = (service) => {
+    if (onServiceSelect) {
+      onServiceSelect(service);
+    }
+  };
 
   return (
     <div
@@ -100,26 +116,66 @@ export default function Menu({ allClasses, headerPosition }) {
                 </span>
               </Link>
             </li>
-
             <li className="menu-item-has-children">
-              <Link
-                data-barba
-                href="/services"
-                className={pathname === "/services" ? "activeMenu" : ""}
-                onMouseOver={() => setHoveredLink("services")}
-                onMouseOut={() => setHoveredLink(null)}
+              <a
+                className={menuItem === "Services" ? "activeMenu" : ""}
+                // href="#"
+                style={{ position: "relative", cursor: "pointer" }}
+                onMouseOver={() =>
+                  (document.getElementById("services").style.color = "#f2775e")
+                }
+                onMouseOut={() =>
+                  document
+                    .getElementById("services")
+                    .style.removeProperty("color")
+                }
               >
                 <span
-                  style={{
-                    color:
-                      (pathname === "/services" ||
-                        hoveredLink === "services") &&
-                      "#f2775e",
-                  }}
+                  id="services"
+                  style={{ color: menuItem === "Services" ? "#f2775e" : "" }}
                 >
                   Services
-                </span>
-              </Link>
+                </span>{" "}
+                <i className="icon-chevron-right text-13 ml-10"></i>
+              </a>
+              <ul className="subnav">
+                <li className="menu__backButton js-nav-list-back">
+                  <a
+                    href="#"
+                    style={{ color: menuItem === "Services" ? "#f2775e" : "" }}
+                  >
+                    <i className="icon-chevron-left text-13 mr-10"></i> Services
+                  </a>
+                </li>
+                {servicesBusiness &&
+                  servicesBusiness.map((service) => (
+                    <li key={service._id || service.slug}>
+                      <Link
+                        href={`/${service.slug}`}
+                        onClick={() => handleServiceClick(service)}
+                      >
+                        <div
+                          className={
+                            pathname.includes(service.slug)
+                              ? "activeMenu"
+                              : "inActiveMenu"
+                          }
+                          style={{
+                            color: pathname.includes(service.slug)
+                              ? "#f2775e !important"
+                              : hoveredProgram === service.slug
+                              ? "#f2775e !important"
+                              : "",
+                          }}
+                          onMouseOver={() => setHoveredProgram(service.slug)}
+                          onMouseOut={() => setHoveredProgram("")}
+                        >
+                          {service.name}
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
             </li>
 
             <li className="menu-item-has-children -has-mega-menu">
@@ -145,7 +201,7 @@ export default function Menu({ allClasses, headerPosition }) {
               <a
                 className={menuItem === "Degree Program" ? "activeMenu" : ""}
                 href="#"
-                style={{ position: "relative" }}
+                style={{ position: "relative", cursor: "pointer" }}
                 onMouseOver={() =>
                   (document.getElementById("degreeProgram").style.color =
                     "#f2775e")
@@ -160,6 +216,7 @@ export default function Menu({ allClasses, headerPosition }) {
                   id="degreeProgram"
                   style={{
                     color: menuItem === "Degree Program" ? "#f2775e" : "",
+                    cursor: "pointer",
                   }}
                 >
                   Degree Program
@@ -178,7 +235,7 @@ export default function Menu({ allClasses, headerPosition }) {
                     Program
                   </a>
                 </li>
-                {degreeProgramData.map((program) => (
+                {degreeProgramData?.map((program) => (
                   <li key={program._id}>
                     <Link href={`/${program.slug}/${program._id}`}>
                       <div
@@ -297,10 +354,7 @@ export default function Menu({ allClasses, headerPosition }) {
             </li>
           </ul>
         </div>
-
-        {/* mobile footer start */}
         <MobileFooter />
-        {/* mobile footer end */}
       </div>
 
       <div

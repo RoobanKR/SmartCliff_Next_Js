@@ -12,7 +12,6 @@ export default function CourseContent({ filteredModules }) {
   const [showAllModules, setShowAllModules] = useState(false);
   const [cookies] = useCookies(["token"]);
   const router = useRouter();
-  console.log("Received filteredModules:", filteredModules);
 
   const toggleAccordion = (moduleId) => {
     setActiveItemId((prev) => (prev === moduleId ? null : moduleId));

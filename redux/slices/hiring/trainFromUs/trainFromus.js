@@ -6,7 +6,7 @@ export const createTrainFromUs = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `${getAPIURL()}/create/train_from_us`,
+        `http://localhost:5353/create/train_from_us`,
         {
           method: "POST",
           headers: {

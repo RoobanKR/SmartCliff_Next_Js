@@ -24,6 +24,7 @@ import outcomeReducer from "./slices/mca/outcomes/Outcomes";
 import highlightReducer from "./slices/mca/highlights/Highlights";
 import programApplyReducer from "./slices/programApply/programApply";
 import serviceReducer from "./slices/services/services/Services";
+import businessServiceReducer from "./slices/services/services/businessServices"
 import clientReducer from "./slices/services/client/Client";
 import executionHighlightsReducer from "./slices/services/executionHighlights/Execution_Highlights";
 import executionOverviewsReducer from "./slices/services/executionOverview/ExecutionOverview";
@@ -39,7 +40,10 @@ import placementTestimonialReducer from "./slices/bussiness/placementTestimonial
 import trainfromusReducer from "./slices/hiring/trainFromUs/trainFromus";
 import instituteReducer from "./slices/hiring/institute/institute";
 import engagedGovernanceReducer from "./slices/hiring/engagedGovernance/engagedGovernance";
-
+import ServiceAboutSlice from "./slices/services/services/aboutServices";
+import ServiceProcessSlice from "./slices/services/services/processServices";
+import serviceClientReducer from "./slices/services/services/clientServices";
+import serviceOpportunityReducer from "./slices/services/services/Oppertunities"
 export default configureStore({
   reducer: {
     userSignIn: userSignInSlice,
@@ -67,6 +71,10 @@ export default configureStore({
     highlight: highlightReducer,
     programApply: programApplyReducer,
     service: serviceReducer,
+    businessService: businessServiceReducer,
+    aboutService: ServiceAboutSlice,
+    processService: ServiceProcessSlice,
+    clientService: serviceClientReducer,
     clients: clientReducer,
     executionHighlights: executionHighlightsReducer,
     executionOverviews: executionOverviewsReducer,
@@ -78,6 +86,7 @@ export default configureStore({
     trainfromus: trainfromusReducer,
     hiring: hiringReducer,
     managedCampus: managedCampusReducer,
+    serviceOpportunities: serviceOpportunityReducer,
     keyElements: keyElementsReducer,
     placementTestimonial: placementTestimonialReducer,
     institute: instituteReducer,

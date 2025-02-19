@@ -80,7 +80,6 @@ export default function CourseDetailsSix() {
 
   const handleWishlistButtonClick = () => {
     if (isAddedToCartCourses(pageItem._id)) {
-      console.log("Course is already added to cart");
       // Handle accordingly (e.g., show a message)
     } else {
       const cookiesToken = getCookie("token");
@@ -111,13 +110,11 @@ export default function CourseDetailsSix() {
   };
 
   useEffect(() => {
-    console.log("Fetching course...");
     if (id) {
       dispatch(fetchCourseById(id))
         .then((action) => {
           const fetchedCourse = action.payload;
           setPageItem(fetchedCourse);
-          console.log("Fetched course:", fetchedCourse);
           calculateDiscountedPrice(fetchedCourse?.cost);
         })
         .catch((error) => {
@@ -127,7 +124,6 @@ export default function CourseDetailsSix() {
   }, [id, dispatch]);
 
   useEffect(() => {
-    console.log("Course modules:", courseModules);
     if (selectedCourse && courseModules) {
       const filteredModules = courseModules.filter(
         (module) => module.course._id === selectedCourse._id
@@ -137,12 +133,10 @@ export default function CourseDetailsSix() {
   }, [selectedCourse, courseModules]);
 
   useEffect(() => {
-    console.log("Fetching all course modules...");
     dispatch(getAllCourseModules());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("Fetching all faq...");
     dispatch(fetchAllFAQs());
   }, [dispatch]);
 
@@ -151,8 +145,7 @@ export default function CourseDetailsSix() {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("Opportunities:", opportunities);
-    console.log("Error:", error);
+  
     if (
       selectedCourse &&
       opportunities &&
@@ -161,7 +154,6 @@ export default function CourseDetailsSix() {
       const filteredOpportunities = opportunities.careerOpportunities.filter(
         (opportunity) => opportunity.course._id === selectedCourse._id
       );
-      console.log("Filtered Opportunities:", filteredOpportunities);
       setFilteredOpportunities(filteredOpportunities);
     } else {
       console.error(
@@ -171,12 +163,10 @@ export default function CourseDetailsSix() {
   }, [opportunities, error, selectedCourse]);
 
   useEffect(() => {
-    console.log("FAQ:", faq);
     if (selectedCourse && faq) {
       const filteredFAQ = faq.filter(
         (item) => item.course && item.course._id === selectedCourse._id
       );
-      console.log("Filtered FAQ:", filteredFAQ);
       setFilteredFAQ(filteredFAQ);
     }
   }, [faq, selectedCourse]);

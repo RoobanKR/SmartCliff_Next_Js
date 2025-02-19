@@ -81,7 +81,6 @@ export default function TrainFromUsAddForm() {
         setTimeout(() => {
           setShowSuccess(false);
         }, 3000);
-        console.log("Form submitted:", formDataWithIds);
       });
     } else {
       console.error("Selected course, category, or service not found.");

@@ -28,7 +28,7 @@ SwiperCore.use([Navigation, Pagination]);
 export default function Page() {
   const dispatch = useDispatch();
   const faq = useSelector((state) => state.faq.faq);
-  const { id } = useParams();
+  const { slug } = useParams();
   const { title, description } = jsonData || {};
   const [activeTab, setActiveTab] = useState(1);
   const [isMobileView, setIsMobileView] = useState(false);
@@ -48,7 +48,7 @@ export default function Page() {
   }, [dispatch]);
 
   const filteredFAQ = faq.filter(
-    (item) => item.degree_program && String(item.degree_program) === id
+    (item) => item.degree_program && String(item.degree_program) === slug
   );
 
   const menuItems = [
@@ -139,9 +139,8 @@ export default function Page() {
                         <button
                           key={i}
                           onClick={() => setActiveTab(elm.id)}
-                          className={`tabs__button js-tabs-button js-update-pin-scene ${
-                            i !== 0 ? "ml-30" : ""
-                          } ${activeTab === elm.id ? "is-active" : ""} `}
+                          className={`tabs__button js-tabs-button js-update-pin-scene ${i !== 0 ? "ml-30" : ""
+                            } ${activeTab === elm.id ? "is-active" : ""} `}
                           type="button"
                         >
                           {elm.text}

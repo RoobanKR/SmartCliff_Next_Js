@@ -17,8 +17,7 @@ export default function FAQComponent({ faq }) {
           <div className="col-auto">
             <div className="sectionTitle ">
               <h2
-                className="sectionTitle__title "
-                style={{ fontFamily: "Serif" }}
+                className="text-25"
               >
                 Frequently Asked Questions
               </h2>
@@ -51,7 +50,6 @@ export default function FAQComponent({ faq }) {
                         </div>
                         <span
                           className="text-17 fw-500 text-dark-1"
-                          style={{ fontFamily: "Serif" }}
                         >
                           {faqItem.question}
                         </span>
@@ -75,7 +73,7 @@ export default function FAQComponent({ faq }) {
                               <div className="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
                                 <div className="icon-play text-9"></div>
                               </div>
-                              <div style={{ fontFamily: "Serif" }}>
+                              <div >
                                 {faqItem.answer}
                               </div>
                             </div>

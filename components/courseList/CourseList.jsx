@@ -102,9 +102,7 @@ export default function CourseList({ selectedCategory }) {
         });
     });
 
-  // console.log("courses", courses);
-  // console.log("categories", categories);
-  // console.log("instructors", instructors);
+
   useEffect(() => {
     dispatch(fetchCourses());
     dispatch(fetchInstructors());

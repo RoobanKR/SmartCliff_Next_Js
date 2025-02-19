@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from "react";
@@ -7,15 +8,22 @@ import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import SearchToggle from "../component/SearchToggle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
-export default function HeaderSeven() {
+export default function HeaderTwo() {
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
   };
   return (
-    <header className="header -type-3 js-header">
-      <div className="header__container py-10" style={{ zIndex: 1000 }}>
+    <header
+      className="header -type-5 js-header"
+      style={{ fontFamily: "serif" }}
+    >
+
+
+      <div className="header__container" style={{ zIndex: 1000 }}>
         <div className="row justify-between items-center">
           <div className="col-auto">
             <div className="header-left d-flex items-center">
@@ -30,20 +38,7 @@ export default function HeaderSeven() {
                 </Link>
               </div>
 
-              <div className="header-search-field ml-30">
-                <form onSubmit={handleSubmit}>
-                  <div className="header-search-field__group">
-                    <input
-                      required
-                      type="text"
-                      placeholder="What do you want to learn?"
-                    />
-                    <button type="submit">
-                      <i className="icon icon-search"></i>
-                    </button>
-                  </div>
-                </form>
-              </div>
+
             </div>
           </div>
 
@@ -83,19 +78,7 @@ export default function HeaderSeven() {
                 className="header-right__buttons d-flex items-center ml-30 xl:ml-20 md:d-none"
                 style={{ fontFamily: "serif" }}
               >
-                <Link
-                  href="/login"
-                  className="button px-30 h-50 -outline-dark-11 text-orange-1"
-                  style={{ color: "#f2775e" }}
-                >
-                  Log in
-                </Link>
-                <Link
-                  href="/signup"
-                  className="button px-30 h-50 -dark-11 text-white ml-10"
-                >
-                  Sign up
-                </Link>
+
               </div>
             </div>
           </div>
@@ -104,3 +87,4 @@ export default function HeaderSeven() {
     </header>
   );
 }
+

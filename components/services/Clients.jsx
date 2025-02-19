@@ -1,50 +1,34 @@
+
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "next/navigation";
-import { getAllClient } from "@/redux/slices/services/client/Client";
-import SwiperCore, { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-SwiperCore.use([Autoplay]);
-
-export default function Clients({ backgroundColor, serviceId }) {
-  const dispatch = useDispatch();
+export default function Clients({ backgroundColor, filteredClients }) {
   const [showSlider, setShowSlider] = useState(false);
-  const clients = useSelector((state) => state.clients.clients);
-
-  useEffect(() => {
-    dispatch(getAllClient());
-  }, [dispatch]);
-
   useEffect(() => {
     setShowSlider(true);
   }, []);
-
-  const filteredClients = clients.filter(
-    (client) => client.service._id === serviceId
-  );
-
   return (
     <section
-      className={`layout-pt-sm layout-pb-md ${
-        backgroundColor ? backgroundColor : ""
-      }`}
+      className={` layout-pb-md bg-light-4  py-20`}
     >
       <div className="container">
-        <div className="row y-gap-20 justify-center text-center">
+        <div className="row y-gap-20 justify-center text-center pt-10 " style={{marginBottom:'-50px'}} >
           <div className="col-auto">
             <div className="sectionTitle ">
               <h2
-                className="sectionTitle__title "
-                style={{ fontFamily: "Serif" }}
+                className="text-25"
               >
                 Our Clients
               </h2>
               <p
                 className="sectionTitle__text "
-                style={{ fontFamily: "Serif" }}
               ></p>
             </div>
           </div>
@@ -53,6 +37,10 @@ export default function Clients({ backgroundColor, serviceId }) {
         <div className="row y-gap-30 pt-50" style={{ alignItems: "center" }}>
           {showSlider && (
             <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              autoplay={{ delay: 3000 }}
+              slidesPerView={4}
+              spaceBetween={30}
               breakpoints={{
                 320: {
                   slidesPerView: 2,
@@ -67,12 +55,16 @@ export default function Clients({ backgroundColor, serviceId }) {
                   slidesPerView: 4,
                 },
               }}
-              spaceBetween={50}
-              autoplay={{ delay: 8000 }}
+              navigation={{
+                nextEl: ".swiper-next",
+                prevEl: ".swiper-prev",
+              }}
+              pagination={{ clickable: true }}
+              speed={1200}
             >
               {filteredClients.map((elm, i) => (
                 <SwiperSlide key={i}>
-                  <div className="teamCard -type-1 -teamCard-hover">
+                  <div className="infoCard -type-2 text-center -infoCard-hover">
                     <div
                       className="imageWrapper"
                       style={{
@@ -97,7 +89,6 @@ export default function Clients({ backgroundColor, serviceId }) {
                         <div>
                           <a
                             className="linkCustom"
-                            style={{ fontFamily: "Serif" }}
                           >
                             {elm.name}
                           </a>
@@ -105,12 +96,13 @@ export default function Clients({ backgroundColor, serviceId }) {
                       </h4>
                     </div>
                   </div>
+                  <br />
                 </SwiperSlide>
               ))}
             </Swiper>
           )}
         </div>
       </div>
-    </section>
+    </section >
   );
 }

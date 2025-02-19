@@ -23,7 +23,6 @@ export default function Batch() {
         ?.toLowerCase()
         .includes(searchQuery.toLowerCase())
   );
-  console.log("filteredBatches", filteredBatches);
   return (
     <>
       <section

@@ -15,6 +15,7 @@ const Banner = ({ title, description, imageUrl }) => {
           style={{ color: "white", fontFamily: "serif" }}
         >
           {title}
+          dfghjk
         </h1>
         <p className="lead">{description}</p>
       </div>

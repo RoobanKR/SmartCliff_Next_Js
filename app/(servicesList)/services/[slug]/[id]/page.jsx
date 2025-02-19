@@ -49,7 +49,6 @@ export default function HomeNine() {
   const { title, description } = jsonData || {};
 
   const filteredFAQ = faq.filter((item) => item.service === id);
-  console.log("filteredFAQ", filteredFAQ);
   useEffect(() => {
     if (window.innerWidth < 990) {
       setIsSidebarClosed(true);
@@ -74,9 +73,6 @@ export default function HomeNine() {
   const isManagedCampusRoute = window.location.pathname.startsWith(
     "/services/managedcampus"
   );
-
-  console.log("Current route:", window.location.pathname);
-  console.log("Is ManagedCampus route:", isManagedCampusRoute);
 
   return (
     <>

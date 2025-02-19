@@ -20,7 +20,7 @@ export default function page() {
 
   return (
     <>
-      <Preloader />
+      {/* <Preloader /> */}
       <HeaderSeven />
       <div className="main-content overflow-hidden   ">
         <HeroTwo />

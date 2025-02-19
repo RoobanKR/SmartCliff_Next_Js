@@ -15,7 +15,7 @@ export default function About() {
   const loading = useSelector((state) => state.aboutCollege.loading);
   const error = useSelector((state) => state.aboutCollege.error);
   const [cookies] = useCookies(["token"]);
-  const { id } = useParams();
+  const { slug } = useParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function About() {
 
   // Filter the aboutCollegeData based on the URL ID
   const selectedAboutCollege = aboutCollegeData.find(
-    (program) => program._id === id
+    (program) => program.slug === slug
   );
 
   const handleDownload = async () => {

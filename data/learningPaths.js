@@ -24,7 +24,7 @@ export const learningPath = [
       "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries",
   },
 ];
- 
+
 export const learningPathTwo = [
   {
     id: 1,
@@ -55,7 +55,7 @@ export const learningPathTwo = [
     bgColor: "bg-orange-3",
   },
 ];
- 
+
 export const learningPathFive = [
   {
     id: 1,
@@ -82,38 +82,37 @@ export const learningPathFive = [
     description: "Grursus mal suada faci lisis that ipsum ameti consecte.",
   },
 ];
- 
+
 export const learningPathSix = [
   {
     id: 1,
     iconClass: "icon icon-rating-2 text-dark-1",
-    title: "Learn anything",
+    title: "Hire Train Deploy(HTD)",
     description:
       "The latest design trends meet hand-crafted templates in Sassio Collection.",
+    name: "HTD",
+    slug: "htd",
   },
   {
     id: 2,
     iconClass: "icon icon-online-learning-3 text-dark-1",
-    title: "Learn together",
+    title: "Train Deploy(TD)",
     description:
       "The latest design trends meet hand-crafted templates in Sassio Collection.",
+    name: "TD",
+    slug: "td",
   },
   {
     id: 3,
     iconClass: "icon icon-online-learning-2 text-dark-1",
-    title: "Learn with experts",
+    title: "UpSkilling",
     description:
       "The latest design trends meet hand-crafted templates in Sassio Collection.",
-  },
-  {
-    id: 4,
-    iconClass: "icon icon-access text-dark-1",
-    title: "Life Time Access",
-    description:
-      "The latest design trends meet hand-crafted templates in Sassio Collection.",
+    name: "Upskilling",
+    slug: "upSkilling",
   },
 ];
- 
+
 export const learningfeatures = [
   {
     id: 1,
@@ -132,7 +131,7 @@ export const learningfeatures = [
     title: "Money-back guarantee",
   },
 ];
- 
+
 export const features = [
   {
     id: 1,
@@ -170,7 +169,7 @@ export const features = [
       "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries",
   },
 ];
- 
+
 export const learningJourney = [
   {
     id: 1,
@@ -201,4 +200,3 @@ export const learningJourney = [
     delay: 4,
   },
 ];
- 

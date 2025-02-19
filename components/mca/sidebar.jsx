@@ -5,6 +5,7 @@ import {
   fetchServices,
   selectServices,
 } from "@/redux/slices/services/services/Services";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -40,9 +41,11 @@ export default function Sidebar3() {
                   href={`/${degreeProgram._id}`}
                   className="-dark-sidebar-white d-flex items-center text-17 lh-1 fw-500 text-purple-1"
                 >
-                  <img
+                  <Image
                     src={degreeProgram.image}
                     alt={degreeProgram.title}
+                    width={30}
+                    height={30}
                     className="mr-15"
                     style={{ width: "20px", height: "20px" }}
                   />{" "}

@@ -15,18 +15,15 @@ export default function FrequentlyAskedQuestion() {
   const faqData = useSelector(selectFAQs);
   const status = useSelector(selectStatus);
   const filteredData = faqData.filter((item) => item.category_name == "common");
-  console.log("filteredData", filteredData);
 
   useEffect(() => {
     dispatch(fetchAllFAQs());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(faqData);
   }, [faqData]);
 
   useEffect(() => {
-    console.log(status);
   }, [status]);
 
   return (
