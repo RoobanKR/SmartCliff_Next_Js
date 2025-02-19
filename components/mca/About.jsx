@@ -88,7 +88,11 @@ export default function About() {
                 <div className="composition -type-8">
                   {selectedAboutCollege.images.map((image, index) => (
                     <div className={`-el-${index + 1}`} key={index}>
-                      <Image width={300} height={400} src={image} alt="image" />
+                      <img
+                        src={image}
+                        alt="image"
+                        style={{ width: "300px", height: "400px" }}
+                      />
                     </div>
                   ))}
                 </div>

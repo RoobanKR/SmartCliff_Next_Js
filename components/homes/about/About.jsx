@@ -45,16 +45,15 @@ export default function AboutUs() {
           </div>
 
           <div className="col-xl-6 col-lg-6 order-lg-2" data-aos="fade-up">
-            <div className="about-image">
-              <Image
-                width={750}
-                height={850}
-                style={{ height: "100%", width: "100%" }}
-                src="/assets/img/home-8/what/fee.jpg"
-                alt="image"
-              />
-            </div>
-          </div>
+  <div className="about-image">
+    <img
+      src="/assets/img/home-8/what/fee.jpg"
+      alt="image"
+      style={{ height: "100%", width: "100%" }}
+    />
+  </div>
+</div>
+
         </div>
       </div>
     </section>

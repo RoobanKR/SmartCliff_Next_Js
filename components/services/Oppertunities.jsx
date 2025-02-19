@@ -41,11 +41,19 @@ export default function Oppertunitie({ matchedOppertunity }) {
                             matchedOppertunity.map((opportunity, index) => (
                                 <div key={index} className="col-lg-4 col-md-6">
                                     <div className="py-40 px-45 rounded-16" style={{ backgroundColor: "#f5f0ff" }}>
-                                        <div className="d-flex justify-center items-center size-70 rounded-full bg-white">
-                                            {opportunity.image && (
-                                                <Image width={50} height={50} src={opportunity.image} alt="icon" />
-                                            )}
-                                        </div>
+                                    <div className="d-flex justify-center items-center size-70 rounded-full bg-white">
+  {opportunity.image && (
+    <img
+      src={opportunity.image}
+      alt="icon"
+      style={{
+        width: "50px",
+        height: "50px",
+      }}
+    />
+  )}
+</div>
+
                                         <h4 className="text-20 lh-11 fw-500 mt-25">{opportunity.company_name}</h4>
                                         <p className="mt-10">{opportunity.description}</p>
                                     </div>

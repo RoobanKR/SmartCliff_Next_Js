@@ -74,18 +74,17 @@ export default function ExecutiveHighlights1() {
           {filteredHighlights.map((highlight, i) => (
             <SwiperSlide key={i}>
               <div className="infoCard -type-2 text-center py-40 -infoCard-hover">
-                <div className="infoCard__image">
-                  <Image
-                    src={highlight.image}
-                    alt="image"
-                    width={100}
-                    height={100}
-                    style={{
-                      width: "80px",
-                      height: "60px",
-                    }}
-                  />
-                </div>
+              <div className="infoCard__image">
+  <img
+    src={highlight.image}
+    alt="image"
+    style={{
+      width: "80px",
+      height: "60px",
+    }}
+  />
+</div>
+
                 <h5
                   className="infoCard__title text-24 lh-1 mt-25"
                   style={{ fontFamily: "Serif" }}

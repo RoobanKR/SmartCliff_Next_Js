@@ -24,12 +24,15 @@ export default function StepsOne({ processSteps }) {
                             <div className="col-xl-2 col-lg-3 col-md-6">
                                 <div className="d-flex flex-column items-center text-center">
                                     <div className="relative size-120 d-flex justify-center items-center rounded-full bg-light-4">
-                                        <Image
-                                            width={50}
-                                            height={50}
-                                            src={`${step.icon}`} // Adjust path based on your backend setup
-                                            alt={step.heading}
-                                        />
+                                    <img
+  src={step.icon} // Ensure this path is correct based on your backend setup
+  alt={step.heading}
+  style={{
+    width: "50px",
+    height: "50px",
+  }}
+/>
+
                                         <div className="side-badge">
                                             <div className="size-35 d-flex justify-center items-center rounded-full bg-dark-1 -dark-bg-purple-1">
                                                 <span className="text-14 fw-500 text-white">

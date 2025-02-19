@@ -84,20 +84,19 @@ export default function Sidebar() {
                     href={`/${secondLastSegment}/${service.slug}`}
                     className="d-flex items-center"
                   >
-                    <Image
-                      src={service?.icon}
-                      alt={service?.title}
-                      style={{
-                        marginRight: "12px",
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "6px",
-                        background: "#fff",
-                        padding: "4px",
-                      }}
-                      width={30}
-                      height={30}
-                    />
+                  <img
+  src={service?.icon}
+  alt={service?.title}
+  style={{
+    marginRight: "12px",
+    width: "24px",
+    height: "24px",
+    borderRadius: "6px",
+    background: "#fff",
+    padding: "4px",
+  }}
+/>
+
                     <span
                       style={{
                         display: "flex",

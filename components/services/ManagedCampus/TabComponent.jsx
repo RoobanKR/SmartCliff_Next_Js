@@ -137,15 +137,18 @@ export default function TabComponent({ backgroundColor, serviceId }) {
     {campus.execution_highlights.map(
                                   (highlight, index) => (                                 <SwiperSlide key={index}>
                                    <div className="infoCard -type-2 text-center py-40 -infoCard-hover">
-                                     <div className="infoCard__image">
-                                       <Image
-                                         width={50}
-                                         height={50}
-                                         style={{ objectFit: 'cover' }}
-                                         src={highlight.image}
-                                         alt="Highlight Image"
-                                       />
-                                     </div>
+                                   <div className="infoCard__image">
+  <img
+    src={highlight.image}
+    alt="Highlight Image"
+    style={{
+      width: "50px",
+      height: "50px",
+      objectFit: "cover",
+    }}
+  />
+</div>
+
                                      <h5 className="infoCard__title text-24 lh-1 mt-25">
                                        {highlight.stack}
                                      </h5>
@@ -210,14 +213,16 @@ export default function TabComponent({ backgroundColor, serviceId }) {
                                                 "0px 4px 8px rgba(0, 0, 0, 0.1)",
                                             }}
                                           >
-                                            <Image
-                                              src={client.image}
-                                              alt="image"
-                                              layout="responsive"
-                                              width={300}
-                                              height={200}
-                                              style={{ objectFit: "cover" }}
-                                            />
+                                           <img
+  src={client.image}
+  alt="image"
+  style={{
+    width: "300px",
+    height: "200px",
+    objectFit: "cover",
+  }}
+/>
+
                                           </div>
                                         </div>
                                         <div className="teamCard__content">
