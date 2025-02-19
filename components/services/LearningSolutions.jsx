@@ -92,11 +92,9 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                   data-move="60"
                   className="elements-image__main mb-20 js-mouse-move"
                 >
-                  <Image
-                    width={350}
-                    height={50}
+                 <img
                     className="js-mouse-move rounded"
-                    style={{ height: "400px" }}
+                    style={{ height: "400px", width: "350px", }}
                     data-move="40"
                     src={
                       matchedServiceAbouts[0].images[0] || "/fallback-image.jpg"
