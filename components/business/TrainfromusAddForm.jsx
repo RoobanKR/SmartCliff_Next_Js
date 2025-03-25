@@ -7,10 +7,10 @@ import {
   selectCategories,
 } from "@/redux/slices/category/category";
 import { createTrainFromUs } from "@/redux/slices/hiring/trainFromUs/trainFromus";
-import Modal from "./modal";
 import "./Modal.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "./Modal";
 
 export default function TrainFromUsAddForm() {
   const formData = useSelector((state) => state.hirefromus.formData);
