@@ -10,6 +10,7 @@ import BecomeStudent from "../../../components/common/BecomeStudent";
 import FooterTwo from "@/components/layout/footers/Footer";
 import Preloader from "@/components/common/Preloader";
 import HeaderSeven from "@/components/layout/headers/HeaderSeven";
+import HeaderTwo from "@/components/layout/headers/HeaderSeven";
 
 export default function page() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -21,7 +22,7 @@ export default function page() {
   return (
     <>
       {/* <Preloader /> */}
-      <HeaderSeven />
+      <HeaderTwo />
       <div className="main-content overflow-hidden   ">
         <HeroTwo />
         <CategoriesTwo onCategorySelect={handleCategorySelect} />

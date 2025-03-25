@@ -7,13 +7,13 @@ export default function Socials({ componentsClass, textSize }) {
   return (
     <>
       {socialMediaLinks.map((link, index) => (
-        <a
+        <Link
           key={index}
           className={componentsClass ? componentsClass : ""}
           href={link.href}
         >
           <i className={`${link.iconClassName} ${textSize}`}></i>
-        </a>
+        </Link>
       ))}
     </>
   );

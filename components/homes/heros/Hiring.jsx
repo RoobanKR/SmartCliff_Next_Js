@@ -20,7 +20,7 @@ export default function Hiring() {
 
           <div className="col-auto">
             <Link
-              href="/hiring"
+              href="/career"
               className="button px-30 h-50 -outline-dark-11 text-orange-1"
               style={{ color: "#f2775e" }}
             >

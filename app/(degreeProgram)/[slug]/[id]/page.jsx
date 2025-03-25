@@ -3,12 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
 import { fetchAllFAQs } from "@/redux/slices/faq/faq";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Banner from "@/components/common/Banner";
 import About from "@/components/mca/About";
 import OurProgram from "@/components/mca/OurProgram";
 import Outcomes from "@/components/mca/Outcomes";
-import ProgramFees from "@/components/mca/ProgramFees";
 import Testimonial from "@/components/mca/Testimonial";
 import FAQComponent from "@/components/courseSingle/Faq";
 import Semester from "@/components/mca/Semester";
@@ -23,22 +22,39 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/swiper-bundle.min.css";
 
+import HeaderTwo from "@/components/layout/headers/HeaderTwo";
+import AboutCollege from "@/components/mca/AboutCollege";
+import DegreeCertificationUI from "@/components/mca/Certification";
+import { fetchAboutCollegeData } from "@/redux/slices/mca/aboutCollege/aboutCollege";
+import { fetchAllColleges } from "@/redux/slices/collegeDetails/collegeDetails";
+
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Page() {
   const dispatch = useDispatch();
   const faq = useSelector((state) => state.faq.faq);
-  const { slug } = useParams();
-  const { title, description } = jsonData || {};
-  const [activeTab, setActiveTab] = useState(1);
-  const [isMobileView, setIsMobileView] = useState(false);
+  const { id } = useParams();
 
+  const router = useRouter();
+  const [isMobileView, setIsMobileView] = useState(false);
+  // College names for the tab
+  const [currentCollegeIndex, setCurrentCollegeIndex] = useState(0);
+  const [selectedCollegeId, setSelectedCollegeId] = useState(null);
+
+  const collegeDetails = useSelector((state) => state.colleges.colleges);
+
+  const aboutCollegeData = useSelector(
+    (state) => state.aboutCollege.aboutCollegeData
+  );
   const handleResize = () => {
     setIsMobileView(window.innerWidth < 768);
   };
 
   useEffect(() => {
     dispatch(fetchDegreeProgramData());
+    dispatch(fetchAboutCollegeData());
+    dispatch(fetchAllColleges());
+
     dispatch(fetchAllFAQs());
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -47,153 +63,232 @@ export default function Page() {
     };
   }, [dispatch]);
 
-  const filteredFAQ = faq.filter(
-    (item) => item.degree_program && String(item.degree_program) === slug
+  useEffect(() => {
+    if (collegeDetails && collegeDetails.length > 0) {
+      setSelectedCollegeId(collegeDetails[currentCollegeIndex]?._id || null);
+    }
+  }, [collegeDetails, currentCollegeIndex]);
+
+  const selectedAboutCollege = aboutCollegeData.find(
+    (program) => program._id === id
   );
 
-  const menuItems = [
-    {
-      id: 1,
-      href: "#LearningJourney",
-      text: "Learning Journey",
-      isActive: false,
-    },
-    { id: 3, href: "#Program-fees", text: "Program Fees", isActive: false },
-    {
-      id: 5,
-      href: "#EligibilityCriteria",
-      text: "Smartcliff Eligibility Criteria",
-      isActive: false,
-    },
-    {
-      id: 6,
-      href: "#AdmissionProcess",
-      text: "Admission Process",
-      isActive: false,
-    },
-    {
-      id: 7,
-      href: "#Faq",
-      text: "Faq",
-      isActive: false,
-    },
-  ];
+  const filteredFAQ = faq.filter(
+    (item) =>
+      selectedAboutCollege &&
+      String(item.degree_program) === String(selectedAboutCollege._id)
+  );
 
-  const renderTabs = () => {
-    if (isMobileView) {
-      return (
-        <>
-          <section className="pt-30 layout-pb-md">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
-                    {menuItems.map((elm) => (
-                      <div key={elm.id} className="mb-2">
-                        {" "}
-                        <button
-                          onClick={() => setActiveTab(elm.id)}
-                          className="tabs__button js-tabs-button js-update-pin-scene"
-                          style={{
-                            textDecoration:
-                              activeTab === elm.id ? "underline" : "none",
-                            textDecorationColor:
-                              activeTab === elm.id ? "#f2775e" : "initial",
-                            textDecorationThickness:
-                              activeTab === elm.id ? "3px" : "initial",
-                          }}
-                          type="button"
-                        >
-                          {elm.text}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section className="pt-30 layout-pb-md">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
-                    {renderTabContent(activeTab)}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </>
-      );
-    } else {
-      return (
-        <section className="pt-30 layout-pb-md">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
-                  <div className="tabs -active-purple-2 js-tabs pt-0">
-                    <div className="tabs__controls d-flex js-tabs-controls">
-                      {menuItems.map((elm, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setActiveTab(elm.id)}
-                          className={`tabs__button js-tabs-button js-update-pin-scene ${i !== 0 ? "ml-30" : ""
-                            } ${activeTab === elm.id ? "is-active" : ""} `}
-                          type="button"
-                        >
-                          {elm.text}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="tabs__content   js-tabs-content">
-                      {renderTabContent(activeTab)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
+  const handlePrevCollege = () => {
+    const newIndex =
+      currentCollegeIndex === 0
+        ? collegeDetails.length - 1
+        : currentCollegeIndex - 1;
+    setCurrentCollegeIndex(newIndex);
+    setSelectedCollegeId(collegeDetails[newIndex]?._id || null);
   };
 
-  const renderTabContent = (tabId) => {
-    switch (tabId) {
-      case 1:
-        return <Semester />;
-      case 3:
-        return <ProgramFees />;
-      case 5:
-        return <EligibilityCriteria />;
-      case 6:
-        return <AdmissionProcess />;
-      case 7:
-        return <FAQComponent faq={filteredFAQ} />;
-      default:
-        return null;
-    }
+  const handleNextCollege = () => {
+    const newIndex =
+      currentCollegeIndex === collegeDetails.length - 1
+        ? 0
+        : currentCollegeIndex + 1;
+    setCurrentCollegeIndex(newIndex);
+    setSelectedCollegeId(collegeDetails[newIndex]?._id || null);
   };
 
   return (
-    <div className="main-content">
+    <div className="main-content overflow-hidden">
       <Preloader />
-      <HeaderSeven />
+      <HeaderTwo />
       <div className="content-wrapper js-content-wrapper overflow-hidden mt-80">
         <br />
-        <Banner
-          title={jsonData[2].title}
-          description={jsonData[2].description}
-          imageUrl={jsonData[2].imageUrl}
-        />{" "}
-        <About />
-        <Highlights />
-        <Outcomes />
-        <OurProgram />
-        {renderTabs()}
-        {/* <Testimonial /> */}
+
+        <div
+          className="navigation-controls"
+          style={{
+            position: "fixed",
+            top: "70px",
+            zIndex: "10",
+            backgroundColor: "rgb(229, 226, 236)",
+            padding: "10px 0",
+            display: "flex",
+            // justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          {/* Back Button */}
+          <button
+            onClick={() => router.back()}
+            className="back-button"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              color: "black",
+              border: "2px solid black",
+              padding: "6px 20px",
+              borderRadius: "10px",
+              cursor: "pointer",
+              fontSize: "16px",
+              fontWeight: "600",
+              transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+              marginLeft: "20px",
+            }}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                transition:
+                  "transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+              }}
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            <span
+              className="button-text"
+              style={{
+                transition:
+                  "transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+              }}
+            >
+              Back
+            </span>
+          </button>
+
+          {/* College Navigation Tab */}
+          <div
+            className="college-navigation"
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              gap: "15px",
+              marginRight: "20px",
+              padding: "8px 16px",
+              borderRadius: "8px",
+              overflow: "hidden",
+            }}
+          >
+            <button
+              onClick={handlePrevCollege}
+              style={{
+                backgroundColor: "#5B2C6F",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "30px",
+                height: "30px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                flexShrink: 0,
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            <div
+              style={{
+                display: "flex",
+                overflowX: "hidden",
+                gap: "10px",
+              }}
+            >
+              {collegeDetails?.map((college, index) => (
+                <div
+                  key={index}
+                  style={{
+                    padding: "5px 10px",
+                    backgroundColor:
+                      currentCollegeIndex === index ? "#5B2C6F" : "transparent",
+                    color: currentCollegeIndex === index ? "white" : "#5B2C6F",
+                    borderRadius: "5px",
+                    fontSize: isMobileView ? "12px" : "14px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    transform: `translateX(-${
+                      currentCollegeIndex * (isMobileView ? 100 : 120)
+                    }px)`,
+                    transition:
+                      "transform 0.3s ease, background-color 0.3s ease",
+                    flexShrink: 0,
+                  }}
+                  onClick={() => {
+                    setCurrentCollegeIndex(index);
+                    setSelectedCollegeId(college._id);
+                  }}
+                >
+                  {college.collegeName}
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={handleNextCollege}
+              style={{
+                backgroundColor: "#5B2C6F",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "30px",
+                height: "30px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                flexShrink: 0,
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* <About /> */}
+        <About collegeId={selectedCollegeId} />
+        <AboutCollege collegeId={selectedCollegeId} />
+        <OurProgram collegeId={selectedCollegeId} />
+        <Semester collegeId={selectedCollegeId} />
+        <Outcomes collegeId={selectedCollegeId} />
+        <DegreeCertificationUI />
+        <AdmissionProcess />
+        <FAQComponent faq={filteredFAQ} />
         <br />
         <FooterTwo />
       </div>

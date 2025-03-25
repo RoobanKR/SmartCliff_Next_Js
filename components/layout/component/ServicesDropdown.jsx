@@ -1,0 +1,657 @@
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useSelector, useDispatch } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  getAllBusinessServices,
+  selectBusinessServices,
+} from "@/redux/slices/services/services/businessServices";
+import {
+  fetchServices,
+  selectServices,
+} from "@/redux/slices/services/services/Services";
+import { usePathname, useRouter } from "next/navigation";
+
+// SVG Components for card decorations
+const ScatteredSquaresIcon = () => (
+  <svg
+    width="100"
+    height="100"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect x="10" y="10" width="20" height="20" fill="#FF4500" />
+    <rect x="70" y="10" width="20" height="20" fill="#32CD32" />
+    <rect x="40" y="40" width="20" height="20" fill="#FFD700" />
+    <rect x="10" y="70" width="20" height="20" fill="#1E90FF" />
+    <rect x="70" y="70" width="20" height="20" fill="#FF69B4" />
+  </svg>
+);
+
+const CirclesIcon = () => (
+  <svg
+    width="80"
+    height="80"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="60" cy="40" r="30" fill="#FFD966" />
+    <circle cx="30" cy="70" r="20" fill="#FF6666" />
+    <circle cx="70" cy="70" r="15" fill="#65C466" />
+  </svg>
+);
+
+const ScatteredStarsIcon = () => (
+  <svg
+    width="100"
+    height="100"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <polygon
+      points="20,10 25,25 40,25 28,35 33,50 20,40 7,50 12,35 0,25 15,25"
+      fill="#FFD700"
+    />
+    <polygon
+      points="80,20 85,35 100,35 88,45 93,60 80,50 67,60 72,45 60,35 75,35"
+      fill="#FF4500"
+    />
+    <polygon
+      points="50,60 55,75 70,75 58,85 63,100 50,90 37,100 42,85 30,75 45,75"
+      fill="#1E90FF"
+    />
+  </svg>
+);
+
+const ScatteredCirclesIcon = () => (
+  <svg
+    width="100"
+    height="100"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="20" cy="20" r="15" fill="#FF4500" />
+    <circle cx="80" cy="20" r="10" fill="#1E90FF" />
+    <circle cx="40" cy="60" r="20" fill="#32CD32" />
+    <circle cx="75" cy="75" r="12" fill="#FFD700" />
+  </svg>
+);
+
+const LoadingSpinner = () => {
+  const [dotCount, setDotCount] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDotCount((prev) => (prev < 3 ? prev + 1 : 1));
+    }, 300); // Change dot count every 300ms
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <svg
+        className="animate-spin"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{
+          animation: "spin 1s linear infinite",
+          transformOrigin: "center",
+        }}
+      >
+        <style jsx>{`
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
+        <circle cx="12" cy="12" r="10" stroke="#f2f2f2" strokeWidth="3" />
+        <path
+          d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12"
+          stroke="#0047AB"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      </svg>
+    </div>
+  );
+};
+
+const SequentialDots = () => {
+  const [dots, setDots] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots((prev) => (prev < 3 ? prev + 1 : 1));
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span
+      style={{
+        width: "24px",
+        display: "inline-block",
+        textAlign: "left",
+      }}
+    >
+      {".".repeat(dots)}
+    </span>
+  );
+};
+
+const ServicesDropdown = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const services = useSelector(selectServices);
+  const businessServices = useSelector(selectBusinessServices);
+  const [hoveredService, setHoveredService] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [loadingServiceId, setLoadingServiceId] = useState(null);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (path) => pathname.startsWith(path);
+
+  useEffect(() => {
+    dispatch(getAllBusinessServices());
+    dispatch(fetchServices());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (
+      isDropdownOpen &&
+      businessServices &&
+      businessServices.length > 0 &&
+      !hoveredService
+    ) {
+      setHoveredService(businessServices[0]._id);
+    }
+  }, [isDropdownOpen, businessServices, hoveredService]);
+
+  // Track navigation events
+  useEffect(() => {
+    const handleRouteChangeStart = () => {
+      setIsNavigating(true);
+    };
+
+    const handleRouteChangeComplete = () => {
+      setIsNavigating(false);
+      setLoadingServiceId(null);
+    };
+
+    const handleRouteChangeError = () => {
+      setIsNavigating(false);
+      setLoadingServiceId(null);
+    };
+
+    // Subscribe to router events
+    window.addEventListener("beforeunload", handleRouteChangeStart);
+
+    // For Next.js App Router
+    const handlePathnameChange = () => {
+      if (isNavigating) {
+        handleRouteChangeComplete();
+      }
+    };
+
+    // Check if pathname has changed
+    const currentPathname = pathname;
+    let previousPathname = currentPathname;
+
+    const pathnameObserver = setInterval(() => {
+      const newPathname = window.location.pathname;
+      if (previousPathname !== newPathname) {
+        previousPathname = newPathname;
+        handlePathnameChange();
+      }
+    }, 100);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleRouteChangeStart);
+      clearInterval(pathnameObserver);
+    };
+  }, [pathname, isNavigating]);
+
+  // Find the current business service for slug
+  const getCurrentBusinessService = (serviceId) => {
+    return businessServices?.find((service) => service._id === serviceId);
+  };
+
+  // Function to get a decoration for a card based on index
+  const getCardDecoration = (index) => {
+    // Cycle through 3 decoration styles
+    const decorationIndex = index % 4;
+
+    switch (decorationIndex) {
+      case 0:
+        return <ScatteredCirclesIcon />;
+      case 1:
+        return <ScatteredStarsIcon />;
+      case 2:
+        return <CirclesIcon />;
+      default:
+        return <ScatteredSquaresIcon />;
+    }
+  };
+
+  const handleLearnMoreClick = (serviceId) => {
+    setLoadingServiceId(serviceId);
+    setIsNavigating(true);
+    // Now the loading state will be cleared by the route change handlers
+  };
+
+  return (
+    <li
+      className="menu-item-has-children"
+      onMouseEnter={() => {
+        setIsDropdownOpen(true);
+        setIsHovered(true);
+      }}
+      onMouseLeave={() => {
+        setIsDropdownOpen(false);
+        setIsHovered(false);
+      }}
+    >
+      <a data-barba className="serviceMainLink" style={{ cursor: "pointer" }}>
+        <span style={{ color: isHovered ? "#f2775e" : "" }}>Services</span>
+        <motion.i
+          className="icon-chevron-down text-13 ml-10"
+          animate={isDropdownOpen ? { rotate: 180 } : { rotate: 0 }}
+          transition={{ duration: 0.2 }}
+          style={{ color: isHovered || isActive("/business") ? "#f2775e" : "" }}
+        />
+      </a>
+      <AnimatePresence>
+        {isDropdownOpen && (
+          <motion.div
+            className="mega-dropdown-container"
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{
+              position: "fixed",
+              top: "60px",
+              left: "120px",
+              width: "80%",
+              boxShadow: "0px 10px 50px rgba(0, 0, 0, 0.1)",
+              zIndex: "1000",
+              padding: "10px 20px",
+              borderRadius: "12px",
+              background: "white",
+              border: "1px solid #e0e0e0",
+            }}
+          >
+            <div
+              className="mega-dropdown-wrapper"
+              style={{
+                display: "flex",
+                maxWidth: "1400px",
+                margin: "0 auto",
+              }}
+            >
+              {/* Left sidebar */}
+              <div
+                className="services-sidebar"
+                style={{
+                  width: "260px",
+                  backgroundColor: "#f9f9f9",
+                  borderRight: "1px solid #eaeaea",
+                  height: "450px",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#ccc transparent",
+                }}
+              >
+                <ul
+                  style={{
+                    listStyle: "none",
+                    padding: "0",
+                    margin: "0",
+                  }}
+                >
+                  {businessServices?.map((service) => (
+                    <motion.li
+                      key={service._id}
+                      onMouseEnter={() => setHoveredService(service._id)}
+                      style={{
+                        padding: "0",
+                        borderBottom: "1px solid #eaeaea",
+                        backgroundColor:
+                          hoveredService === service._id
+                            ? "#fff"
+                            : "transparent",
+                        color:
+                          hoveredService === service._id ? "#f2775e" : "black",
+                        transition: "all 0.2s ease",
+                        transform:
+                          hoveredService === service._id
+                            ? "scale(1.05)"
+                            : "scale(1)",
+                      }}
+                    >
+                      <a
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          padding: "12px 20px",
+                          textDecoration: "none",
+                          color:
+                            hoveredService === service._id ? "#333" : "#555",
+                          fontWeight:
+                            hoveredService === service._id ? "500" : "400",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <div
+                            style={{
+                              width: "28px",
+                              height: "28px",
+                              marginRight: "14px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Image
+                              width={510}
+                              height={360}
+                              style={{
+                                width: "30px",
+                                height: "30px",
+                                transition: "filter 0.3s ease",
+                              }}
+                              src={service.logo}
+                              alt="image"
+                            />
+                          </div>
+                          <span style={{ fontSize: "14px" }}>
+                            {service.name}
+                          </span>
+                        </div>
+                        <i
+                          className="icon-chevron-right"
+                          style={{
+                            fontSize: "12px",
+                            marginLeft: "5px",
+                          }}
+                        ></i>
+                      </a>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Right content area - UPDATED with decorative elements */}
+              <div
+                className="services-content"
+                style={{
+                  flex: "1",
+                  padding: "20px 30px",
+                  overflowY: "auto",
+                  height: "450px",
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#ccc transparent",
+                  backgroundColor: "#fff",
+                }}
+              >
+                {hoveredService &&
+                services?.filter(
+                  (service) =>
+                    service.business_services &&
+                    service.business_services._id === hoveredService
+                ).length > 0 ? (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(2, 1fr)",
+                      gap: "20px",
+                    }}
+                  >
+                    {services
+                      .filter(
+                        (service) =>
+                          service.business_services &&
+                          service.business_services._id === hoveredService
+                      )
+                      .map((service, index) => {
+                        const currentBusinessService =
+                          getCurrentBusinessService(hoveredService);
+
+                        const isLoading = loadingServiceId === service._id;
+                        const serviceUrl = `/${currentBusinessService?.slug}/${service.slug}`;
+                        return (
+                          <Link
+                            key={service._id}
+                            href={serviceUrl}
+                            passHref
+                            onClick={() => handleLearnMoreClick(service._id)}
+                            style={{
+                              textDecoration: "none",
+                              color: "inherit",
+                            }}
+                          >
+                            <div
+                              style={{
+                                background: "#fff",
+                                borderRadius: "16px",
+                                boxShadow:
+                                  "5px 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)",
+                                overflow: "hidden",
+                                height: "180px",
+                                maxWidth: "400px",
+                                display: "flex",
+                                flexDirection: "column",
+                                transition:
+                                  "transform 0.3s ease, box-shadow 0.3s ease",
+                                padding: "20px 20px",
+                                position: "relative",
+                                border: "1px solid #f0f0f0",
+                              }}
+                              className="hover:shadow-lg hover:-translate-y-1"
+                            >
+                              {/* Decorative element positioned at right side */}
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: "120px",
+                                  right: "-20px",
+                                  opacity: 0.9,
+                                  zIndex: "0",
+                                }}
+                              >
+                                {getCardDecoration(index)}
+                              </div>
+                              {/* Content container with an image on the left */}
+                              <div
+                                style={{
+                                  zIndex: "1",
+                                }}
+                              >
+                                {/* Service Image (Left of heading) */}
+                                <div
+                                  style={{
+                                    display: "flex",
+
+                                    zIndex: "1",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      flexShrink: "0",
+                                      width: "50px",
+                                      height: "50px",
+                                      marginRight: "15px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      borderRadius: "50%",
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    {service.icon ? (
+                                      <Image
+                                        src={service.icon}
+                                        alt={service.title}
+                                        width={30}
+                                        height={30}
+                                        style={{ objectFit: "cover" }}
+                                      />
+                                    ) : (
+                                      <i
+                                        className="icon-briefcase"
+                                        style={{
+                                          fontSize: "28px",
+                                          color: "#498bfa",
+                                        }}
+                                      ></i>
+                                    )}
+                                  </div>
+                                  <h3
+                                    style={{
+                                      fontSize: "15px",
+                                      fontWeight: "600",
+                                      color: "#002856",
+                                      marginTop: "8px",
+                                      marginBottom: "10px",
+                                      lineHeight: "1.3",
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      display: "-webkit-box",
+                                      WebkitLineClamp: "2",
+                                      WebkitBoxOrient: "vertical",
+                                    }}
+                                  >
+                                    {service.title}
+                                  </h3>
+                                </div>
+
+                                {/* Text Content */}
+                                <div style={{ flex: "1" }}>
+                                  {/* Description */}
+                                  <p
+                                    style={{
+                                      fontSize: "12px",
+                                      color: "#6B7280",
+                                      margin: "0 0 12px 0",
+                                      lineHeight: "1.5",
+                                      flex: "1",
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      display: "-webkit-box",
+                                      WebkitLineClamp: "3",
+                                      WebkitBoxOrient: "vertical",
+                                    }}
+                                  >
+                                    {service.description ||
+                                      `Comprehensive ${service.title} solutions tailored to your business needs.`}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Learn More button */}
+                              <div
+                                style={{
+                                  marginTop: "auto",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  position: "relative",
+                                  zIndex: "1",
+                                }}
+                              >
+                                {isLoading ? (
+                                  <>
+                                    <LoadingSpinner />
+                                    <span style={{ marginLeft: "8px" }}>
+                                      Loading
+                                      <SequentialDots />
+                                    </span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span
+                                      style={{
+                                        fontSize: "14px",
+                                        fontWeight: "500",
+                                        color: "#0047AB",
+                                        display: "flex",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      Learn More
+                                    </span>
+                                    <i
+                                      className="icon-chevron-right"
+                                      style={{
+                                        fontSize: "11px",
+                                        marginLeft: "8px",
+                                        color: "#0047AB",
+                                        transition: "transform 0.2s ease",
+                                      }}
+                                    ></i>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "350px",
+                      color: "#777",
+                    }}
+                  >
+                    <i
+                      className="icon-briefcase"
+                      style={{
+                        fontSize: "40px",
+                        color: "#ddd",
+                        marginBottom: "15px",
+                      }}
+                    ></i>
+                    {hoveredService
+                      ? "No services available in this category"
+                      : "Select a category to view services"}
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
+  );
+};
+
+export default ServicesDropdown;

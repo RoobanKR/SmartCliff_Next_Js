@@ -34,7 +34,6 @@ export default function EntrollBatch() {
   const [secondsLeft, setSecondsLeft] = useState(30);
   const error = useSelector(selectError);
 
-  // console.log("error",error);
   useEffect(() => {
     dispatch(fetchCourses());
   }, [dispatch]);

@@ -8,11 +8,12 @@ import jsonData from "../../../public/assets/json/Banner.json";
 import InstituteAddForm from "@/components/business/InstituteAddForm";
 import KeyElements from "@/components/business/KeyElements";
 import InstituteTestimonial from "@/components/business/InstituteTestimonial";
+import HeaderTwo from "@/components/layout/headers/HeaderTwo";
 
 export default function page() {
   return (
     <>
-      <HeaderSeven />
+      <HeaderTwo />
       <div className="content-wrapper  js-content-wrapper mt-90">
         <Banner
           title={jsonData[6].title}
@@ -22,10 +23,10 @@ export default function page() {
       </div>
       <div className="main-content overflow-hidden   ">
         <InstituteAddForm />
-        <KeyElements />
-        <div className="content-wrapper  js-content-wrapper overflow-hidden">
+        {/* <KeyElements /> */}
+        {/* <div className="content-wrapper  js-content-wrapper overflow-hidden">
           <InstituteTestimonial />
-        </div>
+        </div> */}
         <FooterTwo />
       </div>
     </>

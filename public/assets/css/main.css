@@ -1,4 +1,6 @@
 @charset "UTF-8";
+
+
 .ratio {
   position: relative;
   display: block;
@@ -62,7 +64,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
 
 :root {
-  --font-primary: "DM Sans", sans-serif;
+  --font-primary: "Montserrat", sans-serif;
   --text-6: 6px;
   --text-9: 9px;
   --text-11: 11px;
@@ -1076,7 +1078,7 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: var(--font-primary);
+  font-family: Montserrat, sans-serif;
   min-height: 100%;
   font-size: 15px;
   line-height: 1;
@@ -1216,7 +1218,7 @@ html.-dark-mode .button.-purple-3 {
 body {
   overflow-x: hidden;
   padding: 0;
-  font-family: var(--font-primary);
+  font-family: Montserrat, sans-serif;
   width: 100%;
   max-width: 100%;
   background-color: white;
@@ -3853,7 +3855,7 @@ h6 {
 }
 
 .coursesCard.-type-3:hover .coursesCard__icon {
-  background-color: var(--color-purple-1) !important;
+  /* background-color: var(--color-purple-1) !important; */
 }
 
 .coursesCard.-type-3:hover .coursesCard__icon .icon {
@@ -4025,6 +4027,7 @@ h6 {
 .footer.-type-1 .footer-header .footer-header-socials__list a:hover {
   color: white !important;
   background-color: #2b1c55 !important;
+  
 }
 
 .footer.-type-1 .footer-columns {
@@ -4233,13 +4236,15 @@ h6 {
   width: 100%;
   height: 100%;
   border-radius: 100%;
-  background-color: var(--color-dark-6);
+  color:white;
+  background-color: #f2775e;
   opacity: 0;
   transition: all 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .footer.-type-5 .footer-header-socials__list a:hover::after {
   opacity: 1;
+  
 }
 
 .header {
@@ -7048,20 +7053,21 @@ h6 {
 
 .page-header.-type-1 {
   padding-top: 90px;
-  padding-bottom: 40px;
+  padding-bottom: 15px;
 }
 
 @media (max-width: 767px) {
   .page-header.-type-1 {
     padding-top: 60px;
-    padding-bottom: 40px;
+    padding-bottom: 15px;
   }
 }
 
 .page-header.-type-1 .page-header__title {
-  font-size: 40px;
-  line-height: 45px;
+  font-size: 35px;
+  line-height: 40px;
 }
+
 
 @media (max-width: 991px) {
   .page-header.-type-1 .page-header__title {
@@ -8616,6 +8622,12 @@ h6 {
 .dashboard__content {
   width: 100%;
   padding: 60px;
+  border-radius: 16px;
+}
+
+.banner__content {
+  width: 100%;
+  padding: 20px;
   border-radius: 16px;
 }
 
@@ -15802,4 +15814,9 @@ table.table td {
   color: var(--color-purple-1) !important;
   border-radius: 100%;
   background: white;
+}
+
+.menu-item-has-children:hover > a .icon-chevron-right {
+  transform: rotate(90deg);
+  transition: transform 0.4s ease;
 }

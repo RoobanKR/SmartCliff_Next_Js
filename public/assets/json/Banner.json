@@ -2,36 +2,71 @@
   {
     "title": "Welcome to Our Services Page",
     "description": "Discover available services.",
-    "imageUrl": "/assets/img/bannerimg.jpg"
+    "imageUrl": "/assets/img/bannerimg3.jpg"
   },
   {
     "title": "Welcome to Our Courses Page",
     "description": "Discover available Courses.",
-    "imageUrl": "/assets/img/bannerimg.jpg"
+    "imageUrl": "/assets/img/bannerimg3.jpg"
   },
   {
     "title": "Welcome to Our Degree Program",
     "description": "Discover available Programs.",
-    "imageUrl": "/assets/img/bannerimg.jpg"
+    "imageUrl": "/assets/img/bannerimg3.jpg"
   },
   {
     "title": "About Us",
-    "description": "Discover available Programs.",
-    "imageUrl": "/assets/img/banner2.png"
+    "description": "Empowering careers, connecting opportunities.",
+    "imageUrl": "/assets/img/about-1/abtbck2.png"
   },
   {
     "title": "Welcome to Our Hiring Page",
     "description": "The hiring page provides a platform for individuals and businesses.",
-    "imageUrl": "/assets/img/bannerimg.jpg"
+    "imageUrl": "/assets/img/bannerimg3.jpg"
   },
   {
     "title": "Welcome to Our Training Page",
     "description": "The training page provides a platform for individuals and businesses.",
-    "imageUrl": "/assets/img/bannerimg.jpg"
+    "imageUrl": "/assets/img/bannerimg3.jpg"
   },
   {
     "title": "Welcome to Our Institute Page",
     "description": "The Institute page provides a platform for individuals and businesses.",
-    "imageUrl": "/assets/img/bannerimg.jpg"
+    "imageUrl": "/assets/img/bannerimg3.jpg"
+  },
+  {
+    "title": "Contact Us",
+    "description": "Get in touch with us today.",
+    "imageUrl": "/assets/img/about-1/contact.png"
+  },
+  {
+    "title": "Career",
+    "description": "Discover In-Demand Careers Today!",
+    "imageUrl": "/assets/img/about-1/career.png"
+  },
+  {
+    "title": "Our Review Page",
+    "description": "See what our students have to say about us.",
+    "imageUrl": "/assets/img/about-1/review.png"
+  },
+  {
+    "title": "Terms and Condition",
+    "description": "use and protection of your Personal Information",
+    "imageUrl": "/assets/img/about-1/review.png"
+  },
+  {
+    "title": "B2I - Degree Program",
+    "description": "use and protection of your Personal Information",
+    "imageUrl": "/assets/img/about-1/abtbck2.png"
+  },
+  {
+    "title": "CSR - Degree Program",
+    "description": "use and protection of your Personal Information",
+    "imageUrl": "/assets/img/about-1/abtbck2.png"
+  },
+  {
+    "title": "History",
+    "description": "Explore the journey and evolution of our organization over time.",
+    "imageUrl": "/assets/img/about-1/review.png"
   }
 ]

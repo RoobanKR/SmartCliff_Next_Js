@@ -1,71 +1,81 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { featureOne } from "../../../data/features";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllWCU } from "@/redux/slices/whyThis/whyThis";
 export default function Features() {
+  const dispatch = useDispatch();
+  const all = useSelector((state) => state.wcu.wcuItems);
+
+  useEffect(() => {
+    dispatch(getAllWCU());
+  }, [dispatch]);
+
   return (
     <section className="layout-pt-sm layout-pb-sm bg-white-1">
       <div className="container">
         <div className="row y-gap-30 justify-between items-center">
-          <div className="col-xl-5 col-lg-6 col-md-10 order-2 order-lg-1">
+          <div className="col-xl-7 col-lg-6 col-md-10 order-2 order-lg-1">
             <div className="about-content">
-              <h2
+              <h4
                 className="about-content__title customSized"
                 data-aos="fade-up"
-                style={{ fontFamily: "Serif" }}
               >
-                <span style={{ color: "#f2775e" }}>Learn</span> new skills when
-                and where you like.
-              </h2>
-              <p
-                className="about-content__text"
-                data-aos="fade-up"
-                style={{ fontFamily: "Serif" }}
-              >
+                <p
+                  style={{
+                    color: "#f2775e",
+                    fontSize: "40px",
+                    paddingBottom: "20px",
+                  }}
+                >
+                  Why Choose Us
+                </p>
+                <p style={{ color: "black", fontSize: "30px" }}>
+                  Because Excellence is <br /> Our Standard.
+                </p>
+              </h4>
+              <p className="about-content__text" data-aos="fade-up">
                 Use the list below to bring attention to your product’s key
                 <br /> differentiator.
               </p>
-              <div className="y-gap-20 pt-30">
-                {featureOne.map((elm, i) => (
+              <div
+                style={{
+                  paddingTop: "30px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                {all.map((elm, i) => (
                   <div
                     key={i}
-                    className="d-flex items-center"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
                     data-aos="fade-up"
                   >
-                    <div className="about-content-list__icon">
-                      <span
-                        className="text-white"
+                    <div style={{ flexShrink: 0 }}>
+                      <img
+                        src={elm.icon}
+                        alt={elm.name}
                         style={{
-                          fontSize: "10px",
-                          fontWeight: "300",
+                          width: "35px",
+                          height: "35px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
                         }}
-                        aria-hidden="true"
-                      >
-                        <FontAwesomeIcon icon={faCheck} />
-                      </span>
+                      />
                     </div>
-                    <div
-                      className="about-content-list__title"
-                      style={{ fontFamily: "Serif" }}
-                    >
-                      {elm.title}
-                    </div>
+                    <div style={{ fontSize: "16px" }}>{elm.title}</div>
                   </div>
                 ))}
-              </div>
-
-              <div
-                className="d-inline-block mt-30"
-                style={{ fontFamily: "Serif" }}
-              >
-                <Link
-                  href="/signup"
-                  className="button -md -purple-1 text-white"
-                >
-                  Join Free
-                </Link>
               </div>
             </div>
           </div>
@@ -79,7 +89,7 @@ export default function Features() {
                 width={750}
                 height={850}
                 style={{ height: "100%", width: "100%" }}
-                src="/assets/img/feature.png"
+                src="/assets/img/home-4/masthead/van.jpg"
                 alt="image"
               />
             </div>

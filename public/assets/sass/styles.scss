@@ -1,11 +1,12 @@
-
-
-
 // @import "../../../node_modules/bootstrap/scss/bootstrap";
 @import "../css/vendors.css";
 @import "../css/main.css";
 @import "../sass/custom.scss";
 
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
+* {
+  font-family: "Montserrat", sans-serif !important;
+}
 
-@import 'node_modules/react-modal-video/scss/modal-video.scss'
+@import "node_modules/react-modal-video/scss/modal-video.scss";

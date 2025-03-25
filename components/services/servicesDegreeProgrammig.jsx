@@ -3,147 +3,595 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
+import { selectBusinessServices } from "@/redux/slices/services/services/businessServices";
+import jsonData from "../../public/assets/json/Banner.json";
+import {
+  fetchServices,
+  selectServices,
+} from "@/redux/slices/services/services/Services";
+import { getAllServiceClients } from "@/redux/slices/services/services/clientServices";
+import { FaCalendarAlt } from "react-icons/fa";
+import Banner from "../common/Banner";
 
 export default function ServiceDegreeProgram() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
   const degreeProgramData = useSelector(
     (state) => state.degreeProgram.degreeProgramData
   );
+  const services = useSelector(selectServices);
+  const servicesBusiness = useSelector(selectBusinessServices);
+
+  const [yearFilter, setYearFilter] = useState(""); // State for selected year
+  const [loadingStates, setLoadingStates] = useState({});
+
+  const fullUrl = typeof window !== "undefined" ? window.location.href : "";
+  const segments = fullUrl.split("/").filter(Boolean);
+  const lastSegment = segments.pop();
+  const secondLastSegment = segments.pop();
+  const onematchingData = servicesBusiness.find(
+    (i) => i.slug === secondLastSegment
+  );
+  const matchId = services.filter(
+    (i) => i.business_services._id === onematchingData._id
+  );
+  const twomatchingService = services.find((i) => i.slug === lastSegment);
+  const final = matchId.find(
+    (service) => service.slug === twomatchingService?.slug
+  );
+
+  const matchedDegree = degreeProgramData.filter(
+    (service) => service.service?._id === final?._id
+  );
 
   useEffect(() => {
+    dispatch(fetchServices());
+    dispatch(getAllServiceClients());
     dispatch(fetchDegreeProgramData());
   }, [dispatch]);
 
-  const featuredItems = degreeProgramData?.slice(0, 2) || [];
-  const remainingItems = degreeProgramData?.slice(2) || [];
+  // Extract unique years from degree programs
+  const uniqueYears = [
+    ...new Set(matchedDegree?.map((item) => item.year)),
+  ].sort((a, b) => b - a);
+
+  // Filter data based on selected year
+  const filteredPrograms = yearFilter
+    ? matchedDegree?.filter((program) => program.year === yearFilter)
+    : matchedDegree;
+
+  const featuredItems = filteredPrograms || [];
+  const handleProgramClick = (programId, e) => {
+    e.preventDefault(); // Prevent default Link behavior
+
+    // Set loading state for this specific program
+    setLoadingStates((prev) => ({
+      ...prev,
+      [programId]: true,
+    }));
+
+    // Navigate programmatically
+    router.push(`${pathname}/${programId}`);
+
+    // Note: We don't need to reset loading state as the component will unmount during navigation
+  };
 
   return (
     <>
-      <section className="page-header -type-1">
+      <div className="banner__content mt-60">
+        {jsonData[3] && (
+          <Banner
+            title={jsonData[11].title}
+            description={jsonData[11].description}
+            imageUrl={jsonData[11].imageUrl}
+          />
+        )}
+      </div>
+
+      {/* Filter Section */}
+      <div
+        style={{
+          position: "sticky",
+          marginTop: "10px",
+          animation: "slideInDown 0.6s ease 0.5s forwards",
+        }}
+      >
         <div className="container">
-          <div className="page-header__content">
-            <div className="row justify-center text-center">
-              <div className="col-auto">
-                <div>
-                  <h4 className="">Degree Program</h4>
-                </div>
-                <div>
-                  <p className="page-header__text">
-                    We're on a mission to deliver engaging, curated courses at a reasonable price.
-                  </p>
-                </div>
-              </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "15px",
+            }}
+          >
+            <h4
+              style={{
+                margin: "0",
+                fontSize: "18px",
+                fontWeight: "600",
+                color: "#333",
+              }}
+            >
+              Filter by Year:
+            </h4>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                flexWrap: "wrap",
+              }}
+            >
+              <button
+                style={{
+                  padding: "10px 20px",
+                  borderRadius: "30px",
+                  border: "none",
+                  background: yearFilter === "" ? "#5B2C6F" : "transparent",
+                  color: yearFilter === "" ? "white" : "#333",
+                  fontWeight: "600",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow:
+                    yearFilter === ""
+                      ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                      : "none",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+                onClick={() => setYearFilter("")}
+                onMouseEnter={(e) => {
+                  if (yearFilter !== "") {
+                    e.currentTarget.style.background = "#f0f0f0";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (yearFilter !== "") {
+                    e.currentTarget.style.background = "transparent";
+                  }
+                }}
+              >
+                All Years
+              </button>
+
+              {uniqueYears.map((year) => (
+                <button
+                  key={year}
+                  style={{
+                    padding: "10px 20px",
+                    borderRadius: "30px",
+                    border: "none",
+                    background: yearFilter === year ? "#5B2C6F" : "transparent",
+                    color: yearFilter === year ? "white" : "#333",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    boxShadow:
+                      yearFilter === year
+                        ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                        : "none",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                  onClick={() => setYearFilter(year)}
+                  onMouseEnter={(e) => {
+                    if (yearFilter !== year) {
+                      e.currentTarget.style.background = "#f0f0f0";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (yearFilter !== year) {
+                      e.currentTarget.style.background = "transparent";
+                    }
+                  }}
+                >
+                  {year}
+                </button>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section className="layout-pt-xs layout-pb-md">
+      {/* Programs Grid */}
+      <section
+        style={{
+          padding: "30px 0",
+        }}
+      >
         <div className="container">
-          {/* First two items centered */}
-          <div className="row justify-center">
-            {featuredItems.map((elm, i) => (
-              <div key={i} className="col-lg-4 col-md-6">
-                <div className="eventCard -type-1">
-                  <div className="eventCard__img">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: "30px",
+              margin: "0 auto",
+            }}
+          >
+            {featuredItems.map((program, index) => (
+              <div
+                key={program._id}
+                style={{
+                  opacity: "0",
+                  transform: `perspective(1000px) rotateY(10deg) translateZ(-50px)`,
+                  animation: `cardAppear 0.6s ease ${index * 0.1}s forwards`,
+                  height: "80%",
+                }}
+              >
+                <div
+                  style={{
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                    backgroundColor: "white",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.07)",
+                    transition:
+                      "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    transform: "translateY(0) scale(1)",
+                    position: "relative",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform =
+                      "translateY(-15px) scale(1.02)";
+                    e.currentTarget.style.boxShadow =
+                      "0 20px 40px rgba(91, 44, 111, 0.15)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0) scale(1)";
+                    e.currentTarget.style.boxShadow =
+                      "0 10px 30px rgba(0,0,0,0.07)";
+                  }}
+                >
+                  {/* Card ribbon */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "20px",
+                      right: "-35px",
+                      background: "#5B2C6F",
+                      color: "white",
+                      padding: "5px 40px",
+                      transform: "rotate(45deg)",
+                      fontWeight: "600",
+                      fontSize: "12px",
+                      boxShadow: "0 3px 10px rgba(0,0,0,0.1)",
+                      zIndex: "2",
+                    }}
+                  >
+                    {program.year}
+                  </div>
+
+                  {/* Image container */}
+                  <div
+                    style={{
+                      height: "220px",
+                      overflow: "hidden",
+                      position: "relative",
+                    }}
+                  >
                     <Image
                       width={510}
                       height={360}
-                      src={elm.images[1]}
-                      alt="image"
+                      src={program.images[1]}
+                      alt={program.program_name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        transition:
+                          "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                      }}
                     />
+
+                    {/* Gradient overlay */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: "0",
+                        left: "0",
+                        width: "100%",
+                        height: "60%",
+                        background:
+                          "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)",
+                        opacity: "0",
+                        transition: "opacity 0.4s ease",
+                        display: "flex",
+                        alignItems: "flex-end",
+                        padding: "20px",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.opacity = "1";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.opacity = "0";
+                      }}
+                    >
+                      <h3
+                        style={{
+                          color: "white",
+                          margin: "0",
+                          fontSize: "18px",
+                          fontWeight: "700",
+                          textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                        }}
+                      >
+                        {program.program_name}
+                      </h3>
+                    </div>
                   </div>
-                  <div className="eventCard__bg bg-white">
-                    <div className="eventCard__content y-gap-10">
-                      <div className="eventCard__inner">
-                        <h4 className="eventCard__title text-17 fw-500">
-                          <Link
-                            className="linkCustom"
-                            href={`/${elm.slug}/${elm._id}`}
-                          >
-                            {elm.program_name}
-                          </Link>
-                        </h4>
-                        <div className="d-flex x-gap-15 pt-10">
-                          {/* <div className="d-flex items-center">
-                            <div className="icon-calendar-2 text-16 mr-8"></div>
-                            <div className="text-14">{elm.date || "26.Jun.2025"}</div>
-                          </div> */}
-                          <div className="d-flex items-center">
-                            <div className="icon-location text-16 mr-8"></div>
-                            <div className="text-14">{elm.location || "Coimbatore,TN"}</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="eventCard__button">
-                        <Link
-                          href={`/${elm.slug}/${elm._id}`}
-                          className="button -sm -rounded -outline-purple-1 text-purple-1 px-25"
+
+                  {/* Content */}
+                  <div
+                    style={{
+                      padding: "25px",
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: "1",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      <h3
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "700",
+                          margin: "0 0 10px",
+                          color: "#333",
+                          lineHeight: "1.4",
+                        }}
+                      >
+                        {program.program_name}
+                      </h3>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "14px",
+                            color: "#666",
+                          }}
                         >
-                          View
-                        </Link>
+                          {program.slogan}
+                        </span>
                       </div>
                     </div>
+
+                    <a
+                      href={`${pathname}/${program._id}`}
+                      onClick={(e) => handleProgramClick(program._id, e)}
+                      style={{
+                        display: "inline-block",
+                        marginTop: "15px",
+                        padding: "12px 0",
+                        textAlign: "center",
+                        width: "100%",
+                        borderRadius: "10px",
+                        background:
+                          "linear-gradient(to right, #5B2C6F, #8E44AD)",
+                        color: "white",
+                        fontWeight: "600",
+                        textDecoration: "none",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        fontSize: "14px",
+                        border: "none",
+                        transition: "all 0.3s ease",
+                        position: "relative",
+                        overflow: "hidden",
+                        cursor: loadingStates[program._id] ? "wait" : "pointer",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!loadingStates[program._id]) {
+                          e.currentTarget.style.boxShadow =
+                            "0 5px 15px rgba(91, 44, 111, 0.3)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    >
+                      {loadingStates[program._id] ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "20px",
+                              height: "20px",
+                              border: "3px solid rgba(255, 255, 255, 0.3)",
+                              borderTop: "3px solid white",
+                              borderRadius: "50%",
+                              animation: "spin 1s linear infinite",
+                              position: "relative",
+                              zIndex: "1",
+                            }}
+                          ></span>
+                          <span
+                            style={{
+                              color: "white",
+                              position: "relative",
+                              zIndex: "1",
+                            }}
+                          >
+                            Loading...
+                          </span>
+                        </div>
+                      ) : (
+                        <span
+                          style={{
+                            color: "white",
+                            position: "relative",
+                            zIndex: "1",
+                          }}
+                        >
+                          Explore Program
+                        </span>
+                      )}
+
+                      <span
+                        style={{
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                          top: "0",
+                          left: "-100%",
+                          background:
+                            "linear-gradient(to right, #8E44AD, #5B2C6F)",
+                          transition: "all 0.4s ease",
+                          zIndex: "0",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!loadingStates[program._id]) {
+                            e.currentTarget.style.left = "0";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.left = "-100%";
+                        }}
+                      ></span>
+                    </a>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Remaining items in normal grid */}
-          <div className="row y-gap-30">
-            {remainingItems.map((elm, i) => (
-              <div key={i} className="col-lg-4 col-md-6">
-                <div className="eventCard -type-1">
-                  <div className="eventCard__img">
-                    <Image
-                      width={510}
-                      height={360}
-                      src={elm.images[1]}
-                      alt="image"
-                    />
-                  </div>
-                  <div className="eventCard__bg bg-white">
-                    <div className="eventCard__content y-gap-10">
-                      <div className="eventCard__inner">
-                        <h4 className="eventCard__title text-17 fw-500">
-                          <Link
-                            className="linkCustom"
-                            href={`/${elm.slug}/${elm._id}`}
-                          >
-                            {elm.program_name}
-                          </Link>
-                        </h4>
-                        <div className="d-flex x-gap-15 pt-10">
-                          {/* <div className="d-flex items-center">
-                            <div className="icon-calendar-2 text-16 mr-8"></div>
-                            <div className="text-14">{elm.date || "26.Jun.2025"}</div>
-                          </div> */}
-                          <div className="d-flex items-center">
-                            <div className="icon-location text-16 mr-8"></div>
-                            <div className="text-14">{elm.location || "Coimbatore,TN"}</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="eventCard__button">
-                        <Link
-                          href={`/${elm.slug}/${elm._id}`}
-                          className="button -sm -rounded -outline-purple-1 text-purple-1 px-25"
-                        >
-                          View
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          {/* No results message */}
+          {featuredItems.length === 0 && (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "50px 20px",
+                animation: "fadeIn 0.5s ease",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "80px",
+                  marginBottom: "20px",
+                  color: "#ddd",
+                }}
+              >
+                🔍
               </div>
-            ))}
-          </div>
+              <h3
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "600",
+                  color: "#555",
+                  marginBottom: "15px",
+                }}
+              >
+                No programs found
+              </h3>
+              <p
+                style={{
+                  fontSize: "16px",
+                  color: "#777",
+                  maxWidth: "500px",
+                  margin: "0 auto",
+                }}
+              >
+                Try adjusting your filter criteria or check back later for new
+                programs.
+              </p>
+            </div>
+          )}
         </div>
       </section>
+
+      {/* Animation keyframes */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+
+        @keyframes scaleXIn {
+          from {
+            opacity: 0;
+            transform: scaleX(0);
+          }
+          to {
+            opacity: 1;
+            transform: scaleX(1);
+          }
+        }
+
+        @keyframes cardAppear {
+          from {
+            opacity: 0;
+            transform: perspective(1000px) rotateY(10deg) translateZ(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: perspective(1000px) rotateY(0) translateZ(0);
+          }
+        }
+
+        @keyframes float {
+          0% {
+            transform: translate(0, 0);
+          }
+          50% {
+            transform: translate(30px, 20px);
+          }
+          100% {
+            transform: translate(0, 0);
+          }
+        }
+      `}</style>
     </>
   );
 }

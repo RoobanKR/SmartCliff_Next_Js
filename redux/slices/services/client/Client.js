@@ -4,8 +4,8 @@ import axios from "axios";
 
 export const getAllClient = createAsyncThunk("client/getAll", async () => {
   try {
-    const response = await axios.get(`${getAPIURL()}/getAll/client`);
-    return response.data.AllCompanyLogos;
+    const response = await axios.get(`${getAPIURL()}/getAll/service-clients`);
+    return response.data.get_all_services_Client;
   } catch (error) {
     throw error;
   }

@@ -1,111 +1,71 @@
-import { getAllAdmissionProcess } from "@/redux/slices/mca/admissionProcess/AdmissionProcess";
+import React from "react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default function AdmissionProcess() {
-  const dispatch = useDispatch();
-  const admissions = useSelector((state) => state.admissionProcess.admissions);
-  const { id } = useParams();
-  function toRoman(num) {
-    const romanNumerals = [
-      "I",
-      "II",
-      "III",
-      "IV",
-      "V",
-      "VI",
-      "VII",
-      "VIII",
-      "IX",
-      "X",
-      "XI",
-      "XII",
-      "XIII",
-      "XIV",
-      "XV",
-    ];
-    return romanNumerals[num - 1] || num;
-  }
-  const filteredAdmission = admissions.filter(
-    (eligibility) =>
-      eligibility.degree_program && eligibility.degree_program._id === id
-  );
-  useEffect(() => {
-    dispatch(getAllAdmissionProcess());
-  }, [dispatch]);
+  const featureOne = [
+    { id: 1, title: "Advanced AI & Machine Learning" },
+    { id: 2, title: "Industry-Based Case Studies" },
+    { id: 3, title: "Hands-on Practical Training" },
+    { id: 4, title: "Internships with Top Companies" },
+  ];
 
   return (
-    <section
-      className="layout-pt-sm layout-pb-sm mt-5"
-      style={{ fontFamily: "Serif" }}
-    >
+    <section className="layout-pt-sm layout-pb-sm">
       <div className="container">
-        <div className="row justify-center text-center">
-          <div className="col-xl-6 col-lg-7">
-            <div className="sectionTitle ">
-              <h2 className="sectionTitle__title ">Admission Process</h2>
-              <p className="sectionTitle__text ">
-                Learn the data skills you need online at your own pace—from
-                non-coding essentials to data science and machine learning.
+        <div className="row y-gap-30 justify-between items-center">
+          <div className="col-xl-5 col-lg-6 col-md-10 order-2 order-lg-1">
+            <div className="about-content">
+              <h2 className="about-content__title customSized" data-aos="fade-up">
+                <span style={{ color: "#f2775e" }}>Build</span> a strong foundation with our curriculum.
+              </h2>
+              <p className="about-content__text" data-aos="fade-up">
+                Use the list below to bring attention to your product’s key
+                <br /> differentiator.
               </p>
+              <div className="y-gap-20 pt-30">
+                {featureOne.map((elm) => (
+                  <div key={elm.id} className="d-flex items-center" data-aos="fade-up">
+                    <div className="about-content-list__icon">
+                      <span
+                        className="text-white"
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: "300",
+                        }}
+                        aria-hidden="true"
+                      >
+                        <FontAwesomeIcon icon={faCheck} />
+                      </span>
+                    </div>
+                    <div className="about-content-list__title">{elm.title}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="d-inline-block mt-30">
+                <a
+                  href="/assets/img/curriculam.jpg"
+                  download
+                  className="button -md -dark-1 text-white"
+                >
+                  Download Curriculum
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="row y-gap-30 justify-between items-center pt-60 lg:pt-40">
-          <div className="col-lg-6" data-aos="fade-up" data-aos-duration={350}>
-            <Image
-              width={490}
-              height={565}
-              //   className="w-1/1"
-              src="/assets/img/home-8/what/admission.jpg"
-              alt="image"
-            />
-          </div>
-
-          <div className="col-xl-5 col-lg-6 col-md-9">
-            <div className="d-flex flex-column y-gap-30">
-              {filteredAdmission.map((admissionGroup, i) => (
-                <div
-                  key={i}
-                  className="d-flex flex-column"
-                  data-aos="fade-up"
-                  data-aos-duration={(i + 1) * 250}
-                >
-                  {" "}
-                  <p>
-                    <div
-                      style={{
-                        fontSize: "24px",
-                        color: "#666",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Steps for the Admission Process :
-                    </div>
-                  </p>
-                  <br></br>
-                  {admissionGroup.admission.map((admission, index) => (
-                    <div key={index} className="d-flex mb-20">
-                      <div
-                        className="d-flex justify-center items-center bg-orange-5 rounded-full mr-3"
-                        style={{ width: "60px", height: "60px" }}
-                      >
-                        <p className="text-black text-xl font-semibold">
-                          {toRoman(index + 1)}
-                        </p>
-                      </div>
-                      <div>
-                        <h5 className="text-18 lh-11 text-dark-1 fw-500 mt-20 ml-15">
-                          {admission.heading}
-                        </h5>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+          <div className="col-xl-5 col-lg-6 order-1 order-lg-2" data-aos="fade-up">
+            <div className="about-image">
+              <Image
+                width={750}
+                height={850}
+                style={{ height: "100%", width: "100%" }}
+                src="/assets/img/curriculam2.jpg"
+                alt="Curriculum Image"
+              />
             </div>
           </div>
         </div>
