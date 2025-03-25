@@ -3,7 +3,7 @@ import React from "react";
 export default function Terms() {
   return (
     <>
-      <section className="page-header -type-1">
+      {/* <section className="page-header -type-1">
         <div className="container">
           <div className="page-header__content">
             <div className="row justify-center text-center">
@@ -22,13 +22,13 @@ export default function Terms() {
             </div>
           </div>
         </div>
-      </section>
-      <section className="layout-pt-md layout-pb-lg">
+      </section> */}
+      <section className="layout-pt-xs layout-pb-sm">
         <div className="container">
           <div className="row justify-center">
-            <div className="col-xl-8 col-lg-9 col-md-11">
+            <div className="col-xl-12 col-lg-9 col-md-11">
               <h5>Using our services</h5>
-              <p className="mt-30">
+              <p className="mt-10">
                 You must follow any policies made available to you within the
                 Services. Don't misuse our Services. For example, don't
                 interfere with our Services or try to access them using a method
@@ -48,10 +48,10 @@ export default function Terms() {
               </p>
             </div>
 
-            <div className="col-xl-8 col-lg-9 col-md-11">
-              <div className="mt-60 lg:mt-40">
+            <div className="col-xl-12 col-lg-9 col-md-11">
+              <div className="mt-30 lg:mt-40">
                 <h5>Your content in our services</h5>
-                <p className="mt-30">
+                <p className="mt-10">
                   When you upload, submit, store, send or receive content to or
                   through our Services, you give Front (and those we work with)
                   a worldwide license to use, host, store, reproduce, modify,
@@ -72,10 +72,10 @@ export default function Terms() {
               </div>
             </div>
 
-            <div className="col-xl-8 col-lg-9 col-md-11">
-              <div className="mt-60 lg:mt-40">
+            <div className="col-xl-12 col-lg-9 col-md-11">
+              <div className="mt-30 lg:mt-40">
                 <h5>Pay Attention</h5>
-                <p className="mt-30">
+                <p className="mt-10">
                   Our Services are very diverse, so sometimes additional terms
                   or product requirements (including age requirements) may
                   apply. Additional terms will be available with the relevant

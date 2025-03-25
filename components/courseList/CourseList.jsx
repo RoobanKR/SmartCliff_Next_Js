@@ -1,9 +1,10 @@
 "use client";
 
 import {
+  categories,
   coursesData,
   duration,
-  instructorNames,
+  instractorNames,
   languages,
   levels,
   prices,
@@ -12,42 +13,31 @@ import {
 } from "@/data/courses";
 import React, { useState, useEffect } from "react";
 import Star from "../common/Star";
+import PaginationTwo from "../common/PaginationTwo";
+
+import Image from "next/image";
+import Link from "next/link";
+import { fetchCourses } from "@/redux/slices/course/course";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCategories,
   selectCategories,
 } from "@/redux/slices/category/category";
-import { fetchInstructors } from "@/redux/slices/instructor/instructor";
-import { fetchCourses } from "@/redux/slices/course/course";
-import { useRouter } from "next/navigation";
-import { useCookies } from "react-cookie";
-import { resetSignIn, userVerify } from "@/redux/slices/user/Signin";
-import Image from "next/image";
-import PaginationTwo from "../common/PaginationTwo";
 
-export default function CourseList({ selectedCategory }) {
-  const levels = ["Beginer", "Intermediate", "Expert"];
-  const priceRanges = [
-    { label: "All", min: 0, max: Infinity },
-
-    { label: "10000-30000", min: 10000, max: 30000 },
-    { label: "30000-60000", min: 30000, max: 60000 },
-    { label: "60000-90000", min: 60000, max: 90000 },
-  ];
-  const [selectedPriceRange, setSelectedPriceRange] = useState(priceRanges[0]);
+export default function CourseListTwo() {
+  const dispatch = useDispatch();
   const [categoryOpen, setCategoryOpen] = useState(true);
   const [ratingOpen, setRatingOpen] = useState(true);
-  const [instructorOpen, setInstractorOpen] = useState(true);
-  const [priceOpen, setPriceOpen] = useState(true);
   const [levelOpen, setLevelOpen] = useState(true);
-  const [openLanguage, setOpenLanguage] = useState(true);
   const [durationOpen, setDurationOpen] = useState(true);
   const [filterOpen, setFilterOpen] = useState(false);
+
   const [filterCategories, setFilterCategories] = useState([]);
   const [filterRatingRange, setFilterRatingRange] = useState([]);
-  const [filterInstructors, setFilterInstructors] = useState([]);
+  const [filterInstractors, setFilterInstractors] = useState([]);
   const [filterPrice, setFilterPrice] = useState("All");
   const [filterLevels, setFilterLevels] = useState([]);
+  const [filterlanguange, setFilterlanguange] = useState([]);
   const [filterDuration, setFilterDuration] = useState([]);
 
   const [currentSortingOption, setCurrentSortingOption] = useState("Default");
@@ -55,129 +45,52 @@ export default function CourseList({ selectedCategory }) {
   const [filteredData, setFilteredData] = useState([]);
 
   const [sortedFilteredData, setSortedFilteredData] = useState([]);
-  const [filteredInstructors, setFilteredInstructors] = useState([]);
 
   const [pageNumber, setPageNumber] = useState(1);
-  const dispatch = useDispatch();
-  const categories = useSelector(selectCategories);
-  const [cookies] = useCookies(["token"]);
-  const router = useRouter();
-
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedInstructor, setSelectedInstructor] = useState([]);
-  const [showAllCategories, setShowAllCategories] = useState(false);
-  const instructors = useSelector((state) => state.instructors.instructors);
-  const [showAllInstructors, setShowAllInstructors] = useState(false);
   const courses = useSelector((state) => state.courses.courses);
-  const status = useSelector((state) => state.courses.status);
-  const error = useSelector((state) => state.courses.error);
-  const [coursess, setCourses] = useState([]);
-
-  useEffect(() => {
-    const filteredCourses = coursess.filter(
-      (course) => course.category.category_name === selectedCategory
-    );
-  }, [selectedCategory, coursess]);
-  const categoryFilters = useSelector(
-    (state) => state.category.filters.category
-  );
-  // const handleApply = () => {
-  //   if (cookies.token) {
-  //     router.push("/courses1");
-  //   } else {
-  //     router.push("/signup");
-  //   }
-  // };
-
-  categories &&
-    categories.map((pack) => {
-      pack.categorys &&
-        pack.categorys.map((category) => {
-          packagesPerCategoryCount.set(
-            category,
-            packagesPerCategoryCount.get(category)
-              ? packagesPerCategoryCount.get(category) + 1
-              : 1
-          );
-        });
-    });
-
+  const categories = useSelector(selectCategories);
 
   useEffect(() => {
     dispatch(fetchCourses());
-    dispatch(fetchInstructors());
     dispatch(fetchCategories());
   }, [dispatch]);
   useEffect(() => {
-    setFilteredData(courses);
-  }, [courses]);
-  useEffect(() => {
-    setFilteredInstructors(instructors);
-  }, [instructors]);
-
-  const handleCategorySelection = (categoryName) => {
-    if (selectedCategories.includes(categoryName)) {
-      setSelectedCategories(
-        selectedCategories.filter((cat) => cat !== categoryName)
-      );
-    } else {
-      setSelectedCategories([...selectedCategories, categoryName]);
-    }
-  };
-  useEffect(() => {
-    dispatch(fetchInstructors());
-  }, [dispatch]);
-
-  const toggleShowAllCategories = () => {
-    setShowAllCategories(!showAllCategories);
-  };
-  const toggleShowAllinstructors = () => {
-    setShowAllInstructors(!showAllInstructors);
-  };
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
-
-  useEffect(() => {
-    const refItems = courses.filter((course) => {
-      if (filterPrice === "All") {
+    const refItems = coursesData.filter((elm) => {
+      if (filterPrice == "All") {
         return true;
-      } else if (filterPrice === "Free") {
-        return !course.paid;
-      } else if (filterPrice === "Paid") {
-        return course.paid;
+      } else if (filterPrice == "Free") {
+        return !elm.paid;
+      } else if (filterPrice == "Paid") {
+        return elm.paid;
       }
-    });
-
-    const filteredItems = refItems.filter((course) => {
-      // Check if any instructor's name matches the selected instructor's name
-      return course.instructor.some((inst) =>
-        filterInstructors.includes(inst.name)
-      );
     });
 
     let filteredArrays = [];
 
-    if (filterInstructors.length > 0) {
-      const filtered = refItems.filter((course) =>
-        filterInstructors.includes(course.instructor.name)
+    if (filterInstractors.length > 0) {
+      const filtered = refItems.filter((elm) =>
+        filterInstractors.includes(elm.authorName)
       );
-      filteredArrays.push(filtered);
+      filteredArrays = [...filteredArrays, filtered];
     }
-
     if (filterCategories.length > 0) {
-      const filtered = refItems.filter((course) =>
-        filterCategories.includes(course.category.category_name)
+      const filtered = refItems.filter((elm) =>
+        filterCategories.includes(elm.category)
       );
-      filteredArrays.push(filtered);
+      filteredArrays = [...filteredArrays, filtered];
     }
     if (filterLevels.length > 0) {
-      const filtered = refItems.filter((course) =>
-        filterLevels.includes(course.course_level)
+      const filtered = refItems.filter((elm) =>
+        filterLevels.includes(elm.level)
       );
-      filteredArrays.push(filtered);
+      filteredArrays = [...filteredArrays, filtered];
     }
-
+    if (filterlanguange.length > 0) {
+      const filtered = refItems.filter((elm) =>
+        filterlanguange.includes(elm.languange)
+      );
+      filteredArrays = [...filteredArrays, filtered];
+    }
     if (filterRatingRange.length > 0) {
       const filtered = refItems.filter(
         (elm) =>
@@ -202,11 +115,11 @@ export default function CourseList({ selectedCategory }) {
   }, [
     filterCategories,
     filterRatingRange,
-    filterInstructors,
+    filterInstractors,
     filterPrice,
     filterLevels,
+    filterlanguange,
     filterDuration,
-    courses,
   ]);
 
   useEffect(() => {
@@ -239,109 +152,45 @@ export default function CourseList({ selectedCategory }) {
     }
   }, [currentSortingOption, filteredData]);
 
-  const handleFilterCategories = (categoryName) => {
-    if (filterCategories.includes(categoryName)) {
-      const filtered = filterCategories.filter((cat) => cat !== categoryName);
-      setFilterCategories(filtered);
+  const handleFilterCategories = (item) => {
+    if (filterCategories.includes(item)) {
+      const filtered = filterCategories.filter((elm) => elm != item);
+      setFilterCategories([...filtered]);
     } else {
-      setFilterCategories((prev) => [...prev, categoryName]);
+      setFilterCategories((pre) => [...pre, item]);
     }
   };
-
-  const handleFilterInstructor = (instructorName) => {
-    if (filterInstructors.includes(instructorName)) {
-      setFilterInstructors(
-        filterInstructors.filter((ins) => ins !== instructorName)
-      );
-    } else {
-      setFilterInstructors((prev) => [...prev, instructorName]);
-    }
-  };
-
-  useEffect(() => {
-    if (filterInstructors.length > 0) {
-      const filteredCourses = courses.filter((course) =>
-        course.instructor.some((inst) => filterInstructors.includes(inst.name))
-      );
-      setFilteredData(filteredCourses);
-    } else {
-      // If no instructors are selected, show all courses
-      setFilteredData(courses);
-    }
-  }, [filterInstructors, courses]);
-
   const handleFilterRatingRange = (item) => {
     setFilterRatingRange(item);
   };
   const handleFilterPrice = (item) => {
     setFilterPrice(item);
   };
-  const handleFilterLevels = (levelName) => {
-    if (filterLevels.includes(levelName)) {
-      setFilterLevels(filterLevels.filter((ins) => ins !== levelName));
+  const handleFilterLevels = (item) => {
+    if (filterLevels.includes(item)) {
+      const filtered = filterLevels.filter((elm) => elm != item);
+      setFilterLevels([...filtered]);
     } else {
-      setFilterLevels((prev) => [...prev, levelName]);
+      setFilterLevels((pre) => [...pre, item]);
     }
   };
-
-  useEffect(() => {
-    if (filterLevels.length > 0) {
-      const filteredCourses = courses.filter((course) =>
-        filterLevels.includes(course.course_level)
-      );
-      setFilteredData(filteredCourses);
-    } else {
-      // If no levels are selected, show all courses
-      setFilteredData(courses);
-    }
-  }, [filterLevels, courses]);
-
   const handleFilterDuration = (item) => {
     setFilterDuration(item);
   };
-
-  useEffect(() => {
-    const filteredCourses = courses.filter((course) => {
-      if (!selectedPriceRange) {
-        return true; // Return true if no price range is selected
-      } else {
-        return (
-          course.cost >= selectedPriceRange.min &&
-          course.cost <= selectedPriceRange.max
-        );
-      }
-    });
-    setFilteredData(filteredCourses);
-  }, [selectedPriceRange, courses]);
-  const getCountByPriceRange = (minPrice, maxPrice) => {
-    if (minPrice === "All") {
-      return `(${courses.length})`;
-    } else {
-      const count = courses.filter(
-        (course) => course.cost >= minPrice && course.cost <= maxPrice
-      ).length;
-      return `(${count})`;
-    }
-  };
-
   return (
     <>
-      <section
-        className="page-header layout-pt-md"
-        style={{ fontFamily: "Serif" }}
-      >
+      <section className="page-header -type-1">
         <div className="container">
           <div className="page-header__content">
             <div className="row">
               <div className="col-auto">
                 <div>
-                  <h1 className="page-header__title">Courses</h1>
+                  <h1 className="page-header__title">User Interface Courses</h1>
                 </div>
 
                 <div>
                   <p className="page-header__text">
-                    Join us on a journey to explore the art and science of user
-                    interface design, and take your skills to the next level.{" "}
+                    Write an introductory description of the category.
                   </p>
                 </div>
               </div>
@@ -350,10 +199,7 @@ export default function CourseList({ selectedCategory }) {
         </div>
       </section>
 
-      <section
-        className="layout-pt-md layout-pb-lg"
-        style={{ fontFamily: "Serif" }}
-      >
+      <section className="layout-pt-md layout-pb-lg">
         <div className="container">
           <div className="row y-gap-50">
             <div className="col-xl-9 col-lg-8">
@@ -368,7 +214,7 @@ export default function CourseList({ selectedCategory }) {
                       <div className="text-14 lh-12">
                         Showing{" "}
                         <span className="text-dark-1 fw-500">
-                          {sortedFilteredData.length}
+                          {courses.length}
                         </span>{" "}
                         total results
                       </div>
@@ -376,6 +222,72 @@ export default function CourseList({ selectedCategory }) {
 
                     <div className="col-auto">
                       <div className="row x-gap-20 y-gap-20">
+                        <div className="col-auto">
+                          <div className="d-flex items-center">
+                            <div className="text-14 lh-12 fw-500 text-dark-1 mr-20">
+                              Sort by:
+                            </div>
+
+                            <div
+                              id="dd62button"
+                              className="dropdown js-dropdown js-category-active"
+                            >
+                              <div
+                                className="dropdown__button d-flex items-center text-14 rounded-8 px-20 py-10 text-14 lh-12"
+                                onClick={() => {
+                                  document
+                                    .getElementById("dd62button")
+                                    .classList.toggle("-is-dd-active");
+                                  document
+                                    .getElementById("dd62content")
+                                    .classList.toggle("-is-el-visible");
+                                }}
+                                data-el-toggle=".js-category-toggle"
+                                data-el-toggle-active=".js-category-active"
+                              >
+                                <span className="js-dropdown-title">
+                                  {currentSortingOption}
+                                </span>
+                                <i className="icon text-9 ml-40 icon-chevron-down"></i>
+                              </div>
+
+                              <div
+                                id="dd62content"
+                                className="toggle-element -dropdown -dark-bg-dark-2 -dark-border-white-10 js-click-dropdown js-category-toggle"
+                              >
+                                <div className="text-14 y-gap-15 js-dropdown-list">
+                                  {sortingOptions.map((elm, i) => (
+                                    <div
+                                      key={i}
+                                      onClick={() => {
+                                        setCurrentSortingOption((pre) =>
+                                          pre == elm ? "Default" : elm
+                                        );
+                                        document
+                                          .getElementById("dd62button")
+                                          .classList.toggle("-is-dd-active");
+                                        document
+                                          .getElementById("dd62content")
+                                          .classList.toggle("-is-el-visible");
+                                      }}
+                                    >
+                                      <span
+                                        className={`d-block js-dropdown-link cursor ${
+                                          currentSortingOption == elm
+                                            ? "activeMenu"
+                                            : ""
+                                        } `}
+                                      >
+                                        {elm}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <div className="col-auto d-none lg:d-block">
                           <div
                             className="accordion__button w-unset"
@@ -422,146 +334,54 @@ export default function CourseList({ selectedCategory }) {
                                 </div>
                                 <div className="sidebar-checkbox__count"></div>
                               </div>
-                              {categories
-                                .slice(
-                                  0,
-                                  showAllCategories ? categories.length : 3
-                                )
-                                .map((category, index) => (
-                                  <div
-                                    key={index}
-                                    onClick={() =>
-                                      handleFilterCategories(
-                                        category.category_name
-                                      )
-                                    }
-                                    className="sidebar-checkbox__item cursor"
-                                  >
-                                    <div className="form-checkbox">
-                                      <input
-                                        type="checkbox"
-                                        checked={selectedCategories.includes(
-                                          category.category_name
-                                        )}
-                                        onChange={() =>
-                                          handleCategorySelection(
-                                            category.category_name
-                                          )
-                                        }
-                                      />
-                                      <div className="form-checkbox__mark">
-                                        <div className="form-checkbox__icon icon-check"></div>
-                                      </div>
-                                    </div>
-
-                                    <div className="sidebar-checkbox__title">
-                                      {category.category_name}
-                                    </div>
-
-                                    <div className="sidebar-checkbox__count">
-                                      (
-                                      {
-                                        courses.filter(
-                                          (course) =>
-                                            course.category.category_name ===
-                                            category.category_name
-                                        ).length
+                              {categories.map((item, index) => (
+                                <div
+                                  className="sidebar-checkbox__item cursor"
+                                  key={index}
+                                  onClick={() =>
+                                    handleFilterCategories(item.category_name)
+                                  }
+                                >
+                                  <div className="form-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      checked={
+                                        filterCategories.includes(item.title)
+                                          ? true
+                                          : false
                                       }
-                                      )
+                                    />
+                                    <div className="form-checkbox__mark">
+                                      <div className="form-checkbox__icon icon-check"></div>
                                     </div>
                                   </div>
-                                ))}
+
+                                  <div className="sidebar-checkbox__title">
+                                    {item.title}
+                                  </div>
+                                  <div className="sidebar-checkbox__count">
+                                    (
+                                    {
+                                      coursesData.filter(
+                                        (itm) => itm.category == item.title
+                                      ).length
+                                    }
+                                    )
+                                  </div>
+                                </div>
+                              ))}
                             </div>
                             <div className="sidebar__more mt-15">
-                              <button
+                              <a
+                                href="#"
                                 className="text-14 fw-500 underline text-purple-1"
-                                onClick={toggleShowAllCategories}
                               >
-                                {showAllCategories ? "Show less" : "Show more"}
-                              </button>
+                                Show more
+                              </a>
                             </div>
                           </div>
                         </div>
-                        <div className="col-xl-3 col-lg-4 col-sm-6">
-                          <div className="sidebar__item">
-                            <h5 className="sidebar__title">Instructors</h5>
-                            <div className="sidebar-checkbox">
-                              <div
-                                className="sidebar-checkbox__item"
-                                onClick={() => setFilterInstructors([])}
-                              >
-                                <div className="form-checkbox">
-                                  <input
-                                    type="checkbox"
-                                    checked={
-                                      filterInstructors.length ? false : true
-                                    }
-                                  />
-                                  <div className="form-checkbox__mark">
-                                    <div className="form-checkbox__icon icon-check"></div>
-                                  </div>
-                                </div>
 
-                                <div className="sidebar-checkbox__title">
-                                  All
-                                </div>
-                                <div className="sidebar-checkbox__count"></div>
-                              </div>
-                              {instructors &&
-                                instructors
-                                  .slice(
-                                    0,
-                                    showAllInstructors ? instructors.length : 3
-                                  )
-                                  .map((instructor, index) => (
-                                    <div
-                                      key={index}
-                                      onClick={() =>
-                                        handleFilterInstructor(instructor.name)
-                                      }
-                                      className="sidebar-checkbox__item cursor"
-                                    >
-                                      <div className="form-checkbox">
-                                        <input
-                                          type="checkbox"
-                                          checked={filterInstructors.includes(
-                                            instructor.name
-                                          )}
-                                        />
-                                        <div className="form-checkbox__mark">
-                                          <div className="form-checkbox__icon icon-check"></div>
-                                        </div>
-                                      </div>
-
-                                      <div className="sidebar-checkbox__title">
-                                        {instructor.name}
-                                      </div>
-
-                                      <div className="sidebar-checkbox__count">
-                                        (
-                                        {
-                                          courses.filter((course) =>
-                                            course.instructor.some(
-                                              (inst) =>
-                                                inst.name === instructor.name
-                                            )
-                                          ).length
-                                        }
-                                        )
-                                      </div>
-                                    </div>
-                                  ))}
-                            </div>
-                            <div className="sidebar__more mt-15">
-                              <button
-                                className="text-14 fw-500 underline text-purple-1"
-                                onClick={toggleShowAllinstructors}
-                              >
-                                {showAllInstructors ? "Show less" : "Show more"}
-                              </button>
-                            </div>
-                          </div>
-                        </div>
                         <div className="col-xl-3 col-lg-4 col-sm-6">
                           <div className="sidebar__item">
                             <h5 className="sidebar__title">Ratings</h5>
@@ -643,42 +463,6 @@ export default function CourseList({ selectedCategory }) {
 
                         <div className="col-xl-3 col-lg-4 col-sm-6">
                           <div className="sidebar__item">
-                            <h5 className="sidebar__title">Price</h5>
-                            <div className="sidebar-checkbox">
-                              {priceRanges.map((range, index) => (
-                                <div
-                                  key={index}
-                                  className="sidebar-checkbox__item cursor"
-                                  onClick={() => setSelectedPriceRange(range)}
-                                >
-                                  <div className="form-radio mr-10">
-                                    <div className="radio">
-                                      <input
-                                        type="radio"
-                                        checked={
-                                          selectedPriceRange.label ===
-                                          range.label
-                                        }
-                                      />
-                                      <div className="radio__mark">
-                                        <div className="radio__icon"></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="sidebar-checkbox__title">
-                                    {range.label}
-                                  </div>
-                                  <div className="sidebar-checkbox__count">
-                                    {getCountByPriceRange(range.min, range.max)}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-xl-3 col-lg-4 col-sm-6">
-                          <div className="sidebar__item">
                             <h5 className="sidebar__title">Level</h5>
                             <div className="sidebar-checkbox">
                               <div
@@ -702,31 +486,34 @@ export default function CourseList({ selectedCategory }) {
                                 </div>
                                 <div className="sidebar-checkbox__count"></div>
                               </div>
-                              {levels.map((level, index) => (
+                              {levels.map((item, index) => (
                                 <div
-                                  key={index}
                                   className="sidebar-checkbox__item cursor"
-                                  onClick={() => handleFilterLevels(level)}
+                                  key={index}
+                                  onClick={() => handleFilterLevels(item.title)}
                                 >
                                   <div className="form-checkbox">
                                     <input
                                       type="checkbox"
-                                      checked={filterLevels.includes(level)}
+                                      checked={
+                                        filterLevels.includes(item.title)
+                                          ? true
+                                          : false
+                                      }
                                     />
                                     <div className="form-checkbox__mark">
                                       <div className="form-checkbox__icon icon-check"></div>
                                     </div>
                                   </div>
+
                                   <div className="sidebar-checkbox__title">
-                                    {level}
+                                    {item.title}
                                   </div>
-                                  {/* You can show the count of courses for each level if needed */}
                                   <div className="sidebar-checkbox__count">
                                     (
                                     {
-                                      courses.filter(
-                                        (course) =>
-                                          course.course_level === level
+                                      coursesData.filter(
+                                        (itm) => itm.level == item.title
                                       ).length
                                     }
                                     )
@@ -807,79 +594,56 @@ export default function CourseList({ selectedCategory }) {
                   </div>
                 </div>
               </div>
+
               <div className="row y-gap-30">
-                {status === "loading" && <div>Loading...</div>}
-                {status === "failed" && <div>Error: {error}</div>}
-                {filteredData
-                  .slice((pageNumber - 1) * 3, pageNumber * 3)
-                  .slice(0, 3)
-                  .map((course) => (
+                {courses
+                  .slice((pageNumber - 1) * 12, pageNumber * 12)
+                  .slice(0, 12)
+                  .map((elm, i) => (
                     <div
-                      key={course.course_id}
+                      key={i}
                       className="col-xl-4 col-lg-6 col-md-4 col-sm-6"
                     >
                       <div className="coursesCard -type-1 ">
                         <div className="relative">
                           <div
-                            className=" overflow-hidden rounded-8"
-                            style={{ width: "230px", height: "170px" }}
+                            className="coursesCard__image overflow-hidden rounded-8"
+                            style={{ height: "250px" }}
                           >
                             <Image
-                              src={course.images[0]}
+                              width={530}
+                              height={370}
+                              className="object-cover h-full w-full"
+                              src={elm.image}
                               alt="image"
-                              layout="fill"
-                              objectFit="cover"
                             />
                             <div className="coursesCard__image_overlay rounded-8"></div>
-                          </div>
-
-                          <div className="d-flex justify-between py-10 px-10 absolute-full-center z-3">
-                            {course.popular && (
-                              <>
-                                <div>
-                                  <div className="px-15 rounded-200 bg-purple-1">
-                                    <span className="text-11 lh-1 uppercase fw-500 text-white">
-                                      Popular
-                                    </span>
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <div className="px-15 rounded-200 bg-green-1">
-                                    <span className="text-11 lh-1 uppercase fw-500 text-dark-1">
-                                      Best sellers
-                                    </span>
-                                  </div>
-                                </div>
-                              </>
-                            )}
                           </div>
                         </div>
 
                         <div className="h-100 pt-15">
                           <div className="d-flex items-center">
                             <div className="text-14 lh-1 text-yellow-1 mr-10">
-                              4
+                              {elm.course_rating}
                             </div>
                             <div className="d-flex x-gap-5 items-center">
-                              {[...Array(1)].map((_, index) => (
-                                <Star key={index} star={2} />
-                              ))}
+                              <Star star={elm.course_rating} />
                             </div>
                           </div>
 
                           <div className="text-17 lh-15 fw-500 text-dark-1 mt-10">
-                            <a
+                            <Link
                               className="linkCustom"
-                              href={`/courses/${course.slug}/${course._id}`}
+                              href={`/courses/${elm.slug}`}
                             >
-                              {course.course_name}
-                            </a>
+                              {elm.course_name}
+                            </Link>
                           </div>
+
                           <div className="d-flex x-gap-10 items-center pt-10">
                             <div className="d-flex items-center">
                               <div className="mr-8">
-                                <img
+                                <Image
                                   width={16}
                                   height={17}
                                   src="/assets/img/coursesCards/icons/1.svg"
@@ -887,78 +651,34 @@ export default function CourseList({ selectedCategory }) {
                                 />
                               </div>
                               <div className="text-14 lh-1">
-                                {course.mode_of_trainee}
+                                {elm.mode_of_training}
                               </div>
                             </div>
 
                             <div className="d-flex items-center">
                               <div className="mr-8">
-                                <img
+                                <Image
                                   width={16}
                                   height={17}
                                   src="/assets/img/coursesCards/icons/2.svg"
                                   alt="icon"
                                 />
                               </div>
-                              <div className="text-14 lh-1">
-                                {course.duration} Hr
-                              </div>
+                              <div className="text-14 lh-1">{`${Math.floor(
+                                elm.duration / 60
+                              )}h ${Math.floor(elm.duration % 60)}m`}</div>
                             </div>
 
                             <div className="d-flex items-center">
                               <div className="mr-8">
-                                <img
+                                <Image
                                   width={16}
                                   height={17}
                                   src="/assets/img/coursesCards/icons/3.svg"
                                   alt="icon"
                                 />
                               </div>
-                              <div className="text-14 lh-1">
-                                {course.course_level}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="coursesCard-footer">
-                            <div className="coursesCard-footer__author">
-                              {course.instructor &&
-                                course.instructor.length > 0 && (
-                                  <>
-                                    {course.instructor
-                                      .slice(0, 3)
-                                      .map((instructor, index) => (
-                                        <div
-                                          key={index}
-                                          className="d-flex align-items-center"
-                                        >
-                                          <img
-                                            width={30}
-                                            height={30}
-                                            src={instructor.profile_pic}
-                                            alt={`Instructor ${index + 1}`}
-                                          />
-                                        </div>
-                                      ))}
-                                    {course.instructor.length > 3 && (
-                                      <button className="ml-2">+</button>
-                                    )}
-                                  </>
-                                )}
-                            </div>
-
-                            <div className="coursesCard-footer__price">
-                              {course.cost ? (
-                                <>
-                                  <div>${course.cost}</div>
-                                  <div>₹{Math.round(course.cost * 0.9)}</div>
-                                </>
-                              ) : (
-                                <>
-                                  <div></div>
-                                  <div>Free</div>
-                                </>
-                              )}
+                              <div className="text-14 lh-1">{elm.projects}</div>
                             </div>
                           </div>
                         </div>
@@ -966,13 +686,14 @@ export default function CourseList({ selectedCategory }) {
                     </div>
                   ))}
               </div>
+
               <div className="row justify-center pt-90 lg:pt-50">
                 <div className="col-auto">
                   <PaginationTwo
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}
                     data={sortedFilteredData}
-                    pageCapacity={3}
+                    pageCapacity={12}
                   />
                 </div>
               </div>
@@ -990,7 +711,7 @@ export default function CourseList({ selectedCategory }) {
                       >
                         <div
                           className="accordion__button items-center"
-                          onClick={() => setShowAllCategories((prev) => !prev)}
+                          onClick={() => setCategoryOpen((pre) => !pre)}
                         >
                           <h5 className="sidebar__title">Category</h5>
 
@@ -1023,68 +744,59 @@ export default function CourseList({ selectedCategory }) {
                                 </div>
 
                                 <div className="sidebar-checkbox__title">
-                                  All
+                                  All Filter
                                 </div>
                                 <div className="sidebar-checkbox__count"></div>
                               </div>
-                              {categories
-                                .slice(
-                                  0,
-                                  showAllCategories ? categories.length : 3
-                                )
-                                .map((category, index) => (
-                                  <div
-                                    key={index}
-                                    onClick={() =>
-                                      handleFilterCategories(
-                                        category.category_name
-                                      )
-                                    }
-                                    className="sidebar-checkbox__item cursor"
-                                  >
-                                    <div className="form-checkbox">
-                                      <input
-                                        type="checkbox"
-                                        checked={selectedCategories.includes(
-                                          category.category_name
-                                        )}
-                                        onChange={() =>
-                                          handleCategorySelection(
-                                            category.category_name
-                                          )
-                                        }
-                                      />
-                                      <div className="form-checkbox__mark">
-                                        <div className="form-checkbox__icon icon-check"></div>
-                                      </div>
-                                    </div>
-
-                                    <div className="sidebar-checkbox__title">
-                                      {category.category_name}
-                                    </div>
-
-                                    <div className="sidebar-checkbox__count">
-                                      (
-                                      {
-                                        courses.filter(
-                                          (course) =>
-                                            course.category.category_name ===
-                                            category.category_name
-                                        ).length
+                              {categories.map((elm, i) => (
+                                <div
+                                  key={i}
+                                  onClick={() =>
+                                    handleFilterCategories(elm.category_name)
+                                  }
+                                  className="sidebar-checkbox__item cursor"
+                                >
+                                  <div className="form-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      checked={
+                                        filterCategories.includes(
+                                          elm.category_name
+                                        )
+                                          ? true
+                                          : false
                                       }
-                                      )
+                                    />
+                                    <div className="form-checkbox__mark">
+                                      <div className="form-checkbox__icon icon-check"></div>
                                     </div>
                                   </div>
-                                ))}
+
+                                  <div className="sidebar-checkbox__title">
+                                    {elm.category_name}
+                                  </div>
+                                  <div className="sidebar-checkbox__count">
+                                    (
+                                    {
+                                      courses.filter(
+                                        (course) =>
+                                          course.category.category_name ===
+                                          elm.category_name
+                                      ).length
+                                    }
+                                    )
+                                  </div>
+                                </div>
+                              ))}
                             </div>
 
                             <div className="sidebar__more mt-15">
-                              <button
+                              <a
+                                href="#"
                                 className="text-14 fw-500 underline text-purple-1"
-                                onClick={toggleShowAllCategories}
                               >
-                                {showAllCategories ? "Show less" : "Show more"}
-                              </button>
+                                Show more
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -1093,112 +805,6 @@ export default function CourseList({ selectedCategory }) {
                   </div>
 
                   <div className="sidebar__item">
-                    <div className="accordion js-accordion">
-                      <div
-                        className={`accordion__item js-accordion-item-active ${
-                          instructorOpen ? "is-active" : ""
-                        } `}
-                      >
-                        <div
-                          className="accordion__button items-center"
-                          onClick={() => setInstractorOpen((pre) => !pre)}
-                        >
-                          <h5 className="sidebar__title">Instractor</h5>
-
-                          <div className="accordion__icon">
-                            <div className="icon icon-chevron-down"></div>
-                            <div className="icon icon-chevron-up"></div>
-                          </div>
-                        </div>
-
-                        <div
-                          className="accordion__content"
-                          style={instructorOpen ? { maxHeight: "350px" } : {}}
-                        >
-                          <div className="accordion__content__inner">
-                            <div className="sidebar-checkbox">
-                              <div
-                                onClick={() => setFilterInstructors([])}
-                                className="sidebar-checkbox__item"
-                              >
-                                <div className="form-checkbox">
-                                  <input
-                                    type="checkbox"
-                                    checked={
-                                      filterInstructors.length ? false : true
-                                    }
-                                  />
-                                  <div className="form-checkbox__mark">
-                                    <div className="form-checkbox__icon icon-check"></div>
-                                  </div>
-                                </div>
-
-                                <div className="sidebar-checkbox__title">
-                                  All
-                                </div>
-                                <div className="sidebar-checkbox__count"></div>
-                              </div>
-                              {instructors &&
-                                instructors
-                                  .slice(
-                                    0,
-                                    showAllInstructors ? instructors.length : 3
-                                  )
-                                  .map((instructor, index) => (
-                                    <div
-                                      key={index}
-                                      onClick={() =>
-                                        handleFilterInstructor(instructor.name)
-                                      }
-                                      className="sidebar-checkbox__item cursor"
-                                    >
-                                      <div className="form-checkbox">
-                                        <input
-                                          type="checkbox"
-                                          checked={filterInstructors.includes(
-                                            instructor.name
-                                          )}
-                                        />
-                                        <div className="form-checkbox__mark">
-                                          <div className="form-checkbox__icon icon-check"></div>
-                                        </div>
-                                      </div>
-
-                                      <div className="sidebar-checkbox__title">
-                                        {instructor.name}
-                                      </div>
-
-                                      <div className="sidebar-checkbox__count">
-                                        (
-                                        {
-                                          courses.filter((course) =>
-                                            course.instructor.some(
-                                              (inst) =>
-                                                inst.name === instructor.name
-                                            )
-                                          ).length
-                                        }
-                                        )
-                                      </div>
-                                    </div>
-                                  ))}
-                            </div>
-
-                            <div className="sidebar__more mt-15">
-                              <button
-                                className="text-14 fw-500 underline text-purple-1"
-                                onClick={toggleShowAllinstructors}
-                              >
-                                {showAllInstructors ? "Show less" : "Show more"}
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* <div className="sidebar__item">
                     <div className="accordion js-accordion">
                       <div
                         className={`accordion__item js-accordion-item-active ${
@@ -1298,64 +904,6 @@ export default function CourseList({ selectedCategory }) {
                         </div>
                       </div>
                     </div>
-                  </div> */}
-
-                  <div className="sidebar__item">
-                    <div className="accordion js-accordion">
-                      <div
-                        className={`accordion__item ${
-                          priceOpen ? "is-active" : ""
-                        }`}
-                      >
-                        <div
-                          className="accordion__button items-center"
-                          onClick={() => setPriceOpen((prev) => !prev)}
-                        >
-                          <h5 className="sidebar__title">Price</h5>
-                          <div className="accordion__icon">
-                            <div className="icon icon-chevron-down"></div>
-                            <div className="icon icon-chevron-up"></div>
-                          </div>
-                        </div>
-                        <div
-                          className="accordion__content"
-                          style={priceOpen ? { maxHeight: "350px" } : {}}
-                        >
-                          <div className="accordion__content__inner">
-                            <div className="sidebar-checkbox">
-                              {priceRanges.map((range, index) => (
-                                <div
-                                  key={index}
-                                  className="sidebar-checkbox__item cursor"
-                                  onClick={() => setSelectedPriceRange(range)}
-                                >
-                                  <div className="form-radio mr-10">
-                                    <div className="radio">
-                                      <input
-                                        type="radio"
-                                        checked={
-                                          selectedPriceRange.label ===
-                                          range.label
-                                        }
-                                      />
-                                      <div className="radio__mark">
-                                        <div className="radio__icon"></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="sidebar-checkbox__title">
-                                    {range.label}
-                                  </div>
-                                  <div className="sidebar-checkbox__count">
-                                    {getCountByPriceRange(range.min, range.max)}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
 
                   <div className="sidebar__item">
@@ -1370,18 +918,19 @@ export default function CourseList({ selectedCategory }) {
                           onClick={() => setLevelOpen((pre) => !pre)}
                         >
                           <h5 className="sidebar__title">Level</h5>
+
                           <div className="accordion__icon">
                             <div className="icon icon-chevron-down"></div>
                             <div className="icon icon-chevron-up"></div>
                           </div>
                         </div>
+
                         <div
                           className="accordion__content"
                           style={levelOpen ? { maxHeight: "350px" } : {}}
                         >
                           <div className="accordion__content__inner">
                             <div className="sidebar-checkbox">
-                              {/* Checkbox for all levels */}
                               <div
                                 className="sidebar-checkbox__item cursor"
                                 onClick={() => setFilterLevels([])}
@@ -1389,44 +938,48 @@ export default function CourseList({ selectedCategory }) {
                                 <div className="form-checkbox">
                                   <input
                                     type="checkbox"
-                                    checked={filterLevels.length === 0}
+                                    checked={
+                                      filterLevels.length < 1 ? true : false
+                                    }
                                   />
                                   <div className="form-checkbox__mark">
                                     <div className="form-checkbox__icon icon-check"></div>
                                   </div>
                                 </div>
+
                                 <div className="sidebar-checkbox__title">
                                   All
                                 </div>
                                 <div className="sidebar-checkbox__count"></div>
                               </div>
-                              {/* Checkboxes for individual levels */}
-                              {levels.map((level, index) => (
+                              {levels.map((elm, i) => (
                                 <div
-                                  key={index}
+                                  key={i}
                                   className="sidebar-checkbox__item cursor"
-                                  onClick={() => handleFilterLevels(level)}
+                                  onClick={() => handleFilterLevels(elm.title)}
                                 >
                                   <div className="form-checkbox">
                                     <input
                                       type="checkbox"
-                                      checked={filterLevels.includes(level)}
+                                      checked={
+                                        filterLevels.includes(elm.title)
+                                          ? true
+                                          : false
+                                      }
                                     />
                                     <div className="form-checkbox__mark">
                                       <div className="form-checkbox__icon icon-check"></div>
                                     </div>
                                   </div>
+
                                   <div className="sidebar-checkbox__title">
-                                    {level}
+                                    {elm.title}
                                   </div>
-                                  {/* You can show the count of courses for each level if needed */}
                                   <div className="sidebar-checkbox__count">
                                     (
                                     {
-                                      courses.filter(
-                                        (course) =>
-                                          course.course_level === level
-                                      ).length
+                                      coursesData.filter((itm) => !itm.paid)
+                                        .length
                                     }
                                     )
                                   </div>

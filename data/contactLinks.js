@@ -1,4 +1,4 @@
-export const contactData = [
+export const contactDetails = [
   {
     id: 1,
     icon: "/assets/img/contact-1/location.png",

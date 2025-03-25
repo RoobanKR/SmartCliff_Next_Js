@@ -12,7 +12,8 @@ export default function CourseSlider() {
   const dispatch = useDispatch();
   const courses = useSelector(selectCourses);
   const [showSlider, setShowSlider] = useState(false);
-  const { id } = useParams();
+  const params = useParams();
+  const courseSlug = params?.slug || "";
   const [matchedCourse, setMatchedCourse] = useState(null);
   const [coursesWithSameCategory, setCoursesWithSameCategory] = useState([]);
 
@@ -23,21 +24,29 @@ export default function CourseSlider() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (id && courses.length > 0) {
-      const matched = courses.find((course) => course._id === id);
+    if (courses.length > 0) {
+      // Find the current course by slug instead of ID
+      const matched = courses.find((course) => course.slug === courseSlug);
       setMatchedCourse(matched);
+
       if (matched && matched.category) {
         const categoryID = matched.category._id;
+        // Filter to get courses with the same category but not the current course
         const filteredCourses = courses.filter(
           (course) =>
             course.category &&
             course.category._id === categoryID &&
-            course._id !== id
+            course.slug !== courseSlug
         );
         setCoursesWithSameCategory(filteredCourses);
       }
     }
-  }, [id, courses]);
+  }, [courseSlug, courses]);
+
+  // Don't render if there are no related courses
+  if (!coursesWithSameCategory.length) {
+    return null;
+  }
 
   return (
     <section
@@ -57,7 +66,7 @@ export default function CourseSlider() {
         </div>
         <div className="relative pt-60 lg:pt-50">
           <div className="overflow-hidden js-section-slider">
-            {showSlider && (
+            {showSlider && coursesWithSameCategory.length > 0 && (
               <Swiper
                 modules={[Navigation, Pagination]}
                 navigation={{
@@ -79,14 +88,17 @@ export default function CourseSlider() {
                         <div className="relative">
                           <div
                             className="coursesCard__image overflow-hidden rounded-8"
-                            style={{ width: "510px", height: "100px" }}
+                            style={{
+                              width: "100%",
+                              height: "200px",
+                              position: "relative",
+                            }}
                           >
                             <Image
-                              src={course.images[0]}
-                              alt="image"
-                              className="w-1/1"
-                              layout="fill"
-                              objectFit="cover"
+                              src={course.images?.[0] || course.image}
+                              alt={course.course_name}
+                              fill
+                              style={{ objectFit: "cover" }}
                             />
                             <div className="coursesCard__image_overlay rounded-8"></div>
                           </div>
@@ -95,7 +107,7 @@ export default function CourseSlider() {
                           <div className="text-17 lh-15 fw-500 text-dark-1 mt-10">
                             <Link
                               className="linkCustom"
-                              href={`/courses/${course.slug}/${course._id}`}
+                              href={`/courses/${course.slug}`}
                             >
                               {course.course_name}
                             </Link>
@@ -111,7 +123,7 @@ export default function CourseSlider() {
                                 />
                               </div>
                               <div className="text-14 lh-1">
-                                {course.number_of_assesment} lesson
+                                {course.projects || course.projects} Projects
                               </div>
                             </div>
 
@@ -124,9 +136,9 @@ export default function CourseSlider() {
                                   alt="icon"
                                 />
                               </div>
-                              <div className="text-14 lh-1">{`${Math.floor(
-                                course.duration / 60
-                              )}h ${Math.floor(course.duration % 60)}m`}</div>
+                              <div className="text-14 lh-1">
+                                {course.duration}
+                              </div>
                             </div>
 
                             <div className="d-flex items-center">
@@ -139,49 +151,8 @@ export default function CourseSlider() {
                                 />
                               </div>
                               <div className="text-14 lh-1">
-                                {course.course_level}
+                                {course.mode_of_training}
                               </div>
-                            </div>
-                          </div>
-                          <div className="coursesCard-footer">
-                            <div className="coursesCard-footer__author">
-                              {course.instructor &&
-                                course.instructor.length > 0 && (
-                                  <>
-                                    {course.instructor
-                                      .slice(0, 3)
-                                      .map((instructor, index) => (
-                                        <div
-                                          key={index}
-                                          className="d-flex align-items-center"
-                                        >
-                                          <img
-                                            width={30}
-                                            height={30}
-                                            src={instructor.profile_pic}
-                                            alt={`Instructor ${index + 1}`}
-                                          />
-                                        </div>
-                                      ))}
-                                    {course.instructor.length > 3 && (
-                                      <button className="ml-2">+</button>
-                                    )}
-                                  </>
-                                )}
-                              <div>{course.instructor.name}</div>
-                            </div>
-                            <div className="coursesCard-footer__price">
-                              {course.paid ? (
-                                <>
-                                  <div>${course.cost}</div>
-                                  <div>${course.discountedPrice}</div>
-                                </>
-                              ) : (
-                                <>
-                                  <div></div>
-                                  <div>Rs.{course.cost}</div>
-                                </>
-                              )}
                             </div>
                           </div>
                         </div>
@@ -192,12 +163,16 @@ export default function CourseSlider() {
               </Swiper>
             )}
           </div>
-          <button className="section-slider-nav -prev -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-prev-one">
-            <i className="icon icon-arrow-left text-24"></i>
-          </button>
-          <button className="section-slider-nav -next -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-next-one">
-            <i className="icon icon-arrow-right text-24"></i>
-          </button>
+          {coursesWithSameCategory.length > 0 && (
+            <>
+              <button className="section-slider-nav -prev -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-prev-one">
+                <i className="icon icon-arrow-left text-24"></i>
+              </button>
+              <button className="section-slider-nav -next -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-next-one">
+                <i className="icon icon-arrow-right text-24"></i>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </section>

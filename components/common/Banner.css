@@ -15,18 +15,18 @@
   text-align: center;
   color: white;
   text-shadow: 2px 2px 4px black;
-  padding: 20px;
+  /* padding: 20px; */
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.banner-container:hover .banner-content {
+/* .banner-container:hover .banner-content {
   opacity: 1;
-}
+} */
 
-.banner-container:hover {
+/* .banner-container:hover {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
+} */
 
 .banner-container::before {
   content: "";
@@ -40,9 +40,9 @@
   transition: opacity 0.3s ease;
 }
 
-.banner-container:hover::before {
+/* .banner-container:hover::before {
   opacity: 1;
-}
+} */
 
 .banner-container img {
   width: 100%;

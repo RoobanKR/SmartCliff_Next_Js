@@ -66,7 +66,6 @@ export default function Hiring() {
   const startIndex = (pageNumber - 1) * pageCapacity;
   const endIndex = startIndex + pageCapacity;
   const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
-  console.log("allHiring", allHiring);
   return (
     <>
       <section className="page-header -type-1" style={{ fontFamily: "serif" }}>

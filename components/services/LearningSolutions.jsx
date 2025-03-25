@@ -4,38 +4,6 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 export default function LearningSolutions({ matchedServiceAbouts }) {
-
-  useEffect(() => {
-    const parallaxIt = () => {
-      const target = document.querySelectorAll(".js-mouse-move-container");
-
-      target.forEach((container) => {
-        const targets = container.querySelectorAll(".js-mouse-move");
-
-        targets.forEach((el) => {
-          const movement = el.getAttribute("data-move");
-
-          document.addEventListener("mousemove", (e) => {
-            const relX = e.pageX - container.offsetLeft;
-            const relY = e.pageY - container.offsetTop;
-
-            gsap.to(el, {
-              x:
-                ((relX - container.offsetWidth / 2) / container.offsetWidth) *
-                Number(movement),
-              y:
-                ((relY - container.offsetHeight / 2) / container.offsetHeight) *
-                Number(movement),
-              duration: 0.2,
-            });
-          });
-        });
-      });
-    };
-
-    parallaxIt();
-  }, []);
-
   return (
     <section className="layout-pb-md js-mouse-move-container">
       <div className="container">
@@ -51,7 +19,8 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                 {item.feature.map((elm, i) => (
                   <div key={i} className="col-12">
                     <div className="featureIcon -type-1 d-flex">
-                      <div className={`featureIcon__icon ${elm.iconBg}`}
+                      <div
+                        className={`featureIcon__icon ${elm.iconBg}`}
                         style={{
                           width: "70px", // Adjust width if needed
                           height: "70px", // Adjust height if needed
@@ -59,7 +28,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                           alignItems: "center",
                           justifyContent: "center",
                           borderRadius: "50%", // Optional: if you want a circular icon
-                          backgroundColor: '#f5f0ff',
+                          backgroundColor: "#f5f0ff",
                         }}
                       >
                         <Image
@@ -92,9 +61,9 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                   data-move="60"
                   className="elements-image__main mb-20 js-mouse-move"
                 >
-                 <img
+                  <img
                     className="js-mouse-move rounded"
-                    style={{ height: "400px", width: "350px", }}
+                    style={{ height: "400px", width: "350px" }}
                     data-move="40"
                     src={
                       matchedServiceAbouts[0].images[0] || "/fallback-image.jpg"
@@ -103,69 +72,6 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                   />
                 </div>
               )}
-
-              {/* Decorative Static Images */}
-              <div
-                data-move="60"
-                className="elements-image__el1 lg:d-none img-el -w-260 px-20 py-20 d-flex items-center bg-white rounded-8 shadow js-mouse-move"
-              >
-                <Image
-                  width={70}
-                  height={70}
-                  src="/assets/img/masthead/4.png"
-                  alt="icon"
-                />
-                <div className="ml-20">
-                  <div className="text-dark-1 text-16 fw-500">Ali Tufan</div>
-                  <div className="mt-3">UX/UI Designer</div>
-                  <div className="d-flex x-gap-5 mt-3">
-                    {[...Array(5)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="icon-star text-yellow-1 text-11"
-                      ></div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                data-move="30"
-                className="elements-image__el2 lg:d-none img-el -w-250 px-20 py-20 d-flex items-center bg-white rounded-8 shadow js-mouse-move"
-              >
-                <div className="size-80 d-flex justify-center items-center bg-red-2 rounded-full">
-                  <Image
-                    width={24}
-                    height={23}
-                    src="/assets/img/masthead/1.svg"
-                    alt="icon"
-                  />
-                </div>
-                <div className="ml-20">
-                  <div className="text-orange-1 text-16 fw-500">3,000 +</div>
-                  <div className="mt-3">Free Courses</div>
-                </div>
-              </div>
-
-              <div
-                data-move="30"
-                className="elements-image__el3 sm:d-none shadow-4 img-el -w-260 px-30 py-20 d-flex items-center bg-white rounded-8 shadow js-mouse-move"
-              >
-                <div className="img-el__side">
-                  <div className="size-50 d-flex justify-center items-center bg-purple-1 rounded-full">
-                    <Image
-                      width={20}
-                      height={27}
-                      src="/assets/img/masthead/2.svg"
-                      alt="icon"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="text-purple-1 text-16 fw-500">Congrats!</div>
-                  <div className="mt-3">Your Admission Completed</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -173,3 +79,4 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
     </section>
   );
 }
+

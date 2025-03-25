@@ -2,135 +2,182 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import Link from "next/link";
 import { fetchAboutCollegeData } from "@/redux/slices/mca/aboutCollege/aboutCollege";
 import { useParams, useRouter } from "next/navigation";
-import { useCookies } from "react-cookie";
 
-export default function About() {
+export default function About({ collegeId }) {
   const dispatch = useDispatch();
   const aboutCollegeData = useSelector(
     (state) => state.aboutCollege.aboutCollegeData
   );
   const loading = useSelector((state) => state.aboutCollege.loading);
   const error = useSelector((state) => state.aboutCollege.error);
-  const [cookies] = useCookies(["token"]);
-  const { slug } = useParams();
-  const router = useRouter();
+  const { id } = useParams();
+
+  const fullUrl = typeof window !== "undefined" ? window.location.href : "";
+  const segments = fullUrl.split("/").filter(Boolean);
+  const lastSegment = segments.pop();
+  const secondLastSegment = segments.pop();
+  const thirdLastSegment = segments.pop();
 
   useEffect(() => {
     dispatch(fetchAboutCollegeData());
   }, [dispatch]);
 
-  // Filter the aboutCollegeData based on the URL ID
-  const selectedAboutCollege = aboutCollegeData.find(
-    (program) => program.slug === slug
+  // Filter colleges based on collegeId parameter
+  const matchedAboutColleges = aboutCollegeData.filter(
+    (about) => about.college && about.college.some((i) => i._id === collegeId)
   );
 
-  const handleDownload = async () => {
-    try {
-      if (cookies.token) {
-        const pdfUrl = "/assets/pdf/output (1).pdf";
+  const selectedAboutCollege = aboutCollegeData.find(
+    (program) => program._id === id
+  );
 
-        const link = document.createElement("a");
-        link.href = pdfUrl;
-        link.target = "_blank";
-        link.setAttribute("download", "Prospectus.pdf");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        const currentURL = window.location.href;
-        router.push(`/login?redirect=${encodeURIComponent(currentURL)}`);
-      }
-    } catch (error) {
-      console.error("Error downloading PDF:", error);
-      // Handle error
-    }
-  };
+  // Determine which data to display based on the URL segment
+  let displayData = [];
+  if (thirdLastSegment === "csr" && selectedAboutCollege) {
+    displayData = [selectedAboutCollege];
+  } else if (thirdLastSegment === "b2i" && matchedAboutColleges.length > 0) {
+    displayData = matchedAboutColleges;
+  }
 
   return (
     <>
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error}</div>}
-      {selectedAboutCollege && (
-        <section
-          className="page-header -type-1"
-          style={{ fontFamily: "Serif" }}
-        >
-          <div className="container">
-            <div className="page-header__content">
-              <div className="row justify-center text-center">
-                <div className="col-auto">
-                  <div>
-                    <h1 className="page-header__title">
-                      {selectedAboutCollege.title}
-                    </h1>
-                  </div>
 
-                  <div>
-                    <p className="page-header__text">
-                      {selectedAboutCollege.slogan}
-                    </p>
+      {/* Display content for each college in displayData */}
+      {displayData.length > 0 ? (
+        displayData.map((college, collegeIndex) => (
+          <React.Fragment key={collegeIndex}>
+            <section
+              className="page-header -type-1"
+              style={{
+                paddingTop: thirdLastSegment === "csr" ? "80px" : "40px",
+                backgroundColor: "white",
+              }}
+            >
+              <div className="container ">
+                <div
+                  className="page-header__content"
+                  style={{
+                    textAlign: "center",
+                    padding: "10px",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <div className="row justify-center">
+                    <div className="col-auto">
+                      <div>
+                        <h1
+                          style={{
+                            color: "#8952a8",
+                            textTransform: "uppercase",
+                            letterSpacing: "2px",
+                            fontSize: "35px",
+                            fontWeight: "bold",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          {college.title}
+                        </h1>
+                        <div
+                          style={{
+                            height: "3px",
+                            width: "100px",
+                            margin: "8px auto",
+                            background:
+                              "linear-gradient(to right, gray 40%, #8952a8 40%)",
+                          }}
+                        ></div>
+                      </div>
+
+                      <div>
+                        <p
+                          style={{
+                            fontStyle: "italic",
+                            color: "black",
+                            fontSize: "18px",
+                            marginTop: "10px",
+                          }}
+                        >
+                          {college.slogan}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>{" "}
-        </section>
-      )}
+            </section>
 
-      {selectedAboutCollege && (
-        <section className="layout-pb-md">
-          <div className="container">
-            <div className="row y-gap-50 justify-between items-center">
-              <div className="col-lg-6 pr-50 sm:pr-15">
-                <div className="composition -type-8">
-                  {selectedAboutCollege.images.map((image, index) => (
-                    <div className={`-el-${index + 1}`} key={index}>
-                      <img
-                        src={image}
-                        alt="image"
-                        style={{ width: "300px", height: "400px" }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="col-lg-5" style={{ fontFamily: "Serif" }}>
-                <h2 className="text-30 lh-16"> About Program</h2>
-                <p className="text-dark-1 mt-30">
-                  {selectedAboutCollege.description}
-                </p>
-                <p className="pr-50 lg:pr-0 mt-25"></p>
-                <div className="row">
-                  <div className="col-lg-6 mb-3 mb-lg-0">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <Link
-                        href="/applyProgram"
-                        className="button -md -purple-1 text-white"
-                      >
-                        Register Now
-                      </Link>
+            <section
+              className=""
+              style={{ marginTop: "10px", backgroundColor: "white" }}
+            >
+              <div className="container">
+                <div className="row y-gap-50 justify-between items-start">
+                  <div className="col-lg-6 sm:pr-15">
+                    <div className="composition -type-8">
+                      {college.images &&
+                        college.images.map((image, index) => (
+                          <div className={`-el-${index + 1}`} key={index}>
+                            <Image
+                              width={300}
+                              height={400}
+                              src={image}
+                              alt="image"
+                            />
+                          </div>
+                        ))}
                     </div>
                   </div>
+
                   <div className="col-lg-6">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <button
-                        className="button -md -outline-green-1 text-black"
-                        onClick={handleDownload}
+                    <div
+                      className="program-subtitle"
+                      style={{ marginTop: "-10px" }}
+                    >
+                      <span
+                        className="subtitle-text"
+                        style={{ paddingTop: "-20px" }}
                       >
-                        Get Prospectus
-                      </button>
+                        About Program
+                      </span>
                     </div>
+                    <p
+                      className="text-dark-1 mt-10"
+                      style={{ textAlign: "justify" }}
+                    >
+                      {college.description}
+                    </p>
+                    <p className="pr-10 lg:pr-0 mt-25"></p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
+          </React.Fragment>
+        ))
+      ) : (
+        <div className="container">
+          <p>No matching college information found.</p>
+        </div>
       )}
+
+      <style jsx>
+        {`
+          .program-subtitle {
+            display: flex;
+          }
+          .subtitle-text {
+            font-size: 2rem;
+            margin: 0 15px;
+            color: #5b2c6f;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          }
+        `}
+      </style>
     </>
   );
 }

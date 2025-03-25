@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Menu from "../component/Menu";
 import MobileMenu from "../component/MobileMenu";
 import Image from "next/image";
@@ -9,6 +9,20 @@ import SearchToggle from "../component/SearchToggle";
 
 export default function HeaderTwo({ onServiceSelect }) {
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
+  const [bgColor, setBgColor] = useState("#ffffff"); // Initially white
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setBgColor("#FAF1E6"); // Change color when scrolled down
+      } else {
+        setBgColor("#ffffff"); // Revert to white when at the top
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll); // Cleanup
+  }, []);
 
   // Handler function to receive service data from Menu
   const handleServiceSelect = (service) => {
@@ -17,11 +31,10 @@ export default function HeaderTwo({ onServiceSelect }) {
     }
   };
 
-
   return (
     <header
       className="header -type-5 js-header"
-      style={{ fontFamily: "serif" }}
+      style={{ background: bgColor }}
     >
       <div className="header__container" style={{ zIndex: 1000 }}>
         <div className="row justify-between items-center">
@@ -42,7 +55,8 @@ export default function HeaderTwo({ onServiceSelect }) {
           <div className="col-auto">
             <div className="header-right d-flex items-center">
               <div className="header-right__icons text-white d-flex items-center">
-                <Menu allClasses={"menu__nav text-dark-1 -is-active"}
+                <Menu
+                  allClasses={"menu__nav text-dark-1 -is-active"}
                   onServiceSelect={handleServiceSelect}
                 />
                 <MobileMenu
@@ -60,7 +74,7 @@ export default function HeaderTwo({ onServiceSelect }) {
                 </div>
               </div>
               <div className="header-right__icons text-white d-flex items-center">
-                <SearchToggle />
+                {/* <SearchToggle /> */}
                 <div className="d-none xl:d-block ml-20">
                   <button
                     onClick={() => setActiveMobileMenu(true)}
@@ -74,8 +88,7 @@ export default function HeaderTwo({ onServiceSelect }) {
               <div
                 className="header-right__buttons d-flex items-center ml-30 xl:ml-20 md:d-none"
                 style={{ fontFamily: "serif" }}
-              >
-              </div>
+              ></div>
             </div>
           </div>
         </div>
@@ -83,4 +96,3 @@ export default function HeaderTwo({ onServiceSelect }) {
     </header>
   );
 }
-

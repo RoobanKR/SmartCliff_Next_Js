@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { lessonItems } from "@/data/aboutcourses";
-
+ 
 export default function FAQComponent({ faq }) {
   const [activeItemId, setActiveItemId] = useState(null);
-
+ 
   const toggleAccordion = (faqItemId) => {
     setActiveItemId((prev) => (prev === faqItemId ? null : faqItemId));
   };
-
+ 
   return (
     <>
-      <div id="course-content" className="pt-60 lg:pt-40 layout-pb-sm ">
+      <div id="course-content" className="pt-10 lg:pt-40 layout-pb-sm " style={{padding:"20px"}}>
         <div className="row y-gap-20 justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle ">
@@ -22,14 +22,14 @@ export default function FAQComponent({ faq }) {
                 Frequently Asked Questions
               </h2>
               <br></br>
-
+ 
               <p className="sectionTitle__text "></p>
             </div>
           </div>
         </div>
         <div className="mt-10">
           <div className="accordion -block-2 text-left js-accordion">
-            {faq.map((item, i) => (
+            {faq?.map((item, i) => (
               <div key={i}>
                 {item.faqItems.map((faqItem, j) => (
                   <div key={faqItem._id}>
@@ -55,7 +55,7 @@ export default function FAQComponent({ faq }) {
                         </span>
                       </div>
                     </div>
-
+ 
                     <div
                       className={`accordion__content ${
                         activeItemId === faqItem._id ? "is-active" : ""
@@ -91,3 +91,5 @@ export default function FAQComponent({ faq }) {
     </>
   );
 }
+ 
+ 

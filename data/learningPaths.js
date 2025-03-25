@@ -59,27 +59,36 @@ export const learningPathTwo = [
 export const learningPathFive = [
   {
     id: 1,
-    title: "Learn with Experts",
+    title: "Industry Driven",
     image: "/assets/img/home-5/learning/1.svg",
-    description: "Grursus mal suada faci lisis that ipsum ameti consecte.",
+    description: "Tailored curriculum for real-world applications",
   },
   {
     id: 2,
-    title: "Learn Anything",
+    title: "Training by Industry Experts",
     image: "/assets/img/home-5/learning/2.svg",
-    description: "Grursus mal suada faci lisis that ipsum ameti consecte.",
+    description:
+      "Experienced industry professionals and subject matter experts",
   },
   {
     id: 3,
-    title: "Flexible Learning",
+    title: "Industry Readiness",
     image: "/assets/img/home-5/learning/3.svg",
-    description: "Grursus mal suada faci lisis that ipsum ameti consecte.",
+    description:
+      "Industry Readiness and +1-year Experience by the end of the program",
   },
   {
     id: 4,
-    title: "Industrial Standart",
+    title: "Skill Vertical",
     image: "/assets/img/home-5/learning/4.svg",
-    description: "Grursus mal suada faci lisis that ipsum ameti consecte.",
+    description:
+      "Skill vertical for every 15 or 20 candidates, assorted to link candidates to industry",
+  },
+  {
+    id: 4,
+    title: "One to One Mentorships",
+    image: "/assets/img/home-5/learning/3.svg",
+    description: "Every candidate is given a One-on-One Mentorship",
   },
 ];
 
