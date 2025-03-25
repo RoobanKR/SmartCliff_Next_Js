@@ -11,10 +11,10 @@ import {
   fetchServices,
   selectServices,
 } from "@/redux/slices/services/services/Services";
-import Modal from "./modal";
 import "./Modal.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "./Modal";
 
 export default function TrainFromUsAddForm() {
   const formData = useSelector((state) => state.institute.formData);

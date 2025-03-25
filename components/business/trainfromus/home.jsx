@@ -1,7 +1,5 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import HirefromusAddForm from "../HirefromusAddForm";
 import TrainFromUsAddForm from "../TrainfromusAddForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";

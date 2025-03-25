@@ -6,7 +6,7 @@ import { fetchCourses } from "@/redux/slices/course/course";
 import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
 import "./Modal.css"; // Import the CSS for the modal
-import Modal from "./modal";
+import Modal from "./Modal";
 
 export default function HirefromusAddForm() {
   const formData = useSelector((state) => state.hirefromus.formData);

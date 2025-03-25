@@ -6,7 +6,7 @@ export const fetchManagedCampus = createAsyncThunk(
   "managedCampus/fetchManagedCampus",
   async (serviceId) => {
     const response = await axios.get(
-      "http://localhost:5353/getAll/managed_campus"
+      `${getAPIURL()}/getAll/managed_campus`
     );
     return response.data.getAllManagedCampus.filter(
       (campus) => campus.service._id === serviceId
