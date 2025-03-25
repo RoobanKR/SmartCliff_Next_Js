@@ -18,15 +18,18 @@ export default function PageLinks({ dark, sections }) {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
 
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+        if (
+          scrollPosition >= sectionTop &&
+          scrollPosition < sectionTop + sectionHeight
+        ) {
           setActiveSection(sections[i].id);
           break;
         }
       }
     };
 
-    window.addEventListener('scroll', checkScroll);
-    return () => window.removeEventListener('scroll', checkScroll);
+    window.addEventListener("scroll", checkScroll);
+    return () => window.removeEventListener("scroll", checkScroll);
   }, [sections]);
 
   const handleLinkClick = (e, id) => {
@@ -34,8 +37,9 @@ export default function PageLinks({ dark, sections }) {
     const section = document.getElementById(id);
     if (section) {
       const yOffset = -120; // Adjust this value based on your header height
-      const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      const y =
+        section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
       setActiveSection(id);
     }
   };
@@ -43,7 +47,7 @@ export default function PageLinks({ dark, sections }) {
     <section
       className={`breadcrumbs ${dark ? "bg-dark-1" : ""}`}
       style={{
-        marginTop: "50px",
+        marginTop: window.innerWidth <= 768 ? "-40px" : "50px",
         backgroundColor: "#f5f0ff",
         position: "sticky",
         top: 0,
@@ -52,27 +56,41 @@ export default function PageLinks({ dark, sections }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-start",
+        overflowX: "auto", // Enables horizontal scrolling
+        whiteSpace: "nowrap", // Prevents wrapping
+        scrollbarWidth: "none", // Hides scrollbar for Firefox
+        msOverflowStyle: "none", // Hides scrollbar for IE/Edge
       }}
     >
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "15px" }}>
+      <div style={{ display: "flex",  gap: "10px", width: "100%", }}>
         {sections &&
           sections.map((section, index) => (
             <div
               key={index}
-              className={`breadcrumbs__item ${dark ? "text-dark-3" : ""} ${activeSection === section.id ? "active" : ""
-                }`}
+              className={`breadcrumbs__item ${dark ? "text-dark-3" : ""}`}
               style={{
                 cursor: "pointer",
-                fontWeight: activeSection === section.id ? "bold" : "normal",
-                color: activeSection === section.id ? "#f2775e" : "#000000",
-                padding: "5px 10px",
-               
-
+                padding: "5px 12px", // Compact button styling
+                fontSize: "14px",
+                borderRadius: "6px", // Slightly rounded edges for a modern look
+                fontWeight: activeSection === section.id ? "600" : "normal",
+                color: activeSection === section.id ? "#FFFFFF" : "#000000",
+                backgroundColor:
+                  activeSection === section.id ? "#5B2C6F" : "transparent",
+                border:
+                  activeSection === section.id
+                    ? "1px solid #5B2C6F"
+                    : "1px solid transparent",
+                transition: "all 0.2s ease-in-out",
               }}
             >
               <a
                 href={`#${section.id}`}
                 onClick={(e) => handleLinkClick(e, section.id)}
+                style={{
+                  textDecoration: "none",
+                  color: activeSection === section.id ? "#FFFFFF" : "#5B2C6F",
+                }}
               >
                 {section.title}
               </a>
@@ -81,5 +99,4 @@ export default function PageLinks({ dark, sections }) {
       </div>
     </section>
   );
-
 }

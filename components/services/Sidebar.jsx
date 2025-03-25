@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 export default function Sidebar() {
   const dispatch = useDispatch();
   const services = useSelector(selectServices);
@@ -36,7 +37,7 @@ export default function Sidebar() {
     dispatch(fetchServices());
   }, [dispatch]);
 
-  useEffect(() => { }, [services]);
+  useEffect(() => {}, [services]);
 
   return (
     <div
@@ -84,18 +85,18 @@ export default function Sidebar() {
                     href={`/${secondLastSegment}/${service.slug}`}
                     className="d-flex items-center"
                   >
-                  <img
-  src={service?.icon}
-  alt={service?.title}
-  style={{
-    marginRight: "12px",
-    width: "24px",
-    height: "24px",
-    borderRadius: "6px",
-    background: "#fff",
-    padding: "4px",
-  }}
-/>
+                    <img
+                      src={service?.icon}
+                      alt={service?.title}
+                      style={{
+                        marginRight: "12px",
+                        width: "24px",
+                        height: "24px",
+                        borderRadius: "6px",
+                        background: "#fff",
+                        padding: "4px",
+                      }}
+                    />
 
                     <span
                       style={{
@@ -121,4 +122,3 @@ export default function Sidebar() {
     </div>
   );
 }
-

@@ -40,7 +40,13 @@ import {
   selectServiceOpportunitiesState,
 } from "@/redux/slices/services/services/Oppertunities";
 import ServiceDegreeProgram from "../../servicesDegreeProgrammig";
- 
+import TrainingTracksTable from "../../TrainingTracksTable";
+import {
+  getAllPlacementTrainingTracks,
+  selectPlacementTrainingTrackState,
+} from "@/redux/slices/PlacementTrainingTrack/PlacementTrainingTrack";
+import CsrDegreeProgram from "../../servicesDegreeProgrammig1";
+
 export default function HTD() {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const [messageOpen, setMessageOpen] = useState(false);
@@ -52,7 +58,7 @@ export default function HTD() {
     loading,
     error,
   } = useSelector((state) => state.serviceOpportunities);
- 
+
   const servicesBusiness = useSelector(selectBusinessServices);
   const serviceProcessData = useSelector(selectProcessServices);
   const clients = useSelector(selectServiceClients);
@@ -65,6 +71,34 @@ export default function HTD() {
   const executionHighlights = useSelector(
     (state) => state.executionHighlights.executionHighlights
   );
+  const { tracks, isLoading, isError } = useSelector(
+    selectPlacementTrainingTrackState
+  );
+
+  const [width, setWidth] = useState("100%");
+
+  useEffect(() => {
+    // Function to update width based on screen size
+    const updateWidth = () => {
+      if (window.innerWidth <= 320) {
+        setWidth("90%");
+      } else if (window.innerWidth <= 768) {
+        setWidth("95%");
+      } else {
+        setWidth("100%");
+      }
+    };
+
+    // Set width on initial load
+    updateWidth();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", updateWidth);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
   useEffect(() => {
     dispatch(getAllServiceClients());
     dispatch(fetchExecutionHighlights());
@@ -74,42 +108,49 @@ export default function HTD() {
     dispatch(fetchServices());
     dispatch(fetchAllFAQs());
     dispatch(getAllServiceOpportunities());
+    dispatch(getAllPlacementTrainingTracks());
   }, [dispatch]);
- 
-  console.log("opp", serviceOpportunities);
- 
+
   const fullUrl = typeof window !== "undefined" ? window.location.href : "";
   const segments = fullUrl.split("/").filter(Boolean);
   const lastSegment = segments.pop();
   const secondLastSegment = segments.pop();
- 
+
   const onematchingData = servicesBusiness.find(
     (i) => i.slug === secondLastSegment
   );
   const twomatchingService = services.find((i) => i.slug === lastSegment);
- 
+
   const matchedServices = services.filter(
     (service) => service.business_services._id === onematchingData?._id
   );
   const finalMatchedService = matchedServices.find(
     (service) => service.slug === twomatchingService?.slug
   );
+
   const matchedexecutionOverviews = executionOverviews.filter(
-    (i) => i.service._id === finalMatchedService?._id
+    (i) => i.service?._id === finalMatchedService?._id
   );
-  const matchedFaq = faq.filter((i) => i.service === finalMatchedService?._id);
- 
+
+  const PlacementTraining = tracks.filter(
+    (i) => i.service?._id === finalMatchedService?._id
+  );
+
+  const matchedFaq = faq.filter(
+    (i) => i.service?._id === finalMatchedService?._id
+  );
+
   const matchedProcessData = serviceProcessData.filter(
     (i) => i.service === finalMatchedService?._id
   );
   const matchedExecutionHighlights = executionHighlights.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
- 
+
   const matchedOppertunity = serviceOpportunities.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
- 
+
   const matchedServiceClient = clients.filter(
     (i) => i.service === finalMatchedService?._id
   );
@@ -119,14 +160,22 @@ export default function HTD() {
   const processSteps =
     matchedProcessData.length > 0 ? matchedProcessData[0]?.process || [] : [];
   const filteredHighlights = matchedExecutionHighlights.filter(
-    (highlight) => highlight?.service?._id === finalMatchedService._id
+    (highlight) => highlight?.service?._id === finalMatchedService?._id
   );
-  const filteredFAQ = matchedFaq.filter(
-    (item) => item.service._id === matchedServices._id
-  );
- 
-  console.log("filteredFAQ", matchedFaq);
- 
+  const getMatchedFaqs = () => {
+    const serviceFaqs = faq.filter(
+      (i) => i.service?._id === finalMatchedService?._id
+    );
+
+    if (serviceFaqs.length > 0) {
+      return serviceFaqs;
+    }
+
+    return faq.filter((i) => i.business_service?._id === onematchingData?._id);
+  };
+
+  const finalFaqs = getMatchedFaqs();
+
   useEffect(() => {
     if (window.innerWidth < 990) {
       setIsSidebarClosed(true);
@@ -136,14 +185,14 @@ export default function HTD() {
         setIsSidebarClosed(true);
       }
     };
- 
+
     window.addEventListener("resize", handleResize);
- 
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
- 
+
   const toggleSidebar = () => {
     setIsSidebarClosed(!isSidebarClosed);
   };
@@ -154,28 +203,28 @@ export default function HTD() {
       window.history.back();
     }
   };
- 
+
   const availableSections = [];
- 
+
   if (matchedServiceAbouts.length > 0) {
     availableSections.push({
       id: "learning-solutions",
-      title: "Learning Solutions",
+      title: "About",
     });
   }
   if (processSteps.length > 0) {
-    availableSections.push({ id: "process-steps", title: "Process Steps" });
+    availableSections.push({ id: "process-steps", title: "Process" });
   }
   if (matchedexecutionOverviews.length > 0) {
     availableSections.push({
       id: "execution-overview",
-      title: "Execution Overview",
+      title: "Execution Overview (By Client)",
     });
   }
   if (filteredHighlights.length > 0) {
     availableSections.push({
       id: "execution-highlights",
-      title: "Execution Highlights",
+      title: "Execution Overview (By Domain)",
     });
   }
   if (matchedOppertunity.length > 0) {
@@ -184,10 +233,13 @@ export default function HTD() {
   if (matchedServiceClient.length > 0) {
     availableSections.push({ id: "clients", title: "Clients" });
   }
-  if (filteredFAQ.length > 0) {
+  if (PlacementTraining.length > 0) {
+    availableSections.push({ id: "training-tracks", title: "Training Tracks" });
+  }
+  if (matchedFaq.length > 0) {
     availableSections.push({ id: "faq", title: "FAQ" });
   }
- 
+
   return (
     <>
       <div className="main-content homeModeChange ">
@@ -212,156 +264,12 @@ export default function HTD() {
           </div>
           <div className="dashboard__main content-wrapper  js-content-wrapper overflow-hidden ">
             <div className="dashboard__content pt-0 px-15 pb-0 mt-20">
-              {lastSegment === "dp" ? (
+              {secondLastSegment === "b2i" && lastSegment === "dp" ? (
                 <div>
                   <div
                     className="toggle-sidebar"
                     style={{
-                      borderRadius: "12px",
-                      padding: "4px 8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      position: "fixed",
-                      left: "20px",
-                      bottom: "73px",
-                      zIndex: "1000",
-                    }}
-                    onClick={goBack}
-                  >
-                    <button
-                      onClick={goBack}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-4px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(2px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-5px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      onMouseDown={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-1px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(0px)";
-                      }}
-                      onMouseUp={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-5px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      style={{
-                        position: "relative",
-                        padding: "0",
-                        border: "none",
-                        background: "transparent",
-                        cursor: "pointer",
-                        outline: "none",
-                      }}
-                    >
-                      <span
-                        className="shadow"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "8px",
-                          background: "hsl(0deg 0% 0% / 0.2)",
-                          transform: "translateY(1px)",
-                          transition: "transform 300ms ease",
-                        }}
-                      ></span>
-                      <span
-                        className="edge"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "8px",
-                          background:
-                            "linear-gradient(to left, #C8AAAA 0%, #C8AAAA 100%)",
-                        }}
-                      ></span>
-                      <span
-                        className="front"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center", // Center the content horizontally
-                          gap: "8px",
-                          width: "100%", // Ensure the full width is utilized
-                          position: "relative",
-                          padding: "8px 16px",
-                          borderRadius: "8px",
-                          fontSize: "0.85rem",
-                          color: "#5C4B51", // Darker text color for better contrast
-                          background: "#EAE2C6", // Soft yellow-beige background
-                          transform: "translateY(-2px)",
-                          transition: "transform 300ms ease",
-                        }}
-                      >
-                        <span
-                          className="icon-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "24px",
-                            height: "24px",
-                            borderRadius: "50%",
-                            background: "white", // White icon background
-                            color: "#5C4B51", // Dark icon color for visibility
-                            transition:
-                              "transform 0.5s ease, background 0.5s ease",
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faArrowLeft} // Left arrow icon
-                            style={{
-                              fontSize: "16px",
-                              transition: "transform 0.5s ease",
-                              transform: "rotate(0deg)",
-                            }}
-                          />
-                        </span>
-                        <span
-                          className="text-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flex: 1,
-                            animation: "fadeSlide 0.5s ease",
-                          }}
-                        >
-                          Back
-                        </span>{" "}
-                      </span>
-                    </button>
-                  </div>
- 
-                  <div
-                    className="toggle-sidebar"
-                    style={{
-                      borderRadius: "12px",
+                      borderRadius: "8px",
                       padding: "4px 8px",
                       display: "flex",
                       alignItems: "center",
@@ -370,7 +278,7 @@ export default function HTD() {
                       position: "fixed",
                       left: "20px",
                       bottom: "20px",
-                      zIndex: "1000",
+                      zIndex: "120",
                     }}
                     onClick={toggleSidebar}
                   >
@@ -379,7 +287,7 @@ export default function HTD() {
                       onMouseEnter={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-4px)";
+                        ).style.transform = "translateY(-3px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(2px)";
@@ -387,7 +295,7 @@ export default function HTD() {
                       onMouseLeave={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-5px)";
+                        ).style.transform = "translateY(-2px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(1px)";
@@ -395,7 +303,7 @@ export default function HTD() {
                       onMouseDown={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-1px)";
+                        ).style.transform = "translateY(0px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(0px)";
@@ -403,7 +311,7 @@ export default function HTD() {
                       onMouseUp={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-5px)";
+                        ).style.transform = "translateY(-2px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(1px)";
@@ -417,6 +325,7 @@ export default function HTD() {
                         outline: "none",
                       }}
                     >
+                      {/* Shadow Effect */}
                       <span
                         className="shadow"
                         style={{
@@ -425,12 +334,14 @@ export default function HTD() {
                           left: "0",
                           width: "100%",
                           height: "100%",
-                          borderRadius: "8px",
+                          borderRadius: "6px",
                           background: "hsl(0deg 0% 0% / 0.2)",
                           transform: "translateY(1px)",
-                          transition: "transform 300ms ease",
+                          transition: "transform 200ms ease",
                         }}
                       ></span>
+
+                      {/* Button Edge */}
                       <span
                         className="edge"
                         style={{
@@ -439,63 +350,64 @@ export default function HTD() {
                           left: "0",
                           width: "100%",
                           height: "100%",
-                          borderRadius: "8px",
+                          borderRadius: "6px",
                           background:
-                            "linear-gradient(to left, #C8AAAA 0%, #C8AAAA 100%)",
+                            "linear-gradient(to left, #ffa726a8 0%, #4A245B 100%)",
                         }}
                       ></span>
+
+                      {/* Button Front */}
                       <span
                         className="front"
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "center", // Center the content horizontally
-                          gap: "8px",
-                          width: "100%", // Ensure the full width is utilized
+                          justifyContent: "center",
+                          gap: "6px",
+                          width: "100%",
                           position: "relative",
-                          padding: "8px 16px",
-                          borderRadius: "8px",
+                          padding: "6px 14px",
+                          borderRadius: "6px",
                           fontSize: "0.85rem",
-                          color: "#4C585B", // Updated text color
-                          background: "#D9DFC6",
+                          color: "#FFF",
+                          background: "#ffa726a8",
                           transform: "translateY(-2px)",
-                          transition: "transform 300ms ease",
+                          transition:
+                            "transform 200ms ease, background 200ms ease",
                         }}
                       >
+                        {/* Icon */}
                         <span
                           className="icon-container"
                           style={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            width: "24px",
-                            height: "24px",
+                            width: "22px",
+                            height: "22px",
                             borderRadius: "50%",
-                            background: "white",
-                            color: "#4C585B", // Updated icon color
-                            transition:
-                              "transform 0.5s ease, background 0.5s ease",
+                            background: "#FFF",
+                            color: "#ffa726a8",
+                            transition: "background 0.3s ease",
                           }}
                         >
                           <FontAwesomeIcon
                             icon={isSidebarClosed ? faArrowRight : faArrowLeft}
                             style={{
-                              fontSize: "16px",
-                              transition: "transform 0.5s ease",
-                              transform: isSidebarClosed
-                                ? "rotate(0deg)"
-                                : "rotate(180deg)",
+                              fontSize: "14px",
+                              transition: "transform 0.3s ease",
                             }}
                           />
                         </span>
+
+                        {/* Button Text */}
                         <span
                           className="text-container"
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "center", // Center the text
-                            flex: 1, // Take available space
-                            animation: "fadeSlide 0.5s ease",
+                            justifyContent: "center",
+                            animation: "fadeSlide 0.3s ease",
                           }}
                           key={isSidebarClosed ? "open" : "close"}
                         >
@@ -504,158 +416,170 @@ export default function HTD() {
                       </span>
                     </button>
                   </div>
+
                   <ServiceDegreeProgram />
+                </div>
+              ) : secondLastSegment === "csr" ? (
+                <div>
+                  <div
+                    className="toggle-sidebar"
+                    style={{
+                      borderRadius: "8px",
+                      padding: "4px 8px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      position: "fixed",
+                      left: "20px",
+                      bottom: "20px",
+                      zIndex: "120",
+                    }}
+                    onClick={toggleSidebar}
+                  >
+                    <button
+                      onClick={toggleSidebar}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.querySelector(
+                          ".front"
+                        ).style.transform = "translateY(-3px)";
+                        e.currentTarget.querySelector(
+                          ".shadow"
+                        ).style.transform = "translateY(2px)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.querySelector(
+                          ".front"
+                        ).style.transform = "translateY(-2px)";
+                        e.currentTarget.querySelector(
+                          ".shadow"
+                        ).style.transform = "translateY(1px)";
+                      }}
+                      onMouseDown={(e) => {
+                        e.currentTarget.querySelector(
+                          ".front"
+                        ).style.transform = "translateY(0px)";
+                        e.currentTarget.querySelector(
+                          ".shadow"
+                        ).style.transform = "translateY(0px)";
+                      }}
+                      onMouseUp={(e) => {
+                        e.currentTarget.querySelector(
+                          ".front"
+                        ).style.transform = "translateY(-2px)";
+                        e.currentTarget.querySelector(
+                          ".shadow"
+                        ).style.transform = "translateY(1px)";
+                      }}
+                      style={{
+                        position: "relative",
+                        padding: "0",
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        outline: "none",
+                      }}
+                    >
+                      {/* Shadow Effect */}
+                      <span
+                        className="shadow"
+                        style={{
+                          position: "absolute",
+                          top: "0",
+                          left: "0",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "6px",
+                          background: "hsl(0deg 0% 0% / 0.2)",
+                          transform: "translateY(1px)",
+                          transition: "transform 200ms ease",
+                        }}
+                      ></span>
+
+                      {/* Button Edge */}
+                      <span
+                        className="edge"
+                        style={{
+                          position: "absolute",
+                          top: "0",
+                          left: "0",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "6px",
+                          background:
+                            "linear-gradient(to left, #ffa726a8 0%, #4A245B 100%)",
+                        }}
+                      ></span>
+
+                      {/* Button Front */}
+                      <span
+                        className="front"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "6px",
+                          width: "100%",
+                          position: "relative",
+                          padding: "6px 14px",
+                          borderRadius: "6px",
+                          fontSize: "0.85rem",
+                          color: "#FFF",
+                          background: "#ffa726a8",
+                          transform: "translateY(-2px)",
+                          transition:
+                            "transform 200ms ease, background 200ms ease",
+                        }}
+                      >
+                        {/* Icon */}
+                        <span
+                          className="icon-container"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "22px",
+                            height: "22px",
+                            borderRadius: "50%",
+                            background: "#FFF",
+                            color: "#ffa726a8",
+                            transition: "background 0.3s ease",
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={isSidebarClosed ? faArrowRight : faArrowLeft}
+                            style={{
+                              fontSize: "14px",
+                              transition: "transform 0.3s ease",
+                            }}
+                          />
+                        </span>
+
+                        {/* Button Text */}
+                        <span
+                          className="text-container"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            animation: "fadeSlide 0.3s ease",
+                          }}
+                          key={isSidebarClosed ? "open" : "close"}
+                        >
+                          {isSidebarClosed ? "Open Sidebar" : "Close Sidebar"}
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+
+                  <CsrDegreeProgram />
                 </div>
               ) : (
                 <div>
                   <div
                     className="toggle-sidebar"
                     style={{
-                      borderRadius: "12px",
-                      padding: "4px 8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      position: "fixed",
-                      left: "20px",
-                      bottom: "73px",
-                      zIndex: "1000",
-                    }}
-                    onClick={goBack}
-                  >
-                    <button
-                      onClick={goBack}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-4px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(2px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-5px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      onMouseDown={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-1px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(0px)";
-                      }}
-                      onMouseUp={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-5px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      style={{
-                        position: "relative",
-                        padding: "0",
-                        border: "none",
-                        background: "transparent",
-                        cursor: "pointer",
-                        outline: "none",
-                      }}
-                    >
-                      <span
-                        className="shadow"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "8px",
-                          background: "hsl(0deg 0% 0% / 0.2)",
-                          transform: "translateY(1px)",
-                          transition: "transform 300ms ease",
-                        }}
-                      ></span>
-                      <span
-                        className="edge"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "8px",
-                          background:
-                            "linear-gradient(to left, #C8AAAA 0%, #C8AAAA 100%)",
-                        }}
-                      ></span>
-                      <span
-                        className="front"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center", // Center the content horizontally
-                          gap: "8px",
-                          width: "100%", // Ensure the full width is utilized
-                          position: "relative",
-                          padding: "8px 16px",
-                          borderRadius: "8px",
-                          fontSize: "0.85rem",
-                          color: "#5C4B51", // Darker text color for better contrast
-                          background: "#EAE2C6", // Soft yellow-beige background
-                          transform: "translateY(-2px)",
-                          transition: "transform 300ms ease",
-                        }}
-                      >
-                        <span
-                          className="icon-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "24px",
-                            height: "24px",
-                            borderRadius: "50%",
-                            background: "white", // White icon background
-                            color: "#5C4B51", // Dark icon color for visibility
-                            transition:
-                              "transform 0.5s ease, background 0.5s ease",
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faArrowLeft} // Left arrow icon
-                            style={{
-                              fontSize: "16px",
-                              transition: "transform 0.5s ease",
-                              transform: "rotate(0deg)",
-                            }}
-                          />
-                        </span>
-                        <span
-                          className="text-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flex: 1,
-                            animation: "fadeSlide 0.5s ease",
-                          }}
-                        >
-                          Back
-                        </span>{" "}
-                      </span>
-                    </button>
-                  </div>
- 
-                  <div
-                    className="toggle-sidebar"
-                    style={{
-                      borderRadius: "12px",
+                      borderRadius: "8px",
                       padding: "4px 8px",
                       display: "flex",
                       alignItems: "center",
@@ -664,7 +588,7 @@ export default function HTD() {
                       position: "fixed",
                       left: "20px",
                       bottom: "20px",
-                      zIndex: "1000",
+                      zIndex: "120",
                     }}
                     onClick={toggleSidebar}
                   >
@@ -673,7 +597,7 @@ export default function HTD() {
                       onMouseEnter={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-4px)";
+                        ).style.transform = "translateY(-3px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(2px)";
@@ -681,7 +605,7 @@ export default function HTD() {
                       onMouseLeave={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-5px)";
+                        ).style.transform = "translateY(-2px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(1px)";
@@ -689,7 +613,7 @@ export default function HTD() {
                       onMouseDown={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-1px)";
+                        ).style.transform = "translateY(0px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(0px)";
@@ -697,7 +621,7 @@ export default function HTD() {
                       onMouseUp={(e) => {
                         e.currentTarget.querySelector(
                           ".front"
-                        ).style.transform = "translateY(-5px)";
+                        ).style.transform = "translateY(-2px)";
                         e.currentTarget.querySelector(
                           ".shadow"
                         ).style.transform = "translateY(1px)";
@@ -711,6 +635,7 @@ export default function HTD() {
                         outline: "none",
                       }}
                     >
+                      {/* Shadow Effect */}
                       <span
                         className="shadow"
                         style={{
@@ -719,12 +644,14 @@ export default function HTD() {
                           left: "0",
                           width: "100%",
                           height: "100%",
-                          borderRadius: "8px",
+                          borderRadius: "6px",
                           background: "hsl(0deg 0% 0% / 0.2)",
                           transform: "translateY(1px)",
-                          transition: "transform 300ms ease",
+                          transition: "transform 200ms ease",
                         }}
                       ></span>
+
+                      {/* Button Edge */}
                       <span
                         className="edge"
                         style={{
@@ -733,63 +660,64 @@ export default function HTD() {
                           left: "0",
                           width: "100%",
                           height: "100%",
-                          borderRadius: "8px",
+                          borderRadius: "6px",
                           background:
-                            "linear-gradient(to left, #C8AAAA 0%, #C8AAAA 100%)",
+                            "linear-gradient(to left, #ffa726a8 0%, #4A245B 100%)",
                         }}
                       ></span>
+
+                      {/* Button Front */}
                       <span
                         className="front"
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "center", // Center the content horizontally
-                          gap: "8px",
-                          width: "100%", // Ensure the full width is utilized
+                          justifyContent: "center",
+                          gap: "6px",
+                          width: "100%",
                           position: "relative",
-                          padding: "8px 16px",
-                          borderRadius: "8px",
+                          padding: "6px 14px",
+                          borderRadius: "6px",
                           fontSize: "0.85rem",
-                          color: "#4C585B", // Updated text color
-                          background: "#D9DFC6",
+                          color: "#FFF",
+                          background: "#ffa726a8",
                           transform: "translateY(-2px)",
-                          transition: "transform 300ms ease",
+                          transition:
+                            "transform 200ms ease, background 200ms ease",
                         }}
                       >
+                        {/* Icon */}
                         <span
                           className="icon-container"
                           style={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            width: "24px",
-                            height: "24px",
+                            width: "22px",
+                            height: "22px",
                             borderRadius: "50%",
-                            background: "white",
-                            color: "#4C585B", // Updated icon color
-                            transition:
-                              "transform 0.5s ease, background 0.5s ease",
+                            background: "#FFF",
+                            color: "#ffa726a8",
+                            transition: "background 0.3s ease",
                           }}
                         >
                           <FontAwesomeIcon
                             icon={isSidebarClosed ? faArrowRight : faArrowLeft}
                             style={{
-                              fontSize: "16px",
-                              transition: "transform 0.5s ease",
-                              transform: isSidebarClosed
-                                ? "rotate(0deg)"
-                                : "rotate(180deg)",
+                              fontSize: "14px",
+                              transition: "transform 0.3s ease",
                             }}
                           />
                         </span>
+
+                        {/* Button Text */}
                         <span
                           className="text-container"
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "center", // Center the text
-                            flex: 1, // Take available space
-                            animation: "fadeSlide 0.5s ease",
+                            justifyContent: "center",
+                            animation: "fadeSlide 0.3s ease",
                           }}
                           key={isSidebarClosed ? "open" : "close"}
                         >
@@ -798,17 +726,17 @@ export default function HTD() {
                       </span>
                     </button>
                   </div>
- 
+
                   <div
                     style={{
                       position: "fixed",
                       zIndex: 10,
-                      width: "100%",
+                      width: width,
                     }}
                   >
                     <PageLinks sections={availableSections} />
                   </div>
- 
+
                   <div style={{ paddingTop: "120px" }}>
                     {matchedServiceAbouts.length > 0 && (
                       <div id="learning-solutions">
@@ -835,35 +763,41 @@ export default function HTD() {
                       </div>
                     )}
                     <div id="opportunities">
-                    {matchedOppertunity.length > 0 && (
-                      <div id="opportunities">
-                        <Oppertunitie matchedOppertunity={matchedOppertunity} />
-                      </div>
-                    )}
- 
-                     </div>
+                      {matchedOppertunity.length > 0 && (
+                        <div id="opportunities">
+                          <Oppertunitie
+                            matchedOppertunity={matchedOppertunity}
+                          />
+                        </div>
+                      )}
+                    </div>
                     {matchedServiceClient.length > 0 && (
                       <div id="clients">
                         <Clients filteredClients={matchedServiceClient} />
                       </div>
                     )}
-                    {filteredFAQ.length > 0 && (
+                    {PlacementTraining.length > 0 && (
+                      <div id="training-tracks">
+                        <TrainingTracksTable />
+                      </div>
+                    )}
+                    {matchedFaq.length > 0 && (
                       <div id="faq">
-                        <FAQComponent faq={filteredFAQ} />
+                        <FAQComponent faq={matchedFaq} />
                       </div>
                     )}
                   </div>
                 </div>
               )}
             </div>
- 
+
             <FooterTwo />
           </div>
         </div>
         {/* </div> */}
       </div>
       <Messages messageOpen={messageOpen} setMessageOpen={setMessageOpen} />
- 
+
       <style jsx>{`
         @keyframes fadeSlide {
           from {
@@ -879,5 +813,3 @@ export default function HTD() {
     </>
   );
 }
- 
- 

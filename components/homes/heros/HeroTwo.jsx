@@ -1,172 +1,155 @@
 "use client";
-import gsap from "gsap";
 import Image from "next/image";
-import Link from "next/link";
- 
-import React, { useEffect } from "react";
+import { Autoplay, Navigation, Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import { useEffect, useState } from "react";
+
+import React from "react";
+import { featureTwo } from "../../../data/features";
+import { slidesData } from "../../../data/hero";
 import { useRouter } from "next/navigation";
+import HeroUITwo from "./heroUI2";
+import HeroUIOne from "./heroUI1";
+import HeroUIFour from "./heroUI4";
+import HeroUIThree from "./heroUI3";
 export default function HeroTwo() {
   const router = useRouter();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  const [showSlider, setShowSlider] = useState(false);
+
   useEffect(() => {
-    const parallaxIt = () => {
-      const target = document.querySelectorAll(".js-mouse-move-container");
- 
-      target.forEach((container) => {
-        const targets = container.querySelectorAll(".js-mouse-move");
- 
-        targets.forEach((el) => {
-          const movement = el.getAttribute("data-move");
- 
-          document.addEventListener("mousemove", (e) => {
-            const relX = e.pageX - container.offsetLeft;
-            const relY = e.pageY - container.offsetTop;
- 
-            gsap.to(el, {
-              x:
-                ((relX - container.offsetWidth / 2) / container.offsetWidth) *
-                Number(movement),
-              y:
-                ((relY - container.offsetHeight / 2) / container.offsetHeight) *
-                Number(movement),
-              duration: 0.2,
-            });
-          });
-        });
-      });
-    };
- 
-    parallaxIt();
+    setShowSlider(true);
   }, []);
+
   return (
-    <section className="masthead -type-3 bg-light-6 js-mouse-move-container">
-      <div className="container">
-        <div className="row y-gap-30 items-center justify-center">
-          <div
-            className="col-xl-7 col-lg-11 relative z-5"
-            data-aos="fade-up"
-            data-aos-delay="500"
-          >
-            <div className="masthead__content pl-32 lg:pl-0">
-              <h1 className="masthead__title">
-                Find Your Preferred
-                <br /> <span className="text-purple-1">Courses</span> & Improve
-                Your Skills
-              </h1>
- 
-              <p className="masthead__text text-17 text-dark-1 mt-25">
-                Build skills with courses, certificates, and degrees online from
-                <br className="lg:d-none" />
-                world-class universities and companies.
-              </p>
- 
-              <div className="masthead-search mt-30">
-                <div className="masthead-search__form">
-                  <form onSubmit={handleSubmit}>
-                    <input
-                      required
-                      type="text"
-                      placeholder="What do you want to learn today?"
-                    />
- 
-                    <button
-                      className="button -purple-1 text-white"
-                      onClick={() => router.push("/courses-list-2")}
-                    >
-                      <i className="icon icon-search"></i>
-                    </button>
-                  </form>
-                </div>
- 
-                <div className="masthead-search__searches mt-40">
-                  Trending Search:
-                  <Link href={`/courses/${6}`}>Development</Link>,
-                  <Link href="/courses-single-2/3">Business</Link>,
-                  <Link href="/courses-single-6/3">Design</Link>,
-                  <a href="#">Merketing</a>
-                </div>
-              </div>
+    <section
+      className="mainSlider -type-1 js-mainSlider customizedHeroBackground"
+      style={{
+        width: "100%",
+        height: "100vh", // Full viewport height
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+      }}
+    >
+      {showSlider && (
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]} // Include Autoplay
+          navigation={{
+            nextEl: ".hero-slider-next",
+            prevEl: ".hero-slider-prev",
+          }}
+          spaceBetween={0}
+          slidesPerView={1}
+          speed={1200}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          loop={true}
+          pagination={{ clickable: true }}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {/* Slide 1: HeroUITwo */}
+          <SwiperSlide>
+            <div
+              className="swiper-slide"
+              style={{
+                width: "auto",
+                height: "auto",
+                justifyContent: "center",
+                background: "#f0f0f0",
+              }}
+            >
+              <HeroUITwo />
             </div>
-          </div>
- 
-          <div
-            className="col-xl-5 col-lg-7 relative z-2"
-            data-aos="fade-up"
-            data-aos-delay="750"
-          >
-            <div className="masthead-image">
-              <div className="masthead-image__img1">
-                <div className="masthead-image__shape xl:d-none">
-                  <Image
-                    width={800}
-                    height={800}
-                    src="/assets/img/home-4/masthead/shape.svg"
-                    alt="image"
-                  />
-                </div>
-                <Image
-                  width={587}
-                  height={656}
-                  data-move="20"
-                  className="js-mouse-move"
-                  src="/assets/img/home-4/masthead/hummer.png"
-                  alt="image"
-                />
-              </div>
- 
-              <div className="masthead-image__el1">
-                <div
-                  data-move="40"
-                  className="lg:d-none img-el -w-250 px-20 py-20 d-flex items-center bg-white rounded-8 js-mouse-move"
-                >
-                  <div className="size-50 d-flex justify-center items-center bg-red-2 rounded-full">
-                    <Image
-                      width={24}
-                      height={23}
-                      src="/assets/img/masthead/1.svg"
-                      alt="icon"
-                    />
-                  </div>
-                  <div className="ml-20">
-                    <div className="text-orange-1 text-16 fw-500 lh-1">
-                      3.000 +
-                    </div>
-                    <div className="mt-3">Free Courses</div>
-                  </div>
-                </div>
-              </div>
- 
-              <div className="masthead-image__el2">
-                <div
-                  data-move="40"
-                  className="shadow-4 img-el -w-260 px-40 py-20 d-flex items-center bg-white rounded-8 js-mouse-move"
-                >
-                  <div className="img-el__side">
-                    <div className="size-50 d-flex justify-center items-center bg-dark-1 rounded-full">
-                      <Image
-                        width={20}
-                        height={27}
-                        src="/assets/img/masthead/2.svg"
-                        alt="icon"
-                      />
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="text-purple-1 text-16 fw-500 lh-1">
-                      Congrats!
-                    </div>
-                    <div className="mt-3">Your Admission Completed</div>
-                  </div>
-                </div>
-              </div>
+          </SwiperSlide>
+          {/* Slide 2: HeroUIOne */}
+          <SwiperSlide>
+            <div
+              className="swiper-slide"
+              style={{
+                width: "100%",
+                height: "100vh",
+                justifyContent: "center",
+                background: "#e0e0e0",
+              }}
+            >
+              <HeroUIOne />
             </div>
-          </div>
-        </div>
-      </div>
+          </SwiperSlide>
+          {/* Slide 3: HeroUIOne */}
+          <SwiperSlide>
+            <div
+              className="swiper-slide"
+              style={{
+                width: "100%",
+                height: "100vh",
+                justifyContent: "center",
+                background: "#e0e0e0",
+              }}
+            >
+              <HeroUIThree />
+            </div>
+          </SwiperSlide>{" "}
+          {/* Slide 4: HeroUIOne */}
+          <SwiperSlide>
+            <div
+              className="swiper-slide"
+              style={{
+                width: "100%",
+                height: "100vh",
+                justifyContent: "center",
+                background: "#e0e0e0",
+              }}
+            >
+              <HeroUIFour />
+            </div>
+          </SwiperSlide>
+        </Swiper>
+      )}
+
+      {/* Navigation Buttons */}
+      <button
+        className="swiper-prev hero-slider-prev button -white-20 text-white size-60 rounded-full d-flex justify-center items-center"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "20px",
+          transform: "translateY(-50%)",
+          zIndex: 10,
+          background: "rgba(0,0,0,0.5)",
+          border: "none",
+          padding: "10px",
+          cursor: "pointer",
+        }}
+      >
+        <i className="icon icon-arrow-left text-24"></i>
+      </button>
+
+      <button
+        className="swiper-next hero-slider-next button -white-20 text-white size-60 rounded-full d-flex justify-center items-center"
+        style={{
+          position: "absolute",
+          top: "50%",
+          right: "20px",
+          transform: "translateY(-50%)",
+          zIndex: 10,
+          background: "rgba(0,0,0,0.5)",
+          border: "none",
+          padding: "10px",
+          cursor: "pointer",
+        }}
+      >
+        <i className="icon icon-arrow-right text-24"></i>
+      </button>
     </section>
   );
 }
- 
- 

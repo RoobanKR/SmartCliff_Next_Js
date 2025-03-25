@@ -1,0 +1,204 @@
+.learn-more {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  gap: 8px;
+  bottom: 10px;
+  right: 5px;
+  z-index: 10; /* Increased z-index to ensure button stays on top */
+  cursor: pointer;
+  height: 36px;
+  width: 120px;
+  border: none;
+  background: #f2775e;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.label {
+  line-height: 20px;
+  font-size: 15px;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+.svg-icon {
+  filter: brightness(0) invert(1);
+}
+.learn-more:hover .svg-icon {
+  transform: scale(1.5) rotate(360deg); /* Scales up and spins */
+  transition: transform 0.5s ease-in-out;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 50px; /* Adjusted for better mobile view */
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #8b66a8;
+  color: white;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 4px rgba(180, 160, 255, 0.253);
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0.8;
+  z-index: 10;
+}
+
+/* On hover, change color */
+.back-to-top:hover {
+  background-color: #f2775e;
+  opacity: 1;
+}
+
+.svgIcon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
+
+.svgIcon path {
+  fill: white;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal Content */
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 350px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideUp 0.3s ease-in-out;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-btn:hover {
+  color: red;
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+}
+
+.input-icon {
+  font-size: 18px;
+  color: #777;
+  margin-right: 8px;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+}
+
+/* Textarea */
+.input-group textarea {
+  resize: none;
+  height: 80px;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+/* Responsive Design */
+@media (max-width: 768px) {
+  .back-to-top {
+    width: 50px; /* Bigger button on small screens */
+    height: 50px;
+    font-size: 22px;
+    right: 15px; /* Adjust position */
+    bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-to-top {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    right: 270px;
+    bottom: 10px;
+  }
+}

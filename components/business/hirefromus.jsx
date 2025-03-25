@@ -16,26 +16,18 @@ const Hirefromus = ({ path, id }) => {
   }, [id]);
 
   return (
-    <div id="js-pin-container" className="js-pin-container">
-      <section className="layout-pb-sm">
-        <div className="container">
-          <div className="row y-gap-50">
-            <div className="col">
-              <HirefromusAddForm />
-              {/* <TrainFromUs /> */}
-              {/* <div style={{ overflowX: "auto" }}>
+    <>
+      <HirefromusAddForm />
+      {/* <TrainFromUs /> */}
+      {/* <div style={{ overflowX: "auto" }}>
                 <Table />
               </div> */}
-              {/* <Advantage /> */}
-              <KeyElements />
-              <div className="content-wrapper  js-content-wrapper overflow-hidden">
+      {/* <Advantage /> */}
+      {/* <KeyElements /> */}
+      {/* <div className="content-wrapper  js-content-wrapper overflow-hidden">
                 <PlacementTestimonial />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+              </div> */}
+    </>
   );
 };
 

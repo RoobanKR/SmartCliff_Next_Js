@@ -16,23 +16,15 @@ const Trainfromus = ({ path, id }) => {
   }, [id]);
 
   return (
-    <div id="js-pin-container" className="js-pin-container">
-      <section className="layout-pb-sm">
-        <div className="container">
-          <div className="row y-gap-50">
-            <div className="col">
-              <TrainFromUs />
-              {/* <div style={{ overflowX: "auto" }}>
+    <>
+      <TrainFromUs />
+      {/* <div style={{ overflowX: "auto" }}>
                 <Table />
               </div> */}
-              {/* <Advantage /> */}
-              <KeyElements />
-              <EngagementGovernance />
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+      {/* <Advantage /> */}
+      {/* <KeyElements /> */}
+      {/* <EngagementGovernance /> */}
+    </>
   );
 };
 

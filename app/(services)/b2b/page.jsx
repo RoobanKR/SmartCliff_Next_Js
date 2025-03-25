@@ -24,7 +24,6 @@ export default function HomeNine() {
     setSelectedService(service);
   };
 
-
   return (
     <>
       <div className="main-content homeModeChange ">

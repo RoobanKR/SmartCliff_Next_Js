@@ -1,15 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { faq } from "../../../data/faq";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Faq from "@/components/common/Faq";
+import { lessonItems } from "@/data/aboutcourses";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllFAQs, selectFAQs, selectStatus } from "@/redux/slices/faq/faq";
 
-export default function FrequentlyAskedQuestion() {
+export default function FAQComponent({ faq }) {
+  const [activeItemId, setActiveItemId] = useState(null);
   const [activeFaq, setActiveFaq] = useState(0);
   const dispatch = useDispatch();
   const faqData = useSelector(selectFAQs);
@@ -20,141 +18,88 @@ export default function FrequentlyAskedQuestion() {
     dispatch(fetchAllFAQs());
   }, [dispatch]);
 
-  useEffect(() => {
-  }, [faqData]);
+  useEffect(() => {}, [faqData]);
 
-  useEffect(() => {
-  }, [status]);
+  useEffect(() => {}, [status]);
+
+  const toggleAccordion = (faqItemId) => {
+    setActiveItemId((prev) => (prev === faqItemId ? null : faqItemId));
+  };
 
   return (
     <>
-      <section className="layout-pt-sm layout-pb-md">
-        <div className="container">
-          <div className="page-header__content">
-            <div className="row justify-center text-center">
-              <div className="col-auto">
-                <div>
-                  <h1
-                    className="page-header__title"
-                    style={{ fontFamily: "Serif" }}
-                  >
-                    Frequently Asked Questions.
-                  </h1>
-                </div>
+      <div
+        id="course-content"
+        className="pt-50 lg:pt-40 layout-pb-sm "
+        style={{ padding: "20px" }}
+      >
+        <div className="row y-gap-20 justify-center text-center">
+          <div className="col-auto">
+            <div className="sectionTitle ">
+              <h2 className="text-25">Frequently Asked Questions</h2>
+              <br></br>
 
-                <div>
-                  <p
-                    className="page-header__text"
-                    style={{ fontFamily: "Serif" }}
-                  >
-                    We’re on a mission to deliver engaging, curated courses at a
-                    reasonable price.
-                  </p>
-                </div>
-              </div>
+              <p className="sectionTitle__text "></p>
             </div>
           </div>
         </div>
-        <div className="container">
-          <div className="row y-gap-50 justify-between items-center">
-            <div
-              className="col-lg-3"
-              data-aos="fade-up"
-              data-aos-duration={350}
-            >
-              <Image
-                width={690}
-                height={765}
-                style={{ width: "600px", height: "300px" }}
-                className="w-1/1"
-                src="/assets/img/home-8/what/faqq.jpg"
-                alt="image"
-              />
-            </div>
+        <div className="mt-10">
+          <div className="accordion -block-2 text-left js-accordion">
+            {filteredData?.map((item, i) => (
+              <div key={i}>
+                {item.faqItems.map((faqItem, j) => (
+                  <div key={faqItem._id}>
+                    <div
+                      onClick={() => toggleAccordion(faqItem._id)}
+                      className={`accordion__button py-20 mt-10 px-30 bg-light-4 ${
+                        activeItemId === faqItem._id ? "is-active" : ""
+                      }`}
+                    >
+                      <div className="d-flex items-center">
+                        <div className="accordion__icon">
+                          <div className="icon">
+                            <FontAwesomeIcon icon={faChevronDown} />
+                          </div>
+                          <div className="icon">
+                            <FontAwesomeIcon icon={faChevronUp} />
+                          </div>
+                        </div>
+                        <span className="text-17 fw-500 text-dark-1">
+                          {faqItem.question}
+                        </span>
+                      </div>
+                    </div>
 
-            <div className="col-lg-9">
-              <div className="row justify-center text-center">
-                <div className="col-xl-8 col-lg-9 col-md-11">
-                  <div className="accordion -block text-left pt-30 lg:pt-40 js-accordion">
-                    {filteredData.map((item, index) => (
-                      <div key={index}>
-                        {item.faqItems.map((faqItem, faqIndex) => (
-                          <div
-                            key={faqIndex}
-                            className={`accordion__item ${
-                              activeFaq === faqIndex ? "is-active" : ""
-                            }`}
-                          >
-                            <div className="accordion__button">
-                              <div
-                                className="accordion__icon"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                  className="icon"
-                                  data-feather="plus"
-                                  onClick={() => {
-                                    setActiveFaq((prev) =>
-                                      prev === faqIndex ? null : faqIndex
-                                    );
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon={faPlus} />
-                                </div>
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                  className="icon"
-                                  data-feather="minus"
-                                  onClick={() => {
-                                    setActiveFaq((prev) =>
-                                      prev === faqIndex ? null : faqIndex
-                                    );
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon={faMinus} />
-                                </div>
-                              </div>
-                              <span
-                                className="text-17 fw-500 text-dark-1"
-                                style={{ fontFamily: "Serif" }}
-                              >
-                                {faqItem.question}
-                              </span>
-                            </div>
-                            <div
-                              style={
-                                activeFaq === faqIndex
-                                  ? { maxHeight: "139px" }
-                                  : { maxHeight: 0 }
-                              }
-                              className="accordion__content"
-                            >
-                              <div className="accordion__content__inner">
-                                <p style={{ fontFamily: "Serif" }}>
-                                  {faqItem.answer}
-                                </p>
-                              </div>
+                    <div
+                      className={`accordion__content ${
+                        activeItemId === faqItem._id ? "is-active" : ""
+                      }`}
+                      style={
+                        activeItemId === faqItem._id
+                          ? { maxHeight: "700px" }
+                          : {}
+                      }
+                    >
+                      <div className="accordion__content__inner px-30 py-30">
+                        <div className="y-gap-20">
+                          <div className="d-flex justify-between">
+                            <div className="d-flex items-center">
+                              {/* <div className="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                <div className="icon-play text-9"></div>
+                              </div> */}
+                              <div>{faqItem.answer}</div>
                             </div>
                           </div>
-                        ))}
+                        </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }

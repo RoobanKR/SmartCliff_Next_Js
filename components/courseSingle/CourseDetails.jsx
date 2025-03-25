@@ -1,199 +1,110 @@
+// update 1
+
 "use client";
 
-import Instractor from "./Instractor";
 import Reviews from "./Reviews";
-import Overview from "./Overview";
-import CourseContent from "./CourseContent";
-import Star from "../common/Star";
-import { coursesData } from "@/data/courses";
-import React, { useState, useEffect } from "react";
-
 import ModalVideoComponent from "../common/ModalVideo";
-import Image from "next/image";
-import { useContextElement } from "@/context/Context";
-import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCourseById } from "@/redux/slices/course/course";
-import { getAllCourseModules } from "@/redux/slices/courseModules/courseModules";
 import SoftwareTools from "./SoftwareTools";
-import { fetchAllFAQs } from "@/redux/slices/faq/faq";
 import FAQComponent from "./Faq";
-import {
-  fetchCareerOpportunities,
-  selectCareerOpportunities,
-  selectCareerOpportunitiesError,
-} from "@/redux/slices/careerOppertunities/careerOppertunities";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { Star, StarBorder, StarHalf } from "@mui/icons-material";
+import Curriculum from "./Curriculum";
 
-const menuItems = [
-  { id: 1, href: "#overview", text: "Overview", isActive: true },
-  { id: 2, href: "#course-content", text: "Course Content", isActive: false },
-  { id: 3, href: "#instructors", text: "Instructors", isActive: false },
-  { id: 4, href: "#Software-Tools", text: "Software Tools", isActive: false },
-  { id: 5, href: "#FAQ", text: "FAQ", isActive: false },
-  { id: 6, href: "#reviews", text: "Reviews", isActive: false },
-];
-const getCookie = (name) => {
-  const cookies = document.cookie.split(";");
-  for (let cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split("=");
-    if (cookieName.trim() === name) {
-      return cookieValue;
-    }
-  }
-  return null;
-};
 export default function CourseDetailsSix() {
-  const router = useRouter();
-
-  const [discountedPrice, setDiscountedPrice] = useState(null);
-  const { id } = useParams();
-  const selectedCourse = useSelector((state) => state.courses.selectedCourse);
-  const courseModules = useSelector(
-    (state) => state.courseModule.courseModules
-  );
+  const selectedCourse = useSelector((state) => state.courses.courses);
   const [pageItem, setPageItem] = useState(null);
-  const [cartCourses, setCartCourses] = useState([]);
 
-  const faq = useSelector((state) => state.faq.faq);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(1);
-  const [filteredModules, setFilteredModules] = useState([]);
   const [filteredFAQ, setFilteredFAQ] = useState([]);
-  const { isAddedToCartCourses, addCourseToCart } = useContextElement();
-  const opportunities = useSelector(selectCareerOpportunities);
-  const error = useSelector(selectCareerOpportunitiesError);
-  const [filteredOpportunities, setFilteredOpportunities] = useState([]);
-  const [isMobileView, setIsMobileView] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState("beginner"); // Default Level
 
-  const handleResize = () => {
-    setIsMobileView(window.innerWidth < 768); // Set mobile view based on window width
-  };
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [courseSlug, setCourseSlug] = useState(null);
+
+  const matchedCourse = selectedCourse.find(
+    (course) => course.slug === courseSlug
+  );
+
+  // At the beginning of your component, where you declare your state variables
+  const [menuItems, setMenuItems] = useState([
+    { id: 1, text: "beginner", isActive: true },
+    { id: 2, text: "intermediate", isActive: false },
+    { id: 3, text: "advanced", isActive: false },
+    { id: 5, href: "#FAQ", text: "FAQ", isActive: false },
+  ]);
+
+  // Then add this useEffect to update the menuItems when matchedCourse changes
+  useEffect(() => {
+    if (
+      matchedCourse &&
+      matchedCourse.course_level &&
+      matchedCourse.course_level.length > 0
+    ) {
+      // Extract just the level text values
+      const levelTexts = matchedCourse.course_level.map((item) =>
+        item.level.toLowerCase()
+      );
+      // Update menuItems with these level texts
+      const newMenuItems = levelTexts.map((text, index) => ({
+        id: index + 1,
+        text: text,
+        isActive: index === 0, // First one is active by default
+      }));
+
+      // Add FAQ at the end
+      newMenuItems.push({
+        id: newMenuItems.length + 1,
+        href: "#FAQ",
+        text: "FAQ",
+        isActive: false,
+      });
+
+      setMenuItems(newMenuItems);
+
+      // Set the default selected level to the first one
+      if (levelTexts.length > 0) {
+        setSelectedLevel(levelTexts[0]);
+      }
+    }
+  }, [matchedCourse]);
 
   useEffect(() => {
-    handleResize(); // Check initial viewport size
-    window.addEventListener("resize", handleResize); // Listen to viewport changes
+    if (typeof window !== "undefined") {
+      const fullUrl = window.location.href;
+      const segments = fullUrl.split("/").filter(Boolean);
+      const lastSegment = segments.pop();
+      setCourseSlug(lastSegment);
+    }
+    // Handle responsive view detection
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize); // Cleanup event listener
+      window.removeEventListener("resize", handleResize);
     };
   }, [dispatch]);
 
-  const handleWishlistButtonClick = () => {
-    if (isAddedToCartCourses(pageItem._id)) {
-      // Handle accordingly (e.g., show a message)
-    } else {
-      const cookiesToken = getCookie("token");
-      if (cookiesToken) {
-        // Add the course to the wishlist
-        addCourseToCart(pageItem._id);
-
-        // Update the cartCourses state with the course details
-        const updatedCartCourses = [
-          ...cartCourses,
-          {
-            id: pageItem._id,
-            title: pageItem.course_name,
-            price: pageItem.cost,
-            imageSrc: pageItem.imageSrc, // Add imageSrc if available
-            discountedPrice: discountedPrice, // Include the discounted price
-          },
-        ];
-        setCartCourses(updatedCartCourses);
-
-        // Handle success (e.g., show a success message)
-      } else {
-        // Store the current URL before redirecting to the signup page
-        const currentURL = window.location.href;
-        router.push(`/login?redirect=${encodeURIComponent(currentURL)}`);
-      }
-    }
+  const handleTabClick = (id, level) => {
+    setActiveTab(id);
+    setSelectedLevel(level);
   };
-
-  useEffect(() => {
-    if (id) {
-      dispatch(fetchCourseById(id))
-        .then((action) => {
-          const fetchedCourse = action.payload;
-          setPageItem(fetchedCourse);
-          calculateDiscountedPrice(fetchedCourse?.cost);
-        })
-        .catch((error) => {
-          console.error("Error fetching course:", error);
-        });
-    }
-  }, [id, dispatch]);
-
-  useEffect(() => {
-    if (selectedCourse && courseModules) {
-      const filteredModules = courseModules.filter(
-        (module) => module.course._id === selectedCourse._id
-      );
-      setFilteredModules(filteredModules);
-    }
-  }, [selectedCourse, courseModules]);
-
-  useEffect(() => {
-    dispatch(getAllCourseModules());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchAllFAQs());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchCareerOpportunities());
-  }, [dispatch]);
-
-  useEffect(() => {
-  
-    if (
-      selectedCourse &&
-      opportunities &&
-      Array.isArray(opportunities.careerOpportunities)
-    ) {
-      const filteredOpportunities = opportunities.careerOpportunities.filter(
-        (opportunity) => opportunity.course._id === selectedCourse._id
-      );
-      setFilteredOpportunities(filteredOpportunities);
-    } else {
-      console.error(
-        "Opportunities is not an array or doesn't have careerOpportunities."
-      );
-    }
-  }, [opportunities, error, selectedCourse]);
-
-  useEffect(() => {
-    if (selectedCourse && faq) {
-      const filteredFAQ = faq.filter(
-        (item) => item.course && item.course._id === selectedCourse._id
-      );
-      setFilteredFAQ(filteredFAQ);
-    }
-  }, [faq, selectedCourse]);
-
-  const calculateDiscountedPrice = (price) => {
-    if (price) {
-      const discount = price * 0.1; // 10% discount
-      const discountedPrice = price - discount;
-      setDiscountedPrice(discountedPrice);
-    }
-  };
-
   const renderTabs = () => {
     if (isMobileView) {
       return (
         <>
-          <section className="pt-30 layout-pb-md">
+          <section className="pt-20 layout-pb-md">
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
-                  <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
+                  <div className="pt-25 pb-30 px-30 shadow-2 rounded-8 border-light">
                     {menuItems.map((elm) => (
                       <div key={elm.id} className="mb-2">
-                        {" "}
-                        {/* Add a margin bottom */}
                         <button
-                          onClick={() => setActiveTab(elm.id)}
+                          onClick={() => handleTabClick(elm.id, elm.text)}
                           className="tabs__button js-tabs-button js-update-pin-scene"
                           style={{
                             textDecoration:
@@ -214,12 +125,12 @@ export default function CourseDetailsSix() {
               </div>
             </div>
           </section>
-          <section className="pt-30 layout-pb-md">
+          <section className="pt-30 " style={{ backgroundColor: "#f5f0ff" }}>
             <div className="container">
               <div className="row">
                 <div className="col-lg-12">
-                  <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
-                    {renderTabContent(activeTab)}
+                  <div className="pt-25 pb-30 px-30 shadow-2 rounded-8 border-light">
+                    {renderTabContent(activeTab, selectedLevel)}
                   </div>
                 </div>
               </div>
@@ -229,28 +140,50 @@ export default function CourseDetailsSix() {
       );
     } else {
       return (
-        <section className="pt-30 layout-pb-md">
-          <div className="container">
+        <section>
+          <div style={{ margin: "10px" }}>
             <div className="row">
               <div className="col-lg-12">
-                <div className="pt-25 pb-30 px-30 bg-white shadow-2 rounded-8 border-light">
+                <div className="pt-15 pb-30 px-30  ">
                   <div className="tabs -active-purple-2 js-tabs pt-0">
-                    <div className="tabs__controls d-flex js-tabs-controls">
+                    <h2
+                      style={{
+                        color: "#5b2c6f",
+                        marginBottom: "15px",
+                        width: "auto",
+                      }}
+                    >
+                      Your Learning Journey: A Step-by-Step Curriculum
+                    </h2>
+                    <div
+                      className="tabs__controls d-flex js-tabs-controls"
+                      style={{ borderBottom: "none" }}
+                    >
                       {menuItems.map((elm, i) => (
                         <button
                           key={i}
-                          onClick={() => setActiveTab(elm.id)}
-                          className={`tabs__button js-tabs-button js-update-pin-scene ${
+                          onClick={() => handleTabClick(elm.id, elm.text)}
+                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${
                             i !== 0 ? "ml-30" : ""
-                          } ${activeTab === elm.id ? "is-active" : ""} `}
+                          }`}
+                          style={{
+                            cursor: "pointer",
+                            color: activeTab === elm.id ? "#5b2c6f" : "black",
+                            borderBottom:
+                              activeTab === elm.id
+                                ? "3px solid #5b2c6f"
+                                : "none",
+                            transition:
+                              "color 0.3s ease-in-out, border-bottom 0.3s ease-in-out",
+                          }}
                           type="button"
                         >
-                          {elm.text}
+                          {elm.text.toUpperCase()}
                         </button>
                       ))}
                     </div>
-                    <div className="tabs__content   js-tabs-content">
-                      {renderTabContent(activeTab)}
+                    <div className="tabs__content js-tabs-content">
+                      {renderTabContent(activeTab, selectedLevel)}
                     </div>
                   </div>
                 </div>
@@ -261,20 +194,12 @@ export default function CourseDetailsSix() {
       );
     }
   };
-
-  const renderTabContent = (tabId) => {
+  const renderTabContent = (tabId, level) => {
     switch (tabId) {
       case 1:
-        return (
-          <Overview
-            objective={pageItem && pageItem.objective}
-            opportunities={filteredOpportunities}
-          />
-        );
       case 2:
-        return <CourseContent filteredModules={filteredModules} />;
       case 3:
-        return pageItem && <Instractor instructor={pageItem.instructor} />;
+        return <Curriculum matchedCourse={matchedCourse} level={level} />;
       case 4:
         return (
           pageItem && <SoftwareTools softwareTools={pageItem.tool_software} />
@@ -287,251 +212,243 @@ export default function CourseDetailsSix() {
         return null;
     }
   };
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showToggle, setShowToggle] = useState(false);
+  const textRef = useRef(null);
 
+  useEffect(() => {
+    if (textRef.current) {
+      const lineHeight = 21; // Approximate line height in pixels (adjust as needed)
+      const maxHeight = lineHeight * 3; // 3 lines max height
+      setShowToggle(textRef.current.scrollHeight > maxHeight);
+    }
+  }, [matchedCourse?.short_description]);
   return (
     <>
       <section
-        className="page-header -type-5 bg-dark-1"
-        style={{ fontFamily: "Serif" }}
+        style={{
+          backgroundColor: "#f5f0ff",
+          marginTop: "90px",
+          padding: "30px 0",
+        }}
       >
-        <div className="page-header__bg">
-          <div
-            className="bg-image js-lazy"
-            data-bg="img/event-single/bg.png"
-          ></div>
-        </div>
-
-        <div className="container">
-          <div className="page-header__content pt-80 pb-90">
-            <div className="row y-gap-30 justify-between">
-              <div className="col-xl-6 col-lg-6">
-                <div className="d-flex x-gap-15 y-gap-10 pb-20">
+        <div
+          style={{
+            width: "90%",
+            margin: "auto",
+            border: "1px solid #ccc",
+            borderRadius: "10px",
+            padding: "20px",
+            backgroundColor: "#fff",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {/* Left Section */}
+            <div style={{ flex: 1, paddingRight: "20px" }}>
+              {matchedCourse && (
+                <div>
+                  <h2 style={{ color: "#5b2c6f", marginBottom: "10px" }}>
+                    {matchedCourse.course_name}
+                  </h2>
                   <div>
-                    <div className="badge px-15 py-8 text-15 bg-orange-1 text-white fw-400">
-                      Course Summary{" "}
-                    </div>
-                  </div>
-                  {/* <div>
-                    <div className="badge px-15 py-8 text-11 bg-orange-1 text-white fw-400">
-                      NEW
-                    </div>
-                  </div>
-                  <div>
-                    <div className="badge px-15 py-8 text-11 bg-purple-1 text-white fw-400">
-                      POPULAR
-                    </div>
-                  </div> */}
-                </div>
+                    <p
+                      ref={textRef}
+                      style={{
+                        color: "#5b2c6f",
+                        fontSize: "14px",
+                        lineHeight: "1.5",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        WebkitLineClamp: isExpanded ? "unset" : 3,
+                        transition: "all 0.3s ease-in-out",
+                        textAlign: "justify",
+                      }}
+                    >
+                      {matchedCourse.short_description}
+                    </p>
 
-                {pageItem && (
-                  <div>
-                    <h1 className="text-30 lh-14 text-white pr-60 lg:pr-0">
-                      {pageItem.course_name}
-                    </h1>
-                  </div>
-                )}
-
-                {pageItem && (
-                  <p className="text-white mt-20">
-                    {pageItem.short_description}
-                  </p>
-                )}
-
-                <div className="d-flex x-gap-30 y-gap-10 items-center flex-wrap pt-20">
-                  <div className="d-flex x-gap-5 items-center">
-                    <div className="text-14 lh-1 text-yellow-1 mr-10">5 </div>
-                    <div className="text-14 lh-1 text-yellow-1 mr-10">
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>{" "}
-                      <i className="fa fa-star"></i>
-                    </div>
-                  </div>
-
-                  {/* <div className="d-flex items-center text-dark-3">
-                    <div className="icon icon-person-3 text-13"></div>
-                    <div className="text-14 ml-8">
-                      853 enrolled on this course
-                    </div>
-                  </div>
- 
-                  <div className="d-flex items-center text-dark-3">
-                    <div className="icon icon-wall-clock text-13"></div>
-                    <div className="text-14 ml-8">Last updated 11/2021</div>
-                  </div> */}
-                </div>
-
-                <div className="d-flex items-center pt-20">
-                  {selectedCourse &&
-                    selectedCourse.instructor &&
-                    selectedCourse.instructor.length > 0 &&
-                    selectedCourse.instructor
-                      .slice(0, 3)
-                      .map((instructor, index) => (
-                        <div
-                          key={index}
-                          className="d-flex align-items-center mr-3"
-                        >
-                          <div className="bg-image size-30 rounded-full js-lazy overflow-hidden">
-                            <img
-                              src={instructor.profile_pic}
-                              alt={`Instructor ${index + 1}`}
-                              className="w-100 h-100 object-cover"
-                            />
-                          </div>
-                          {/* <div className="text-14 lh-1 ml-2 text-white">{instructor.name}</div> */}
-                        </div>
-                      ))}
-                  {selectedCourse &&
-                    selectedCourse.instructor &&
-                    selectedCourse.instructor.length > 3 && (
-                      <button className="ml-2">+</button>
-                    )}
-                </div>
-
-                <div className="mt-30">
-                  <div className="d-flex justify-between py-8 border-bottom-light-2">
-                    <div className="d-flex items-center text-white">
-                      <div className="icon-puzzle"></div>
-                      <div className="ml-10">Course id</div>
-                    </div>
-                    {pageItem && (
-                      <div className="text-white">{pageItem.course_id}</div>
-                    )}
-                  </div>
-                  <div className="d-flex justify-between py-8 border-bottom-light-2">
-                    <div className="d-flex items-center text-white">
-                      <div className="icon-video-file"></div>
-                      <div className="ml-10">Course Level</div>
-                    </div>
-                    {pageItem && (
-                      <div className="text-white">{pageItem.course_level}</div>
-                    )}
-                  </div>
-                  <div className="d-flex justify-between py-8 border-bottom-light-2">
-                    <div className="d-flex items-center text-white">
-                      <div className="icon-clock-2"></div>
-                      <div className="ml-10">Duration</div>
-                    </div>
-                    {pageItem && (
-                      <div className="text-white">
-                        {pageItem.duration} hours
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="d-flex justify-between py-8 border-bottom-light-2">
-                    <div className="d-flex items-center text-white">
-                      <div className="icon-bar-chart-2"></div>
-                      <div className="ml-10">Mode of training</div>
-                    </div>
-                    {pageItem && (
-                      <div className="text-white">
-                        {pageItem.mode_of_trainee}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="d-flex justify-between py-8 border-bottom-light-2">
-                    <div className="d-flex items-center text-white">
-                      <div className="icon-translate"></div>
-                      <div className="ml-10">No.of Assesments</div>
-                    </div>
-                    {pageItem && (
-                      <div className="text-white">
-                        {pageItem.number_of_assesment}
-                      </div>
-                    )}
-                  </div>
-                  <div className="d-flex justify-between py-8 border-bottom-light-2">
-                    <div className="d-flex items-center text-white">
-                      <div className="icon-infinity"></div>
-                      <div className="ml-10">No.of Projects</div>
-                    </div>
-                    {pageItem && (
-                      <div className="text-white">{pageItem.projects}</div>
-                    )}
-                  </div>
-                  <div className="d-flex justify-between py-8 border-bottom-light-2">
-                    <div className="d-flex items-center text-white">
-                      <div className="icon-badge"></div>
-                      <div className="ml-10">Certificate</div>
-                    </div>
-                    {pageItem && (
-                      <div className="text-white">{pageItem.certificate}</div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-xl-5 col-lg-6">
-                <div className="relative">
-                  {selectedCourse &&
-                    selectedCourse.images &&
-                    selectedCourse.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                        alt={`Image ${index}`}
-                        className="w-1/1"
-                      />
-                    ))}
-
-                  <div className="absolute-full-center d-flex justify-center items-center">
-                    <div className="d-flex justify-center items-center size-60 js-gallery"></div>
-                  </div>
-                </div>
-
-                <div className="mt-30">
-                  {pageItem && (
-                    <div className="d-flex justify-between items-center">
-                      <div className="text-24 lh-1 text-white fw-500">
-                        ₹{Math.round(pageItem.cost * 0.9)}
-                      </div>
-                      <div className="lh-1 text-20 line-through text-white">
-                        ₹{pageItem.cost} {/* 10% discount */}
-                      </div>
-                    </div>
-                  )}
-                  <div className="row x-gap-30 y-gap-20 pt-30">
-                    {/* <div className="col-sm-6">
-                      {pageItem && (
-                        <button
-                          className="button -md text-white w-1/1"
-                          onClick={handleWishlistButtonClick}
-                          style={{ backgroundColor: "#F2775E" }}
-                        >
-                          {isAddedToCartCourses(pageItem.id)
-                            ? "Already Added"
-                            : "Wishlist"}
-                        </button>
-                      )}
-                    </div> */}
-                    <div className="col-sm-6">
-                      {/* Buy Now button */}
-                      <Link
-                        href="/applyCourse"
-                        className="button -md -outline-green-1 text-green-1 w-1/1"
+                    {showToggle && (
+                      <span
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        style={{
+                          color: "#007bff", // Blue color for a link-like appearance
+                          fontSize: "14px",
+                          cursor: "pointer",
+                          display: "inline-block",
+                          marginTop: "5px",
+                          textDecoration: "underline", // Adds underline to indicate clickability
+                        }}
                       >
-                        Apply Now
-                      </Link>
+                        {isExpanded ? "View Less ▲" : "View More ▼"}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Star Ratings */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#f2775e",
+                      }}
+                    >
+                      {[...Array(5)].map((_, i) => {
+                        if (
+                          i + 1 <=
+                          Math.floor(matchedCourse?.course_rating || 0)
+                        ) {
+                          return (
+                            <Star
+                              key={i}
+                              fontSize="small"
+                              style={{ color: "#f2775e" }}
+                            />
+                          );
+                        } else if (i < matchedCourse?.course_rating) {
+                          return (
+                            <StarHalf
+                              key={i}
+                              fontSize="small"
+                              style={{ color: "#f2775e" }}
+                            />
+                          );
+                        } else {
+                          return (
+                            <StarBorder
+                              key={i}
+                              fontSize="small"
+                              style={{ color: "#f2775e" }}
+                            />
+                          );
+                        }
+                      })}
                     </div>
+                    <span style={{ color: "#f2775e" }}>
+                      {matchedCourse?.course_rating?.toFixed(2)}/5.00
+                    </span>
                   </div>
                 </div>
+              )}
+
+              {/* Course Details */}
+
+              <div style={{ marginTop: "20px" }}>
+                {[
+                  {
+                    label: "Duration",
+                    value: matchedCourse?.duration,
+                    icon: "⏳",
+                    dataIcon: "⌛",
+                  },
+                  {
+                    label: "Mode of Training",
+                    value: matchedCourse?.mode_of_training,
+                    icon: "📊",
+                    dataIcon:
+                      matchedCourse?.mode_of_training === "online"
+                        ? "🌍"
+                        : "🏢",
+                    textColor:
+                      matchedCourse?.mode_of_training === "online"
+                        ? "#2dbd4c"
+                        : "#ff3b55",
+                  },
+                  {
+                    label: "No. of Assessments",
+                    value: matchedCourse?.number_of_assessments,
+                    icon: "📝",
+                    dataIcon: "📄",
+                  },
+                  {
+                    label: "No. of Projects",
+                    value: matchedCourse?.projects,
+                    icon: "💡",
+                    dataIcon: "🚀",
+                  },
+                ].map((item, index, array) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "8px 0",
+                      borderBottom:
+                        index === array.length - 1
+                          ? "none"
+                          : "1px solid #e0e0e0",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#5b2c6f",
+                        fontSize: "16px",
+                      }}
+                    >
+                      <span style={{ marginRight: "10px", fontSize: "18px" }}>
+                        {item.icon}
+                      </span>
+                      {item.label}
+                    </div>
+                    <div
+                      style={{
+                        color: item.textColor || "#5b2c6f",
+                        backgroundColor: item.bgColor || "transparent",
+                        padding: item.bgColor ? "4px 8px" : "0",
+                        borderRadius: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <span>{item.dataIcon}</span> {item.value}
+                    </div>
+                  </div>
+                ))}
               </div>
+            </div>
+
+            {/* Right Section (Smaller Image) */}
+            <div
+              style={{
+                width: "250px",
+                textAlign: "center",
+                padding: "10px",
+                borderRadius: "10px",
+              }}
+            >
+              {matchedCourse && (
+                <img
+                  src={matchedCourse.image}
+                  alt="Course"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    maxWidth: "250px",
+                    borderRadius: "10px",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
+
+        {/* Course Tabs & Video */}
+        {renderTabs()}
+        <ModalVideoComponent videoId={"LlCwHnp3kL4"} />
       </section>
-
-      {renderTabs()}
-
-      <ModalVideoComponent
-        videoId={"LlCwHnp3kL4"}
-        // isOpen={isOpen}
-        // setIsOpen={setIsOpen}
-      />
     </>
   );
 }

@@ -95,10 +95,6 @@ export default function ApplyProgram() {
 
       // Dispatch action with FormData object
       await dispatch(createProgramApply(formData));
-      console.log("FormData:", formData);
-      console.log("Form Values:", values);
-      console.log("Image File:", imageFile);
-
       setOtpSent(true);
     } catch (error) {
       console.error("Error submitting form:", error);

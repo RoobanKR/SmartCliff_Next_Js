@@ -15,7 +15,7 @@ import aboutCollegeReducer from "./slices/mca/aboutCollege/aboutCollege";
 import qualificationLearningReducer from "./slices/mca/qualificationLearning/qualificationLearning";
 import semesterReducer from "./slices/mca/semester/Semester";
 import assessmentReducer from "./slices/mca/assesment/Assesment";
-import programMentorReducer from "./slices/mca/programMentor/ProgramMentor";
+import targetStudentReducer from "./slices/mca/targetStudent/targetStudent";
 import programFeesReducer from "./slices/mca/programFees/ProgramFees";
 import eligibilityCriteriaReducer from "./slices/mca/eligibility/Eligibility";
 import degreeProgramReducer from "./slices/mca/degreeProgram/DegreeProgram";
@@ -24,12 +24,11 @@ import outcomeReducer from "./slices/mca/outcomes/Outcomes";
 import highlightReducer from "./slices/mca/highlights/Highlights";
 import programApplyReducer from "./slices/programApply/programApply";
 import serviceReducer from "./slices/services/services/Services";
-import businessServiceReducer from "./slices/services/services/businessServices"
+import businessServiceReducer from "./slices/services/services/businessServices";
 import clientReducer from "./slices/services/client/Client";
 import executionHighlightsReducer from "./slices/services/executionHighlights/Execution_Highlights";
 import executionOverviewsReducer from "./slices/services/executionOverview/ExecutionOverview";
 import testimonialReducer from "./slices/services/testimonial/Testimonial";
-import galleryReducer from "./slices/services/gallery/Gallery";
 import batchesReducer from "./slices/batch/batches";
 import entrollBatchReducer from "./slices/entrollBatches/entrollBatch";
 import hirefromusReducer from "./slices/hirefromus/Hirefromus";
@@ -43,7 +42,30 @@ import engagedGovernanceReducer from "./slices/hiring/engagedGovernance/engagedG
 import ServiceAboutSlice from "./slices/services/services/aboutServices";
 import ServiceProcessSlice from "./slices/services/services/processServices";
 import serviceClientReducer from "./slices/services/services/clientServices";
-import serviceOpportunityReducer from "./slices/services/services/Oppertunities"
+import serviceOpportunityReducer from "./slices/services/services/Oppertunities";
+import enquiryReducer from "./slices/enquiry/enquiry";
+import contactReducer from "./slices/contact/contact";
+import careerFormReducer from "./slices/career/careerForm";
+import reviewReducer from "./slices/review/review";
+import jobPositionsReducer from "./slices/joinUs/joinus";
+import homeServiceReducer from "./slices/homeService/homeService";
+import wcuReducer from "./slices/whyThis/whyThis";
+import aboutUsReducer from "./slices/aboutUs/aboutUs";
+import placementTrainingTrackReducer from "./slices/PlacementTrainingTrack/PlacementTrainingTrack";
+import visionMissionReducer from "./slices/visionMission/visionMission";
+import galleryReducer from "./slices/gallery/gallery";
+import shineReducer from "./slices/shine/shine";
+import ourPartnersReducer from "./slices/degreeProgram/dpPartner";
+import ourSponsorsReducer from "./slices/degreeProgram/dpSponsor";
+import learningJourneyReducer from "./slices/bussiness/learningJourney/learningJourney";
+import howItWorksReducer from "./slices/bussiness/howItWorks/howItWorks";
+import wcyHireReducer from "./slices/bussiness/whyCanYou//whyCanYou";
+import careerReducer from "./slices/career/career";
+import collegesReducer from "./slices/collegeDetails/collegeDetails"
+import yearlyServiceReducer from './slices/history/hsitory'; 
+import skillVerticalReducer from './slices/mca/skillVertical/skillVertical'; 
+import currentAvailabilityReducer from './slices/bussiness/currentAvailbility/currentAvailbility';
+
 export default configureStore({
   reducer: {
     userSignIn: userSignInSlice,
@@ -62,7 +84,7 @@ export default configureStore({
     qualificationLearning: qualificationLearningReducer,
     semester: semesterReducer,
     assessments: assessmentReducer,
-    programMentors: programMentorReducer,
+    targetStudent: targetStudentReducer,
     programFees: programFeesReducer,
     eligibilityCriteria: eligibilityCriteriaReducer,
     degreeProgram: degreeProgramReducer,
@@ -79,7 +101,6 @@ export default configureStore({
     executionHighlights: executionHighlightsReducer,
     executionOverviews: executionOverviewsReducer,
     testimonial: testimonialReducer,
-    gallery: galleryReducer,
     entrollBatch: entrollBatchReducer,
     batches: batchesReducer,
     hirefromus: hirefromusReducer,
@@ -90,6 +111,31 @@ export default configureStore({
     keyElements: keyElementsReducer,
     placementTestimonial: placementTestimonialReducer,
     institute: instituteReducer,
+    colleges: collegesReducer,
+    
     engagedGovernance: engagedGovernanceReducer,
+    enquiry: enquiryReducer,
+    contact: contactReducer,
+    careerForm: careerFormReducer,
+    reviews: reviewReducer,
+    jobPositions: jobPositionsReducer,
+    visionMission: visionMissionReducer,
+    homeServices: homeServiceReducer,
+    wcu: wcuReducer,
+    aboutUs: aboutUsReducer,
+    placementTrainingTrack: placementTrainingTrackReducer,
+    gallery: galleryReducer,
+    shine: shineReducer,
+    ourPartners: ourPartnersReducer,
+    ourSponsors: ourSponsorsReducer,
+    learningJourney: learningJourneyReducer,
+    howItWorks: howItWorksReducer,
+    wcyHire: wcyHireReducer,
+    career: careerReducer,
+    yearlyService:yearlyServiceReducer,
+    skillVertical:skillVerticalReducer,
+    currentAvailability:currentAvailabilityReducer,
+    
+
   },
 });

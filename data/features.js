@@ -12,10 +12,6 @@ export const featureOne = [
     id: 3,
     title: "Money-back guarantee",
   },
-  {
-    id: 4,
-    title: "Hand-picked authors",
-  },
 ];
 
 export const featureTwo = [
@@ -60,15 +56,19 @@ export const featureSix = [
 export const teachingFeatures = [
   {
     id: 1,
-    title: "Last Education of Bachelor Degree",
+    title: "Industry-Leading Expertise",
   },
   {
     id: 2,
-    title: "More Than 15 Years Experience",
+    title: "Award-Winning Programs",
   },
   {
     id: 3,
-    title: "12 Education Award Winning",
+    title: "Tailored Learning Solutions",
+  },
+  {
+    id: 4,
+    title: "Expert-Led Training",
   },
 ];
 

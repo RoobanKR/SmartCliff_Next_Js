@@ -2,39 +2,145 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { contactData } from "@/data/contactLinks";
+import { motion } from "framer-motion";
+import {
+  FaUser,
+  FaEnvelope,
+  FaCommentDots,
+  FaSpinner,
+  FaTimes,
+} from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetContactState,
+  selectContact,
+  submitContact,
+} from "@/redux/slices/contact/contact";
 import dynamic from "next/dynamic";
+import { contactDetails } from "@/data/contactLinks";
 
 const MapComponent = dynamic(() => import("./Map"), {
   ssr: false,
 });
-export default function Contact() {
+
+export default function ContactPage() {
+  const dispatch = useDispatch();
+  const {
+    loading,
+    error,
+    success,
+    contactData: responseData,
+  } = useSelector(selectContact);
   const [showMap, setShowMap] = useState(false);
+  const [showEnquiry, setShowEnquiry] = useState(false);
+
+  // Contact form data
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  // Load map after component mount
   useEffect(() => {
     setShowMap(true);
   }, []);
-  const handleSubmit = (e) => {
-    e.preventDefault();
+
+  // Handle success response
+  useEffect(() => {
+    if (success && responseData) {
+      const successMessage =
+        responseData?.message?.[0]?.value ||
+        responseData?.message ||
+        "Our Team Will Respond Shortly";
+      toast.success(successMessage);
+
+      // Reset form and state after success
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+
+      setTimeout(() => {
+        dispatch(resetContactState());
+      }, 5000);
+    }
+  }, [success, responseData, dispatch]);
+
+  // Handle error response
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Form validation
+    if (!formData.name || !formData.email || !formData.message) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      await dispatch(submitContact(formData)).unwrap();
+    } catch (err) {
+      console.error("Failed to submit contact form:", err);
+    }
+  };
+
+  // Sample contact data (replace with your actual data)
+  const contactInfo = [
+    {
+      icon: "/images/icons/location.svg",
+      address: "123 Business Avenue, Suite 500, New York, NY 10001, USA",
+    },
+    {
+      icon: "/images/icons/mail.svg",
+      email: "contact@yourcompany.com",
+    },
+    {
+      icon: "/images/icons/phone.svg",
+      phoneNumber: "+1 (555) 123-4567",
+    },
+  ];
 
   return (
     <>
-      <section>{showMap && <MapComponent />}</section>
-      <section
-        className="layout-pt-sm layout-pb-sm"
-        style={{ fontFamily: "serif" }}
-      >
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
+      <section className="layout-pb-sm">
         <div className="container">
           <div className="row y-gap-50 justify-between">
             <div className="col-lg-4">
-              <h3 className="text-24 fw-500">Keep In Touch With Us.</h3>
-              <p className="mt-25">
-                Stay connected with us for the latest updates and news. Join our
-                community and be part of the conversation.
-              </p>
-
-              <div className="y-gap-30 pt-60 lg:pt-40">
-                {contactData.map((elm, i) => (
+              <div className="y-gap-30 pt-10 lg:pt-10">
+                {contactDetails.map((elm, i) => (
                   <div key={i} className="d-flex items-center">
                     <div
                       className="d-flex justify-center items-center size-60 rounded-full"
@@ -42,7 +148,7 @@ export default function Contact() {
                     >
                       <Image width={30} height={30} src={elm.icon} alt="icon" />
                     </div>
-                    <div className="ml-20">
+                    <div className="ml-20 fw-600">
                       {elm.address
                         ? `${elm.address
                             .split(" ")
@@ -58,59 +164,138 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="col-lg-7">
-              <h3 className="text-24 fw-500">Send a Message.</h3>
-              <p className="mt-25">
+            <div className="col-lg-7 mb-30">
+              {/* <h3 className="text-24 fw-500">Send a Message</h3>
+              <p className="mt-5 fw-500">
+              <i>
                 Have a question or need assistance? Reach out to us anytime.
-                We're here to help and eager to <br />
-                hear from you!
-              </p>
+                We're here to help and eager to hear from you!
+                </i>
+              </p> */}
 
               <form
-                className="contact-form row y-gap-30 pt-60 lg:pt-40"
+                className="contact-form row y-gap-30 pt-30 lg:pt-20"
                 onSubmit={handleSubmit}
               >
                 <div className="col-md-6">
-                  <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                  {/* <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
                     Name
-                  </label>
+                  </label> */}
                   <input
                     required
                     type="text"
-                    name="title"
-                    placeholder="Name..."
+                    name="name"
+                    placeholder="Your name..."
+                    onChange={handleChange}
+                    value={formData.name}
                   />
                 </div>
                 <div className="col-md-6">
-                  <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                  {/* <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
                     Email Address
-                  </label>
+                  </label> */}
                   <input
                     required
-                    type="text"
-                    name="title"
-                    placeholder="Email..."
+                    type="email"
+                    name="email"
+                    placeholder="Your email..."
+                    onChange={handleChange}
+                    value={formData.email}
                   />
                 </div>
                 <div className="col-12">
-                  <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                    Message...
-                  </label>
+                  {/* <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                    Message
+                  </label> */}
                   <textarea
                     required
-                    name="comment"
-                    placeholder="Message"
-                    rows="8"
+                    name="message"
+                    placeholder="Your message..."
+                    rows="3"
+                    onChange={handleChange}
+                    value={formData.message}
                   ></textarea>
                 </div>
-                <div className="col-12">
+                <div
+                  className="col-12"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <button
                     type="submit"
                     name="submit"
                     id="submit"
-                    className="button -md -purple-1 text-white"
+                    disabled={loading}
+                    style={{
+                      background: "#F2775E",
+                      color: "white",
+                      padding: "0.35em 1.2em 0.35em 1.2em",
+                      fontSize: "17px",
+                      fontWeight: "500",
+                      borderRadius: "0.9em",
+                      border: "none",
+                      letterSpacing: "0.05em",
+                      display: "flex",
+                      alignItems: "center",
+                      boxShadow: "inset 0 0 1.6em -0.6em #F2775E",
+                      overflow: "hidden",
+                      position: "relative",
+                      height: "2.8em",
+                      paddingRight: "3.3em",
+                      cursor: "pointer",
+                    }}
                   >
-                    Send Message
+                    {loading ? (
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                      >
+                        <FaSpinner className="spinner-icon" />
+                        Sending...
+                      </span>
+                    ) : (
+                      "Send Message"
+                    )}
+                    <span
+                      style={{
+                        background: "white",
+                        marginLeft: "1em",
+                        position: "absolute",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "2.2em",
+                        width: "2.2em",
+                        borderRadius: "0.7em",
+                        boxShadow: "0.1em 0.1em 0.6em 0.2em #F2775E",
+                        right: "0.3em",
+                        transition: "all 0.3s",
+                      }}
+                    >
+                      <svg
+                        height="24"
+                        width="24"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{
+                          width: "1.1em",
+                          color: "#F2775E",
+                          transition: "transform 0.3s",
+                        }}
+                      >
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path
+                          d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                          fill="currentColor"
+                        ></path>
+                      </svg>
+                    </span>
                   </button>
                 </div>
               </form>
@@ -118,6 +303,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <section>{showMap && <MapComponent />}</section>
     </>
   );
 }

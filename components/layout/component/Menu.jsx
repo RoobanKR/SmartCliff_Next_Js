@@ -5,32 +5,39 @@ import Image from "next/image";
 import { menuList } from "@/data/menu";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
+
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
-import { fetchServices } from "@/redux/slices/services/services/Services";
+import {
+  fetchServices,
+  selectServices,
+} from "@/redux/slices/services/services/Services";
 import {
   getAllBusinessServices,
   selectBusinessServices,
 } from "@/redux/slices/services/services/businessServices";
+import CoursesDropdown from "./CourseDropDown";
+import ServicesDropdown from "./ServicesDropdown";
+import BusinessDropdown from "./BusinessDropdown";
+import { fetchCourses } from "@/redux/slices/course/course";
+import { fetchCategories } from "@/redux/slices/category/category";
 
 export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
   const dispatch = useDispatch();
-  const router = useRouter();
   const [menuItem, setMenuItem] = useState("");
   const [submenu, setSubmenu] = useState("");
   const [hoveredLink, setHoveredLink] = useState(null);
+  const [isBusinessOpen, setIsBusinessOpen] = useState(false);
+  const [isCorporateOpen, setIsCorporateOpen] = useState(false);
   const pathname = usePathname();
-  const servicesBusiness = useSelector(selectBusinessServices);
-  const degreeProgramData = useSelector(
-    (state) => state.degreeProgram.degreeProgramData
-  );
-  const [hoveredProgram, setHoveredProgram] = useState("");
 
   useEffect(() => {
     dispatch(getAllBusinessServices());
     dispatch(fetchDegreeProgramData());
     dispatch(fetchServices());
+    dispatch(fetchCategories());
+    dispatch(fetchCourses());
   }, [dispatch]);
-
 
   useEffect(() => {
     menuList.forEach((elm) => {
@@ -47,12 +54,30 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
         }
       });
     });
-  }, []);
+  }, [pathname]);
 
-  const handleServiceClick = (service) => {
-    if (onServiceSelect) {
-      onServiceSelect(service);
-    }
+  const dropdownVariants = {
+    hidden: { opacity: 0, y: -5, height: 0 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      height: "auto",
+      transition: {
+        duration: 0.3,
+        staggerChildren: 0.1,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -5,
+      height: 0,
+      transition: { duration: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0 },
   };
 
   return (
@@ -60,7 +85,6 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
       className={`header-menu js-mobile-menu-toggle ${
         headerPosition ? headerPosition : ""
       }`}
-      style={{ fontFamily: "serif" }}
     >
       <div className="header-menu__content">
         <div className="mobile-bg js-mobile-bg"></div>
@@ -69,7 +93,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
           className="d-none xl:d-flex items-center px-20 py-20 border-bottom-light"
           style={{ fontFamily: "serif" }}
         >
-          <Link href="/login" className=".text-orange-1">
+          <Link href="/login" className="text-orange-1">
             Log in
           </Link>
           <Link href="/signup" className="text-dark-1 ml-30">
@@ -78,279 +102,179 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
         </div>
 
         <div className="menu js-navList">
-          <ul className={`${allClasses ? allClasses : ""}`}>
-            <li className="menu-item-has-children">
+          <ul className={allClasses ? allClasses : ""}>
+            <li
+              className="menu-item-has-children"
+              style={{
+                textDecoration: pathname === "/" ? "underline" : "none",
+                textUnderlineOffset: "4px", // Adds spacing between text and underline
+              }}
+            >
               <Link
                 data-barba
                 href="/"
                 className={pathname === "/" ? "activeMenu" : ""}
                 onMouseOver={() => setHoveredLink("/")}
                 onMouseOut={() => setHoveredLink(null)}
+                style={{
+                  display: "inline-block",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  border:
+                    hoveredLink === "/"
+                      ? "2px solid #f2775e"
+                      : "2px solid transparent", // Orange border on hover
+                  color:
+                    hoveredLink === "/"
+                      ? "#fff" // White text on hover
+                      : pathname === "/"
+                      ? "#f2775e" // Active state text color
+                      : "#000", // Default text color (black)
+                  transition: "all 0.3s ease",
+                }}
               >
-                <span
-                  style={{
-                    color:
-                      (pathname === "/" || hoveredLink === "/") && "#f2775e",
-                  }}
-                >
-                  Home
-                </span>
+                Home
               </Link>
             </li>
-            <li className="menu-item-has-children">
+
+            <li
+              className="menu-item-has-children"
+              style={{
+                textDecoration: pathname === "/aboutUs" ? "underline" : "none",
+                textUnderlineOffset: "4px", // Adds spacing between text and underline
+              }}
+            >
               <Link
                 data-barba
                 href="/aboutUs"
                 className={pathname === "/aboutUs" ? "activeMenu" : ""}
                 onMouseOver={() => setHoveredLink("aboutUs")}
                 onMouseOut={() => setHoveredLink(null)}
+                style={{
+                  display: "inline-block",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  border:
+                    hoveredLink === "aboutUs"
+                      ? "2px solid #f2775e"
+                      : "2px solid transparent", // Orange border on hover
+                  color:
+                    hoveredLink === "aboutUs"
+                      ? "#fff" // White text on hover
+                      : pathname === "/aboutUs"
+                      ? "#f2775e" // Active state text color
+                      : "#000", // Default text color (black)
+                  transition: "all 0.3s ease",
+                }}
               >
-                <span
-                  style={{
-                    color:
-                      (pathname === "/aboutUs" || hoveredLink === "aboutUs") &&
-                      "#f2775e",
-                  }}
-                >
-                  About Us
-                </span>
+                About Us
               </Link>
             </li>
-            <li className="menu-item-has-children">
-              <a
-                className={menuItem === "Services" ? "activeMenu" : ""}
-                // href="#"
-                style={{ position: "relative", cursor: "pointer" }}
-                onMouseOver={() =>
-                  (document.getElementById("services").style.color = "#f2775e")
-                }
-                onMouseOut={() =>
-                  document
-                    .getElementById("services")
-                    .style.removeProperty("color")
-                }
-              >
-                <span
-                  id="services"
-                  style={{ color: menuItem === "Services" ? "#f2775e" : "" }}
-                >
-                  Services
-                </span>{" "}
-                <i className="icon-chevron-right text-13 ml-10"></i>
-              </a>
-              <ul className="subnav">
-                <li className="menu__backButton js-nav-list-back">
-                  <a
-                    href="#"
-                    style={{ color: menuItem === "Services" ? "#f2775e" : "" }}
-                  >
-                    <i className="icon-chevron-left text-13 mr-10"></i> Services
-                  </a>
-                </li>
-                {servicesBusiness &&
-                  servicesBusiness.map((service) => (
-                    <li key={service._id || service.slug}>
-                      <Link
-                        href={`/${service.slug}`}
-                        onClick={() => handleServiceClick(service)}
-                      >
-                        <div
-                          className={
-                            pathname.includes(service.slug)
-                              ? "activeMenu"
-                              : "inActiveMenu"
-                          }
-                          style={{
-                            color: pathname.includes(service.slug)
-                              ? "#f2775e !important"
-                              : hoveredProgram === service.slug
-                              ? "#f2775e !important"
-                              : "",
-                          }}
-                          onMouseOver={() => setHoveredProgram(service.slug)}
-                          onMouseOut={() => setHoveredProgram("")}
-                        >
-                          {service.name}
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
-            </li>
 
-            <li className="menu-item-has-children -has-mega-menu">
+            <ServicesDropdown />
+            <CoursesDropdown />
+            <BusinessDropdown />
+
+            <li
+              className="menu-item-has-children"
+              style={{
+                textDecoration: pathname === "/reviews" ? "underline" : "none",
+                textUnderlineOffset: "4px", // Adds spacing between text and underline
+              }}
+            >
               <Link
                 data-barba
-                href="/courses"
-                className={menuItem === "Courses" ? "activeMenu" : ""}
-                onMouseOver={() => setHoveredLink("courses")}
+                href="/reviews"
+                className={pathname === "/reviews" ? "activeMenu" : ""}
+                onMouseOver={() => setHoveredLink("/reviews")}
                 onMouseOut={() => setHoveredLink(null)}
+                style={{
+                  display: "inline-block",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  border:
+                    hoveredLink === "/reviews"
+                      ? "2px solid #f2775e"
+                      : "2px solid transparent", // Orange border on hover
+                  color:
+                    hoveredLink === "/reviews"
+                      ? "#fff" // White text on hover
+                      : pathname === "/reviews"
+                      ? "#f2775e" // Active state text color
+                      : "#000", // Default text color (black)
+                  transition: "all 0.3s ease",
+                }}
               >
-                <span
-                  style={{
-                    color:
-                      (pathname === "/Courses" || hoveredLink === "courses") &&
-                      "#f2775e",
-                  }}
-                >
-                  Courses
-                </span>
+                Review
               </Link>
             </li>
-            <li className="menu-item-has-children">
-              <a
-                className={menuItem === "Degree Program" ? "activeMenu" : ""}
-                href="#"
-                style={{ position: "relative", cursor: "pointer" }}
-                onMouseOver={() =>
-                  (document.getElementById("degreeProgram").style.color =
-                    "#f2775e")
-                }
-                onMouseOut={() =>
-                  document
-                    .getElementById("degreeProgram")
-                    .style.removeProperty("color")
-                }
-              >
-                <span
-                  id="degreeProgram"
-                  style={{
-                    color: menuItem === "Degree Program" ? "#f2775e" : "",
-                    cursor: "pointer",
-                  }}
-                >
-                  Degree Program
-                </span>{" "}
-                <i className="icon-chevron-right text-13 ml-10"></i>
-              </a>
-              <ul className="subnav">
-                <li className="menu__backButton js-nav-list-back">
-                  <a
-                    href="#"
-                    style={{
-                      color: menuItem === "Degree Program" ? "#f2775e" : "",
-                    }}
-                  >
-                    <i className="icon-chevron-left text-13 mr-10"></i> Degree
-                    Program
-                  </a>
-                </li>
-                {degreeProgramData?.map((program) => (
-                  <li key={program._id}>
-                    <Link href={`/${program.slug}/${program._id}`}>
-                      <div
-                        className={
-                          pathname.split("/")[1] === program.program_name
-                            ? "activeMenu"
-                            : "inActiveMenu"
-                        }
-                        style={{
-                          color:
-                            pathname.split("/")[1] === program.program_name
-                              ? "#f2775e !important"
-                              : hoveredProgram === program.program_name
-                              ? "#f2775e !important"
-                              : "",
-                        }}
-                        onMouseOver={() =>
-                          setHoveredProgram(program.program_name)
-                        }
-                        onMouseOut={() => setHoveredProgram("")}
-                      >
-                        {program.program_name}
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-            <li className="menu-item-has-children -has-mega-menu">
+
+            <li
+              className="menu-item-has-children"
+              style={{
+                textDecoration: pathname === "/career" ? "underline" : "none",
+                textUnderlineOffset: "4px", // Adds spacing between text and underline
+              }}
+            >
               <Link
                 data-barba
-                href="/hiring"
-                className={menuItem === "Hiring" ? "activeMenu" : ""}
-                onMouseOver={() => setHoveredLink("Hiring")}
+                href="/career"
+                className={pathname === "/career" ? "activeMenu" : ""}
+                onMouseOver={() => setHoveredLink("/career")}
                 onMouseOut={() => setHoveredLink(null)}
+                style={{
+                  display: "inline-block",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  border:
+                    hoveredLink === "/career"
+                      ? "2px solid #f2775e"
+                      : "2px solid transparent", // Orange border on hover
+                  color:
+                    hoveredLink === "/career"
+                      ? "#fff" // White text on hover
+                      : pathname === "/career"
+                      ? "#f2775e" // Active state text color
+                      : "#000", // Default text color (black)
+                  transition: "all 0.3s ease",
+                }}
               >
-                <span
-                  style={{
-                    color:
-                      (pathname === "/hiring" || hoveredLink === "Hiring") &&
-                      "#f2775e",
-                  }}
-                >
-                  Hiring
-                </span>
+                Career
               </Link>
             </li>
 
-            <li className="menu-item-has-children">
+            <li
+              className="menu-item-has-children"
+              style={{
+                textDecoration: pathname === "/contact" ? "underline" : "none",
+                textUnderlineOffset: "4px", // Adds spacing between text and underline
+              }}
+            >
               <Link
                 data-barba
-                href="#"
-                className={menuItem == "Pages" ? "activeMenu" : ""}
+                href="/contact"
+                className={pathname === "/contact" ? "activeMenu" : ""}
+                onMouseOver={() => setHoveredLink("/contact")}
+                onMouseOut={() => setHoveredLink(null)}
+                style={{
+                  display: "inline-block",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  border:
+                    hoveredLink === "/contact"
+                      ? "2px solid #f2775e"
+                      : "2px solid transparent", // Orange border on hover
+                  color:
+                    hoveredLink === "/contact"
+                      ? "#fff" // White text on hover
+                      : pathname === "/contact"
+                      ? "#f2775e" // Active state text color
+                      : "#000", // Default text color (black)
+                  transition: "all 0.3s ease",
+                }}
               >
-                Business <i className="icon-chevron-right text-13 ml-10"></i>
+                Contact
               </Link>
-
-              <ul className="subnav">
-                <li className="menu__backButton js-nav-list-back">
-                  <Link href="#">
-                    <i className="icon-chevron-left text-13 mr-10"></i> Business
-                  </Link>
-                </li>
-                <li className="menu-item-has-children">
-                  <Link
-                    href="#"
-                    className={
-                      submenu == "About Us" ? "activeMenu" : "inActiveMenu"
-                    }
-                  >
-                    Corporate<div className="icon-chevron-right text-11"></div>
-                  </Link>
-
-                  <ul className="subnav">
-                    <li className="menu__backButton js-nav-list-back">
-                      <Link href="#">
-                        <i className="icon-chevron-left text-13 mr-10"></i>
-                        Corporate
-                      </Link>
-                    </li>
-
-                    {menuList[4].links[0].links.map((elm, i) => (
-                      <li
-                        key={i}
-                        className={
-                          pathname.split("/")[1] == elm.href.split("/")[1]
-                            ? "activeMenu"
-                            : "inActiveMenu"
-                        }
-                      >
-                        <Link key={i} data-barba href={elm.href}>
-                          {elm.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-
-                {menuList[4].links
-                  .filter((el) => el.href)
-                  .map((elm, i) => (
-                    <li
-                      key={i}
-                      className={
-                        pathname.split("/")[1] == elm.href.split("/")[1]
-                          ? "activeMenu"
-                          : "inActiveMenu"
-                      }
-                    >
-                      <Link key={i} data-barba href={elm.href}>
-                        {elm.label}
-                      </Link>
-                    </li>
-                  ))}
-              </ul>
             </li>
           </ul>
         </div>

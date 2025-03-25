@@ -32,13 +32,8 @@ export default function CategoriesTwo() {
         <div className="row justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle">
-              <h2
-                className="sectionTitle__title"
-                style={{ fontFamily: "Serif" }}
-              >
-                Top Categories
-              </h2>
-              <p className="sectionTitle__text" style={{ fontFamily: "Serif" }}>
+              <h2 className="sectionTitle__title">Top Categories</h2>
+              <p className="sectionTitle__text">
                 Expand your knowledge with informative resources and educational
                 content
               </p>
@@ -88,16 +83,10 @@ export default function CategoriesTwo() {
                   </div>
 
                   <div className="categoryCard__content text-center">
-                    <h4
-                      className="categoryCard__title text-20 lh-15 fw-500 text-white"
-                      style={{ fontFamily: "Serif" }}
-                    >
+                    <h4 className="categoryCard__title text-20 lh-15 fw-500 text-white">
                       {category?.category_name}
                     </h4>
-                    <div
-                      className="categoryCard__subtitle text-16 text-white lh-1 mt-5 p-2"
-                      style={{ fontFamily: "Serif" }}
-                    >
+                    <div className="categoryCard__subtitle text-16 text-white lh-1 mt-5 p-2">
                       {category?.description}
                     </div>
                   </div>
