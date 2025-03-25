@@ -1,4 +1,5 @@
 // src/redux/slices/enquiry/enquiry.js
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   loading: false,
@@ -11,7 +12,7 @@ export const submitEnquiry = createAsyncThunk(
   "enquiry/submit",
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5353/create/enquiry", {
+      const response = await fetch(`${getAPIURL()}/create/enquiry`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-// redux/slices/jobPositionsSlice.js
+import { getAPIURL } from "@/utils/utils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Asynchronous thunk to fetch all job positions
@@ -6,7 +6,7 @@ export const fetchJobPositions = createAsyncThunk(
   "jobPositions/fetchJobPositions",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5353/getAll/joinus");
+      const response = await fetch(`${getAPIURL()}/getAll/joinus`);
       const data = await response.json();
       // Check if the response is okay
       if (!response.ok) {
