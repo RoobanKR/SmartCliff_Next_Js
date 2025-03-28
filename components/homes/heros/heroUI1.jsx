@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 const HeroUITwo = () => {
   const [windowSize, setWindowSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
-    height: typeof window !== 'undefined' ? window.innerHeight : 800,
+    width: typeof window !== "undefined" ? window.innerWidth : 1200,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
   });
 
   useEffect(() => {
@@ -16,13 +16,12 @@ const HeroUITwo = () => {
       });
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // const isMobile = windowSize.width <= 768;
   // const isTablet = windowSize.width <= 1024;
-
 
   const isMobile = windowSize.width <= 640;
   const isTablet = windowSize.width > 640 && windowSize.width <= 1024;
@@ -48,51 +47,51 @@ const HeroUITwo = () => {
     {
       text: "S - Skilling for Success",
       subtext: "Learn industry-relevant skills.",
-      imgSrc: "/assets/img/home-1/newhero/skill.png",
+      imgSrc: "/assets/img/home-1/newhero/Sblue2.png",
       style: {
         top: `${25 * (isMobile ? 0.6 : 1)}%`,
         left: `${5 * (isMobile ? 0.8 : 1)}%`,
-        animationDelay: "0.2s"
+        animationDelay: "0.2s",
       },
     },
     {
       text: "H - Handholding for Growth",
       subtext: "Support and mentorship.",
-      imgSrc: "/assets/img/home-1/newhero/growth.png",
+      imgSrc: "/assets/img/home-1/newhero/Horange2.png",
       style: {
         top: `${50 * (isMobile ? 0.8 : 1)}%`,
         left: `${15 * (isMobile ? 0.2 : 1)}%`,
-        animationDelay: "0.4s"
+        animationDelay: "0.4s",
       },
     },
     {
       text: "I - Industry Readiness",
       subtext: "Training for real-world jobs.",
-      imgSrc: "/assets/img/home-1/newhero/industry.png",
+      imgSrc: "/assets/img/home-1/newhero/Igreen.png",
       style: {
         top: `${75 * (isMobile ? 0.8 : 1)}%`,
         right: `${40 * (isMobile ? 1.2 : 1)}%`,
-        animationDelay: "0.6s"
+        animationDelay: "0.6s",
       },
     },
     {
       text: "N - Nurturing Talent",
       subtext: "Personalized learning paths.",
-      imgSrc: "/assets/img/home-1/newhero/nurture.png",
+      imgSrc: "/assets/img/home-1/newhero/Nyellow2.png",
       style: {
         top: `${50 * (isMobile ? 0.9 : 1)}%`,
         right: `${15 * (isMobile ? 0.7 : 1)}%`,
-        animationDelay: "0.8s"
+        animationDelay: "0.8s",
       },
     },
     {
       text: "E - Employability",
       subtext: "Career success guaranteed.",
-      imgSrc: "/assets/img/home-1/newhero/excellence.png",
+      imgSrc: "/assets/img/home-1/newhero/Ered.png",
       style: {
         top: `${25 * (isMobile ? 0.8 : 1)}%`,
         right: `${5 * (isMobile ? 0.8 : 1)}%`,
-        animationDelay: "1s"
+        animationDelay: "1s",
       },
     },
   ];
@@ -140,22 +139,26 @@ const HeroUITwo = () => {
             style={{ borderRadius: `${10 * scaleFactor}px` }}
           />
         </div>
-        <div style={{
-          fontSize: `${20 * scaleFactor}px`,
-          fontWeight: "bold"
-        }}>
+        <div
+          style={{
+            fontSize: `${20 * scaleFactor}px`,
+            fontWeight: "bold",
+          }}
+        >
           Career/Solutions
         </div>
       </header>
 
       {/* SHINE Title - Centered */}
-      <div style={{
-        paddingTop: "0px",
-        zIndex: 2,
-        transform: `scale(${scaleFactor})`,
-        transformOrigin: "center",
-        width: "100%",
-      }}>
+      <div
+        style={{
+          paddingTop: "0px",
+          zIndex: 2,
+          transform: `scale(${scaleFactor})`,
+          transformOrigin: "center",
+          width: "100%",
+        }}
+      >
         <h1
           style={{
             fontSize: "70px",
@@ -184,15 +187,15 @@ const HeroUITwo = () => {
             ...container.style,
             backgroundColor:
               index === 0
-                ? "rgb(59 130 246 / 35%)"
+                ? "#bfd7ff59"
                 : index === 1
-                  ? "rgb(249 115 22 / 57%)"
+                  ? "#ffc49c91"
                   : index === 2
-                    ? "rgb(16 185 129 / 59%)"
+                    ? "#a8ffe296"
                     : index === 3
-                      ? "rgb(250 204 21 / 70%)"
-                      : "rgb(239 68 68 / 62%)",
-            color: "white",
+                      ? "#fff0b4b3"
+                      : "#ffb6b69e",
+            color: "#414141",
           }}
         >
           <Image
@@ -202,15 +205,17 @@ const HeroUITwo = () => {
             height={50 * scaleFactor}
             style={{
               borderRadius: "50%",
-              marginRight: `${10 * scaleFactor}px`
+              marginRight: `${10 * scaleFactor}px`,
             }}
           />
-          <p style={{
-            fontSize: `${14 * scaleFactor}px`,
-            textAlign: "left",
-            lineHeight: `${1.5 * scaleFactor}rem`,
-            margin: 0,
-          }}>
+          <p
+            style={{
+              fontSize: `${14 * scaleFactor}px`,
+              textAlign: "left",
+              lineHeight: `${1.5 * scaleFactor}rem`,
+              margin: 0,
+            }}
+          >
             <strong>{container.text}</strong> <br />
             <span style={{ fontSize: `${12 * scaleFactor}px` }}>
               {container.subtext}
@@ -234,20 +239,22 @@ const HeroUITwo = () => {
             transform: scale(1);
           }
           100% {
-            transform: scale(${1 + (0.1 * scaleFactor)});
+            transform: scale(${1 + 0.1 * scaleFactor});
           }
         }
       `}</style>
 
       {/* Decorative Images */}
-      <div style={{
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-        zIndex: 0,
-        transform: `scale(${scaleFactor})`,
-        transformOrigin: "bottom right",
-      }}>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          zIndex: 0,
+          transform: `scale(${scaleFactor})`,
+          transformOrigin: "bottom right",
+        }}
+      >
         <Image
           src="/assets/img/home-1/newhero/center.svg"
           alt="Bottom Corner"
@@ -257,11 +264,13 @@ const HeroUITwo = () => {
         />
       </div>
 
-      <div style={{
-        zIndex: 0,
-        transform: `scale(${scaleFactor})`,
-        transformOrigin: "center",
-      }}>
+      <div
+        style={{
+          zIndex: 0,
+          transform: `scale(${scaleFactor})`,
+          transformOrigin: "center",
+        }}
+      >
         <Image
           src="/assets/img/home-1/newhero/left.svg"
           alt="Left Illustration"
@@ -271,14 +280,16 @@ const HeroUITwo = () => {
         />
       </div>
 
-      <div style={{
-        position: "absolute",
-        bottom: 0,
-        left: `${5 * scaleFactor}px`,
-        zIndex: 0,
-        transform: `scale(${scaleFactor})`,
-        transformOrigin: "bottom left",
-      }}>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: `${5 * scaleFactor}px`,
+          zIndex: 0,
+          transform: `scale(${scaleFactor})`,
+          transformOrigin: "bottom left",
+        }}
+      >
         <Image
           src="/assets/img/home-1/newhero/right.svg"
           alt="Right Illustration"
@@ -292,3 +303,4 @@ const HeroUITwo = () => {
 };
 
 export default HeroUITwo;
+

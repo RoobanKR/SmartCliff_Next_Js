@@ -4,7 +4,6 @@ export const socialMediaLinks = [
     href: "https://www.facebook.com/smartcliff.in/",
     iconClassName: "icon-facebook",
   },
-  { id: 2, href: "#", iconClassName: "icon-twitter" },
   {
     id: 3,
     href: "https://instagram.com/smartcliff_ls/",

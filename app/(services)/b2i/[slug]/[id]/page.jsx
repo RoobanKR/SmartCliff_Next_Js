@@ -28,6 +28,7 @@ import { fetchAllColleges } from "@/redux/slices/collegeDetails/collegeDetails";
 
 SwiperCore.use([Navigation, Pagination]);
 
+
 export default function Page() {
   const dispatch = useDispatch();
   const faq = useSelector((state) => state.faq.faq);
@@ -88,7 +89,6 @@ export default function Page() {
     checkOverflow();
   }, [collegeDetails]);
 
-  console.log("collegeDetails", collegeDetails);
 
   const selectedAboutCollege = aboutCollegeData.find(
     (program) => program._id === id
@@ -118,6 +118,20 @@ export default function Page() {
     setSelectedCollegeId(collegeDetails[newIndex]?._id || null);
   };
 
+
+  const handleBack = () => {
+    if (typeof window !== "undefined") {
+      const fullUrl = window.location.pathname; // Get current path
+      const segments = fullUrl.split("/").filter(Boolean); // Split into segments
+      segments.pop(); // Remove last segment
+
+      const previousRoute = segments.length > 0 ? `/${segments.join("/")}` : "/"; // Reconstruct URL
+
+      router.push(previousRoute); // Navigate back
+    }
+  };
+
+
   return (
     <div className="main-content overflow-hidden">
       <Preloader />
@@ -141,7 +155,7 @@ export default function Page() {
         >
           {/* Back Button */}
           <button
-            onClick={() => router.back()}
+            onClick={handleBack}
             className="back-button"
             style={{
               display: "flex",
@@ -257,9 +271,8 @@ export default function Page() {
                     fontWeight: "600",
                     cursor: "pointer",
                     whiteSpace: "nowrap",
-                    transform: `translateX(-${
-                      currentCollegeIndex * (isMobileView ? 100 : 120)
-                    }px)`,
+                    transform: `translateX(-${currentCollegeIndex * (isMobileView ? 100 : 120)
+                      }px)`,
                     transition:
                       "transform 0.3s ease, background-color 0.3s ease",
                     flexShrink: 0,

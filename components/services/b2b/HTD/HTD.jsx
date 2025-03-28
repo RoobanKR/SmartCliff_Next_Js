@@ -250,9 +250,8 @@ export default function HTD() {
           setIsSidebarClosed={setIsSidebarClosed}
         />
         <div
-          className={`dashboard -home-9 px-0 js-dashboard-home-9 ${
-            isSidebarClosed ? "-is-sidebar-hidden" : ""
-          } `}
+          className={`dashboard -home-9 px-0 js-dashboard-home-9 ${isSidebarClosed ? "-is-sidebar-hidden" : ""
+            } `}
         >
           <div
             className="dashboard__sidebar -base scroll-bar-1 border-right-light lg:px-30"
@@ -264,469 +263,145 @@ export default function HTD() {
           </div>
           <div className="dashboard__main content-wrapper  js-content-wrapper overflow-hidden ">
             <div className="dashboard__content pt-0 px-15 pb-0 mt-20">
+              <div
+                className="toggle-sidebar"
+                style={{
+                  position: "fixed",
+                  left: "20px",
+                  bottom: "20px",
+                  zIndex: "120",
+                }}
+              >
+                <button
+                  onClick={toggleSidebar}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.querySelector(".front").style.transform = "translateY(-3px)";
+                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(3px)";
+                    e.currentTarget.querySelector(".front").style.background = " #DDA853";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.querySelector(".front").style.transform = "translateY(-1px)";
+                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(2px)";
+                    e.currentTarget.querySelector(".front").style.background = " #DDA853";
+                  }}
+                  onMouseDown={(e) => {
+                    e.currentTarget.querySelector(".front").style.transform = "translateY(0px)";
+                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(1px)";
+                  }}
+                  onMouseUp={(e) => {
+                    e.currentTarget.querySelector(".front").style.transform = "translateY(-3px)";
+                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(3px)";
+                  }}
+                  style={{
+                    position: "relative",
+                    padding: "0",
+                    border: "none",
+                    background: "transparent",
+                    cursor: "pointer",
+                    outline: "none",
+                    filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
+                    transition: "filter 0.2s ease",
+                  }}
+                >
+                  {/* Shadow Effect */}
+                  <span
+                    className="shadow"
+                    style={{
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "8px",
+                      background: "hsl(0deg 0% 0% / 0.15)",
+                      transform: "translateY(2px)",
+                      transition: "transform 200ms cubic-bezier(0.3, 0.7, 0.4, 1)",
+                    }}
+                  ></span>
+
+                  {/* Button Edge */}
+                  <span
+                    className="edge"
+                    style={{
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "8px",
+                      background: " #DDA853",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2)",
+                    }}
+                  ></span>
+
+                  {/* Button Front */}
+                  <span
+                    className="front"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "8px",
+                      position: "relative",
+                      padding: "8px 16px",
+                      borderRadius: "8px",
+                      fontSize: "0.9rem",
+                      fontWeight: "500",
+                      color: "rgb(255, 255, 255)",
+                      background: "#DDA853",
+                      transform: "translateY(-1px)",
+                      transition: "all 200ms cubic-bezier(0.3, 0.7, 0.4, 1)",
+                      boxShadow: "inset 0 -1px 0 rgba(0,0,0,0.1)",
+                      textShadow: "0 1px 1px rgba(0,0,0,0.1)",
+                    }}
+                  >
+                    {/* Icon */}
+                    <span
+                      className="icon-container"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "50%",
+                        background: "rgba(255,255,255,0.9)",
+                        color: " #000000",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        icon={isSidebarClosed ? faArrowRight : faArrowLeft}
+                        style={{
+                          fontSize: "12px",
+                          transition: "transform 0.2s ease",
+                        }}
+                      />
+                    </span>
+
+                    {/* Button Text */}
+                    <span
+                      className="text-container"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "opacity 0.2s ease",
+                      }}
+                      key={isSidebarClosed ? "open" : "close"}
+                    >
+                      {isSidebarClosed ? "Open Sidebar" : "Close Sidebar"}
+                    </span>
+                  </span>
+                </button>
+              </div>
+
               {secondLastSegment === "b2i" && lastSegment === "dp" ? (
-                <div>
-                  <div
-                    className="toggle-sidebar"
-                    style={{
-                      borderRadius: "8px",
-                      padding: "4px 8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      position: "fixed",
-                      left: "20px",
-                      bottom: "20px",
-                      zIndex: "120",
-                    }}
-                    onClick={toggleSidebar}
-                  >
-                    <button
-                      onClick={toggleSidebar}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-3px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(2px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-2px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      onMouseDown={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(0px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(0px)";
-                      }}
-                      onMouseUp={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-2px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      style={{
-                        position: "relative",
-                        padding: "0",
-                        border: "none",
-                        background: "transparent",
-                        cursor: "pointer",
-                        outline: "none",
-                      }}
-                    >
-                      {/* Shadow Effect */}
-                      <span
-                        className="shadow"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "6px",
-                          background: "hsl(0deg 0% 0% / 0.2)",
-                          transform: "translateY(1px)",
-                          transition: "transform 200ms ease",
-                        }}
-                      ></span>
-
-                      {/* Button Edge */}
-                      <span
-                        className="edge"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "6px",
-                          background:
-                            "linear-gradient(to left, #ffa726a8 0%, #4A245B 100%)",
-                        }}
-                      ></span>
-
-                      {/* Button Front */}
-                      <span
-                        className="front"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "6px",
-                          width: "100%",
-                          position: "relative",
-                          padding: "6px 14px",
-                          borderRadius: "6px",
-                          fontSize: "0.85rem",
-                          color: "#FFF",
-                          background: "#ffa726a8",
-                          transform: "translateY(-2px)",
-                          transition:
-                            "transform 200ms ease, background 200ms ease",
-                        }}
-                      >
-                        {/* Icon */}
-                        <span
-                          className="icon-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "22px",
-                            height: "22px",
-                            borderRadius: "50%",
-                            background: "#FFF",
-                            color: "#ffa726a8",
-                            transition: "background 0.3s ease",
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={isSidebarClosed ? faArrowRight : faArrowLeft}
-                            style={{
-                              fontSize: "14px",
-                              transition: "transform 0.3s ease",
-                            }}
-                          />
-                        </span>
-
-                        {/* Button Text */}
-                        <span
-                          className="text-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            animation: "fadeSlide 0.3s ease",
-                          }}
-                          key={isSidebarClosed ? "open" : "close"}
-                        >
-                          {isSidebarClosed ? "Open Sidebar" : "Close Sidebar"}
-                        </span>
-                      </span>
-                    </button>
-                  </div>
-
-                  <ServiceDegreeProgram />
-                </div>
+                <ServiceDegreeProgram />
               ) : secondLastSegment === "csr" ? (
-                <div>
-                  <div
-                    className="toggle-sidebar"
-                    style={{
-                      borderRadius: "8px",
-                      padding: "4px 8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      position: "fixed",
-                      left: "20px",
-                      bottom: "20px",
-                      zIndex: "120",
-                    }}
-                    onClick={toggleSidebar}
-                  >
-                    <button
-                      onClick={toggleSidebar}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-3px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(2px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-2px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      onMouseDown={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(0px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(0px)";
-                      }}
-                      onMouseUp={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-2px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      style={{
-                        position: "relative",
-                        padding: "0",
-                        border: "none",
-                        background: "transparent",
-                        cursor: "pointer",
-                        outline: "none",
-                      }}
-                    >
-                      {/* Shadow Effect */}
-                      <span
-                        className="shadow"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "6px",
-                          background: "hsl(0deg 0% 0% / 0.2)",
-                          transform: "translateY(1px)",
-                          transition: "transform 200ms ease",
-                        }}
-                      ></span>
-
-                      {/* Button Edge */}
-                      <span
-                        className="edge"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "6px",
-                          background:
-                            "linear-gradient(to left, #ffa726a8 0%, #4A245B 100%)",
-                        }}
-                      ></span>
-
-                      {/* Button Front */}
-                      <span
-                        className="front"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "6px",
-                          width: "100%",
-                          position: "relative",
-                          padding: "6px 14px",
-                          borderRadius: "6px",
-                          fontSize: "0.85rem",
-                          color: "#FFF",
-                          background: "#ffa726a8",
-                          transform: "translateY(-2px)",
-                          transition:
-                            "transform 200ms ease, background 200ms ease",
-                        }}
-                      >
-                        {/* Icon */}
-                        <span
-                          className="icon-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "22px",
-                            height: "22px",
-                            borderRadius: "50%",
-                            background: "#FFF",
-                            color: "#ffa726a8",
-                            transition: "background 0.3s ease",
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={isSidebarClosed ? faArrowRight : faArrowLeft}
-                            style={{
-                              fontSize: "14px",
-                              transition: "transform 0.3s ease",
-                            }}
-                          />
-                        </span>
-
-                        {/* Button Text */}
-                        <span
-                          className="text-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            animation: "fadeSlide 0.3s ease",
-                          }}
-                          key={isSidebarClosed ? "open" : "close"}
-                        >
-                          {isSidebarClosed ? "Open Sidebar" : "Close Sidebar"}
-                        </span>
-                      </span>
-                    </button>
-                  </div>
-
-                  <CsrDegreeProgram />
-                </div>
+                <CsrDegreeProgram />
               ) : (
                 <div>
-                  <div
-                    className="toggle-sidebar"
-                    style={{
-                      borderRadius: "8px",
-                      padding: "4px 8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      position: "fixed",
-                      left: "20px",
-                      bottom: "20px",
-                      zIndex: "120",
-                    }}
-                    onClick={toggleSidebar}
-                  >
-                    <button
-                      onClick={toggleSidebar}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-3px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(2px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-2px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      onMouseDown={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(0px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(0px)";
-                      }}
-                      onMouseUp={(e) => {
-                        e.currentTarget.querySelector(
-                          ".front"
-                        ).style.transform = "translateY(-2px)";
-                        e.currentTarget.querySelector(
-                          ".shadow"
-                        ).style.transform = "translateY(1px)";
-                      }}
-                      style={{
-                        position: "relative",
-                        padding: "0",
-                        border: "none",
-                        background: "transparent",
-                        cursor: "pointer",
-                        outline: "none",
-                      }}
-                    >
-                      {/* Shadow Effect */}
-                      <span
-                        className="shadow"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "6px",
-                          background: "hsl(0deg 0% 0% / 0.2)",
-                          transform: "translateY(1px)",
-                          transition: "transform 200ms ease",
-                        }}
-                      ></span>
-
-                      {/* Button Edge */}
-                      <span
-                        className="edge"
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "6px",
-                          background:
-                            "linear-gradient(to left, #ffa726a8 0%, #4A245B 100%)",
-                        }}
-                      ></span>
-
-                      {/* Button Front */}
-                      <span
-                        className="front"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "6px",
-                          width: "100%",
-                          position: "relative",
-                          padding: "6px 14px",
-                          borderRadius: "6px",
-                          fontSize: "0.85rem",
-                          color: "#FFF",
-                          background: "#ffa726a8",
-                          transform: "translateY(-2px)",
-                          transition:
-                            "transform 200ms ease, background 200ms ease",
-                        }}
-                      >
-                        {/* Icon */}
-                        <span
-                          className="icon-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "22px",
-                            height: "22px",
-                            borderRadius: "50%",
-                            background: "#FFF",
-                            color: "#ffa726a8",
-                            transition: "background 0.3s ease",
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={isSidebarClosed ? faArrowRight : faArrowLeft}
-                            style={{
-                              fontSize: "14px",
-                              transition: "transform 0.3s ease",
-                            }}
-                          />
-                        </span>
-
-                        {/* Button Text */}
-                        <span
-                          className="text-container"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            animation: "fadeSlide 0.3s ease",
-                          }}
-                          key={isSidebarClosed ? "open" : "close"}
-                        >
-                          {isSidebarClosed ? "Open Sidebar" : "Close Sidebar"}
-                        </span>
-                      </span>
-                    </button>
-                  </div>
-
                   <div
                     style={{
                       position: "fixed",

@@ -56,30 +56,6 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
     });
   }, [pathname]);
 
-  const dropdownVariants = {
-    hidden: { opacity: 0, y: -5, height: 0 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      height: "auto",
-      transition: {
-        duration: 0.3,
-        staggerChildren: 0.1,
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -5,
-      height: 0,
-      transition: { duration: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -10 },
-    visible: { opacity: 1, x: 0 },
-  };
-
   return (
     <div
       className={`header-menu js-mobile-menu-toggle ${

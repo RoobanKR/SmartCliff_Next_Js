@@ -4,21 +4,21 @@ import { useEffect, useState } from "react";
 import HirefromusAddForm from "../HirefromusAddForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
- 
-export default function HeroSection() {
+
+export default function HeroSection({ scrollToSection }) {
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
- 
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
- 
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
- 
+
   return (
     <div
       style={{
@@ -50,7 +50,7 @@ export default function HeroSection() {
           zIndex: 0,
         }}
       />
- 
+
       {/* Content Section */}
       <div
         style={{
@@ -81,7 +81,7 @@ export default function HeroSection() {
           success. Save time and effort—we connect you with the right
           candidates, hassle-free.
         </p>
- 
+
         <div
           style={{
             display: "flex",
@@ -102,12 +102,21 @@ export default function HeroSection() {
               cursor: "pointer",
               position: "relative",
               zIndex: "1051",
-              width: isMobile ? "100%" : "auto",
+              width: "auto",
             }}
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              if (typeof scrollToSection === "function") {
+                scrollToSection();
+              } else {
+                console.error(
+                  "❌ scrollToSection is NOT a function!",
+                  scrollToSection
+                );
+              }
+            }}
           >
-            Start Hiring Today
-          </button>
+            View Current Availability
+          </button>{" "}
         </div>
         <AnimatePresence>
           {showModal && (
@@ -168,7 +177,7 @@ export default function HeroSection() {
                       margin: "0",
                       display: "inline-block",
                       position: "relative",
-                      padding: "0 0 10px 0 "
+                      padding: "0 0 10px 0 ",
                     }}
                   >
                     Hiring Enquiry Form
@@ -197,8 +206,10 @@ export default function HeroSection() {
                       }}
                     ></span>
                   </h1>
- 
-                  <button type="button" onClick={() => setShowModal(false)}
+
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
                     style={{
                       width: "35px",
                       height: "35px",
@@ -213,11 +224,12 @@ export default function HeroSection() {
                       color: "white",
                       cursor: "pointer",
                       transition: "all 0.2s ease",
-                    }} >
+                    }}
+                  >
                     <FaTimes />
                   </button>
                 </div>
- 
+
                 {/* Modal Content */}
                 <div
                   style={{
@@ -234,7 +246,7 @@ export default function HeroSection() {
           )}
         </AnimatePresence>
       </div>
- 
+
       {/* Right-Side Image (Hidden in Mobile) */}
       {!isMobile && (
         <div
@@ -258,5 +270,3 @@ export default function HeroSection() {
     </div>
   );
 }
- 
- 

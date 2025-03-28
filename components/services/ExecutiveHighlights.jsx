@@ -8,7 +8,6 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation, Pagination } from "swiper";
 
 export default function ExecutiveHighlights({ filteredHighlights }) {
-  const colors = ["#f5f0ff", "#ffffff"];
 
   const swiperStyles = {
     container: {
@@ -47,52 +46,28 @@ export default function ExecutiveHighlights({ filteredHighlights }) {
       transition: "all 0.3s ease",
     },
   };
+  const colors = ["#5b2c6f"];
 
   return (
     <section
       style={{
-        paddingTop: "1rem",
+        paddingTop: "0rem",
         paddingBottom: "1rem",
-        backgroundColor: "#f8f9fa",
+        // backgroundColor: "#f8f9fa",
       }}
     >
       <div className="container">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            marginBottom: "1.5rem",
-          }}
-        >
-          <p
-            style={{
-              color: "#6c757d",
-              maxWidth: "600px",
-            }}
-          >
-            (By Domain)
-          </p>
-        </div>
-
         <Swiper
           modules={[Pagination, Navigation, Autoplay]}
           spaceBetween={30}
           slidesPerView={1}
           pagination={{
+            el: ".executive-pagination",
             clickable: true,
-            renderBullet: (index, className) => {
-              return `<span class="${className}" style="
-                width: 10px;
-                height: 10px;
-                backgroundColor: #ccc;
-                borderRadius: 50%;
-                opacity: 0.5;
-                display: inline-block;
-                cursor: pointer;
-              "></span>`;
-            },
+          }}
+          navigation={{
+            nextEl: ".icon-arrow-right-executive",
+            prevEl: ".icon-arrow-left-executive",
           }}
           autoplay={{
             delay: 3000,
@@ -108,7 +83,7 @@ export default function ExecutiveHighlights({ filteredHighlights }) {
               spaceBetween: 30,
             },
             1024: {
-              slidesPerView: 4,
+              slidesPerView: 3,
               spaceBetween: 30,
             },
           }}
@@ -118,101 +93,109 @@ export default function ExecutiveHighlights({ filteredHighlights }) {
             <SwiperSlide key={i}>
               <div
                 style={{
-                  position: "relative",
-                  textAlign: "center",
-                  padding: "30px",
-                  backgroundColor: colors[i % colors.length],
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "18px 20px", // Left padding for neat alignment
+                  borderBottom: "2px solid #D1D5DB",
+                  transition: "all 0.3s ease-in-out",
+                  cursor: "pointer",
+                  boxShadow: `0px 5px 8px ${colors[i % colors.length]}88`, // Enhanced downward shadow
                   borderRadius: "10px",
-                  boxShadow: "0px 1px 10px rgba(0, 0, 0, 0.15)",
-                  height: "100%",
-                  marginBottom: "50px",
-                  transition: "background-color 0.3s ease-in-out",
+                  backgroundColor: "#fff",
+                  width: "90%", // Reduced width for a compact design
+                  maxWidth: "350px", // Prevents excessive stretching
+                  margin: "10px auto", // Creates proper space between cards (Top & Bottom)
                 }}
-                onMouseEnter={(e) => {
-                  // Change background color on hover
-                  e.currentTarget.style.backgroundColor =
-                    colors[(i + 1) % colors.length];
-                  // Find the icon container and add flip rotation
-                  const iconContainer =
-                    e.currentTarget.querySelector(".icon-container");
-                  if (iconContainer) {
-                    iconContainer.style.transform =
-                      "translateX(-50%) rotateY(180deg)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  // Revert background color on mouse leave
-                  e.currentTarget.style.backgroundColor =
-                    colors[i % colors.length];
-                  // Find the icon container and revert flip rotation
-                  const iconContainer =
-                    e.currentTarget.querySelector(".icon-container");
-                  if (iconContainer) {
-                    iconContainer.style.transform =
-                      "translateX(-50%) rotateY(0deg)";
-                  }
-                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
-                {/* Circle for the Icon */}
+                {/* Left Section - Icon & Text */}
                 <div
-                  className="icon-container"
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    top: "-30px",
-                    width: "60px",
-                    height: "60px",
-                    backgroundColor: colors[(i + 1) % colors.length],
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "50%",
-                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
-                    border: "2px solid #ccc",
-                    transition: "transform 0.5s ease",
-                    transformStyle: "preserve-3d",
-                    perspective: "1000px",
-                  }}
+                  style={{ display: "flex", alignItems: "center", gap: "15px" }}
                 >
-                  <Image
-                    src={highlight.image}
-                    alt="icon"
-                    width={30}
-                    height={30}
+                  {/* Icon */}
+                  <div
                     style={{
-                      backfaceVisibility: "visible",
-                      transform: "rotateY(0deg)",
+                      width: "45px",
+                      height: "45px",
+                      background: "#F3F4F6",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "8px",
+                      border: "1px solid #E5E7EB",
+                      paddingLeft: "8px", // Added left padding to the image
                     }}
-                  />
+                  >
+                    <Image
+                      src={highlight.image}
+                      alt="icon"
+                      width={28}
+                      height={28}
+                    />
+                  </div>
+
+                  {/* Text */}
+                  <div>
+                    <h5
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        color: "#222",
+                        marginBottom: "3px",
+                        letterSpacing: "0.3px",
+                      }}
+                    >
+                      {highlight.stack}
+                    </h5>
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        color: "#555",
+                        margin: "0",
+                        fontWeight: "500",
+                        opacity: "0.85",
+                      }}
+                    >
+                      {highlight.count}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Card Content */}
-                <div style={{ paddingTop: "10px" }}>
-                  <h5
-                    style={{
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      marginTop: "5px",
-                    }}
-                  >
-                    {highlight.stack}
-                  </h5>
-                  <p
-                    style={{
-                      fontSize: "16px",
-                      color: "#666",
-                      marginTop: "5px",
-                    }}
-                  >
-                    {highlight.count}
-                  </p>
-                </div>
+                {/* Thin Multi-Color Divider */}
+                <div
+                  style={{
+                    width: "3px",
+                    height: "40px",
+                    backgroundColor: colors[i % colors.length],
+                    borderRadius: "10px",
+                    boxShadow: `0px 3px 5px ${colors[i % colors.length]}BB`, // Stronger downward glow
+                  }}
+                />
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
+
+        {/* Navigation Controls */}
+        <div className="d-flex justify-center x-gap-15 items-center pt-40">
+          <div className="col-auto">
+            <button className="d-flex items-center text-24 arrow-left-hover js-prev icon-arrow-left-executive">
+              <i className="icon icon-arrow-left"></i>
+            </button>
+          </div>
+          <div className="col-auto">
+            <div className="pagination -arrows js-pagination executive-pagination"></div>
+          </div>
+          <div className="col-auto">
+            <button className="d-flex items-center text-24 arrow-right-hover js-next icon-arrow-right-executive">
+              <i className="icon icon-arrow-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
+
 }

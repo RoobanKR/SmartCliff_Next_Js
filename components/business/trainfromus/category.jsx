@@ -27,7 +27,7 @@ export default function HiringCategories() {
   }, [dispatch]);
 
   const hireFromUsData = wcyHires.filter(
-    (works) => works.type === "hirefromus"
+    (works) => works.type === "trainfromus"
   );
 
   if (loading) {

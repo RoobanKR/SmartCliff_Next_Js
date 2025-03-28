@@ -104,21 +104,7 @@ export default function ContactPage() {
     }
   };
 
-  // Sample contact data (replace with your actual data)
-  const contactInfo = [
-    {
-      icon: "/images/icons/location.svg",
-      address: "123 Business Avenue, Suite 500, New York, NY 10001, USA",
-    },
-    {
-      icon: "/images/icons/mail.svg",
-      email: "contact@yourcompany.com",
-    },
-    {
-      icon: "/images/icons/phone.svg",
-      phoneNumber: "+1 (555) 123-4567",
-    },
-  ];
+
 
   return (
     <>
@@ -151,12 +137,8 @@ export default function ContactPage() {
                     <div className="ml-20 fw-600">
                       {elm.address
                         ? `${elm.address
-                            .split(" ")
-                            .slice(0, 4)
-                            .join(" ")} \n ${elm.address
-                            .split(" ")
-                            .slice(4, -1)
-                            .join(" ")}`
+                          .split(" ")
+                          .join(" ")} `
                         : elm.email || elm.phoneNumber}
                     </div>
                   </div>
@@ -165,14 +147,6 @@ export default function ContactPage() {
             </div>
 
             <div className="col-lg-7 mb-30">
-              {/* <h3 className="text-24 fw-500">Send a Message</h3>
-              <p className="mt-5 fw-500">
-              <i>
-                Have a question or need assistance? Reach out to us anytime.
-                We're here to help and eager to hear from you!
-                </i>
-              </p> */}
-
               <form
                 className="contact-form row y-gap-30 pt-30 lg:pt-20"
                 onSubmit={handleSubmit}

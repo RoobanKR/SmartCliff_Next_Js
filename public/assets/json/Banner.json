@@ -32,7 +32,7 @@
   {
     "title": "Welcome to Our Institute Page",
     "description": "The Institute page provides a platform for individuals and businesses.",
-    "imageUrl": "/assets/img/bannerimg3.jpg"
+    "imageUrl": "/assets/img/about-1/review.png"
   },
   {
     "title": "Contact Us",
@@ -67,6 +67,10 @@
   {
     "title": "History",
     "description": "Explore the journey and evolution of our organization over time.",
+    "imageUrl": "/assets/img/about-1/review.png"
+  },
+  {
+    "description": "Get answers to common questions about our services and policies",
     "imageUrl": "/assets/img/about-1/review.png"
   }
 ]

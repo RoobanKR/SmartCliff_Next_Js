@@ -1,38 +1,32 @@
-// update 1
-
 "use client";
-
-import Reviews from "./Reviews";
-import ModalVideoComponent from "../common/ModalVideo";
 import { useDispatch, useSelector } from "react-redux";
-import SoftwareTools from "./SoftwareTools";
 import FAQComponent from "./Faq";
 import { useEffect, useRef, useState } from "react";
 import { Star, StarBorder, StarHalf } from "@mui/icons-material";
 import Curriculum from "./Curriculum";
+import { fetchAllFAQs } from "@/redux/slices/faq/faq";
 
 export default function CourseDetailsSix() {
   const selectedCourse = useSelector((state) => state.courses.courses);
-  const [pageItem, setPageItem] = useState(null);
 
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(1);
-  const [filteredFAQ, setFilteredFAQ] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState("beginner"); // Default Level
-
   const [isMobileView, setIsMobileView] = useState(false);
   const [courseSlug, setCourseSlug] = useState(null);
-
   const matchedCourse = selectedCourse.find(
     (course) => course.slug === courseSlug
   );
+  const faq = useSelector((state) => state.faq.faq);
+  const matchedCourseId = matchedCourse ? matchedCourse._id : null;
+  const matchedFaqData = faq.filter((i) => i.course?._id === matchedCourseId);
 
   // At the beginning of your component, where you declare your state variables
   const [menuItems, setMenuItems] = useState([
     { id: 1, text: "beginner", isActive: true },
     { id: 2, text: "intermediate", isActive: false },
     { id: 3, text: "advanced", isActive: false },
-    { id: 5, href: "#FAQ", text: "FAQ", isActive: false },
+    { id: 4, href: "#FAQ", text: "FAQ", isActive: false },
   ]);
 
   // Then add this useEffect to update the menuItems when matchedCourse changes
@@ -69,6 +63,10 @@ export default function CourseDetailsSix() {
       }
     }
   }, [matchedCourse]);
+
+  useEffect(() => {
+    dispatch(fetchAllFAQs());
+  }, [dispatch]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -163,9 +161,8 @@ export default function CourseDetailsSix() {
                         <button
                           key={i}
                           onClick={() => handleTabClick(elm.id, elm.text)}
-                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${
-                            i !== 0 ? "ml-30" : ""
-                          }`}
+                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${i !== 0 ? "ml-30" : ""
+                            }`}
                           style={{
                             cursor: "pointer",
                             color: activeTab === elm.id ? "#5b2c6f" : "black",
@@ -201,13 +198,7 @@ export default function CourseDetailsSix() {
       case 3:
         return <Curriculum matchedCourse={matchedCourse} level={level} />;
       case 4:
-        return (
-          pageItem && <SoftwareTools softwareTools={pageItem.tool_software} />
-        );
-      case 5:
-        return <FAQComponent faq={filteredFAQ} />;
-      case 6:
-        return <Reviews />;
+        return <FAQComponent faq={matchedFaqData} />;
       default:
         return null;
     }
@@ -447,7 +438,6 @@ export default function CourseDetailsSix() {
 
         {/* Course Tabs & Video */}
         {renderTabs()}
-        <ModalVideoComponent videoId={"LlCwHnp3kL4"} />
       </section>
     </>
   );

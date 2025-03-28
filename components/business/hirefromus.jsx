@@ -18,15 +18,6 @@ const Hirefromus = ({ path, id }) => {
   return (
     <>
       <HirefromusAddForm />
-      {/* <TrainFromUs /> */}
-      {/* <div style={{ overflowX: "auto" }}>
-                <Table />
-              </div> */}
-      {/* <Advantage /> */}
-      {/* <KeyElements /> */}
-      {/* <div className="content-wrapper  js-content-wrapper overflow-hidden">
-                <PlacementTestimonial />
-              </div> */}
     </>
   );
 };

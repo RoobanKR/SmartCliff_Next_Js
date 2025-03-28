@@ -1,65 +1,87 @@
-"use client"
-import React, { useEffect } from "react";
-import { learningPathTwo } from "../../../data/learningPaths";
-import Image from "next/image";
+"use client";
+import { getAllCurrentAvailabilities } from "@/redux/slices/bussiness/currentAvailbility/currentAvailbility";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllLearningJourneys } from "@/redux/slices/bussiness/learningJourney/learningJourney";
-import { CircularProgress } from "@mui/material";
-export default function Whychooseuus() {
+import HiringCategories from "./category";
+import HowItWorks from "./howitworks";
+import HeroSection from "./home";
+import FormSection from "./formSection";
+
+const SkillsetTable2 = () => {
+  const sectionRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Function to scroll to the section
+  const scrollToSection = () => {
+    if (sectionRef.current) {
+      const offset = 100; // Adjust this value to stop slightly above
+      const elementPosition =
+        sectionRef.current.getBoundingClientRect().top + window.scrollY;
+
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    } else {
+      console.error("❌ sectionRef.current is NULL");
+    }
+  };
+
   const dispatch = useDispatch();
-  const { learningJourneys, loading, error } = useSelector((state) => state.learningJourney);
+  const { availabilities, loading, error } = useSelector(
+    (state) => state.currentAvailability
+  );
 
   useEffect(() => {
-    dispatch(fetchAllLearningJourneys());
+    dispatch(getAllCurrentAvailabilities());
   }, [dispatch]);
 
-  const hireFromUsData = learningJourneys.filter(journey => journey.type === "trainfromus");
-
-  if (loading) {
-    return <CircularProgress />;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
-    <section className="layout-pt-sm layout-pb-sm">
-      <div className="container">
-        <div className="row justify-center text-center">
-          <div className="col-auto">
-            <div className="sectionTitle ">
-              <h2 className="sectionTitle__title ">
-                Start your Learning Journey Today!
-              </h2>
- 
-              <p className="sectionTitle__text ">
-                Lorem ipsum dolor sit amet, consectetur.
-              </p>
-            </div>
-          </div>
-        </div>
- 
-        <div className="row y-gap-30 justify-between pt-60 lg:pt-50">
-          {hireFromUsData.map((elm, i) => (
-            <div key={i} className="col-lg-3 col-md-6">
-              <div className="coursesCard -type-3 text-center">
-                <div
-                  className={`coursesCard__icon ${
-                    elm.bgColor ? elm.bgColor : " bg-green-3"
-                  }`}
-                >
-                  <Image width={50} height={50} src={elm.image} alt="icon" />
-                </div>
- 
-                <div className="coursesCard__content mt-30">
-                  <h5 className="coursesCard__title text-18 lh-1 fw-500">
-                    {elm.title}
-                  </h5>
-                  <p className="coursesCard__text text-14 mt-10">{elm.description} </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+    <>
+      <div className="mt-60">
+        <HeroSection scrollToSection={scrollToSection} />
       </div>
-    </section>
+      <HiringCategories />
+      <HowItWorks />
+      <div ref={sectionRef}>
+        <FormSection />
+      </div>
+    </>
   );
-}
- 
+};
+
+const styles = {
+  container: {
+    padding: "20px",
+    fontFamily: "Arial, sans-serif",
+    overflowX: "auto", // Allow horizontal scrolling on small screens
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+  highlight: {
+    color: "#9c27b0",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    marginTop: "10px",
+    textAlign: "center",
+  },
+  th: {
+    padding: "12px",
+    borderBottom: "2px solid #ddd",
+    background: "#f4f4f4",
+  },
+  td: {
+    padding: "12px",
+    textAlign: "center",
+  },
+};
+
+export default SkillsetTable2;

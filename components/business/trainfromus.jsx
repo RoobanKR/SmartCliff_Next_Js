@@ -18,12 +18,6 @@ const Trainfromus = ({ path, id }) => {
   return (
     <>
       <TrainFromUs />
-      {/* <div style={{ overflowX: "auto" }}>
-                <Table />
-              </div> */}
-      {/* <Advantage /> */}
-      {/* <KeyElements /> */}
-      {/* <EngagementGovernance /> */}
     </>
   );
 };

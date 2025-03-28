@@ -1,34 +1,26 @@
 "use client";
-
-import React from "react";
-import HeaderSeven from "@/components/layout/headers/HeaderSeven";
-import FooterTwo from "@/components/layout/footers/Footer";
+import Hirefromus from "@/components/business/hirefromus";
 import Banner from "@/components/common/Banner";
+import Preloader from "@/components/common/Preloader";
+import FooterTwo from "@/components/layout/footers/Footer";
+import HeaderSeven from "@/components/layout/headers/HeaderSeven";
+import React, { useRef } from "react";
 import jsonData from "../../../public/assets/json/Banner.json";
-import InstituteAddForm from "@/components/business/InstituteAddForm";
-import KeyElements from "@/components/business/KeyElements";
-import InstituteTestimonial from "@/components/business/InstituteTestimonial";
 import HeaderTwo from "@/components/layout/headers/HeaderTwo";
+import FormSection from "@/components/business/hirefromus/formSection";
+import SkillsetTable3 from "@/components/business/institute/whychooseus";
+import Client from "@/components/business/institute/client";
 
-export default function page() {
+export default function page({ params }) {
   return (
-    <>
+    <div className="main-content">
+      <Preloader />
       <HeaderTwo />
-      <div className="content-wrapper  js-content-wrapper mt-90">
-        <Banner
-          title={jsonData[6].title}
-          description={jsonData[6].description}
-          imageUrl={jsonData[6].imageUrl}
-        />
-      </div>
-      <div className="main-content overflow-hidden   ">
-        <InstituteAddForm />
-        {/* <KeyElements /> */}
-        {/* <div className="content-wrapper  js-content-wrapper overflow-hidden">
-          <InstituteTestimonial />
-        </div> */}
+      <div className="content-wrapper js-content-wrapper overflow-hidden">
+        <SkillsetTable3 />
+        <Client/>
         <FooterTwo />
       </div>
-    </>
+    </div>
   );
 }

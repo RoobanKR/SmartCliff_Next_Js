@@ -390,7 +390,7 @@ const ServicesDropdown = () => {
                             />
                           </div>
                           <span style={{ fontSize: "14px" }}>
-                            {service.name}
+                          {service.name.charAt(0).toUpperCase() + service.name.slice(1).toLowerCase()}
                           </span>
                         </div>
                         <i

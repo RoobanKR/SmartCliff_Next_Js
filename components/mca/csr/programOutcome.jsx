@@ -18,29 +18,30 @@ const bgColors = [
   "#20C997"
 ];
 
-const TestimonialCard = ({ index, title, bgColor }) => (
+const TestimonialCard = ({ index, title, bgColor, isMobile }) => (
   <div
     style={{
       display: "flex",
       alignItems: "center",
-      padding: "15px",
+      padding: isMobile ? "10px" : "15px",
       borderBottom: "1px solid #ddd",
-      gap: "15px",
+      gap: isMobile ? "10px" : "15px",
     }}
   >
     {/* Index Number with Background */}
     <div
       style={{
-        width: "40px",
-        height: "40px",
+        width: isMobile ? "30px" : "40px",
+        height: isMobile ? "30px" : "40px",
         backgroundColor: bgColor,
         borderRadius: "8px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: "24px",
+        fontSize: isMobile ? "16px" : "24px",
         fontWeight: "bold",
         color: "#fff",
+        flexShrink: 0
       }}
     >
       {String(index + 1).padStart(2, "0")}
@@ -48,45 +49,63 @@ const TestimonialCard = ({ index, title, bgColor }) => (
 
     <div style={{ flex: 1 }}>
       <p
-        style={{ color: "#333", fontSize: "16px", fontWeight: "bold" }}
-      >{title}</p>
+        style={{
+          color: "#333",
+          fontSize: isMobile ? "14px" : "16px",
+          fontWeight: "bold",
+          margin: 0
+        }}
+      >
+        {title}
+      </p>
     </div>
   </div>
 );
 
-const RightSideImage = () => (
+const RightSideImage = ({ isMobile }) => (
   <div
     style={{
       flex: 1,
-      minHeight: "60px",
+      minHeight: isMobile ? "200px" : "auto",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       borderRadius: "10px",
       overflow: "hidden",
+      marginTop: isMobile ? "20px" : 0,
+      width: isMobile ? "100%" : "auto"
     }}
   >
     <img
-      src="/assets/img/about-1/bulb.png" // Replace with actual image URL
-      alt="Right side"
-      style={{ width: "60%", borderRadius: "10px" }}
+      src="/assets/img/about-1/bulb.png"
+      alt="Program outcomes"
+      style={{
+        width: isMobile ? "80%" : "60%",
+        borderRadius: "10px",
+        maxWidth: "400px"
+      }}
     />
   </div>
 );
 
 const TestimonialsSection = () => {
   const dispatch = useDispatch();
+  const params = useParams();
+  const programId = params.id;
   const outcomes = useSelector((state) => state.outcomes.outcomes);
-  
-  // Filter outcomes where college is null
-  const filteredOutcomes = outcomes.filter((out) => out.college === null);
-  
+  const filteredOutcomes =
+    outcomes?.filter(
+      (partner) => partner.degree_program._id === programId
+    ) || [];
+
+
+
   useEffect(() => {
     dispatch(getAllOutcomes());
   }, [dispatch]);
 
   const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 640;
+  const isMobile = windowSize.width < 768; // Changed to 768px breakpoint for tablets
 
   return (
     <div
@@ -95,11 +114,17 @@ const TestimonialsSection = () => {
         flexDirection: "column",
         alignItems: "center",
         backgroundColor: "#fff",
-        padding: "20px",
+        padding: isMobile ? "15px" : "20px",
       }}
     >
       {/* About College Section */}
-      <div className="bg-gray-100 py-4 px-6 border-b mb-30">
+      <div style={{
+        backgroundColor: "#f8f9fa",
+        padding: isMobile ? "10px" : "20px",
+        width: "100%",
+        marginBottom: "30px",
+        borderBottom: "1px solid #e0e0e0"
+      }}>
         <div className="program-subtitle">
           <span className="subtitle-line"></span>
           <span className="subtitle-text">Program Outcome</span>
@@ -111,30 +136,41 @@ const TestimonialsSection = () => {
       <div
         style={{
           display: "flex",
-          flexWrap: "wrap",
-          gap: "20px",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? "15px" : "20px",
           width: "100%",
           maxWidth: "1200px",
         }}
       >
-        <div style={{ flex: 1, minWidth: "350px" }}>
-          <h6 style={{ color: "#505050", marginBottom: "20px" }}>
-           <i> Our program equips students with industry-relevant skills and
-            guaranteed placement opportunities to ensure a successful career</i>
+        <div style={{
+          flex: 1,
+          minWidth: isMobile ? "100%" : "350px",
+          padding: isMobile ? "0" : "0 10px"
+        }}>
+          <h6 style={{
+            color: "#505050",
+            marginBottom: "20px",
+            fontSize: isMobile ? "14px" : "16px",
+            fontStyle: "italic",
+            textAlign: isMobile ? "center" : "left"
+          }}>
+            Our program equips students with industry-relevant skills and
+            guaranteed placement opportunities to ensure a successful career
           </h6>
-          
-          {/* Map through the filtered outcomes instead of static testimonials */}
+
+          {/* Map through the filtered outcomes */}
           {filteredOutcomes.map((outcome, index) => (
-            <TestimonialCard 
-              key={outcome._id} 
-              index={index} 
-              title={outcome.title} 
-              bgColor={bgColors[index % bgColors.length]} 
+            <TestimonialCard
+              key={outcome._id}
+              index={index}
+              title={outcome.title}
+              bgColor={bgColors[index % bgColors.length]}
+              isMobile={isMobile}
             />
           ))}
         </div>
 
-        <RightSideImage />
+        <RightSideImage isMobile={isMobile} />
       </div>
       <style jsx>{`
         .program-subtitle {
@@ -146,33 +182,30 @@ const TestimonialsSection = () => {
 
         .subtitle-line {
           height: 2px;
-          width: 100px;
+          width: ${isMobile ? "40px" : "100px"};
           background-color: #5b2c6f;
           opacity: 0.5;
         }
 
         .subtitle-text {
-          font-size: ${isMobile ? "1.8rem" : "2.5rem"};
+          font-size: ${isMobile ? "1.5rem" : "2.5rem"};
           margin: 0 15px;
           color: #5b2c6f;
           font-weight: 500;
           text-transform: uppercase;
           letter-spacing: 1px;
+          text-align: center;
         }
 
-        @media (max-width: 640px) {
-          .subtitle-line {
-            width: 60px;
-          }
-
+        @media (max-width: 480px) {
           .subtitle-text {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
           }
         }
 
-        @media (min-width: 641px) and (max-width: 1023px) {
+        @media (min-width: 481px) and (max-width: 767px) {
           .subtitle-text {
-            font-size: 2rem;
+            font-size: 1.8rem;
           }
         }
       `}</style>

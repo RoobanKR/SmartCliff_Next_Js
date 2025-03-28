@@ -46,18 +46,11 @@ export default function SponsorsSection() {
           position: "relative",
         }}
       >
-        <h2
-          style={{
-            fontSize: "3rem",
-            // margin: " 0 15px",
-            color: "rgb(0, 0, 0)",
-            fontWeight: "500",
-            textTransform: "uppercase",
-            letterSpacing: "1px",
-          }}
-        >
-          Our Valued Sponsors
-        </h2>
+        <div className="program-subtitle">
+          <span className="subtitle-line"></span>
+          <span className="subtitle-text">  Our Valued Sponsors</span>
+          <span className="subtitle-line"></span>
+        </div>
       </div>
       {/* Sponsor Cards - Improved Grid Layout */}
       <div
@@ -193,16 +186,6 @@ export default function SponsorsSection() {
                   marginBottom: "20px",
                 }}
               >
-                {/* <span
-                  style={{
-                    display: "inline-block",
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    background: generateGradient(index),
-                    marginRight: "10px",
-                  }}
-                ></span> */}
                 <span
                   style={{
                     fontSize: "16px",
@@ -217,28 +200,7 @@ export default function SponsorsSection() {
 
             {/* Contributions Section */}
             <div>
-              {/* <h5
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  color: "#1e293b",
-                  marginBottom: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: "18px",
-                    height: "3px",
-                    background: generateGradient(index),
-                    marginRight: "8px",
-                    borderRadius: "2px",
-                  }}
-                ></span>
-                Key Contributions
-              </h5> */}
+
               <div
                 style={{
                   display: "flex",
@@ -272,17 +234,7 @@ export default function SponsorsSection() {
                         "rgba(243, 244, 246, 0.7)";
                     }}
                   >
-                    {/* <span
-                      style={{
-                        display: "inline-block",
-                        width: "6px",
-                        height: "6px",
-                        borderRadius: "50%",
-                        background: generateGradient(index),
-                        marginRight: "10px",
-                        marginTop: "6px",
-                      }}
-                    ></span> */}
+
                     {item}
                   </div>
                 ))}
@@ -291,6 +243,54 @@ export default function SponsorsSection() {
           </div>
         ))}
       </div>
+      <style jsx>{`
+              .program-subtitle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+          width: 100%;
+        }
+
+        .subtitle-line {
+          height: 2px;
+          width: 100px;
+          background-color: #5b2c6f;
+          opacity: 0.5;
+        }
+
+        .subtitle-text {
+          font-size: 2.5rem;
+          margin: 0 15px;
+          color: #5b2c6f;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        @media (max-width: 640px) {
+          .subtitle-line {
+            width: 60px;
+          }
+
+          .subtitle-text {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            text-align: center;
+          }
+        }
+
+        @media (min-width: 641px) and (max-width: 1023px) {
+          .subtitle-text {
+            font-size: 2rem;
+          }
+        }
+        @media (max-width: 768px) {
+          .coursesCard {
+            max-width: 100%; // Full width on smaller screens
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -31,13 +31,11 @@ const initialState = {
   error: null,
   formData: {
     name: "",
-    designation: "",
     company_name: "",
     mobile: "",
     email: "",
     enquiry: "",
-    count: "",
-    course: "",
+    skillsetRequirements:[]
   },
 };
 

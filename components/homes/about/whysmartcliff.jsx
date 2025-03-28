@@ -43,7 +43,7 @@ export default function WhySmartcliff() {
                     style={{
                       width: "60px",
                       height: "60px",
-                      borderRadius: "50%",
+                      borderRadius: "5%",
                       objectFit: "cover",
                     }}
                   />
@@ -54,11 +54,11 @@ export default function WhySmartcliff() {
                     {elm.title}
                   </h5>
                   <p
-  className="coursesCard__text text-14 mt-10"
-  style={{ textAlign: "justify" }}
->
-  {elm.description}
-</p>
+                    className="coursesCard__text text-14 mt-10"
+                    style={{ textAlign: "justify" }}
+                  >
+                    {elm.description}
+                  </p>
                 </div>
               </div>
             </div>

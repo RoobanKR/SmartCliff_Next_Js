@@ -1,5 +1,5 @@
 import React from "react";
-
+ 
 const DegreeCertificationUI = () => {
   return (
     <div>
@@ -25,38 +25,14 @@ const DegreeCertificationUI = () => {
             Share it on social media and enhance your professional portfolio
           </p>
         </div>
-
+ 
         {/* Right side certificate illustration */}
         <div style={styles.certificateWrapper}>
-          <div style={styles.certificateBox}>
-            <div style={styles.certificateContent}>
-              <div style={styles.universityLogoContainer}>
-                <div style={styles.universityLogo}></div>
-                <div>
-                  <div style={styles.textPlaceholder}></div>
-                  <div style={styles.textPlaceholderSmall}></div>
-                </div>
-              </div>
-              <div style={styles.certificateTitle}></div>
-              <div style={styles.textLine}></div>
-              <div style={styles.textLine}></div>
-              <div style={styles.textLine}></div>
-              <div>
-                <div style={styles.progressTextContainer}>
-                  <span style={styles.progressLabel}>PROGRAM PROGRESS</span>
-                  <span style={styles.progressPercentage}>75%</span>
-                </div>
-                <div style={styles.progressBarBackground}>
-                  <div style={styles.progressBar}></div>
-                </div>
-              </div>
-            </div>
-            <div style={styles.badgeWrapper}>
-              <div style={styles.badge}>
-                <span style={styles.badgeText}>S</span>
-              </div>
-            </div>
-          </div>
+          <img
+            src="/assets/img/home-1/newhero/certificate.avif"
+            alt="Certificate"
+            style={styles.certificateImage}
+          />
         </div>
       </div>
       <style jsx>
@@ -67,14 +43,14 @@ const DegreeCertificationUI = () => {
             justify-content: center;
             margin-top: 10px;
           }
-
+ 
           .subtitle-line {
             height: 2px;
             width: 100px;
             background-color: #5b2c6f;
             opacity: 0.5;
           }
-
+ 
           .subtitle-text {
             font-size: 2.5rem;
             margin: 0 15px;
@@ -85,7 +61,7 @@ const DegreeCertificationUI = () => {
           }
              @media (max-width: 640px) {
          
-
+ 
           .subtitle-text {
             font-size: 1.5rem;
              margin: 0 10px;
@@ -96,7 +72,7 @@ const DegreeCertificationUI = () => {
     </div>
   );
 };
-
+ 
 const styles = {
   mainHeading: {
     textAlign: "center",
@@ -104,6 +80,13 @@ const styles = {
     fontWeight: "bold",
     color: "#1A1A2E",
     padding: "0 20px",
+  },
+  certificateImage: {
+    width: "120px", // Further reduced width for compact size
+    height: "auto", // Maintains aspect ratio
+    objectFit: "contain", // Ensures full certificate visibility
+    borderRadius: "5px",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
   },
   container: {
     display: "flex",
@@ -270,5 +253,5 @@ const styles = {
     fontWeight: "bold",
   },
 };
-
+ 
 export default DegreeCertificationUI;

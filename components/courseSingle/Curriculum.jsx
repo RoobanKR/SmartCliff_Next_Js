@@ -25,18 +25,25 @@ const Curriculum = ({ matchedCourse, level }) => {
   const toggleCard = (index) => {
     setOpenCard(openCard === index ? null : index);
   };
-
   return (
     <div
       style={{
         display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
         gap: "20px",
         padding: "20px",
         margin: "auto",
+        maxWidth: "1200px",
       }}
     >
       {/* Left Side - Lesson Content */}
-      <div style={{ flex: "2" }}>
+      <div
+        style={{
+          flex: "2",
+          width: "100%",
+        }}
+      >
         {filteredLevels.length > 0 ? (
           filteredLevels.map((levelData, levelIndex) => (
             <div key={levelIndex}>
@@ -46,8 +53,7 @@ const Curriculum = ({ matchedCourse, level }) => {
                   style={{
                     marginBottom: "12px",
                     borderRadius: "8px",
-                    overflow: "auto",
-                    // background: "#ffffff",
+                    overflow: "hidden",
                     boxShadow: "0 3px 10px rgba(0,0,0,0.15)",
                     transition: "0.3s ease-in-out",
                   }}
@@ -67,6 +73,7 @@ const Curriculum = ({ matchedCourse, level }) => {
                       cursor: "pointer",
                       color: "white",
                       transition: "background-color 0.3s ease",
+                      flexWrap: "wrap",
                     }}
                   >
                     {/* Lesson Title & Icon */}
@@ -76,6 +83,7 @@ const Curriculum = ({ matchedCourse, level }) => {
                         alignItems: "center",
                         gap: "10px",
                         flex: 1,
+                        minWidth: "200px",
                       }}
                     >
                       <Code style={{ fontSize: "20px" }} />
@@ -91,7 +99,6 @@ const Curriculum = ({ matchedCourse, level }) => {
                         {lesson.title}
                       </h3>
                     </div>
-
                     {/* Right Side - Duration & Expand Icon */}
                     <div
                       style={{
@@ -131,7 +138,6 @@ const Curriculum = ({ matchedCourse, level }) => {
                       </div>
                     </div>
                   </div>
-
                   {/* Lesson Content (Dropdown) */}
                   <div
                     style={{
@@ -140,8 +146,6 @@ const Curriculum = ({ matchedCourse, level }) => {
                           ? "250px"
                           : "0",
                       overflow: "auto",
-                      scrollbarWidth: "thin", // For Firefox
-                      scrollbarColor: "#ccc transparent", // For Firefox
                       transition: "max-height 0.4s ease-in-out",
                       backgroundColor: "#f9f9f9",
                       padding:
@@ -172,7 +176,7 @@ const Curriculum = ({ matchedCourse, level }) => {
                           Programming Language Fundamentals:
                         </h4>
                         {Array.isArray(lesson.content) &&
-                        lesson.content.length > 0 ? (
+                          lesson.content.length > 0 ? (
                           <ul
                             style={{
                               paddingLeft: "20px",
@@ -186,9 +190,7 @@ const Curriculum = ({ matchedCourse, level }) => {
                                 style={{
                                   marginBottom: "6px",
                                   fontSize: "14px",
-                                  // lineHeight: "1.6",
                                   display: "flex",
-                                  // alignItems: "center",
                                   gap: "8px",
                                 }}
                               >
@@ -230,27 +232,18 @@ const Curriculum = ({ matchedCourse, level }) => {
           </p>
         )}
       </div>
-
       {/* Right Side - Instructor Panel */}
       <div
         style={{
           flex: "1",
-          height: "auto",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          alignSelf: "flex-start",
+          width: "100%",
           backgroundColor: "white",
           borderRadius: "0.5rem",
           boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
           padding: "1.25rem",
         }}
       >
-        <div
-          style={{
-            marginBottom: "1.5rem",
-          }}
-        >
+        <div style={{ marginBottom: "1.5rem" }}>
           <h4
             style={{
               display: "flex",
@@ -271,9 +264,8 @@ const Curriculum = ({ matchedCourse, level }) => {
             />
             Tools & Software
           </h4>
-
           {filteredLevels.length > 0 &&
-          filteredLevels[0]?.tool_software?.length > 0 ? (
+            filteredLevels[0]?.tool_software?.length > 0 ? (
             <div
               style={{
                 display: "grid",
@@ -292,52 +284,24 @@ const Curriculum = ({ matchedCourse, level }) => {
                       padding: "0.75rem",
                       backgroundColor: "#f9fafb",
                       borderRadius: "0.5rem",
-                      transition: "all 0.3s ease",
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.boxShadow =
-                        "0 2px 8px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.backgroundColor = "#f8f5ff";
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.boxShadow = "none";
-                      e.currentTarget.style.backgroundColor = "#f9fafb";
                     }}
                   >
-                    {tool.image ? (
-                      <img
-                        style={{
-                          width: "2.5rem",
-                          height: "2.5rem",
-                          objectFit: "contain",
-                          marginBottom: "0.5rem",
-                        }}
-                        src={tool.image}
-                        alt={tool.software_name}
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          width: "2.5rem",
-                          height: "2.5rem",
-                          backgroundColor: "#f0ebfc",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginBottom: "0.5rem",
-                        }}
-                      >
-                        <Code style={{ color: "#5b2c6f" }} />
-                      </div>
-                    )}
+                    <img
+                      style={{
+                        width: "2.5rem",
+                        height: "2.5rem",
+                        objectFit: "contain",
+                        marginBottom: "0.5rem",
+                      }}
+                      src={tool.image}
+                      alt={tool.software_name}
+                    />
                     <p
                       style={{
                         fontSize: "0.75rem",
                         textAlign: "center",
                         fontWeight: "500",
                         color: "#4b5563",
-                        margin: "0",
                       }}
                     >
                       {tool.software_name}
@@ -347,28 +311,13 @@ const Curriculum = ({ matchedCourse, level }) => {
               )}
             </div>
           ) : (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "1rem",
-                backgroundColor: "#f9fafb",
-                borderRadius: "0.5rem",
-              }}
-            >
-              <p
-                style={{
-                  color: "#6b7280",
-                  fontSize: "0.875rem",
-                }}
-              >
-                No tools available for this level.
-              </p>
-            </div>
+            <p>No tools available.</p>
           )}
         </div>
       </div>
     </div>
   );
+
 };
 
 export default Curriculum;

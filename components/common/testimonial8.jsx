@@ -25,22 +25,21 @@ export default function TestimonialsEight() {
   const [searchTerm, setSearchTerm] = useState("");
   const reviewsPerPage = 6;
   const reviews = useSelector((state) => state.reviews.reviews);
-
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return; // Prevents error during SSR
-   
+
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-   
+
     // Set initial value only on the client side
     handleResize();
-   
+
     // Add event listener for window resize
     window.addEventListener("resize", handleResize);
-   
+
     // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -61,38 +60,33 @@ export default function TestimonialsEight() {
   const [expandedStates, setExpandedStates] = useState({});
   const [overflowingStates, setOverflowingStates] = useState({});
   const textRefs = useRef({});
+  const reviewsWithoutVideos = reviews.filter(review => !review.video);
 
-  const filteredReviews = reviews.filter(
+
+  const reviewsWithVideos = reviews.filter(
     (review) =>
-      review.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      review.review?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      review.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      review.service?.title?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const indexOfLastReview = currentPage * reviewsPerPage;
-  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = filteredReviews.slice(
-    indexOfFirstReview,
-    indexOfLastReview
+      review.video &&
+      (review.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.review?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.service?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   useEffect(() => {
     dispatch(getAllReview());
   }, [dispatch]);
-
-  // Check for overflow when reviews change
+  []
   useEffect(() => {
-    // Small delay to ensure DOM is updated
     const timer = setTimeout(() => {
       const newOverflowingStates = {};
 
-      currentReviews.forEach((review) => {
+      reviewsWithVideos.slice(0, 3).forEach((review) => {
         const id = review._id || review.id;
         const ref = textRefs.current[id];
 
         if (ref) {
-          const lineHeight = 21; // Approximate line height in pixels
-          const maxHeight = lineHeight * 5; // 5 lines
+          const lineHeight = 21;
+          const maxHeight = lineHeight * 5;
           newOverflowingStates[id] = ref.scrollHeight > maxHeight;
         }
       });
@@ -101,7 +95,8 @@ export default function TestimonialsEight() {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [currentReviews]);
+  }, [reviewsWithVideos]);
+
 
   const toggleExpanded = (id) => {
     setExpandedStates((prev) => ({
@@ -149,8 +144,6 @@ export default function TestimonialsEight() {
     setIsOpen(true);
   };
 
-  const reviewsWithVideos = currentReviews.filter((review) => review.video);
-
   // Synchronized navigation handlers
   const handlePrevClick = () => {
     if (testimonialSwiperRef.current && testimonialSwiperRef.current.swiper) {
@@ -192,7 +185,6 @@ export default function TestimonialsEight() {
             />
           </div>
         )}
-
         <div
           style={{
             padding: "0 20px",
@@ -223,7 +215,6 @@ export default function TestimonialsEight() {
               Users Say
             </span>
           </h2>
-
           <div
             style={{
               marginLeft: isMobile ? "0" : "30px",
@@ -282,15 +273,10 @@ export default function TestimonialsEight() {
         <div className="container">
           <div
             className="row justify-between items-center"
-            style={{
-              // flexDirection: window.innerWidth <= 992 ? "column" : "row",
-              // gap: window.innerWidth <= 992 ? "40px" : "0",
-            }}
           >
             <div
               className="col-xl-7 col-lg-6 col-md-9"
               style={{
-                // width: window.innerWidth <= 992 ? "100%" : "",
                 maxWidth: "100%",
               }}
             >
@@ -299,7 +285,6 @@ export default function TestimonialsEight() {
                 data-aos="fade-left"
                 data-aos-duration={1000}
                 style={{
-                  // padding: window.innerWidth <= 480 ? "0 10px" : "0 20px",
                 }}
               >
                 {showSlider && (
@@ -316,7 +301,8 @@ export default function TestimonialsEight() {
                     loop={false}
                     allowTouchMove={true}
                   >
-                    {currentReviews.slice(0, 3).map((elm, i) => {
+                    {/* {combinedFilteredReviews.map((elm, i) => { */}
+                    {reviewsWithVideos.slice(0, 3).map((elm, i) => {
                       const reviewId = elm._id || elm.id || i;
                       return (
                         <SwiperSlide key={i}>
@@ -386,7 +372,6 @@ export default function TestimonialsEight() {
                                     {elm?.role}
                                   </span>
                                 </p>
-
                                 <div>
                                   <p
                                     ref={(el) =>
@@ -458,7 +443,6 @@ export default function TestimonialsEight() {
                                     </span>
                                   )}
                                 </div>
-
                                 <div
                                   className="row x-gap-20 y-gap-20 items-center pt-15"
                                   style={{
@@ -491,7 +475,6 @@ export default function TestimonialsEight() {
                                       }}
                                     />
                                   </div>
-
                                   <div
                                     className="col-auto"
                                     style={{
@@ -539,7 +522,6 @@ export default function TestimonialsEight() {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: "15px",
-                    // paddingTop: window.innerWidth <= 480 ? "20px" : "30px",
                   }}
                 >
                   <div className="col-auto">
@@ -547,7 +529,6 @@ export default function TestimonialsEight() {
                       className="d-flex items-center text-24 arrow-left-hover"
                       onClick={handlePrevClick}
                       style={{
-                        // fontSize: window.innerWidth <= 480 ? "20px" : "24px",
                         display: "flex",
                         alignItems: "center",
                       }}
@@ -563,7 +544,6 @@ export default function TestimonialsEight() {
                       className="d-flex items-center text-24 arrow-right-hover"
                       onClick={handleNextClick}
                       style={{
-                        // fontSize: window.innerWidth <= 480 ? "20px" : "24px",
                         display: "flex",
                         alignItems: "center",
                       }}
@@ -577,10 +557,6 @@ export default function TestimonialsEight() {
 
             <div
               className="col-lg-5"
-              style={{
-                // width: window.innerWidth <= 992 ? "100%" : "",
-                // marginTop: window.innerWidth >= 992 ? "-25px" : "0px",
-              }}
             >
               <div
                 className="overflow-hidden js-section-slider video-testimonials-wrapper"
@@ -588,6 +564,7 @@ export default function TestimonialsEight() {
                 data-aos-duration={1000}
                 style={{
                   maxWidth: "100%",
+                  marginBottom: "20px"
                 }}
               >
                 {showVideoSlider && reviewsWithVideos.length > 0 ? (
@@ -604,7 +581,8 @@ export default function TestimonialsEight() {
                     loop={false}
                     allowTouchMove={true}
                   >
-                    {reviewsWithVideos.map((review, i) => (
+                    {/* {filteredReviewsWithVideos.map((review, i) => ( */}
+                    {reviewsWithVideos.slice(0, 3).map((review, i) => (
                       <SwiperSlide key={i}>
                         <div
                           className="composition -type-7 relative"
@@ -615,8 +593,8 @@ export default function TestimonialsEight() {
                               window.innerWidth <= 480
                                 ? "240px"
                                 : window.innerWidth <= 768
-                                ? "300px"
-                                : "360px",
+                                  ? "300px"
+                                  : "360px",
                             maxWidth: "100%",
                           }}
                         >
@@ -637,7 +615,6 @@ export default function TestimonialsEight() {
                               }}
                             />
                           </div>
-
                           <div
                             className="-el-2"
                             onClick={() => openVideoModal(review.video)}
@@ -687,7 +664,6 @@ export default function TestimonialsEight() {
                               ></div>
                             </div>
                           </div>
-
                           {/* Overlay to darken the image */}
                           <div
                             style={{
@@ -709,7 +685,6 @@ export default function TestimonialsEight() {
                   <div
                     className="flex items-center justify-center p-10 border rounded-8"
                     style={{
-                      // minHeight: window.innerWidth <= 480 ? "200px" : "300px",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -722,7 +697,6 @@ export default function TestimonialsEight() {
                       style={{
                         textAlign: "center",
                         color: "#666",
-                        // fontSize: window.innerWidth <= 480 ? "14px" : "16px",
                       }}
                     >
                       No video testimonials available

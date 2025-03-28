@@ -3,7 +3,7 @@ export const contactDetails = [
     id: 1,
     icon: "/assets/img/contact-1/location.png",
     address:
-      "2000, Krishna Colony (opp. to Central Studio) Ramanathapuram Trichy Road Coimbatore - 641 005",
+      "SMARTCLIFF LEARNING SOLUTIONS LLP - 2nd Floor, 103-107 Thiru Venkata swamy St, RS Puram, CBE-641002",
   },
   {
     id: 2,

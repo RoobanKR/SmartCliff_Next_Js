@@ -1,4 +1,5 @@
 import { getAllTargetStudents } from "@/redux/slices/mca/targetStudent/targetStudent";
+import { useParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,6 +8,14 @@ const PageWithFixedBackground = () => {
   const { targetStudents, loading, error } = useSelector(
     (state) => state.targetStudent
   );
+
+  const params = useParams();
+  const programId = params.id;
+
+  const filteredOutcomes =
+    targetStudents?.filter(
+      (partner) => partner.degree_program?._id === programId
+    ) || [];
 
   const cardRefs = useRef([]);
 
@@ -36,7 +45,7 @@ const PageWithFixedBackground = () => {
         if (card) observer.unobserve(card);
       });
     };
-  }, [targetStudents]);
+  }, [filteredOutcomes]);
 
   return (
     <div style={{ position: "relative", overflowX: "hidden" }}>
@@ -55,20 +64,23 @@ const PageWithFixedBackground = () => {
 
       <div style={{ padding: "10vh 0", display: "flex", flexDirection: "column", gap: "50px" }}>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
-          <h1 style={{ fontSize: "48px", fontWeight: "bold", color: "#333", padding: "20px 40px", borderRadius: "8px" }}>
-            MCA – Target Students
-          </h1>
+          <div className="program-subtitle">
+            <span className="subtitle-line"></span>
+            <span className="subtitle-text"> MCA – Target Students</span>
+            <span className="subtitle-line"></span>
+          </div>
         </div>
 
         {loading && <p style={{ textAlign: "center" }}>Loading...</p>}
         {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
 
-        {targetStudents.map((card, index) => {
+        {filteredOutcomes.map((card, index) => {
           const isEven = index % 2 === 0;
           return (
             <div
               key={card._id}
               ref={(el) => (cardRefs.current[index] = el)}
+              className="target-card"
               style={{
                 width: "400px",
                 height: "400px",
@@ -96,6 +108,69 @@ const PageWithFixedBackground = () => {
           );
         })}
       </div>
+      <style jsx>{`
+        .program-subtitle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+          width: 100%;
+        }
+  
+        .subtitle-line {
+          height: 2px;
+          width: 100px;
+          background-color: #5b2c6f;
+          opacity: 0.5;
+        }
+  
+        .subtitle-text {
+          font-size: 2.5rem;
+          margin: 0 15px;
+          color: #5b2c6f;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+  
+        @media (max-width: 768px) {
+          .target-card {
+            width: 90% !important;
+            height: 300px !important;
+            left: 5% !important;
+            transform: translateY(20px) !important;
+            margin-bottom: 20px;
+          }
+  
+          .program-subtitle {
+            flex-direction: column;
+          }
+  
+          .subtitle-line {
+            width: 80px;
+            margin: 5px 0;
+          }
+  
+          .subtitle-text {
+            font-size: 1.8rem;
+            margin: 5px 0;
+          }
+  
+          div[style] {
+            padding: 5vh 0 !important;
+            gap: 20px !important;
+          }
+  
+          .target-card h2 {
+            font-size: 20px;
+          }
+  
+          .target-card img {
+            width: 60px !important;
+            height: 60px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

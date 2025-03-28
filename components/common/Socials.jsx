@@ -11,6 +11,8 @@ export default function Socials({ componentsClass, textSize }) {
           key={index}
           className={componentsClass ? componentsClass : ""}
           href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <i className={`${link.iconClassName} ${textSize}`}></i>
         </Link>
@@ -18,3 +20,4 @@ export default function Socials({ componentsClass, textSize }) {
     </>
   );
 }
+

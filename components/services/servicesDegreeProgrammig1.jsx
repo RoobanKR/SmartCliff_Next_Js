@@ -47,7 +47,6 @@ export default function CsrDegreeProgram() {
     (service) => service.service?._id === final?._id
   );
 
-  console.log("matchedDegree", matchedDegree);
 
   useEffect(() => {
     dispatch(fetchServices());
@@ -211,7 +210,7 @@ export default function CsrDegreeProgram() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fill, minmax(300px, 1fr))",
               gap: "30px",
               margin: "0 auto",
             }}

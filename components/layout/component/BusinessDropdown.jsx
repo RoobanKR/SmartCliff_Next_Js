@@ -5,24 +5,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { menuList } from "@/data/menu";
 import { selectCategories } from "@/redux/slices/category/category";
 import { useSelector } from "react-redux";
- 
+
 const BusinessDropdown = () => {
     const categories = useSelector(selectCategories);
     const pathname = usePathname();
- 
+
     // State management
     const [isBusinessOpen, setIsBusinessOpen] = useState(false);
     const [isCorporateOpen, setIsCorporateOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [isHovered, setIsHovered] = useState(false);
- 
+
     // Set initial hovered category when dropdown opens
     useEffect(() => {
         if (isBusinessOpen && categories?.length > 0 && !hoveredCategory) {
             setHoveredCategory(categories[0]._id);
         }
     }, [isBusinessOpen, categories, hoveredCategory]);
- 
+
     // Animation variants
     const dropdownVariants = {
         hidden: {
@@ -55,7 +55,7 @@ const BusinessDropdown = () => {
             }
         }
     };
- 
+
     const itemVariants = {
         hidden: { opacity: 0, x: -5 },
         visible: {
@@ -68,7 +68,7 @@ const BusinessDropdown = () => {
             }
         }
     };
- 
+
     // Hover animation for menu items
     const hoverAnimation = {
         initial: { x: 0, color: "#374151" },  // Default gray-700 text
@@ -82,59 +82,72 @@ const BusinessDropdown = () => {
             }
         }
     };
- 
+
+    const hoverSubAnimations = {
+        initial: { x: 0, color: "rgb(255, 255, 255)" },  // Default gray-700 text
+        hover: {
+            x: 3,
+            color: "rgb(0, 0, 0)",  // Theme orange color
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 18
+            }
+        }
+    };
+
     // Main wrapper styles for dropdown menus - using lighter backgrounds
     const dropdownStyles = {
         borderRadius: "12px",
         boxShadow: "0 10px 25px rgba(0,0,0,0.05)",
         border: "1px solid rgba(245, 245, 250, 0.95)",
-        background: "#FAFAFA",
+        background: "rgb(255, 255, 255)",
         padding: "8px 0",
     };
- 
+
     // Nested dropdown styles - even lighter background
     const nestedDropdownStyles = {
         borderRadius: "5px",
         boxShadow: "0 5px 15px rgba(0,0,0,0.03)",
         border: "1px solid rgba(248, 248, 252, 0.97)",
-        background: "#FFFFFF",
+        background: " rgba(240, 112, 87, 0.54)",
         padding: "6px 0",
         marginLeft: "10px",
         marginRight: "10px",
     };
- 
+
     // Handle mouse events for main dropdown
     const handleMouseEnter = () => {
         setIsBusinessOpen(true);
         setIsHovered(true);
     };
- 
+
     const handleMouseLeave = () => {
         setIsBusinessOpen(false);
         setIsCorporateOpen(false);
         setIsHovered(false);
     };
- 
+
     // Handle click events to ensure only clicked dropdowns open
     const toggleBusinessDropdown = (e) => {
         e.preventDefault();
         setIsBusinessOpen(!isBusinessOpen);
- 
+
         // Close corporate dropdown when business dropdown is closed
         if (isBusinessOpen) {
             setIsCorporateOpen(false);
         }
     };
- 
+
     const toggleCorporateDropdown = (e) => {
         e.preventDefault();
         e.stopPropagation(); // Prevent event bubbling
         setIsCorporateOpen(!isCorporateOpen);
     };
- 
+
     // Check if path is active
     const isActive = (path) => pathname.startsWith(path);
- 
+
     return (
         <li
             className="menu-item-has-children relative"
@@ -160,7 +173,7 @@ const BusinessDropdown = () => {
                     style={{ color: isHovered || isActive("/business") ? "#f2775e" : "" }}
                 />
             </Link>
- 
+
             {/* Main Dropdown Menu */}
             <AnimatePresence>
                 {isBusinessOpen && (
@@ -193,7 +206,7 @@ const BusinessDropdown = () => {
                                     />
                                 </Link>
                             </motion.div>
- 
+
                             {/* Corporate Submenu Dropdown */}
                             <AnimatePresence>
                                 {isCorporateOpen && (
@@ -215,10 +228,9 @@ const BusinessDropdown = () => {
                                             >
                                                 <Link
                                                     href={item.href}
-                                                    className={`block pl-4 pr-6 py-2 text-sm hover:bg-gray-50 transition-colors duration-200 ${isActive(item.href) ? "text-orange-1 font-medium" : ""
-                                                        }`}
+
                                                 >
-                                                    <motion.span variants={hoverAnimation}>{item.label}</motion.span>
+                                                    <motion.span variants={hoverSubAnimations}>{item.label}</motion.span>
                                                 </Link>
                                             </motion.li>
                                         ))}
@@ -226,7 +238,7 @@ const BusinessDropdown = () => {
                                 )}
                             </AnimatePresence>
                         </li>
- 
+
                         {/* Other Business Menu Items */}
                         {menuList[4].links
                             .filter(item => item.href)
@@ -236,7 +248,7 @@ const BusinessDropdown = () => {
                                     variants={itemVariants}
                                     whileHover="hover"
                                     initial="initial"
-                                    className={isActive(item.href) ? "bg-gray-50" : ""}
+                                    className={isActive(item.href) ? "bg-gray-100" : ""}
                                 >
                                     <Link
                                         href={item.href}
@@ -253,7 +265,6 @@ const BusinessDropdown = () => {
         </li>
     );
 };
- 
+
 export default BusinessDropdown;
- 
- 
+

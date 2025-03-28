@@ -62,22 +62,15 @@ export default function PartnersSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2
-            style={{
-              fontSize: "3rem",
-              margin: " 0 15px",
-              color: "rgb(255, 255, 255)",
-              fontWeight: "500",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-            }}
-          >
-            Our Partners
-          </h2>
+          <div className="program-subtitle">
+            <span className="subtitle-line"></span>
+            <span className="subtitle-text"> Our Partners</span>
+            <span className="subtitle-line"></span>
+          </div>
 
           <motion.p
             style={{
-              fontSize: "1rem",
+              fontSize: "15px",
               color: "#cbd5e1",
               maxWidth: "700px",
               margin: "0 auto",
@@ -218,37 +211,7 @@ export default function PartnersSection() {
                     {partner.company}
                   </h4>
 
-                  {/* <p
-                    style={{
-                      color: "#94a3b8",
-                      marginBottom: "20px",
-                      fontSize: "15px",
-                      lineHeight: "1.6",
-                      textAlign: "center",
-                    }}
-                  >
-                    {partner.description}
-                  </p> */}
 
-                  {/* <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "100%",
-                      padding: "15px 0 0",
-                      borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "#94a3b8",
-                        fontSize: "13px",
-                      }}
-                    >
-                      {partner.location}
-                    </div>
-                  </div> */}
 
                   <motion.div
                     style={{
@@ -297,6 +260,49 @@ export default function PartnersSection() {
           ))}
         </motion.div>
       </div>
+      <style jsx>{`
+        .program-subtitle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+          width: 100%;
+        }
+
+        .subtitle-line {
+          height: 2px;
+          width: 100px;
+          background-color:rgb(255, 255, 255);
+          opacity: 0.5;
+        }
+
+        .subtitle-text {
+          font-size:2.5rem;
+          margin: 0 15px;
+          color:rgb(255, 255, 255);
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        @media (max-width: 640px) {
+          .subtitle-line {
+            width: 60px;
+          }
+
+          .subtitle-text {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            text-align: center;
+          }
+        }
+
+        @media (min-width: 641px) and (max-width: 1023px) {
+          .subtitle-text {
+            font-size: 2rem;
+          }
+        }
+      `}</style>
     </motion.section>
   );
 }

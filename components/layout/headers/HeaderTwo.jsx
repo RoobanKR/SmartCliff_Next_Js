@@ -63,22 +63,13 @@ export default function HeaderTwo({ onServiceSelect }) {
                   setActiveMobileMenu={setActiveMobileMenu}
                   activeMobileMenu={activeMobileMenu}
                 />
-                <div className="d-none xl:d-block ml-20">
-                  <button
-                    onClick={() => setActiveMobileMenu(true)}
-                    className="text-dark-1 items-center"
-                    data-el-toggle=".js-mobile-menu-toggle"
-                  >
-                    <i className="text-11 icon icon-mobile-menu"></i>
-                  </button>
-                </div>
               </div>
-              <div className="header-right__icons text-white d-flex items-center">
+              <div className="header-right__icons  d-flex items-center">
                 {/* <SearchToggle /> */}
                 <div className="d-none xl:d-block ml-20">
                   <button
                     onClick={() => setActiveMobileMenu(true)}
-                    className="text-white items-center"
+                    className="text-dark-1 items-center"
                     data-el-toggle=".js-mobile-menu-toggle"
                   >
                     <i className="text-11 icon icon-mobile-menu"></i>

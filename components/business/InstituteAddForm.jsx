@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useMemo, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +16,9 @@ import "./Modal.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "./Modal";
+import { FaTimes } from "react-icons/fa";
 
-export default function TrainFromUsAddForm() {
+export default function InstitutionAddForm() {
   const formData = useSelector((state) => state.institute.formData);
   const courses = useSelector((state) => state.courses.courses);
   const dispatch = useDispatch();
@@ -142,40 +144,60 @@ export default function TrainFromUsAddForm() {
   }, [dispatch]);
 
   return (
-    <div className="dashboard__content p-0">
+    <div className="dashboard__content p-20">
       <ToastContainer />
 
       <div className="col-12">
-        <div className="d-flex items-center py-20 px-30 border-bottom-light">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "25px",
+            paddingBottom: "15px",
+          }}
+        >
           <h1
             style={{
-              fontSize: "20px",
-              fontWeight: "lighter",
-              // fontStyle: 'italic !important',
-              fontFamily: "'Dancing Script', cursive !important",
-              color: "#44220",
-              marginBottom: "-18px",
-              animation: "bounceIn 2s infinite ease-in-out",
-              textShadow: "0px 0px 10px rgba(255, 255, 255, 0.66)",
+              fontSize: "40px",
+              fontWeight: "normal",
+              fontFamily: "'Dancing Script', cursive",
+              color: "#000", // Black color for text
+              margin: "0",
+              display: "inline-block",
+              position: "relative",
+              padding: "0 0 10px 0 ",
             }}
           >
+            Institute Enquiry Form
             <span
               style={{
-                // fontFamily: "'Clicker Script', cursive !important",
-                fontFamily:
-                  "'Tangerine',Brush Script MT, Brush Script Std, cursive !important", // Ensure cursive applies
-
-                fontSize: "60px",
-                color: "#44220",
+                content: '""',
+                position: "absolute",
+                left: "0",
+                bottom: "0",
+                height: "5px",
+                width: "55px",
+                backgroundColor: "black",
               }}
-            >
-              {"Basic Information for Institute Enquiry".charAt(0)}
-            </span>
-            <i>{"Basic Information for Institute Enquiry".slice(1)}</i>
-          </h1>{" "}
+            ></span>
+            {/* Bottom Thin Line */}
+            <span
+              style={{
+                content: '""',
+                position: "absolute",
+                left: "0",
+                bottom: "2px",
+                height: "1px",
+                width: "95%",
+                maxWidth: "255px",
+                backgroundColor: "black",
+              }}
+            ></span>
+          </h1>
         </div>
 
-        <div className="py-30 px-30">
+        <div className="px-30">
           <Formik
             initialValues={initialValues}
             validate={validate}

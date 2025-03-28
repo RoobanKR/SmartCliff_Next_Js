@@ -5,7 +5,7 @@ export const footerLinks = [
       { href: "/", label: "Home" },
       { href: "/about", label: "About" },
       { href: "/gallery", label: "Gallery" },
-      { href: "/history", label: "History" },
+      { href: "/review", label: "Review" },
 
     ],
   },
@@ -14,7 +14,8 @@ export const footerLinks = [
     links: [
       { href: "/termsandcondition", label: "Terms & Conditions" },
       { href: "/termsandcondition", label: "Privacy Policy" },
-      { href: "/termsandcondition", label: "Faq's" },
+      { href: "/faq", label: "Faq's" },
     ],
   },
 ];
+

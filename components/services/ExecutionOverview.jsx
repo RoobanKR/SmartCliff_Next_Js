@@ -80,7 +80,15 @@ export default function ExecutionOverview1({ serviceId }) {
   const servicesBusiness = useSelector(selectBusinessServices);
   const [isVisible, setIsVisible] = useState(false);
   const counterSectionRef = useRef(null);
+  const cardRef = useRef(null);
+  const [maxHeight, setMaxHeight] = useState(0);
 
+  useEffect(() => {
+    if (cardRef.current) {
+      const cardHeight = cardRef.current.offsetHeight;
+      setMaxHeight((prevHeight) => Math.max(prevHeight, cardHeight));
+    }
+  }, []);
   // Set up Intersection Observer to detect when counter section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -286,11 +294,26 @@ export default function ExecutionOverview1({ serviceId }) {
       }}
     >
       <div className="container">
-        <div className="row justify-center text-center" ref={counterSectionRef}>
-          <div className="col-auto">
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+          ref={counterSectionRef}
+        >
+          <div style={{ width: "100%" }}>
             <div
-              className="sectionTitle d-flex align-items-center justify-content-between w-100"
-              style={{ padding: "20px 100px" }}
+              style={{
+                display: "flex",
+                flexDirection: window.innerWidth < 768 ? "column" : "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                padding: window.innerWidth < 768 ? "20px 10px" : "20px 100px",
+                gap: window.innerWidth < 768 ? "30px" : "0",
+              }}
             >
               {/* Total Client */}
               <div
@@ -298,12 +321,13 @@ export default function ExecutionOverview1({ serviceId }) {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  marginRight: "100px", // Spacing between elements
+                  marginRight: window.innerWidth < 768 ? "0" : "100px",
+                  width: window.innerWidth < 768 ? "100%" : "auto",
                 }}
               >
                 <span
                   style={{
-                    fontSize: "20px",
+                    fontSize: window.innerWidth < 768 ? "18px" : "20px",
                     fontWeight: "bold",
                     color: "#5B2c6F",
                   }}
@@ -312,7 +336,7 @@ export default function ExecutionOverview1({ serviceId }) {
                 </span>
                 <hr
                   style={{
-                    width: "80%",
+                    width: window.innerWidth < 768 ? "60%" : "80%",
                     borderTop: "3px solid #5B2c6F",
                     margin: "5px 0",
                   }}
@@ -322,8 +346,8 @@ export default function ExecutionOverview1({ serviceId }) {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: "80%",
-                    fontSize: "18px", // Adjusted font size
+                    width: window.innerWidth < 768 ? "100%" : "80%",
+                    fontSize: window.innerWidth < 768 ? "16px" : "18px",
                     fontWeight: "bold",
                     color: "#5B2c6F",
                     position: "relative",
@@ -334,9 +358,9 @@ export default function ExecutionOverview1({ serviceId }) {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      width: "80%",
-                      height: "40px", // Adjusted height for better spacing
-                      padding: "3px 10px", // Optimized padding
+                      width: window.innerWidth < 768 ? "60%" : "80%",
+                      height: "40px",
+                      padding: "3px 10px",
                       backgroundColor: "#5B2c6F",
                       color: "white",
                       borderRadius: "5px",
@@ -353,8 +377,19 @@ export default function ExecutionOverview1({ serviceId }) {
               </div>
 
               {/* Execution Overview */}
-              <div style={{ textAlign: "center", flex: 1 }}>
-                <h2 style={{ fontSize: "25px", margin: 0 }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  flex: window.innerWidth < 768 ? "0 0 100%" : "1",
+                  order: window.innerWidth < 768 ? "-1" : "0",
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: window.innerWidth < 768 ? "20px" : "25px",
+                    margin: 0,
+                  }}
+                >
                   Execution Overview
                 </h2>
               </div>
@@ -365,12 +400,13 @@ export default function ExecutionOverview1({ serviceId }) {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  marginLeft: "100px", // Spacing between elements
+                  marginLeft: window.innerWidth < 768 ? "0" : "100px",
+                  width: window.innerWidth < 768 ? "100%" : "auto",
                 }}
               >
                 <span
                   style={{
-                    fontSize: "20px",
+                    fontSize: window.innerWidth < 768 ? "18px" : "20px",
                     fontWeight: "bold",
                     color: "#5B2c6F",
                   }}
@@ -379,7 +415,7 @@ export default function ExecutionOverview1({ serviceId }) {
                 </span>
                 <hr
                   style={{
-                    width: "80%",
+                    width: window.innerWidth < 768 ? "60%" : "80%",
                     borderTop: "3px solid #5B2c6F",
                     margin: "5px 0",
                   }}
@@ -389,8 +425,8 @@ export default function ExecutionOverview1({ serviceId }) {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    width: "80%",
-                    fontSize: "18px", // Adjusted font size
+                    width: window.innerWidth < 768 ? "100%" : "80%",
+                    fontSize: window.innerWidth < 768 ? "16px" : "18px",
                     fontWeight: "bold",
                     color: "#5B2c6F",
                     position: "relative",
@@ -401,9 +437,9 @@ export default function ExecutionOverview1({ serviceId }) {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      width: "80%",
-                      height: "40px", // Adjusted height for better spacing
-                      padding: "3px 10px", // Optimized padding
+                      width: window.innerWidth < 768 ? "60%" : "80%",
+                      height: "40px",
+                      padding: "3px 10px",
                       backgroundColor: "#5B2c6F",
                       color: "white",
                       borderRadius: "5px",
@@ -420,7 +456,11 @@ export default function ExecutionOverview1({ serviceId }) {
               </div>
             </div>
 
-            <p style={{ marginTop: "-30px" }}>(By Client)</p>
+            <p
+              style={{ marginTop: window.innerWidth < 768 ? "-20px" : "-30px" }}
+            >
+              (By Client)
+            </p>
           </div>
         </div>
 
@@ -456,152 +496,109 @@ export default function ExecutionOverview1({ serviceId }) {
               {displayData.map((elm, i) => (
                 <SwiperSlide key={i} style={{ padding: "10px" }}>
                   <div
-                    style={cardStyles.card}
-                    data-aos="fade-left"
-                    data-aos-duration={400}
-                    onMouseEnter={(e) => {
-                      // Get elements
-                      const overlay = e.currentTarget.querySelector(".overlay");
-                      const card = e.currentTarget;
-                      const imageContainer =
-                        e.currentTarget.querySelector(".image-container");
-                      const titleElement =
-                        e.currentTarget.querySelector(".title-element");
-
-                      // Clone the image for the overlay
-                      const originalImageContainer =
-                        card.querySelector(".image-container");
-                      const miniImageContainer =
-                        originalImageContainer.cloneNode(true);
-                      miniImageContainer.classList.add("mini-image");
-
-                      // Style the mini image
-                      Object.assign(miniImageContainer.style, {
-                        height: "60px",
-                        // width: '60px',
-                        margin: "0 auto",
-                        borderRadius: "8px",
-                        overflow: "hidden",
-                        position: "absolute",
-                        top: "20px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        zIndex: "2",
-                      });
-
-                      // Remove any existing mini images before adding a new one
-                      const existingMiniImage =
-                        overlay.querySelector(".mini-image");
-                      if (existingMiniImage) {
-                        existingMiniImage.remove();
-                      }
-
-                      // Add the mini image to the overlay
-                      overlay.insertBefore(
-                        miniImageContainer,
-                        overlay.firstChild
-                      );
-
-                      // Apply hover styling to overlay
-                      overlay.style.opacity = "1";
-                      overlay.style.transform = "translateY(0)";
-                      overlay.style.justifyContent = "flex-start";
-                      overlay.style.paddingTop = "90px"; // Make space for the image
-
-                      // Hide the original content
-                      if (imageContainer) {
-                        imageContainer.style.opacity = "0";
-                      }
-                      if (titleElement) {
-                        titleElement.style.opacity = "0";
-                      }
-
-                      card.style.transform = "translateY(-10px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      // Get elements
-                      const overlay = e.currentTarget.querySelector(".overlay");
-                      const card = e.currentTarget;
-                      const imageContainer =
-                        e.currentTarget.querySelector(".image-container");
-                      const titleElement =
-                        e.currentTarget.querySelector(".title-element");
-
-                      // Reset overlay styling
-                      if (overlay) {
-                        overlay.style.opacity = "0";
-                        overlay.style.transform = "translateY(100%)";
-                        overlay.style.paddingTop = "20px";
-                        overlay.style.justifyContent = "center";
-                      }
-
-                      // Show the original content again
-                      if (imageContainer) {
-                        imageContainer.style.opacity = "1";
-                      }
-                      if (titleElement) {
-                        titleElement.style.opacity = "1";
-                      }
-
-                      // Reset card styling
-                      card.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
-                      card.style.transform = "translateY(0)";
+                    ref={cardRef}
+                    style={{
+                      width: "300px",
+                      minHeight: `${maxHeight}px`, // Ensures all cards match the tallest card
+                      borderRadius: "16px",
+                      overflow: "hidden",
+                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                      backgroundColor: "#fff",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      padding: "20px",
+                      textAlign: "center",
                     }}
                   >
-                    {/* Card Front: Image & Title */}
+                    {/* Image Section (Full Width) */}
                     <div
-                      className="content-container"
                       style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                        transition: "opacity 0.3s ease",
+                        width: "100%",
+                        height: "200px",
+                        marginBottom: "12px",
                       }}
                     >
-                      <div
-                        className="image-container"
-                        style={cardStyles.imageContainer}
-                      >
-                        <Image
-                          src={elm.image}
-                          alt="icon"
-                          width={150}
-                          height={100}
-                          style={{
-                            objectFit: "cover",
-                            width: "100%",
-                            height: "100%",
-                          }}
-                        />
-                      </div>
-                      <h3 className="title-element" style={cardStyles.title}>
-                        {elm.typeName[0]}
-                      </h3>
+                      <Image
+                        src={elm.image}
+                        alt="icon"
+                        width={260}
+                        height={120}
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      />
                     </div>
 
-                    {/* Card Back: Overlay with Details */}
-                    <div className="overlay" style={cardStyles.overlay}>
-                      {/* The mini image will be inserted here dynamically */}
-                      <div style={cardStyles.detailsGrid}>
-                        <div style={cardStyles.detailItem}>
-                          <FaUserSecret style={cardStyles.icon} />
-                          <span>Batch Size: {elm.batch_size}</span>
+                    {/* Title */}
+                    <h3
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        color: "#333",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      {elm.typeName[0]}
+                    </h3>
+
+                    {/* Details Section */}
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "8px",
+                      }}
+                    >
+                      {[
+                        {
+                          icon: <FaUserSecret />,
+                          label: "Batch Size",
+                          value: elm.batch_size,
+                        },
+                        {
+                          icon: <Layers />,
+                          label: "Stack",
+                          value: elm.stack.stack,
+                        },
+                        {
+                          icon: <CalendarMonth />,
+                          label: "Year",
+                          value: elm.year,
+                        },
+                        {
+                          icon: <FaClock />,
+                          label: "Duration",
+                          value: elm.duration,
+                        },
+                      ].map((item, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            justifyContent: "flex-start",
+                          }}
+                        >
+                          <span style={{ color: "#5B2C6F", fontSize: "18px" }}>
+                            {item.icon}
+                          </span>
+                          <span
+                            style={{
+                              color: "#333",
+                              fontSize: "14px",
+                              fontWeight: "500",
+                              textAlign: "left",
+                            }}
+                          >
+                            {item.label}: {item.value}
+                          </span>
                         </div>
-                        <div style={cardStyles.detailItem}>
-                          <Layers style={cardStyles.icon} />
-                          <span>Stack: {elm.stack.stack}</span>
-                        </div>
-                        <div style={cardStyles.detailItem}>
-                          <CalendarMonth style={cardStyles.icon} />
-                          <span>Year: {elm.year}</span>
-                        </div>
-                        <div style={cardStyles.detailItem}>
-                          <FaClock style={cardStyles.icon} />
-                          <span>Duration: {elm.duration}</span>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </SwiperSlide>
@@ -629,3 +626,4 @@ export default function ExecutionOverview1({ serviceId }) {
     </section>
   );
 }
+

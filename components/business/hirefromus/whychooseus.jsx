@@ -1,10 +1,38 @@
+"use client";
 import { getAllCurrentAvailabilities } from "@/redux/slices/bussiness/currentAvailbility/currentAvailbility";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import HeroSection from "./home";
+import HiringCategories from "./category";
+import HowItWorks from "./howitworks";
 
 const SkillsetTable = () => {
+  const sectionRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Function to scroll to the section
+  const scrollToSection = () => {
+    if (sectionRef.current) {
+      const offset = 100; // Adjust this value to stop slightly above
+      const elementPosition =
+        sectionRef.current.getBoundingClientRect().top + window.scrollY;
+
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    } else {
+      console.error("❌ sectionRef.current is NULL");
+    }
+  };
+
   const dispatch = useDispatch();
-  const { availabilities, loading, error } = useSelector((state) => state.currentAvailability);
+  const { availabilities, loading, error } = useSelector(
+    (state) => state.currentAvailability
+  );
+
+
 
   useEffect(() => {
     dispatch(getAllCurrentAvailabilities());
@@ -14,64 +42,82 @@ const SkillsetTable = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>
-        Current <span style={styles.highlight}>Availability</span>
-      </h2>
-      <table style={styles.table}>
-        <thead>
-          <tr>
-            {[
-              "Skillset",
-              "No. of Resources",
-              "Training Duration",
-              "Batch",
-              "Years of Experience",
-              "On Board Remarks",
-            ].map((header, index) => (
-              <th key={index} style={styles.th}>
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {availabilities.map((row, index) => (
-            <tr key={index}>
-              <td style={styles.td}>{row.skillset}</td>
-              <td style={styles.td}>{row.resources}</td>
-              <td style={styles.td}>{row.duration}</td>
-              <td style={styles.td}>{row.batch}</td>
-              <td style={styles.td}>{row.experience}</td>
-              <td style={{ ...styles.td, color: row.remarks === "Available" ? "green" : "red", fontWeight: "bold" }}>
-                {row.remarks}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <style jsx>{`
-        @media (max-width: 768px) {
-          .responsive-table {
-            display: block;
-            overflow-x: auto; /* Enable horizontal scrolling */
-            white-space: nowrap; /* Prevent text wrapping */
-          }
+    <>
+      <div className="mt-60">
+        <HeroSection scrollToSection={scrollToSection} />
+      </div>
+      <HiringCategories />
+      <HowItWorks />
+      <div ref={sectionRef}>
+        <div style={styles.container}>
+          <h2 style={styles.title}>
+            Current <span style={styles.highlight}>Availability</span>
+          </h2>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                {[
+                  "Skillset",
+                  "No. of Resources",
+                  "Training Duration",
+                  "Batch",
+                  "Years of Experience",
+                  "On Board Remarks",
+                ].map((header, index) => (
+                  <th key={index} style={styles.th}>
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {availabilities.map((row, index) => (
+                <tr key={index}>
+                  <td style={styles.td}>{row.skillset}</td>
+                  <td style={styles.td}>{row.resources}</td>
+                  <td style={styles.td}>{row.duration}</td>
+                  <td style={styles.td}>{row.batch}</td>
+                  <td style={styles.td}>{row.experience}</td>
+                  <td
+                    style={{
+                      ...styles.td,
+                      color: row.remarks === "Available" ? "green" : "red",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {row.remarks}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-          th, td {
-            padding: 8px;
-            font-size: 14px; /* Adjust font size for smaller screens */
-          }
-        }
+          <style jsx>{`
+            @media (max-width: 768px) {
+              .responsive-table {
+                display: block;
+                overflow-x: auto; /* Enable horizontal scrolling */
+                white-space: nowrap; /* Prevent text wrapping */
+              }
 
-        @media (max-width: 480px) {
-          th, td {
-            padding: 6px;
-            font-size: 12px; /* Further adjust font size for very small screens */
-          }
-        }
-      `}</style>
-    </div>
+              th,
+              td {
+                padding: 8px;
+                font-size: 14px; /* Adjust font size for smaller screens */
+              }
+            }
+
+            @media (max-width: 480px) {
+              th,
+              td {
+                padding: 6px;
+                font-size: 12px; /* Further adjust font size for very small screens */
+              }
+            }
+          `}</style>
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -184,21 +184,26 @@ export default function HeroSection() {
           // Categorize based on business service name/type
           const businessType = businessService.name?.toLowerCase() || "";
 
-          if (businessType.includes("b2b")) {
-            newCounters.b2b += overview.batch_size || 0;
-          } else if (businessType.includes("b2i")) {
-            newCounters.b2i += overview.batch_size || 0;
-          } else if (businessType.includes("b2c")) {
-            newCounters.b2c += overview.batch_size || 0;
+          if (businessType.includes("corporate")) {
+            newCounters.b2b += overview.batch_size;
+          } else if (businessType.includes("institute")) {
+            newCounters.b2i += overview.batch_size;
+          } else if (businessType.includes("learner")) {
+            newCounters.b2c += overview.batch_size;
           } else if (businessType.includes("csr")) {
-            newCounters.csr += overview.batch_size || 0;
+            newCounters.csr += overview.batch_size;
           }
         }
       }
     });
 
+    console.log("counters.b2b:", counters.b2b);
+
     setCounters(newCounters);
   }, [executionOverviews, services, servicesBusiness]);
+  useEffect(() => {
+    console.log("Updated counters:", counters);
+  }, [counters]);
 
   return (
     <div
@@ -301,16 +306,16 @@ export default function HeroSection() {
               >
                 <AnimatedCounter
                   startValue={0}
-                  endValue={counters.b2c}
+                  endValue={counters.csr}
                   duration={2000}
                   isVisible={isVisible}
                 />
                 +
               </h2>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>
-                Business to Client
+                Corporate Social Responsibility
               </p>
-              <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2C)</p>
+              <p style={{ fontSize: "1rem", opacity: 0.8 }}>(CSR)</p>
             </div>
 
             <div style={{ minWidth: "150px" }}>
@@ -323,16 +328,16 @@ export default function HeroSection() {
               >
                 <AnimatedCounter
                   startValue={0}
-                  endValue={counters.csr}
+                  endValue={counters.b2c}
                   duration={2000}
                   isVisible={isVisible}
                 />
                 +
               </h2>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>
-                Corporate Social Responsibility
+                Business to Client
               </p>
-              <p style={{ fontSize: "1rem", opacity: 0.8 }}>(CSR)</p>
+              <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2C)</p>
             </div>
           </>
         </div>
@@ -383,3 +388,4 @@ export default function HeroSection() {
     </div>
   );
 }
+

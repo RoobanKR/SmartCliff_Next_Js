@@ -108,8 +108,12 @@ const CategoriesHomeOne = () => {
                     >
                       {item.title}
                     </h3>{" "}
-                    <p>({item.name})</p>
-                  </div>
+                    <p>
+                      ({" "}
+                      {item.name.charAt(0).toUpperCase() +
+                        item.name.slice(1).toLowerCase()}
+                      )
+                    </p>                  </div>
                 </div>
 
                 {/* Back Side */}
@@ -163,18 +167,18 @@ const CategoriesHomeOne = () => {
           position: relative;
         }
 
-        /* Background Image (Hidden in Mobile) */
+               /* Background Image (Hidden in Mobile) */
         .background-image {
           position: absolute;
-          right: -25%;
+          left: -18%;
           top: 0;
           width: 40%;
           height: 100%;
-          background-image: url(/assets/img/servicebck.png);
+          background-image: url(/assets/img/service-bck.png);
           background-size: cover;
           background-position: center;
         }
-
+ 
         @media (max-width: 768px) {
           .background-image {
             display: none;

@@ -26,17 +26,10 @@ export default function HomePage() {
       <HeaderTwo />
       <div className="content-wrapper  js-content-wrapper overflow-hidden">
         <HeroTwo />
-        {/* <BottomBanner /> */}
-        {/* <CategoriesTwo /> */}
-        {/* <Batches /> */}
-        {/* <Features /> */}
         <ExecutionOvervirewHome />
         <ExecutiveOverview2 />
         <WhySmartcliff />
         <CategoriesHomeOne />
-        {/* <CourseCategories /> */}
-        {/* <Teachers /> */}
-        {/* <GalleryList /> */}
         <TestimonialsEight />
         <Hiring />
         <FrequentlyAskedQuestion />

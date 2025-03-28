@@ -51,9 +51,8 @@ export default function About({ collegeId }) {
         displayData.map((college, collegeIndex) => (
           <React.Fragment key={collegeIndex}>
             <section
-              className="page-header -type-1"
               style={{
-                paddingTop: thirdLastSegment === "csr" ? "80px" : "40px",
+                paddingTop: thirdLastSegment === "csr" ? "60px" : "50px",
                 backgroundColor: "white",
               }}
             >

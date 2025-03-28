@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+ 
 export default function Sidebar() {
   const dispatch = useDispatch();
   const services = useSelector(selectServices);
@@ -36,16 +36,11 @@ export default function Sidebar() {
   useEffect(() => {
     dispatch(fetchServices());
   }, [dispatch]);
-
+ 
   useEffect(() => {}, [services]);
-
+ 
   return (
-    <div
-      className="sidebar"
-      style={{
-        marginTop: "20px",
-      }}
-    >
+    <div className="sidebar" style={{ marginTop: "20px" }}>
       <div className="sidebar__inner">
         <div>
           {/* Title Section */}
@@ -66,24 +61,32 @@ export default function Sidebar() {
           <div style={{ marginTop: "20px" }}>
             {matchedServices?.map((service, index) => {
               const isActive = service.slug === lastSegment;
-
+ 
               return (
-                <div
-                  key={index}
-                  style={{
-                    marginBottom: "12px",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    background: isActive ? "#5B2C6F" : "#fff",
-                    transition: "background 0.3s ease",
-                    boxShadow: isActive
-                      ? "0 4px 8px rgba(0, 0, 0, 0.15)"
-                      : "none",
-                  }}
-                >
+                <div key={index} style={{ marginBottom: "12px" }}>
                   <Link
                     href={`/${secondLastSegment}/${service.slug}`}
-                    className="d-flex items-center"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "10px",
+                      borderRadius: "8px",
+                      border: isActive ? "2px solid #5B2C6F" : "none", // Only active has an outline
+                      background: "transparent", // No background color for inactive
+                      transition: "all 0.3s ease",
+                      fontWeight: "500",
+                      fontSize: "16px",
+                      textDecoration: "none",
+                      color: "#5B2C6F", // Always deep violet text
+                      textAlign: "left", // Ensures text is left-aligned
+                      width: "100%", // Ensures it takes full width for alignment
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "rgb(255, 240, 206)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
                   >
                     <img
                       src={service?.icon}
@@ -97,21 +100,7 @@ export default function Sidebar() {
                         padding: "4px",
                       }}
                     />
-
-                    <span
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        textDecoration: "none",
-                        color: isActive ? "#fff" : "#5B2C6F", // White for active, Violet for inactive
-                        transition: "color 0.3s ease",
-                      }}
-                    >
-                      {" "}
-                      {service.title}
-                    </span>
+                    {service.title}
                   </Link>
                 </div>
               );
@@ -122,3 +111,5 @@ export default function Sidebar() {
     </div>
   );
 }
+ 
+ 

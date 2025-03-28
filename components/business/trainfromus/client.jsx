@@ -10,16 +10,17 @@ import React from "react";
 import { skillsOne } from "../../../data/skills";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllClient } from "@/redux/slices/services/client/Client";
+import { getAllClient } from "@/redux/slices/bussiness/client/Client";
 
 export default function Client() {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [showSlider, setShowSlider] = useState(false);
   useEffect(() => {
     setShowSlider(true);
   }, []);
   const clients = useSelector((state) => state.clients.clients);
+  const trainFromUsData = clients.filter(client => client.type === "trainfromus");
 
 
   useEffect(() => {
@@ -76,7 +77,7 @@ export default function Client() {
                   }}
                   loop={true}
                 >
-                  {clients.map((elm, i) => (
+                  {trainFromUsData.map((elm, i) => (
                     <SwiperSlide key={i}>
                       <div className="swiper-slide h-100 overflow-visible">
                         <div

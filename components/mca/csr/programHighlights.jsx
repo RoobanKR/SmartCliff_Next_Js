@@ -7,27 +7,33 @@ export default function ProgrammeHighlights() {
   const dispatch = useDispatch();
   const ourProgram = useSelector((state) => state.ourProgram.ourProgram);
 
+  const fullUrl = typeof window !== "undefined" ? window.location.href : "";
+  const segments = fullUrl.split("/").filter(Boolean);
+  const lastSegment = segments.pop();
   useEffect(() => {
     dispatch(fetchOurPrograms());
   }, [dispatch]);
 
-  // Filter the programs to only include those with college as null
-  const filteredPrograms = ourProgram.filter((program) => program.college === null);
+  const final = ourProgram.filter((program) => program.degree_program?._id === lastSegment);
 
+  
   return (
     <section className="layout-pt-md layout-pb-xs bg-white">
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-auto">
-            <div className="sectionTitle">
-              <h2 className="sectionTitle__title">MCA – Programme Highlights</h2>
-              <p className="sectionTitle__text">Lorem ipsum dolor sit amet, consectetur.</p>
+            <div >
+              <div className="program-subtitle">
+                <span className="subtitle-line"></span>
+                <span className="subtitle-text">MCA – Programme Highlights</span>
+                <span className="subtitle-line"></span>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="row y-gap-30 pt-60 lg:pt-50">
-          {filteredPrograms.map((elm) => (
+          {final.map((elm) => (
             <div
               key={elm._id}
               className="col-lg-4 col-md-6 col-sm-12" // Responsive classes
@@ -59,6 +65,47 @@ export default function ProgrammeHighlights() {
       </div>
 
       <style jsx>{`
+              .program-subtitle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+          width: 100%;
+        }
+
+        .subtitle-line {
+          height: 2px;
+          width: 100px;
+          background-color: #5b2c6f;
+          opacity: 0.5;
+        }
+
+        .subtitle-text {
+          font-size: 2.5rem;
+          margin: 0 15px;
+          color: #5b2c6f;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        @media (max-width: 640px) {
+          .subtitle-line {
+            width: 60px;
+          }
+
+          .subtitle-text {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            text-align: center;
+          }
+        }
+
+        @media (min-width: 641px) and (max-width: 1023px) {
+          .subtitle-text {
+            font-size: 2rem;
+          }
+        }
         @media (max-width: 768px) {
           .coursesCard {
             max-width: 100%; // Full width on smaller screens
@@ -68,140 +115,3 @@ export default function ProgrammeHighlights() {
     </section>
   );
 }
-
-
-
-
-
-
-
-
-
-// import React, { useEffect } from "react";
-// import Image from "next/image";
-// import { fetchOurPrograms } from "@/redux/slices/mca/ourProgram/ourProgram";
-// import { useDispatch, useSelector } from "react-redux";
-
-// export default function ProgrammeHighlights() {
-//   const dispatch = useDispatch();
-//   const ourProgram = useSelector((state) => state.ourProgram.ourProgram);
-
-//   useEffect(() => {
-//     dispatch(fetchOurPrograms());
-//   }, [dispatch]);
-
-//   // Filter the programs to only include those with college as null
-//   const filteredPrograms = ourProgram.filter((program) => program.college === null);
-
-//   return (
-//     <section className="layout-pt-md layout-pb-xs bg-white">
-//       <div className="container">
-//         <div className="row justify-center text-center">
-//           <div className="col-auto">
-//             <div className="sectionTitle">
-//               <h2 className="sectionTitle__title">MCA – Programme Highlights</h2>
-//               <p className="sectionTitle__text">Lorem ipsum dolor sit amet, consectetur.</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className="grid-container">
-//           {filteredPrograms.map((elm) => (
-//             <div key={elm._id} className="grid-item">
-//               <div className="card">
-//                 <div className="card-image">
-//                   <Image 
-//                     width={60} 
-//                     height={60}
-//                     src={elm.icon} 
-//                     alt={elm.title}
-//                     className="card-icon" 
-//                   />
-//                 </div>
-//                 <div className="card-content">
-//                   <h5 className="card-title">{elm.title}</h5>
-//                   <p className="card-text">{elm.description}</p>
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       <style jsx>{`
-//         .grid-container {
-//           display: grid;
-//           grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-//           gap: 30px;
-//           margin-top: 50px;
-//           width: 100%;
-//         }
-
-//         .grid-item {
-//           display: flex;
-//           justify-content: center;
-//         }
-
-//         .card {
-//           width: 100%;
-//           padding: 50px 20px 40px;
-//           border-radius: 8px;
-//           text-align: center;
-//           background-color: white;
-//           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-//           transition: transform 0.3s ease, box-shadow 0.3s ease;
-//         }
-
-//         .card:hover {
-//           transform: translateY(-5px);
-//           box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
-//         }
-
-//         .card-image {
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           height: 70px;
-//         }
-
-//         .card-content {
-//           margin-top: 30px;
-//         }
-
-//         .card-title {
-//           font-size: 18px;
-//           line-height: 1.3;
-//           font-weight: 500;
-//           margin-bottom: 10px;
-//         }
-
-//         .card-text {
-//           font-size: 14px;
-//           color: #555;
-//           line-height: 1.6;
-//         }
-
-//         @media (max-width: 768px) {
-//           .grid-container {
-//             grid-template-columns: repeat(auto-fill, minmax(250px, 2fr));
-//           }
-          
-//           .card {
-//             padding: 40px 15px 30px;
-//           }
-//         }
-
-//         @media (max-width: 480px) {
-//           .grid-container {
-//             grid-template-columns: 1fr;
-//             padding: 0 15px;
-//           }
-          
-//           .card {
-//             max-width: 100%;
-//           }
-//         }
-//       `}</style>
-//     </section>
-//   );
-// }
