@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import HeroSection from "./home";
 import HiringCategories from "./category";
 import HowItWorks from "./howitworks";
-
+ 
 const SkillsetTable = () => {
   const sectionRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+ 
   // Function to scroll to the section
   const scrollToSection = () => {
     if (sectionRef.current) {
       const offset = 100; // Adjust this value to stop slightly above
       const elementPosition =
         sectionRef.current.getBoundingClientRect().top + window.scrollY;
-
+ 
       window.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
@@ -26,21 +26,21 @@ const SkillsetTable = () => {
       console.error("❌ sectionRef.current is NULL");
     }
   };
-
+ 
   const dispatch = useDispatch();
   const { availabilities, loading, error } = useSelector(
     (state) => state.currentAvailability
   );
-
-
-
+ 
+ 
+ 
   useEffect(() => {
     dispatch(getAllCurrentAvailabilities());
   }, [dispatch]);
-
+ 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-
+ 
   return (
     <>
       <div className="mt-60">
@@ -60,9 +60,9 @@ const SkillsetTable = () => {
                   "Skillset",
                   "No. of Resources",
                   "Training Duration",
-                  "Batch",
+                  "Passed Out Year",
                   "Years of Experience",
-                  "On Board Remarks",
+                  "Availability",
                 ].map((header, index) => (
                   <th key={index} style={styles.th}>
                     {header}
@@ -91,7 +91,7 @@ const SkillsetTable = () => {
               ))}
             </tbody>
           </table>
-
+ 
           <style jsx>{`
             @media (max-width: 768px) {
               .responsive-table {
@@ -99,14 +99,14 @@ const SkillsetTable = () => {
                 overflow-x: auto; /* Enable horizontal scrolling */
                 white-space: nowrap; /* Prevent text wrapping */
               }
-
+ 
               th,
               td {
                 padding: 8px;
                 font-size: 14px; /* Adjust font size for smaller screens */
               }
             }
-
+ 
             @media (max-width: 480px) {
               th,
               td {
@@ -120,7 +120,7 @@ const SkillsetTable = () => {
     </>
   );
 };
-
+ 
 const styles = {
   container: {
     padding: "20px",
@@ -150,5 +150,7 @@ const styles = {
     textAlign: "center",
   },
 };
-
+ 
 export default SkillsetTable;
+ 
+ 

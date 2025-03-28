@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,16 +8,16 @@ import HirefromusAddForm from "../HirefromusAddForm";
 import { useSelector } from "react-redux";
 import Trainfromus from "../trainfromus";
 import InstitutionAddForm from "../InstituteAddForm";
-
+ 
 export default function FormSection() {
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const { availabilities, loading, error } = useSelector(
     (state) => state.currentAvailability
   );
-
+ 
   // console.log("availabilities", availabilities);
-
+ 
   return (
     <section
       className="layout-pt-sm layout-pb-sm"
@@ -34,7 +34,7 @@ export default function FormSection() {
               </span>{" "}
             </h2>
           </div>
-
+ 
           <div className="col-auto">
             <button
               className="button px-30 h-50 -outline-dark-11 text-orange-1"
@@ -49,7 +49,7 @@ export default function FormSection() {
               <motion.div
                 style={{
                   position: "fixed",
-                  top: 20,
+                  top: 0,
                   left: 0,
                   width: "100%",
                   height: "100%",
@@ -59,6 +59,8 @@ export default function FormSection() {
                   justifyContent: "center",
                   alignItems: "center",
                   zIndex: 100000,
+                  overflowY: "hidden",
+ 
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -68,16 +70,15 @@ export default function FormSection() {
                 {/* Modal Box - Perfectly Centered */}
                 <motion.div
                   style={{
-                    backgroundColor: "#ffffff",
-                    padding: "20px 40px",
+                    backgroundColor: "rgb(255, 255, 255)",
+                    padding: "20px 30px",
                     borderRadius: "20px",
-                    width: "90%",
-                    maxHeight: "80vh",
-                    overflowY: "auto",
-                    boxShadow: "0 10px 40px rgba(0, 0, 0, 0.25)",
+                    width: "500px",
+                    height: "100%",
                     position: "relative",
                     zIndex: 10000,
-                    margin: "auto", // Added for perfect centering
+                    display: "flex",
+                    flexDirection: "column", // Ensure proper layout
                   }}
                   initial={{ y: 50, opacity: 0, scale: 0.95 }}
                   animate={{ y: 0, opacity: 1, scale: 1 }}
@@ -90,26 +91,28 @@ export default function FormSection() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      marginBottom: "25px",
-                      paddingBottom: "15px",
+                      marginBottom: "15px",
+                      position: "sticky",
+                      top: "0",
+                      backgroundColor: "white",
+                      zIndex: 100,
+                      paddingBottom: "10px",
                     }}
                   >
                     <h1
                       style={{
-                        fontSize: "40px",
+                        fontSize: "30px",
                         fontWeight: "normal",
                         fontFamily: "'Dancing Script', cursive",
-                        color: "#000", // Black color for text
+                        color: "#000",
                         margin: "0",
-                        display: "inline-block",
                         position: "relative",
-                        padding: "0 0 10px 0 ",
+                        padding: "0 0 10px 0",
                       }}
                     >
                       Institute Enquiry Form
                       <span
                         style={{
-                          content: '""',
                           position: "absolute",
                           left: "0",
                           bottom: "0",
@@ -121,7 +124,6 @@ export default function FormSection() {
                       {/* Bottom Thin Line */}
                       <span
                         style={{
-                          content: '""',
                           position: "absolute",
                           left: "0",
                           bottom: "2px",
@@ -132,7 +134,7 @@ export default function FormSection() {
                         }}
                       ></span>
                     </h1>
-
+ 
                     <button
                       type="button"
                       onClick={() => setShowModal(false)}
@@ -155,17 +157,18 @@ export default function FormSection() {
                       <FaTimes />
                     </button>
                   </div>
-
+ 
                   {/* Modal Content */}
                   <div
                     style={{
-                      maxHeight: "80vh",
+                      flexGrow: 1, // Takes remaining height
                       overflowY: "auto",
-                      scrollbarWidth: "thin", // For Firefox
-                      scrollbarColor: "#F2775Ergb(255, 0, 0)",
+                      paddingRight: "10px",
+                      scrollbarWidth: "thin",
                     }}
                   >
-                    <InstitutionAddForm availabilities={availabilities} />                  </div>
+                    <InstitutionAddForm availabilities={availabilities} />
+                  </div>
                 </motion.div>
               </motion.div>
             )}
@@ -175,3 +178,5 @@ export default function FormSection() {
     </section>
   );
 }
+ 
+ 
