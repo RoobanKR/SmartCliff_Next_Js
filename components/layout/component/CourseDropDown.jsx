@@ -305,7 +305,7 @@ const CoursesDropdown = () => {
                               "5px 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)",
                             overflow: "hidden",
                             height: "60px", // Fixed height
-                            width: "290px", // Fixed width
+                            width: "255px", // Fixed width
                             display: "flex",
                             flexDirection: "column",
                             transition:
