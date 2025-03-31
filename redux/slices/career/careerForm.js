@@ -10,12 +10,19 @@ export const addCareerForm = createAsyncThunk(
         `${getAPIURL()}/create/career-form`,
         formData
       );
-      return response.data;
+      if (!response.ok) {
+        const errorData = await response.json(); // Parse the error response
+        return rejectWithValue(errorData); // Return the structured error
+      }
+
+      const data = await response.json();
+      return data;
     } catch (error) {
-      throw error.response ? error.response.data : error;
+      return rejectWithValue({ message: [{ key: "error", value: error.message }] });
     }
   }
 );
+
 
 export const fetchCareersForm = createAsyncThunk(
   "careerForm/fetchCareersForm",
@@ -92,24 +99,18 @@ const careerSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(addCareerForm.pending, (state) => {
-      state.isLoading = true;
-      state.isSuccess = false;
-      state.isError = false;
-    });
-    builder.addCase(addCareerForm.fulfilled, (state) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.isError = false;
-    });
-    builder.addCase(addCareerForm.rejected, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = false;
-      state.isError = true;
-      state.error = action.payload
-        ? action.payload.message[0].value
-        : action.error.message;
-    });
+      builder.addCase(addCareerForm.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      builder.addCase(addCareerForm.fulfilled, (state, action) => {
+        state.status = "idle";
+        console.log(action.payload);
+      })
+      builder.addCase(addCareerForm.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.payload;
+      }),
     builder.addCase(fetchCareersForm.pending, (state) => {
       state.isLoading = true;
       state.isError = false;

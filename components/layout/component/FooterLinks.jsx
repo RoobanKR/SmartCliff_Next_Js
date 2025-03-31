@@ -139,8 +139,7 @@ export default function FooterLinks({ allClasses }) {
               <div className="d-flex align-items-start gap-2">
                 <i className="lucide lucide-map-pin"></i>
                 <span>
-                  SMARTCLIFF LEARNING SOLUTIONS LLP 2nd Floor,103-107 ThiruVenkata swamy St,RS Puram,CBE-641002
-                </span>
+                SMARTCLIFF LEARNING SOLUTIONS LLP 2nd Floor, 103-107 ThiruVenkata swamy St, RS Puram,CBE-641002                </span>
               </div>
             </div>
           </div>

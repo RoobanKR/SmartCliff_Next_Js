@@ -302,33 +302,35 @@ export default function CareerEnquiryForm({ closeModal }) {
         (value) => value && value.size <= 5 * 1024 * 1024)
   });
  
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = async (values) => {
     setIsSubmitting(true);
- 
+    
     try {
       const formData = new FormData();
       Object.keys(values).forEach(key => {
         formData.append(key, values[key]);
       });
- 
+  
       const response = await dispatch(addCareerForm(formData));
- 
-      if (response.payload.message[0].key === 'success') {
-        toast.success('Application submitted successfully!');
-        resetForm();
-        closeModal();
-      } else {
-        toast.error(response.payload.message[0].value);
-      }
-    } catch (error) {
-      toast.error('An error occurred while submitting the form');
-    } finally {
-      setIsSubmitting(false);
-      setSubmitting(false);
-    }
-  };
- 
-  return (
+      console.log("Response from API:", response);
+  
+      if (response.payload.message[0].key === "success") {
+                 setShowSuccess(true);
+                 toast.success("Form submitted successfully!");
+               } else {
+                 toast.error(response.payload.message[0].value);
+               }
+             } catch (error) {
+               const errorMessage = error.response?.data?.message[0]?.value ||
+                 error.message ||
+                 "An error occurred while submitting the form";
+               toast.error(errorMessage);
+             } finally {
+              setIsSubmitting(false);
+             }
+           };
+
+           return (
     <div style={styles.container}>
       <ToastContainer />
       <Formik

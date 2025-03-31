@@ -22,6 +22,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import { createInstitute } from "@/redux/slices/hiring/institute/institute";
  
  
 // Styles
@@ -247,10 +248,10 @@ export default function InstitutionAddForm({ availabilities }) {
  
   // Process availabilities data
   const skillsetsMap = availabilities.reduce((acc, item) => {
-    if (!acc[item.skillset]) {
-      acc[item.skillset] = [];
+    if (!acc[item.service]) {
+      acc[item.service] = [];
     }
-    acc[item.skillset].push({
+    acc[item.service].push({
       name: item.resources,
       count: parseInt(item.resources) || 0
     });
@@ -266,136 +267,82 @@ export default function InstitutionAddForm({ availabilities }) {
  
   const initialValues = {
     ...formData,
-    // skillsetRequirements: [{ skillset: '', resources: '', otherSkillset: '' }],
-    skillsetRequirements: [{ traineeModel: '', resources: '' }],
-    otherSkillset: '',
-    traineeModel: ''
+    // services: [{ service: '', resources: '', otherSkillset: '' }],
+    services: [{ traineeModel: '', resources: '' }],
   };
  
   // Form validation
   const validate = (values) => {
     const errors = {};
- 
+  
     // Basic field validations
     if (!values.name) {
       errors.name = "Contact person is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.name)) {
-      errors.name = "Invalid name";
     }
- 
-    if (!values.designation) {
-      errors.designation = "Designation is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.designation)) {
-      errors.designation = "Invalid designation";
+    if (!values.institute_name) {
+      errors.institute_name = "Institute name is required";
     }
- 
-    if (!values.company_name) {
-      errors.company_name = "Company name is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.company_name)) {
-      errors.company_name = "Invalid company name";
-    }
- 
     if (!values.mobile) {
       errors.mobile = "Mobile number is required";
-    } else if (!VALIDATION_PATTERNS.phone.test(values.mobile)) {
-      errors.mobile = "Invalid mobile number";
     }
- 
     if (!values.email) {
       errors.email = "Email is required";
-    } else if (!VALIDATION_PATTERNS.email.test(values.email)) {
-      errors.email = "Invalid email address";
     }
- 
     if (!values.enquiry) {
       errors.enquiry = "Enquiry is required";
     }
- 
-    if (!values.count) {
-      errors.count = "Batch size is required";
-    }
-    // Skillset requirements validation
-    values.skillsetRequirements.forEach((req, index) => {
+  
+    // Validate services
+    values.services.forEach((req, index) => {
       if (!req.traineeModel) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          traineeModel: "Trainee model is required"
-        };
+        errors.services = errors.services || [];
+        errors.services[index] = { traineeModel: "Trainee model is required" };
       }
- 
       if (!req.resources) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          ...(errors.skillsetRequirements?.[index] || {}),
-          resources: "Resources is required"
-        };
-      } else if (isNaN(req.resources) || parseInt(req.resources) <= 0) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          ...(errors.skillsetRequirements?.[index] || {}),
-          resources: "Please enter a valid number of resources"
-        };
+        errors.services = errors.services || [];
+        errors.services[index] = { resources: "Resources is required" };
       }
     });
- 
+  
     return errors;
-  };
- 
+  }; 
   // Form submission handler
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
- 
+  
     try {
-      const selectedCourseName = values.course;
-      const selectedCourse = courses.find(
-        (course) => course.course_name === selectedCourseName
-      );
- 
-      if (!selectedCourse) {
-        throw new Error("Selected course not found");
-      }
- 
-      const processedSkillsets = values.skillsetRequirements.map(req => ({
-        skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
+      // Map the services to match the backend schema
+      const processedServices = values.services.map(req => ({
+        service: req.traineeModel, // Assuming traineeModel corresponds to the service
         resources: req.resources
       }));
- 
+  
       const formDataWithCourseId = {
-        ...values,
-        course: selectedCourse._id,
-        skillsetRequirements: processedSkillsets
+        name: values.name,
+        institute_name: values.institute_name,
+        mobile: values.mobile,
+        email: values.email,
+        enquiry: values.enquiry,
+        services: processedServices // Send the processed services
       };
- 
-      const response = await dispatch(submitForm(formDataWithCourseId));
- 
+  
+      const response = await dispatch(createInstitute(formDataWithCourseId));
+  
       if (response.payload.message[0].key === "success") {
-        setShowSuccess(true);
-        toast.success("Form submitted successfully!");
-      } else {
-        toast.error(response.payload.message[0].value);
-      }
-    } catch (error) {
-      const errorMessage = error.response?.data?.message[0]?.value ||
-        error.message ||
-        "An error occurred while submitting the form";
-      toast.error(errorMessage);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
- 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        await dispatch(fetchCourses());
-      } catch (error) {
-        console.error("Failed to load courses:", error);
-      }
-    };
- 
-    loadData();
-  }, [dispatch]);
- 
+                 setShowSuccess(true);
+                 toast.success("Form submitted successfully!");
+               } else {
+                 toast.error(response.payload.message[0].value);
+               }
+             } catch (error) {
+               const errorMessage = error.response?.data?.message[0]?.value ||
+                 error.message ||
+                 "An error occurred while submitting the form";
+               toast.error(errorMessage);
+             } finally {
+              setIsSubmitting(false);
+             }
+           };
   // Custom form components
   const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
@@ -444,7 +391,7 @@ export default function InstitutionAddForm({ availabilities }) {
     index
   }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasSelectedValue = values?.skillsetRequirements?.[index]?.traineeModel;
+    const hasSelectedValue = values?.services?.[index]?.traineeModel;
  
     return (
       <div style={styles.fieldContainer}>
@@ -469,7 +416,7 @@ export default function InstitutionAddForm({ availabilities }) {
               onChange={(e) => {
                 const selectedValue = e.target.value;
                 setFieldValue(name, selectedValue);
-                setFieldValue(`skillsetRequirements.${index}.resources`, '');
+                setFieldValue(`services.${index}.resources`, '');
               }}
               style={{
                 ...styles.inputField,
@@ -550,7 +497,7 @@ export default function InstitutionAddForm({ availabilities }) {
  
   const ResourceInput = ({ icon: Icon, label, name, values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasValue = values?.skillsetRequirements?.[props.index]?.resources !== '';
+    const hasValue = values?.services?.[props.index]?.resources !== '';
  
     return (
       <div style={styles.fieldContainer}>
@@ -604,7 +551,7 @@ export default function InstitutionAddForm({ availabilities }) {
             <FloatingInput
               icon={BusinessIcon}
               type="text"
-              name="company_name"
+              name="institute_name"
               label="Company Name"
               values={values}
             />
@@ -635,10 +582,10 @@ export default function InstitutionAddForm({ availabilities }) {
               label="Contact Person Email"
               values={values}
             />
-            <FieldArray name="skillsetRequirements">
+            <FieldArray name="services">
               {({ push, remove }) => {
                 const canAddMoreSkillsets = (() => {
-                  const lastSkillset = values.skillsetRequirements[values.skillsetRequirements.length - 1];
+                  const lastSkillset = values.services[values.services.length - 1];
                   return lastSkillset.traineeModel &&
                     lastSkillset.resources &&
                     parseInt(lastSkillset.resources) > 0;
@@ -646,14 +593,14 @@ export default function InstitutionAddForm({ availabilities }) {
  
                 return (
                   <div>
-                    {values.skillsetRequirements.map((req, index) => (
+                    {values.services.map((req, index) => (
                       <div key={index} style={styles.skillsetRow}>
                         {/* Skillset Dropdown */}
                         <div style={styles.skillsetField}>
  
                           <FloatingSelect
                             icon={ModelTrainingIcon}
-                            name={`skillsetRequirements.${index}.traineeModel`}
+                            name={`services.${index}.traineeModel`}
                             label="Model"
                             options={TRAINEE_MODELS}
                             values={values}
@@ -666,7 +613,7 @@ export default function InstitutionAddForm({ availabilities }) {
                         <div style={styles.resourcesField}>
                           <ResourceInput
                             icon={InventoryIcon}
-                            name={`skillsetRequirements.${index}.resources`}
+                            name={`services.${index}.resources`}
                             label="Resources"
                             values={values}
                             index={index}

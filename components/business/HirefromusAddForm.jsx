@@ -345,7 +345,6 @@ export default function HireFromUsForm({ availabilities }) {
         enquiry: values.enquiry,
       };
   
-      console.log("Payload to send:", JSON.stringify(formDataToSubmit));
   
       const response = await dispatch(submitForm(formDataToSubmit));
   

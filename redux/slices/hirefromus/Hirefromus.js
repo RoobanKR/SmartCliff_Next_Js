@@ -15,16 +15,22 @@ export const submitForm = createAsyncThunk(
           body: JSON.stringify(formData),
         }
       );
+
       if (!response.ok) {
-        throw new Error("Failed to submit form");
+        const errorData = await response.json(); // Parse the error response
+        return rejectWithValue(errorData); // Return the structured error
       }
+
       const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue({ message: [{ key: "error", value: error.message }] });
     }
   }
 );
+
+
+
 
 const initialState = {
   status: "idle",

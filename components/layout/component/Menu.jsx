@@ -6,7 +6,7 @@ import { menuList } from "@/data/menu";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
-
+ 
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
 import {
   fetchServices,
@@ -21,7 +21,7 @@ import ServicesDropdown from "./ServicesDropdown";
 import BusinessDropdown from "./BusinessDropdown";
 import { fetchCourses } from "@/redux/slices/course/course";
 import { fetchCategories } from "@/redux/slices/category/category";
-
+ 
 export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
   const dispatch = useDispatch();
   const [menuItem, setMenuItem] = useState("");
@@ -30,7 +30,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
   const [isBusinessOpen, setIsBusinessOpen] = useState(false);
   const [isCorporateOpen, setIsCorporateOpen] = useState(false);
   const pathname = usePathname();
-
+ 
   useEffect(() => {
     dispatch(getAllBusinessServices());
     dispatch(fetchDegreeProgramData());
@@ -38,7 +38,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
     dispatch(fetchCategories());
     dispatch(fetchCourses());
   }, [dispatch]);
-
+ 
   useEffect(() => {
     menuList.forEach((elm) => {
       elm?.links?.forEach((elm2) => {
@@ -55,7 +55,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
       });
     });
   }, [pathname]);
-
+ 
   return (
     <div
       className={`header-menu js-mobile-menu-toggle ${
@@ -64,7 +64,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
     >
       <div className="header-menu__content">
         <div className="mobile-bg js-mobile-bg"></div>
-
+ 
         <div
           className="d-none xl:d-flex items-center px-20 py-20 border-bottom-light"
           style={{ fontFamily: "serif" }}
@@ -76,7 +76,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
             Sign Up
           </Link>
         </div>
-
+ 
         <div className="menu js-navList">
           <ul className={allClasses ? allClasses : ""}>
             <li
@@ -112,7 +112,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                 Home
               </Link>
             </li>
-
+ 
             <li
               className="menu-item-has-children"
               style={{
@@ -146,45 +146,45 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                 About Us
               </Link>
             </li>
-
+ 
             <ServicesDropdown />
             <CoursesDropdown />
             <BusinessDropdown />
-
+ 
             <li
               className="menu-item-has-children"
               style={{
-                textDecoration: pathname === "/reviews" ? "underline" : "none",
+                textDecoration: pathname === "/history" ? "underline" : "none",
                 textUnderlineOffset: "4px", // Adds spacing between text and underline
               }}
             >
               <Link
                 data-barba
-                href="/reviews"
-                className={pathname === "/reviews" ? "activeMenu" : ""}
-                onMouseOver={() => setHoveredLink("/reviews")}
+                href="/history"
+                className={pathname === "/history" ? "activeMenu" : ""}
+                onMouseOver={() => setHoveredLink("/history")}
                 onMouseOut={() => setHoveredLink(null)}
                 style={{
                   display: "inline-block",
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border:
-                    hoveredLink === "/reviews"
+                    hoveredLink === "/history"
                       ? "2px solid #f2775e"
                       : "2px solid transparent", // Orange border on hover
                   color:
-                    hoveredLink === "/reviews"
+                    hoveredLink === "/history"
                       ? "#fff" // White text on hover
-                      : pathname === "/reviews"
+                      : pathname === "/history"
                       ? "#f2775e" // Active state text color
                       : "#000", // Default text color (black)
                   transition: "all 0.3s ease",
                 }}
               >
-                Review
+                History
               </Link>
             </li>
-
+ 
             <li
               className="menu-item-has-children"
               style={{
@@ -218,7 +218,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                 Career
               </Link>
             </li>
-
+ 
             <li
               className="menu-item-has-children"
               style={{
@@ -256,7 +256,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
         </div>
         <MobileFooter />
       </div>
-
+ 
       <div
         className="header-menu-close"
         data-el-toggle=".js-mobile-menu-toggle"
@@ -265,8 +265,10 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
           <div className="icon-close text-dark-1 text-16"></div>
         </div>
       </div>
-
+ 
       <div className="header-menu-bg"></div>
     </div>
   );
 }
+ 
+ 

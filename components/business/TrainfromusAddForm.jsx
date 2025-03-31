@@ -22,6 +22,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import { createTrainFromUs } from "@/redux/slices/hiring/trainFromUs/trainFromus";
  
  
 // Styles
@@ -242,10 +243,9 @@ const VALIDATION_PATTERNS = {
 export default function TrainFromUsAddForm({ availabilities }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
-  const courses = useSelector((state) => state.courses.courses);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
- 
+  console.log("Is submitting:", isSubmitting);
   // Process availabilities data
   const skillsetsMap = availabilities.reduce((acc, item) => {
     if (!acc[item.skillset]) {
@@ -261,7 +261,7 @@ export default function TrainFromUsAddForm({ availabilities }) {
   const skillsets = Object.keys(skillsetsMap);
   const TRAINEE_MODELS = [
     'Hire Train Deploy (HTD)',
-    'Hiring Onplay',
+    'Hiring Only',
     'Training Only'
   ];
  
@@ -275,7 +275,8 @@ export default function TrainFromUsAddForm({ availabilities }) {
   // Form validation
   const validate = (values) => {
     const errors = {};
- 
+    console.log("Validation errors:", errors); // Add this line to log errors
+
     // Basic field validations
     if (!values.name) {
       errors.name = "Contact person is required";
@@ -283,11 +284,6 @@ export default function TrainFromUsAddForm({ availabilities }) {
       errors.name = "Invalid name";
     }
  
-    if (!values.designation) {
-      errors.designation = "Designation is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.designation)) {
-      errors.designation = "Invalid designation";
-    }
  
     if (!values.company_name) {
       errors.company_name = "Company name is required";
@@ -309,10 +305,6 @@ export default function TrainFromUsAddForm({ availabilities }) {
  
     if (!values.enquiry) {
       errors.enquiry = "Enquiry is required";
-    }
- 
-    if (!values.count) {
-      errors.count = "Batch size is required";
     }
  
     // Skillset requirements validation
@@ -351,62 +343,43 @@ export default function TrainFromUsAddForm({ availabilities }) {
   };
  
   // Form submission handler
-  const handleSubmit = async (values) => {
-    setIsSubmitting(true);
- 
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true); // Start submitting
+  
     try {
-      const selectedCourseName = values.course;
-      const selectedCourse = courses.find(
-        (course) => course.course_name === selectedCourseName
-      );
- 
-      if (!selectedCourse) {
-        throw new Error("Selected course not found");
-      }
- 
       const processedSkillsets = values.skillsetRequirements.map(req => ({
         skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
-        resources: req.resources
+        resources: parseInt(req.resources, 10)
       }));
- 
-      const formDataWithCourseId = {
-        ...values,
-        course: selectedCourse._id,
-        skillsetRequirements: processedSkillsets
-      };
- 
-      const response = await dispatch(submitForm(formDataWithCourseId));
- 
-      if (response.payload.message[0].key === "success") {
-        setShowSuccess(true);
-        toast.success("Form submitted successfully!");
-      } else {
-        toast.error(response.payload.message[0].value);
-      }
-    } catch (error) {
-      const errorMessage = error.response?.data?.message[0]?.value ||
-        error.message ||
-        "An error occurred while submitting the form";
-      toast.error(errorMessage);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
- 
   
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        await dispatch(fetchCourses());
-      } catch (error) {
-        console.error("Failed to load courses:", error);
-      }
-    };
- 
-    loadData();
-  }, [dispatch]);
- 
-  // Custom form components
+      const formDataToSubmit = {
+        company_name: values.company_name,
+        name: values.name,
+        mobile: values.mobile,
+        email: values.email,
+        skillsetRequirements: processedSkillsets,
+        enquiry: values.enquiry,
+        trainee_modal: values.traineeModel
+      };
+  
+  
+      const response = await dispatch(createTrainFromUs(formDataToSubmit));
+      if (response.payload.message[0].key === "success") {
+            setShowSuccess(true);
+            toast.success("Form submitted successfully!");
+          } else {
+            toast.error(response.payload.message[0].value);
+          }
+        } catch (error) {
+          const errorMessage = error.response?.data?.message[0]?.value ||
+            error.message ||
+            "An error occurred while submitting the form";
+          toast.error(errorMessage);
+        } finally {
+          setSubmitting(false);
+        }
+      };
+  
   const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
@@ -618,19 +591,19 @@ export default function TrainFromUsAddForm({ availabilities }) {
   return (
     <div style={styles.container}>
       <ToastContainer />
-      <Formik
-        initialValues={initialValues}
-        validate={validate}
-        onSubmit={handleSubmit}
-      >
-        {({ values, setFieldValue }) => (
+       <Formik
+       initialValues={initialValues}
+       validate={validate}
+       onSubmit={handleSubmit}
+     >
+       {({ isSubmitting,values,setFieldValue }) => (
           <Form style={styles.form}>
             {/* Company Name */}
             <FloatingInput
               icon={BusinessIcon}
               type="text"
               name="company_name"
-              label="Your company"
+              label="Company Name"
               values={values}
             />
  
@@ -639,7 +612,7 @@ export default function TrainFromUsAddForm({ availabilities }) {
               icon={PersonIcon}
               type="text"
               name="name"
-              label="Your full name"
+              label="Contact Person Name"
               values={values}
             />
  
@@ -648,7 +621,7 @@ export default function TrainFromUsAddForm({ availabilities }) {
               icon={PhoneIcon}
               type="text"
               name="mobile"
-              label="Your mobile number"
+              label="Contact Person Number"
               values={values}
             />
  
@@ -657,7 +630,7 @@ export default function TrainFromUsAddForm({ availabilities }) {
               icon={EmailIcon}
               type="email"
               name="email"
-              label="your.email@example.com"
+              label="Contact Person Email"
               values={values}
             />
  
@@ -819,8 +792,8 @@ export default function TrainFromUsAddForm({ availabilities }) {
                   opacity: isSubmitting ? "0.8" : "1",
                 }}
               >
-                {isSubmitting ? "Submitting..." : "Get started"}
-                <span
+  {isSubmitting ? "Submitting..." : "Get started"}
+  <span
                   style={{
                     background: "white",
                     marginLeft: "50px",

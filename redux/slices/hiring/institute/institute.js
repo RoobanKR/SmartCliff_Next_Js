@@ -13,29 +13,29 @@ export const createInstitute = createAsyncThunk(
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
-        throw new Error("Failed to submit form");
+        const errorData = await response.json(); // Parse the error response
+        return rejectWithValue(errorData); // Return the structured error
       }
+
       const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue({ message: [{ key: "error", value: error.message }] });
     }
   }
 );
+
 
 const initialState = {
   status: "idle",
   error: null,
   formData: {
     name: "",
-    designation: "",
     institute_name: "",
     mobile: "",
     email: "",
     enquiry: "",
-    course: "",
-    no_of_students: "",
-    target_year: "",
+    services: [],
   },
 };
 
