@@ -9,7 +9,6 @@ import { fetchAllFAQs } from "@/redux/slices/faq/faq";
 import HeaderTwo from "@/components/layout/headers/HeaderTwo";
 import B2bMainPage from "@/components/services/B2bMainPage";
 import { useParams } from "next/navigation";
-import FooterTwo from "@/components/layout/footers/Footer";
 
 export default function HomeNine() {
   const dispatch = useDispatch();
@@ -33,9 +32,6 @@ export default function HomeNine() {
         <HeaderTwo onServiceSelect={handleServiceSelect} />
         <div style={{ marginTop: '60px' }}>
           <B2bMainPage selectedService={selectedService} />
-        </div>
-        <div style={{ marginTop: '60px' }}>
-          <FooterTwo />
         </div>
       </div>
     </>

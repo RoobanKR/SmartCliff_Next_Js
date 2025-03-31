@@ -281,16 +281,16 @@ const CoursesDropdown = () => {
                   <div
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "repeat(2, 1fr)",
+                      gridTemplateColumns: "repeat(3, 1fr)",
                       gap: "20px",
                     }}
                   >
                     {coursesByCategory[hoveredCategory].map((course) => (
                       <div
                         key={course._id}
-                        onClick={(e) =>
-                          handleCourseClick(e, course._id, course.slug)
-                        }
+                        // onClick={(e) =>
+                        //   handleCourseClick(e, course._id, course.slug)
+                        // }
                         style={{
                           textDecoration: "none",
                           color: "inherit",
@@ -304,8 +304,8 @@ const CoursesDropdown = () => {
                             boxShadow:
                               "5px 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)",
                             overflow: "hidden",
-                            height: "180px", // Fixed height
-                            width: "320px", // Fixed width
+                            height: "60px", // Fixed height
+                            width: "290px", // Fixed width
                             display: "flex",
                             flexDirection: "column",
                             transition:
@@ -384,7 +384,7 @@ const CoursesDropdown = () => {
                               height: "140px", // Fixed height for description area
                             }}
                           >
-                            <p
+                            {/* <p
                               style={{
                                 fontSize: "12px",
                                 color: "#6B7280",
@@ -400,10 +400,10 @@ const CoursesDropdown = () => {
                             >
                               {course.short_description ||
                                 `Master ${course.course_name} with our comprehensive curriculum designed for industry professionals.`}
-                            </p>
+                            </p> */}
  
                             {/* Learn More button with loading state */}
-                            <div
+                            {/* <div
                               style={{
                                 fontSize: "14px",
                                 fontWeight: "500",
@@ -453,7 +453,7 @@ const CoursesDropdown = () => {
                                   ></i>
                                 </>
                               )}
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>

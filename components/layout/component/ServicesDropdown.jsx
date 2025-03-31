@@ -390,7 +390,7 @@ const ServicesDropdown = () => {
                             />
                           </div>
                           <span style={{ fontSize: "14px" }}>
-                          {service.name.charAt(0).toUpperCase() + service.name.slice(1).toLowerCase()}
+                            {service.name}
                           </span>
                         </div>
                         <i
@@ -574,48 +574,50 @@ const ServicesDropdown = () => {
                               </div>
 
                               {/* Learn More button */}
-                              <div
-                                style={{
-                                  marginTop: "auto",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  position: "relative",
-                                  zIndex: "1",
-                                }}
-                              >
-                                {isLoading ? (
-                                  <>
-                                    <LoadingSpinner />
-                                    <span style={{ marginLeft: "8px" }}>
-                                      Loading
-                                      <SequentialDots />
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span
-                                      style={{
-                                        fontSize: "14px",
-                                        fontWeight: "500",
-                                        color: "#0047AB",
-                                        display: "flex",
-                                        alignItems: "center",
-                                      }}
-                                    >
-                                      Learn More
-                                    </span>
-                                    <i
-                                      className="icon-chevron-right"
-                                      style={{
-                                        fontSize: "11px",
-                                        marginLeft: "8px",
-                                        color: "#0047AB",
-                                        transition: "transform 0.2s ease",
-                                      }}
-                                    ></i>
-                                  </>
-                                )}
-                              </div>
+                              {service.title !== "Degree Program" && (
+                                <div
+                                  style={{
+                                    marginTop: "auto",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    position: "relative",
+                                    zIndex: "1",
+                                  }}
+                                >
+                                  {isLoading ? (
+                                    <>
+                                      <LoadingSpinner />
+                                      <span style={{ marginLeft: "8px" }}>
+                                        Loading
+                                        <SequentialDots />
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span
+                                        style={{
+                                          fontSize: "14px",
+                                          fontWeight: "500",
+                                          color: "#0047AB",
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        Read More
+                                      </span>
+                                      <i
+                                        className="icon-chevron-right"
+                                        style={{
+                                          fontSize: "11px",
+                                          marginLeft: "8px",
+                                          color: "#0047AB",
+                                          transition: "transform 0.2s ease",
+                                        }}
+                                      ></i>
+                                    </>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </Link>
                         );

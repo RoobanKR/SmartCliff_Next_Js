@@ -4,25 +4,21 @@ import Axios from "axios";
 
 export const addCareerForm = createAsyncThunk(
   "careerForm/addCareerForm",
-  async (formData) => {
+  async (formData, { rejectWithValue }) => {
     try {
       const response = await Axios.post(
         `${getAPIURL()}/create/career-form`,
         formData
       );
-      if (!response.ok) {
-        const errorData = await response.json(); // Parse the error response
-        return rejectWithValue(errorData); // Return the structured error
-      }
 
-      const data = await response.json();
-      return data;
+      return response.data; // Assuming the response is structured correctly
     } catch (error) {
-      return rejectWithValue({ message: [{ key: "error", value: error.message }] });
+      // Check if the error response has the expected structure
+      const errorMessage = error.response?.data?.message || [{ key: "error", value: "An unknown error occurred" }];
+      return rejectWithValue(errorMessage);
     }
   }
 );
-
 
 export const fetchCareersForm = createAsyncThunk(
   "careerForm/fetchCareersForm",
@@ -109,9 +105,9 @@ const careerSlice = createSlice({
       })
       builder.addCase(addCareerForm.rejected, (state, action) => {
         state.status = "idle";
-        state.error = action.payload;
-      }),
-    builder.addCase(fetchCareersForm.pending, (state) => {
+        state.error = action.payload[0]?.value || "An unknown error occurred"; // Access the error message correctly
+      });
+      builder.addCase(fetchCareersForm.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
     });

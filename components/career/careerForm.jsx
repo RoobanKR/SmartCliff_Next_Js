@@ -314,22 +314,18 @@ export default function CareerEnquiryForm({ closeModal }) {
       const response = await dispatch(addCareerForm(formData));
       console.log("Response from API:", response);
   
-      if (response.payload.message[0].key === "success") {
-                 setShowSuccess(true);
-                 toast.success("Form submitted successfully!");
-               } else {
-                 toast.error(response.payload.message[0].value);
-               }
-             } catch (error) {
-               const errorMessage = error.response?.data?.message[0]?.value ||
-                 error.message ||
-                 "An error occurred while submitting the form";
-               toast.error(errorMessage);
-             } finally {
-              setIsSubmitting(false);
-             }
-           };
-
+      if (addCareerForm.fulfilled.match(response)) {
+        toast.success("Form submitted successfully!");
+      } else {
+        toast.error(response.payload[0]?.value || "An error occurred");
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message[0]?.value || error.message || "An error occurred while submitting the form";
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
            return (
     <div style={styles.container}>
       <ToastContainer />
