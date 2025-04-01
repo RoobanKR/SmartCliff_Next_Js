@@ -32,58 +32,59 @@ const TableComponent = ({ selectedSubmain, collegeId }) => {
     const currentVertical = matchedSkillVerticals[0];
 
     if (activeTab === "Prerequisites" && currentVertical.prerequisites) {
-      return currentVertical.prerequisites.map((subject) => ({
-        name: subject,
-        type: "prerequisite",
-      }));
+      // Parse prerequisites to identify different item types
+      return currentVertical.prerequisites.map((item) => {
+        // Determine item type by looking for keywords in the item name
+        const type = determineItemType(item);
+        return {
+          name: item,
+          type: type,
+        };
+      });
     } else if (activeTab === "Core Vertical Subjects") {
-      const result = [];
-
-      // Add core subjects
-      if (currentVertical.coreSubjects) {
-        currentVertical.coreSubjects.forEach((subject) => {
-          result.push({ name: subject, type: "core" });
-        });
-      }
-
-      // Add mini projects
-      if (
-        currentVertical.miniProjects &&
-        currentVertical.miniProjects.length > 0
-      ) {
-        currentVertical.miniProjects.forEach((project, index) => {
-          result.push({
-            name: project.name,
-            type: "miniproject",
-            descriptions: project.description || [],
-          });
-
-          // Add descriptions as sub-items if they exist
-          if (project.description && project.description.length > 0) {
-            project.description.forEach((desc) => {
-              result.push({
-                name: desc,
-                type: "description",
-                isSubItem: true,
-              });
-            });
-          }
-        });
-      }
-
-      // Add major project
-      if (currentVertical.majorProject) {
-        result.push({
-          name: currentVertical.majorProject.name,
-          type: "majorproject",
-        });
-      }
-
-      return result;
+      // Parse core subjects to identify different item types
+      return (currentVertical.coreSubjects || []).map((item) => {
+        // Determine item type by looking for keywords in the item name
+        const type = determineItemType(item);
+        return {
+          name: item,
+          type: type,
+        };
+      });
     }
 
     return [];
   };
+
+
+  function determineItemType(item) {
+    const lowerCaseItem = item.toLowerCase();
+
+    // Check if this is a mini project
+    if (lowerCaseItem.includes("mini project") ||
+      lowerCaseItem.includes("miniproject") ||
+      lowerCaseItem.startsWith("mini:")) {
+      return "miniproject";
+    }
+
+    // Check if this is a major project
+    if (lowerCaseItem.includes("major project") ||
+      lowerCaseItem.includes("majorproject") ||
+      lowerCaseItem.startsWith("major:")) {
+      return "majorproject";
+    }
+
+    // Check if this is a description (usually more detailed text or indented)
+    if (lowerCaseItem.startsWith("- ") ||
+      lowerCaseItem.startsWith("* ") ||
+      lowerCaseItem.startsWith("description:")) {
+      return "description";
+    }
+
+    // Default to core or prerequisite based on the active tab
+    return activeTab === "Prerequisites" ? "prerequisite" : "core";
+  }
+
 
   return (
     <div
@@ -101,7 +102,7 @@ const TableComponent = ({ selectedSubmain, collegeId }) => {
       <div
         style={{
           position: "relative",
-          padding: "15px 0px 5px 0px",
+          padding: "15px 0px 15px 0px",
           marginBottom: "10px",
         }}
       >
@@ -124,7 +125,7 @@ const TableComponent = ({ selectedSubmain, collegeId }) => {
               bottom: "0",
               height: "5px",
               width: "55px",
-              backgroundColor: "black",
+              backgroundColor: "white",
             }}
           ></span>
           {/* Bottom Thin Line */}
@@ -147,9 +148,10 @@ const TableComponent = ({ selectedSubmain, collegeId }) => {
       <div
         style={{
           position: "relative",
-          background: "linear-gradient(135deg, #3730a3 0%, #7c3aed 100%)",
+          // background: "linear-gradient(135deg,rgba(56, 48, 163, 0.9) 0%,rgba(124, 58, 237, 0.9) 100%)",
+          backgroundColor: "rgb(222, 212, 243)",
           padding: "clamp(20px, 4vw, 25px) 24px",
-          color: "white",
+          color: "black",
           textAlign: "center",
         }}
       >
@@ -160,8 +162,8 @@ const TableComponent = ({ selectedSubmain, collegeId }) => {
               fontWeight: "800",
               marginBottom: "18px",
               letterSpacing: "0.5px",
-              color: "white",
-              textShadow: "0 7px 4px rgba(0, 0, 0, 0.2)",
+              color: "black",
+              textShadow: "0 5px 4px rgba(0, 0, 0, 0.2)",
               overflowWrap: "break-word",
             }}
           >
@@ -327,7 +329,7 @@ const TabButton = ({ label, emoji, isActive, onClick }) => {
         transition: "all 0.25s ease",
         border: "none",
         cursor: "pointer",
-        backgroundColor: isActive ? "#4338ca" : "#f1f5f9",
+        backgroundColor: isActive ? " #5b2c6f" : " #f1f5f9",
         color: isActive ? "white" : "#475569",
         fontWeight: "600",
         boxShadow: isActive

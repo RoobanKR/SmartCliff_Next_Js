@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HeroSection from "./home";
 import FormSection from "./formSection";
-import LearningJourney from "../LearningJourney";
+import LearningJourney from "./LearningJourney";
 
 const SkillsetTable3 = () => {
   const sectionRef = useRef(null);

@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllLearningJourneys } from "@/redux/slices/bussiness/learningJourney/learningJourney";
 import { CircularProgress } from "@mui/material";
 import {
   getAllBusinessServices,
@@ -12,38 +11,19 @@ import {
   fetchServices,
   selectServices,
 } from "@/redux/slices/services/services/Services";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export default function LearningJourney() {
   const dispatch = useDispatch();
-  const router = useRouter();
-
   const services = useSelector(selectServices);
   const businessServices = useSelector(selectBusinessServices);
-  const { learningJourneys, loading } = useSelector(
-    (state) => state.learningJourney
-  );
 
   useEffect(() => {
-    dispatch(fetchAllLearningJourneys());
     dispatch(getAllBusinessServices());
     dispatch(fetchServices());
   }, [dispatch]);
 
-  console.log("Business Services:", businessServices);
 
-  // Find the institute service
-  const instituteService = businessServices?.find(
-    (service) => service?.name?.toLowerCase() === "institute"
-  );
-
-  // Extract the ID of the institute service
-  const instituteServiceId = instituteService?._id || null;
-  console.log("Found Institute Service:", instituteService);
-  console.log("Institute Service ID:", instituteServiceId);
-
-  if (loading || !businessServices || businessServices.length === 0) {
+  if (!businessServices || businessServices.length === 0) {
     return <CircularProgress />;
   }
 
@@ -85,19 +65,14 @@ export default function LearningJourney() {
                   </div>
 
                   <div className="coursesCard__content mt-30">
-                    <Link
-                      href={`/b2i/${mainservice.slug}`}
-                      className="coursesCard__title text-18 lh-1 fw-500 text-blue-600 cursor-pointer"
-                      style={{ textDecoration: "underline" }} // Adds underline effect
-                    >
+                    <span  className="coursesCard__title text-18 lh-1 fw-900 text-blue-600 cursor-pointer">
                       {mainservice.title}
-                    </Link>
-
+                    </span>
                     <p
                       className="coursesCard__text text-14 mt-10"
                       style={{
                         display: "-webkit-box",
-                        WebkitLineClamp: 3, // Limits to 4 lines
+                        WebkitLineClamp: 3,
                         WebkitBoxOrient: "vertical",
                         overflow: "hidden",
                         textOverflow: "ellipsis",

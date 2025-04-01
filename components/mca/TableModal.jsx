@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FaTimes } from "react-icons/fa";
- 
+
 const TableModal = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
- 
+
     return (
         <div style={styles.overlay}>
             <div style={styles.modal}>
@@ -18,7 +18,7 @@ const TableModal = ({ isOpen, onClose, children }) => {
         </div>
     );
 };
- 
+
 const styles = {
     overlay: {
         position: "fixed",
@@ -54,7 +54,7 @@ const styles = {
         // backgroundColor:"yellow"
     },
     closeButton: {
- 
+
         backgroundColor: "rgb(222, 39, 39)",
         borderRadius: "8px",
         padding: "4px 6px",
@@ -70,13 +70,12 @@ const styles = {
         color: "white",
     },
 };
- 
+
 TableModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
 };
- 
+
 export default TableModal;
- 
- 
+
