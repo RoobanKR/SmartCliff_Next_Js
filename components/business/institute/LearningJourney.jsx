@@ -65,7 +65,7 @@ export default function LearningJourney() {
                   </div>
 
                   <div className="coursesCard__content mt-30">
-                    <span  className="coursesCard__title text-18 lh-1 fw-900 text-blue-600 cursor-pointer">
+                    <span  className="coursesCard__title text-16 lh-1 fw-900 text-blue-600 cursor-pointer">
                       {mainservice.title}
                     </span>
                     <p
