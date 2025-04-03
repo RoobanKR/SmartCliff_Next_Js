@@ -470,7 +470,7 @@ export default function ExecutionOverview1({ serviceId }) {
               }}
               style={swiperStyles.container}
             >
-    {displayData.map((company, index) => (
+              {displayData.map((company, index) => (
                 <SwiperSlide key={index} style={{ padding: "10px" }}>
                   <div
                     ref={(el) => (slideRefs.current[index] = el)}
@@ -526,7 +526,11 @@ export default function ExecutionOverview1({ serviceId }) {
                                 return (
                                   <SwiperSlide key={sectionIndex}>
                                     <div
-                                      ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
+                                      ref={(el) =>
+                                      (sectionRefs.current[
+                                        currentSectionIndex
+                                      ] = el)
+                                      }
                                       style={{
                                         backgroundColor: "rgb(154, 123, 216)",
                                         color: "white",
@@ -539,16 +543,30 @@ export default function ExecutionOverview1({ serviceId }) {
                                         height: maxSectionHeight || "auto",
                                       }}
                                     >
-                                      <p style={{ fontSize: "1rem", marginBottom: "0.5rem", whiteSpace: "pre-line" }}>
-                                        {section.title && section.title.split(",").map((part, i) => (
-                                          <span key={i}>
-                                            {part.trim()}
-                                            <br />
-                                          </span>
-                                        ))}
+                                      <p
+                                        style={{
+                                          fontSize: "1rem",
+                                          marginBottom: "0.5rem",
+                                          whiteSpace: "pre-line",
+                                        }}
+                                      >
+                                        {section.title &&
+                                          section.title
+                                            .split(",")
+                                            .map((part, i) => (
+                                              <span key={i}>
+                                                {part.trim()}
+                                                <br />
+                                              </span>
+                                            ))}
                                       </p>
  
-                                      <div style={{ fontWeight: "bold", fontSize: "1.875rem" }}>
+                                      <div
+                                        style={{
+                                          fontWeight: "bold",
+                                          fontSize: "1.875rem",
+                                        }}
+                                      >
                                         {section.count}
                                       </div>
                                     </div>
@@ -578,15 +596,21 @@ export default function ExecutionOverview1({ serviceId }) {
                                 transition: "all 0.3s ease-in-out",
                               }}
                               onMouseOver={(e) => {
-                                e.currentTarget.style.background = "rgba(255, 255, 255, 1)";
-                                e.currentTarget.style.border = "1px solid #FF8C00"; // Orange border
+                                e.currentTarget.style.background =
+                                  "rgba(255, 255, 255, 1)";
+                                e.currentTarget.style.border =
+                                  "1px solid #FF8C00"; // Orange border
                               }}
                               onMouseOut={(e) => {
-                                e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
-                                e.currentTarget.style.border = "1px solid rgba(0, 0, 0, 0.1)";
+                                e.currentTarget.style.background =
+                                  "rgba(255, 255, 255, 0.9)";
+                                e.currentTarget.style.border =
+                                  "1px solid rgba(0, 0, 0, 0.1)";
                               }}
                             >
-                              <ChevronLeft style={{ fontSize: "24px", color: " #FF8C00" }} />
+                              <ChevronLeft
+                                style={{ fontSize: "24px", color: " #FF8C00" }}
+                              />
                             </div>
  
                             <div
@@ -609,70 +633,111 @@ export default function ExecutionOverview1({ serviceId }) {
                                 transition: "all 0.3s ease-in-out",
                               }}
                               onMouseOver={(e) => {
-                                e.currentTarget.style.background = "rgba(255, 255, 255, 1)";
-                                e.currentTarget.style.border = "1px solid #FF8C00"; // Orange border
+                                e.currentTarget.style.background =
+                                  "rgba(255, 255, 255, 1)";
+                                e.currentTarget.style.border =
+                                  "1px solid #FF8C00"; // Orange border
                               }}
                               onMouseOut={(e) => {
-                                e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
-                                e.currentTarget.style.border = "1px solid rgba(0, 0, 0, 0.1)";
+                                e.currentTarget.style.background =
+                                  "rgba(255, 255, 255, 0.9)";
+                                e.currentTarget.style.border =
+                                  "1px solid rgba(0, 0, 0, 0.1)";
                               }}
                             >
-                              <ChevronRight style={{ fontSize: "24px", color: " #FF8C00" }} />
+                              <ChevronRight
+                                style={{ fontSize: "24px", color: " #FF8C00" }}
+                              />
                             </div>
- 
                           </>
+ 
                         ) : (
                           // Single section case - no slider needed
                           company.sections && company.sections.map((section, sectionIndex) => {
                             const currentSectionIndex = sectionRefIndex++;
                             return (
-                              <div
-                                ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
-                                key={sectionIndex}
-                                style={{
-                                  backgroundColor: "rgb(154, 123, 216)",
-                                  color: "white",
-                                  borderRadius: "0.375rem",
-                                  padding: "-20px 10px",
-                                  marginBottom: "1rem",
-                                  height: maxSectionHeight || "auto",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  justifyContent: "center", // Center content vertically
-                                  alignItems: "center", // Center content horizontally
-                                  textAlign: "center", // Ensure text is centered
-                                }}
-                              >
-                                <p
+                              <>
+                                <div
+                                  ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
+                                  key={sectionIndex}
                                   style={{
-                                    fontSize: "1rem",
-                                    whiteSpace: "pre-line",
-                                    marginBottom: "0.5rem",
-                                    width: "100%",
-                                    padding: "30px",
-                                    textAlign: "left", // Center the text properly
+                                    background: "rgba(154, 123, 216, 0.15)", // Light purple translucent background
+                                    color: "#4B0082", // Deep purple text for contrast
+                                    borderRadius: "0.375rem",
+                                    marginBottom: "1rem",
+                                    backdropFilter: "blur(10px)", // Glassmorphism effect
+                                    border: "2px solid transparent",
+                                    backgroundImage:
+                                      "linear-gradient(white, white), linear-gradient(135deg, #9A7BD8, #B8A2EC)",
+                                    backgroundClip: "padding-box, border-box",
+                                    height: maxSectionHeight || "auto",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center", // Center content vertically
+                                    alignItems: "center", // Center content horizontally
+                                    textAlign: "center", // Ensure text is centered
                                   }}
                                 >
-                                  {section.title && section.title.split(",").map((part, i, arr) => (
-                                    <span key={i}>
-                                     --{part.trim()}
-                                      {i < arr.length - 1 && (
-                                        <hr style={{ margin: "4px 0", border: "0.5px solid #ccc" }} />
-                                      )}
-                                    </span>
-                                  ))}
-                                </p>
+                                  <p
+                                    style={{
+                                      fontSize: "1rem",
+                                      whiteSpace: "pre-line",
+                                      marginBottom: "0.5rem",
+                                      width: "100%",
+                                      padding: "30px",
+                                      textAlign: "left", // Center the text properly
+                                    }}
+                                  >
+                                    {section.title &&
+                                      section.title
+                                        .split(",")
+                                        .map((part, i, arr) => (
+                                          <span key={i}>
+                                            ✨ {part.trim()}
+                                            {i < arr.length - 1 && (
+                                              <hr
+                                                style={{
+                                                  margin: "8px 0",
+                                                  border: "0.5px solid #C4A7E7",
+                                                }}
+                                              />
+                                            )}
+                                          </span>
+                                        ))}
  
-                                {/* Count positioned at the bottom */}
+                                  </p>
+                                </div>
                                 <div
                                   style={{
+                                    background: "rgb(25, 36, 72)",
+                                    color: "rgb(255, 255, 255)",
+                                    borderRadius: "12px",
+                                    padding: "25px",
                                     fontWeight: "bold",
-                                    fontSize: "1.875rem",
+                                    fontSize: "2rem",
+                                    width: "100%",
+                                    textAlign: "center",
+                                    boxShadow:
+                                      "0px 6px 20px rgba(0, 0, 0, 0.1)",
+                                    transition: "all 0.3s ease-in-out",
+                                    position: "relative",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform =
+                                      "translateY(-5px)";
+                                    e.currentTarget.style.boxShadow =
+                                      "0px 12px 25px rgba(0, 0, 0, 0.15)";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform =
+                                      "translateY(0)";
+                                    e.currentTarget.style.boxShadow =
+                                      "0px 6px 20px rgba(0, 0, 0, 0.1)";
                                   }}
                                 >
                                   {section.count}
                                 </div>
-                              </div>
+                              </>
                             );
                           })
                         )}
@@ -705,4 +770,5 @@ export default function ExecutionOverview1({ serviceId }) {
     </section>
   );
 }
+ 
  
