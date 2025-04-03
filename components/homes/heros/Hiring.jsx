@@ -8,7 +8,7 @@ export default function Hiring() {
     >
       <div className="container">
         <div className="row y-gap-20 justify-between items-center">
-          <div className="col-xl-4 col-lg-5">
+          <div className="col-xl-8 col-lg-5">
             <h2 className="text-30 lh-15 text-black">
               Make an impact while growing your
               <span className="" style={{ color: "#f2775e" }}>

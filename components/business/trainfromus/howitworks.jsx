@@ -5,24 +5,24 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
- 
 export default function HowItWorks() {
-
   const dispatch = useDispatch();
-  const { howItWorks, loading, error } = useSelector((state) => state.howItWorks);
+  const { howItWorks, loading, error } = useSelector(
+    (state) => state.howItWorks
+  );
 
   useEffect(() => {
     dispatch(fetchAllHowItWorks());
   }, [dispatch]);
 
-  const hireFromUsData = howItWorks.filter(works => works.type === "trainfromus");
+  const hireFromUsData = howItWorks.filter(
+    (works) => works.type === "trainfromus"
+  );
 
- 
   return (
     <div
       style={{
-        backgroundColor: "#F8FAFC",
-        padding: "20px 5%",
+        padding: "30px 5%",
         textAlign: "center",
         color: "#1E293B",
       }}
@@ -33,7 +33,7 @@ export default function HowItWorks() {
       <p style={{ fontSize: "18px", marginBottom: "40px", color: "#475569" }}>
         A simple and effective hiring process to get the best talent.
       </p>
- 
+
       <div
         style={{
           display: "grid",
@@ -63,8 +63,8 @@ export default function HowItWorks() {
                 color: "#FACC15",
               }}
             >
-                  <Image width={50} height={50} src={step.image} alt="icon" />
-                  </div>
+              <Image width={50} height={50} src={step.image} alt="icon" />
+            </div>
             <h3
               style={{
                 fontSize: "20px",
@@ -74,7 +74,9 @@ export default function HowItWorks() {
             >
               {step.title}
             </h3>
-            <p style={{ fontSize: "16px", color: "#64748B" }}>{step.description}</p>
+            <p style={{ fontSize: "16px", color: "#64748B" }}>
+              {step.description}
+            </p>
             <span
               style={{
                 position: "absolute",
@@ -93,4 +95,3 @@ export default function HowItWorks() {
     </div>
   );
 }
- 

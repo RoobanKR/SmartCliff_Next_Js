@@ -93,7 +93,7 @@ export default function MissionVision() {
       style={{
         textAlign: "center",
         padding: "50px 20px", // Added horizontal padding for mobile
-        background: "#eef2f5",
+        background: "linear-gradient(to right, #fdf9ff, #fdf9ff)", // Use quotes for the string
         position: "relative",
         overflow: "hidden", // Prevent image overflow
       }}

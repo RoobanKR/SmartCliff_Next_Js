@@ -5,19 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import HeroSection from "./home";
 import HiringCategories from "./category";
 import HowItWorks from "./howitworks";
- 
+import LearningJourney from "./LearningJourney";
+import { fetchAllLearningJourneys } from "@/redux/slices/bussiness/learningJourney/learningJourney";
+
 const SkillsetTable = () => {
   const sectionRef = useRef(null);
-  const [showModal, setShowModal] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
- 
-  // Function to scroll to the section
   const scrollToSection = () => {
     if (sectionRef.current) {
       const offset = 100; // Adjust this value to stop slightly above
       const elementPosition =
         sectionRef.current.getBoundingClientRect().top + window.scrollY;
- 
+
       window.scrollTo({
         top: elementPosition - offset,
         behavior: "smooth",
@@ -26,26 +24,40 @@ const SkillsetTable = () => {
       console.error("❌ sectionRef.current is NULL");
     }
   };
- 
+
   const dispatch = useDispatch();
   const { availabilities, loading, error } = useSelector(
     (state) => state.currentAvailability
   );
- 
- 
- 
+
+  const { learningJourneys } = useSelector((state) => state.learningJourney);
+  const hireFromUsData = learningJourneys.filter(
+    (journey) => journey.type === "hirefromus"
+  );
+
   useEffect(() => {
+    dispatch(fetchAllLearningJourneys());
     dispatch(getAllCurrentAvailabilities());
   }, [dispatch]);
- 
+
+  // Boolean to check if availabilities has data
+  const hasAvailabilities =
+    !loading && !error && availabilities && availabilities.length > 0;
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
- 
+
   return (
     <>
       <div className="mt-60">
-        <HeroSection scrollToSection={scrollToSection} />
+        <HeroSection
+          scrollToSection={scrollToSection}
+          hasAvailabilities={hasAvailabilities}
+        />
       </div>
+      {hireFromUsData.length > 0 && (
+        <LearningJourney hireFromUsData={hireFromUsData} />
+      )}
       <HiringCategories />
       <HowItWorks />
       <div ref={sectionRef}>
@@ -53,45 +65,62 @@ const SkillsetTable = () => {
           <h2 style={styles.title}>
             Current <span style={styles.highlight}>Availability</span>
           </h2>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                {[
-                  "Skillset",
-                  "No. of Resources",
-                  "Training Duration",
-                  "Passed Out Year",
-                  "Years of Experience",
-                  "Availability",
-                ].map((header, index) => (
-                  <th key={index} style={styles.th}>
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {availabilities.map((row, index) => (
-                <tr key={index}>
-                  <td style={styles.td}>{row.skillset}</td>
-                  <td style={styles.td}>{row.resources}</td>
-                  <td style={styles.td}>{row.duration}</td>
-                  <td style={styles.td}>{row.batch}</td>
-                  <td style={styles.td}>{row.experience}</td>
-                  <td
-                    style={{
-                      ...styles.td,
-                      color: row.remarks === "Available" ? "green" : "red",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {row.remarks}
-                  </td>
+          {hasAvailabilities ? (
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  {[
+                    "Skillset",
+                    "No. of Resources",
+                    "Training Duration",
+                    "Passed Out Year",
+                    "Years of Experience",
+                    "Availability",
+                  ].map((header, index) => (
+                    <th key={index} style={styles.th}>
+                      {header}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
- 
+              </thead>
+              <tbody>
+                {availabilities.map((row, index) => (
+                  <tr key={index}>
+                    <td style={styles.td}>{row.skillset}</td>
+                    <td style={styles.td}>{row.resources}</td>
+                    <td style={styles.td}>{row.duration}</td>
+                    <td style={styles.td}>{row.batch}</td>
+                    <td style={styles.td}>{row.experience}</td>
+                    <td
+                      style={{
+                        ...styles.td,
+                        color: row.remarks === "Available" ? "green" : "red",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {row.remarks}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "40px",
+                backgroundColor: "#f8f8f8",
+                borderRadius: "8px",
+                marginTop: "20px",
+              }}
+            >
+              <p style={{ fontSize: "18px", color: "#555" }}>
+                No availability data found at the moment. Please check back
+                later.
+              </p>
+            </div>
+          )}
+
           <style jsx>{`
             @media (max-width: 768px) {
               .responsive-table {
@@ -99,14 +128,14 @@ const SkillsetTable = () => {
                 overflow-x: auto; /* Enable horizontal scrolling */
                 white-space: nowrap; /* Prevent text wrapping */
               }
- 
+
               th,
               td {
                 padding: 8px;
                 font-size: 14px; /* Adjust font size for smaller screens */
               }
             }
- 
+
             @media (max-width: 480px) {
               th,
               td {
@@ -120,7 +149,7 @@ const SkillsetTable = () => {
     </>
   );
 };
- 
+
 const styles = {
   container: {
     padding: "20px",
@@ -150,7 +179,5 @@ const styles = {
     textAlign: "center",
   },
 };
- 
+
 export default SkillsetTable;
- 
- 

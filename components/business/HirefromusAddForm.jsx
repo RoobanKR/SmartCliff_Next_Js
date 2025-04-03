@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Modal from "./Modal";
 
 // MUI Icons
 import BusinessIcon from '@mui/icons-material/Business';
@@ -130,7 +129,11 @@ const styles = {
     border: "none",
     color: "#f44336",
     cursor: "pointer",
-    padding: "10px"
+    padding: "10px",
+    display: "flex",
+    alignItems: "center",
+    gap: 1,
+ 
   },
   addMoreButton: {
     display: "flex",
@@ -234,7 +237,7 @@ const VALIDATION_PATTERNS = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 };
 
-export default function HireFromUsForm({ availabilities }) {
+export default function HireFromUsForm({ availabilities,setShowModal }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -354,6 +357,10 @@ export default function HireFromUsForm({ availabilities }) {
       } else {
         toast.error(response.payload.message[0].value);
       }
+      setTimeout(() => {
+        setShowModal(false);
+      }, 3000);
+ 
     } catch (error) {
       const errorMessage = error.response?.data?.message[0]?.value ||
         error.message ||
@@ -453,9 +460,9 @@ export default function HireFromUsForm({ availabilities }) {
                   {option}
                 </option>
               ))}
-              <option value="Other"> (Please specify)</option>
+              <option value="Other">Other (Please specify)</option>
             </Field>
-            {hasSelectedValue && (
+            {hasSelectedValue && ( 
               <label style={{
                 ...styles.inputLabel,
                 left: Icon ? "10px" : "12px",
@@ -584,7 +591,7 @@ export default function HireFromUsForm({ availabilities }) {
               icon={PersonIcon}
               type="text"
               name="name"
-              label="Contact Person"
+              label="Contact Person Name"
               values={values}
             />
 
@@ -683,7 +690,7 @@ export default function HireFromUsForm({ availabilities }) {
                             onClick={() => remove(index)}
                             style={styles.removeButton}
                           >
-                            <DeleteIcon fontSize="small" />
+                            <DeleteIcon fontSize="small" />Delete
                           </button>
                         )}
                       </div>
@@ -778,11 +785,7 @@ export default function HireFromUsForm({ availabilities }) {
         )}
       </Formik>
 
-      <Modal
-        isOpen={showSuccess}
-        onClose={() => setShowSuccess(false)}
-        message="Contact us soon! Your form has been submitted successfully!"
-      />
+     
     </div>
   );
 }

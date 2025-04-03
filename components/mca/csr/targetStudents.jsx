@@ -47,66 +47,91 @@ const PageWithFixedBackground = () => {
     };
   }, [filteredOutcomes]);
 
+  const awards = [
+    {
+      img: "https://via.placeholder.com/150",
+      title: "Software Reviews Leader - CRM Data Quadrant 2020",
+      description: "Gold Medalist Software Reviews 2020",
+      bgColor: "#2C3E50",
+    },
+    {
+      img: "https://via.placeholder.com/150",
+      title: "GetApp Category Leaders - CRM Software 2019",
+      description: "Category Leaders 2019",
+      bgColor: "#1B9AAA",
+    },
+    {
+      img: "https://via.placeholder.com/150",
+      title: "FinancesOnline Great User Experience Award 2019",
+      description: "Great User Experience 2019",
+      bgColor: "#2C78C9",
+    },
+    {
+      img: "https://via.placeholder.com/150",
+      title: "Gartner Magic Quadrant Challenger - Sales Force Automation 2019",
+      description: "Gartner",
+      bgColor: "#1A1F71",
+    },
+  ];
+
   return (
-    <div style={{ position: "relative", overflowX: "hidden" }}>
+    <div
+      style={{
+        textAlign: "center",
+        padding: "50px",
+        backgroundColor: "#F4F7FA",
+      }}
+    >
       <div
         style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "url('/assets/img/about-1/bckimg14.jpg') no-repeat center center/cover",
-          zIndex: -1,
-          opacity: 0.5,
+          marginBottom: "60px",
+          position: "relative",
         }}
-      ></div>
-
-      <div style={{ padding: "10vh 0", display: "flex", flexDirection: "column", gap: "50px" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
-          <div className="program-subtitle">
-            <span className="subtitle-line"></span>
-            <span className="subtitle-text"> MCA – Target Students</span>
-            <span className="subtitle-line"></span>
-          </div>
+      >
+        <div className="program-subtitle">
+          <span className="subtitle-line"></span>
+          <span className="subtitle-text"> MCA – Target Students</span>
+          <span className="subtitle-line"></span>
         </div>
-
-        {loading && <p style={{ textAlign: "center" }}>Loading...</p>}
-        {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
-
-        {filteredOutcomes.map((card, index) => {
-          const isEven = index % 2 === 0;
-          return (
-            <div
-              key={card._id}
-              ref={(el) => (cardRefs.current[index] = el)}
-              className="target-card"
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "20px",
+          flexWrap: "wrap",
+        }}
+      >
+        {filteredOutcomes.map((card, index) => (
+          <div
+            key={index}
+            style={{
+              width: "250px",
+              borderRadius: "15px",
+              padding: "20px",
+              backgroundColor: card.bgColor,
+              color: "#fff",
+              textAlign: "center",
+              boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.3s ease-in-out",
+              cursor: "pointer",
+            }}
+          >
+            <img
+              src={card.icon}
+              alt={card.title}
               style={{
-                width: "400px",
-                height: "400px",
-                position: "relative",
-                left: isEven ? "60%" : "10%",
-                background: `linear-gradient(${card.bgColor}, ${card.bgColor}), url('/assets/img/about-1/bckimg13.jpg') no-repeat center center/cover`,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: "12px",
-                padding: "20px",
-                textAlign: "center",
-                color: "#333",
-                fontSize: "24px",
-                fontWeight: "bold",
-                opacity: 0,
-                transform: `translateX(${isEven ? "100px" : "-100px"})`,
-                transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+                width: "100%",
+                borderRadius: "10px",
+                marginBottom: "15px",
               }}
-            >
-              <img src={card.icon} alt="icon" style={{ width: "80px", height: "80px", marginBottom: "10px" }} />
-              <h2>{card.description}</h2>
-            </div>
-          );
-        })}
+            />
+            <h3 style={{ fontSize: "16px", marginBottom: "10px" }}>
+              {card.description}
+            </h3>
+            <p style={{ fontSize: "14px", opacity: "0.8" }}>{card.title}</p>
+          </div>
+        ))}
       </div>
       <style jsx>{`
         .program-subtitle {
@@ -116,14 +141,14 @@ const PageWithFixedBackground = () => {
           margin-top: 10px;
           width: 100%;
         }
-  
+
         .subtitle-line {
           height: 2px;
           width: 100px;
           background-color: #5b2c6f;
           opacity: 0.5;
         }
-  
+
         .subtitle-text {
           font-size: 2.5rem;
           margin: 0 15px;
@@ -132,42 +157,27 @@ const PageWithFixedBackground = () => {
           text-transform: uppercase;
           letter-spacing: 1px;
         }
-  
-        @media (max-width: 768px) {
-          .target-card {
-            width: 90% !important;
-            height: 300px !important;
-            left: 5% !important;
-            transform: translateY(20px) !important;
-            margin-bottom: 20px;
-          }
-  
-          .program-subtitle {
-            flex-direction: column;
-          }
-  
+
+        @media (max-width: 640px) {
           .subtitle-line {
-            width: 80px;
-            margin: 5px 0;
+            width: 60px;
           }
-  
+
           .subtitle-text {
-            font-size: 1.8rem;
-            margin: 5px 0;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            text-align: center;
           }
-  
-          div[style] {
-            padding: 5vh 0 !important;
-            gap: 20px !important;
+        }
+
+        @media (min-width: 641px) and (max-width: 1023px) {
+          .subtitle-text {
+            font-size: 2rem;
           }
-  
-          .target-card h2 {
-            font-size: 20px;
-          }
-  
-          .target-card img {
-            width: 60px !important;
-            height: 60px !important;
+        }
+        @media (max-width: 768px) {
+          .coursesCard {
+            max-width: 100%; // Full width on smaller screens
           }
         }
       `}</style>

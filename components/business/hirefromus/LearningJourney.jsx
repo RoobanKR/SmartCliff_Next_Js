@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
 import Image from "next/image";
-
 export default function LearningJourney({ hireFromUsData }) {
   return (
     <section className="layout-pt-sm layout-pb-sm">
@@ -10,7 +9,7 @@ export default function LearningJourney({ hireFromUsData }) {
           <div className="col-auto">
             <div className="sectionTitle">
               <h2 className="sectionTitle__title">
-                Our <span style={{ color: "#f2775e" }}>Institute</span> Training
+                Our <span style={{ color: "#f2775e" }}>Corporate</span> Training
                 Models
               </h2>
               <p className="sectionTitle__text">

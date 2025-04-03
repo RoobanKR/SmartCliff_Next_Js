@@ -16,8 +16,8 @@ import {
 } from "@/redux/slices/services/services/clientServices";
 import Image from "next/image";
 import { FaClock, FaUserSecret } from "react-icons/fa";
-import { CalendarMonth, Layers } from "@mui/icons-material";
-
+import { CalendarMonth, ChevronLeft, ChevronRight, Layers } from "@mui/icons-material";
+ 
 // Animated Counter Component
 const AnimatedCounter = ({
   startValue = 0,
@@ -26,26 +26,26 @@ const AnimatedCounter = ({
   isVisible = false,
 }) => {
   const [count, setCount] = useState(startValue);
-
+ 
   useEffect(() => {
     // Only start animation if component is visible and endValue is set
     if (!isVisible || endValue === 0) {
       setCount(startValue);
       return;
     }
-
+ 
     // Reset to start value when section becomes visible
     setCount(startValue);
-
+ 
     // Calculate animation steps
     const steps = Math.floor(duration / 16); // ~60fps
     const increment = (endValue - startValue) / steps;
     let currentCount = startValue;
     let timer;
-
+ 
     const updateCounter = () => {
       currentCount += increment;
-
+ 
       if (
         (increment > 0 && currentCount >= endValue) ||
         (increment < 0 && currentCount <= endValue)
@@ -57,15 +57,15 @@ const AnimatedCounter = ({
         setCount(Math.round(currentCount));
       }
     };
-
+ 
     timer = setInterval(updateCounter, 16);
-
+ 
     return () => clearInterval(timer);
   }, [startValue, endValue, duration, isVisible]);
-
+ 
   return <>{count}</>;
 };
-
+ 
 export default function ExecutionOverview1({ serviceId }) {
   const dispatch = useDispatch();
   const [showSlider, setShowSlider] = useState(false);
@@ -82,7 +82,7 @@ export default function ExecutionOverview1({ serviceId }) {
   const counterSectionRef = useRef(null);
   const cardRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState(0);
-
+ 
   useEffect(() => {
     if (cardRef.current) {
       const cardHeight = cardRef.current.offsetHeight;
@@ -108,18 +108,18 @@ export default function ExecutionOverview1({ serviceId }) {
         threshold: 0.1, // trigger when at least 10% of the element is visible
       }
     );
-
+ 
     if (counterSectionRef.current) {
       observer.observe(counterSectionRef.current);
     }
-
+ 
     return () => {
       if (counterSectionRef.current) {
         observer.unobserve(counterSectionRef.current);
       }
     };
   }, [counterSectionRef]);
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([
@@ -130,33 +130,33 @@ export default function ExecutionOverview1({ serviceId }) {
       ]);
       setShowSlider(true);
     };
-
+ 
     fetchData();
   }, [dispatch]); // Only depend on dispatch
-
+ 
   useEffect(() => {
     if (!services.length || !servicesBusiness.length) return;
-
+ 
     const fullUrl = typeof window !== "undefined" ? window.location.href : "";
     const segments = fullUrl.split("/").filter(Boolean);
     const lastSegment = segments.pop();
     const secondLastSegment = segments.pop();
-
+ 
     const onematchingData = servicesBusiness.find(
       (i) => i.slug === secondLastSegment
     );
     const twomatchingService = services.find((i) => i.slug === lastSegment);
-
+ 
     if (!onematchingData || !twomatchingService) return;
-
+ 
     const matchedServices = services.filter(
       (service) => service.business_services?._id === onematchingData?._id
     );
-
+ 
     const finalMatchedService = matchedServices.find(
       (service) => service.slug === twomatchingService?.slug
     );
-
+ 
     if (finalMatchedService && executionOverviews.length) {
       const filtered = executionOverviews.filter(
         (i) => i.service?._id === finalMatchedService._id
@@ -164,7 +164,7 @@ export default function ExecutionOverview1({ serviceId }) {
       setMatchedServiceAbouts(filtered);
     }
   }, [services, servicesBusiness, executionOverviews]);
-
+ 
   // Set initial data and handle year filtering
   useEffect(() => {
     if (selectedYear === null) {
@@ -176,7 +176,7 @@ export default function ExecutionOverview1({ serviceId }) {
       setDisplayData(yearData);
     }
   }, [selectedYear, matchedServiceAbouts]);
-
+ 
   const swiperStyles = {
     container: {
       position: "relative",
@@ -213,78 +213,52 @@ export default function ExecutionOverview1({ serviceId }) {
       transition: "all 0.3s ease",
     },
   };
-
-  // Calculate total candidates
+ 
+  // Calculate total candidates from displayData
   const totalCandidates = displayData.reduce(
-    (total, item) => total + item.batch_size,
+    (total, item) => total + (item.sections?.[0]?.count || 0),
     0
   );
-
-  // Updated card styles with modified hover animation
-  const cardStyles = {
-    card: {
-      backgroundColor: "white",
-      borderRadius: "16px",
-      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-      padding: "20px",
-      border: "1px solid #E5E7EB",
-      transition: "all 0.3s ease",
-      position: "relative",
-      overflow: "hidden",
-      height: "300px",
-      cursor: "pointer",
-      maxWidth: "320px",
-    },
-    imageContainer: {
-      overflow: "hidden",
-      marginBottom: "12px",
-      transition: "all 0.3s ease",
-    },
-    title: {
-      fontSize: "18px",
-      fontWeight: "600",
-      color: "#374151",
-      textAlign: "center",
-      transition: "transform 0.3s ease",
-      marginBottom: "10px",
-    },
-    overlay: {
-      position: "absolute",
-      top: "0",
-      left: "0",
-      width: "100%",
-      height: "100%",
-      backgroundColor: "rgba(91, 44, 111, 0.84)",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      opacity: "0",
-      transform: "translateY(100%)",
-      transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-      padding: "20px",
-      color: "white",
-    },
-    detailsGrid: {
-      display: "grid",
-      gridTemplateColumns: "1fr",
-      gap: "15px",
-      width: "100%",
-      marginTop: "5px", // Space after the mini image
-    },
-    detailItem: {
-      display: "flex",
-      alignItems: "center",
-      gap: "12px",
-      fontSize: "16px",
-      fontWeight: "500",
-    },
-    icon: {
-      width: "20px",
-      height: "20px",
-      color: "white",
-    },
-  };
-
+ 
+  const [maxSectionHeight, setMaxSectionHeight] = useState(0);
+  const slideRefs = useRef([]);
+  const sectionRefs = useRef([]);
+ 
+  useEffect(() => {
+    slideRefs.current = slideRefs.current.slice(0, displayData.length);
+ 
+    // Create a flat array to store all section refs
+    const allSectionsCount = displayData.reduce((count, company) => count + (company.sections?.length || 0), 0);
+    sectionRefs.current = sectionRefs.current.slice(0, allSectionsCount);
+  }, [displayData]);
+ 
+  // Calculate heights after render
+  useEffect(() => {
+    // Wait for next render cycle to ensure all elements are properly rendered
+    const timer = setTimeout(() => {
+      // Find max height for main slides
+      const heights = slideRefs.current
+        .filter(ref => ref !== null && ref !== undefined)
+        .map(ref => ref.offsetHeight || 0);
+ 
+      if (heights.length > 0) {
+        setMaxHeight(Math.max(...heights));
+      }
+ 
+      // Find max height for section divs
+      const sectionHeights = sectionRefs.current
+        .filter(ref => ref !== null && ref !== undefined)
+        .map(ref => ref.offsetHeight || 0);
+ 
+      if (sectionHeights.length > 0) {
+        setMaxSectionHeight(Math.max(...sectionHeights));
+      }
+    }, 300); // Short delay to ensure content has rendered
+ 
+    return () => clearTimeout(timer);
+  }, [displayData]);
+ 
+  let sectionRefIndex = 0;
   return (
     <section
       style={{
@@ -311,7 +285,7 @@ export default function ExecutionOverview1({ serviceId }) {
                 alignItems: "center",
                 justifyContent: "space-between",
                 width: "100%",
-                padding: window.innerWidth < 768 ? "20px 10px" : "20px 100px",
+                padding: window.innerWidth < 768 ? "20px 10px" : "20px 50px",
                 gap: window.innerWidth < 768 ? "30px" : "0",
               }}
             >
@@ -349,7 +323,7 @@ export default function ExecutionOverview1({ serviceId }) {
                     width: window.innerWidth < 768 ? "100%" : "80%",
                     fontSize: window.innerWidth < 768 ? "16px" : "18px",
                     fontWeight: "bold",
-                    color: "#5B2c6F",
+                    color: " #5B2c6F",
                     position: "relative",
                   }}
                 >
@@ -361,7 +335,7 @@ export default function ExecutionOverview1({ serviceId }) {
                       width: window.innerWidth < 768 ? "60%" : "80%",
                       height: "40px",
                       padding: "3px 10px",
-                      backgroundColor: "#5B2c6F",
+                      backgroundColor: "#8F87F1",
                       color: "white",
                       borderRadius: "5px",
                     }}
@@ -375,13 +349,14 @@ export default function ExecutionOverview1({ serviceId }) {
                   </span>
                 </span>
               </div>
-
+ 
               {/* Execution Overview */}
               <div
                 style={{
                   textAlign: "center",
                   flex: window.innerWidth < 768 ? "0 0 100%" : "1",
                   order: window.innerWidth < 768 ? "-1" : "0",
+                  marginLeft: window.innerWidth < 768 ? "0px" : "70px",
                 }}
               >
                 <h2
@@ -393,7 +368,7 @@ export default function ExecutionOverview1({ serviceId }) {
                   Execution Overview
                 </h2>
               </div>
-
+ 
               {/* Total Candidate */}
               <div
                 style={{
@@ -440,7 +415,7 @@ export default function ExecutionOverview1({ serviceId }) {
                       width: window.innerWidth < 768 ? "60%" : "80%",
                       height: "40px",
                       padding: "3px 10px",
-                      backgroundColor: "#5B2c6F",
+                      backgroundColor: "#8F87F1",
                       color: "white",
                       borderRadius: "5px",
                     }}
@@ -455,19 +430,21 @@ export default function ExecutionOverview1({ serviceId }) {
                 </span>
               </div>
             </div>
-
+ 
             <p
-              style={{ marginTop: window.innerWidth < 768 ? "-20px" : "-30px" }}
+              style={{
+                marginTop: window.innerWidth < 768 ? "-20px" : "-30px", color: "#EC5228", fontWeight: "bold",
+                marginLeft: window.innerWidth < 768 ? "0px" : "30px",
+              }}
             >
               (By Client)
             </p>
           </div>
         </div>
-
         {showSlider && (
           <>
             <br />
-
+ 
             <Swiper
               modules={[Navigation, Pagination]}
               pagination={{
@@ -493,118 +470,220 @@ export default function ExecutionOverview1({ serviceId }) {
               }}
               style={swiperStyles.container}
             >
-              {displayData.map((elm, i) => (
-                <SwiperSlide key={i} style={{ padding: "10px" }}>
+    {displayData.map((company, index) => (
+                <SwiperSlide key={index} style={{ padding: "10px" }}>
                   <div
-                    ref={cardRef}
+                    ref={(el) => (slideRefs.current[index] = el)}
+                    key={index}
                     style={{
-                      width: "300px",
-                      minHeight: `${maxHeight}px`, // Ensures all cards match the tallest card
-                      borderRadius: "16px",
-                      overflow: "hidden",
-                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-                      backgroundColor: "#fff",
+                      borderRadius: "12px",
+                      padding: "20px",
+                      backgroundColor: " #FFFFFF",
+                      textAlign: "center",
+                      boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+                      transition: "all 0.3s ease-in-out",
+                      cursor: "pointer",
+                      border: "1px solid #DDD",
                       display: "flex",
                       flexDirection: "column",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      padding: "20px",
-                      textAlign: "center",
+                      height: maxHeight || "auto",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-3px)";
+                      e.currentTarget.style.boxShadow = "0px 8px 20px rgba(0, 0, 0, 0.15)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow = "0px 4px 12px rgba(0, 0, 0, 0.1)";
                     }}
                   >
-                    {/* Image Section (Full Width) */}
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "200px",
-                        marginBottom: "12px",
-                      }}
-                    >
-                      <Image
-                        src={elm.image}
-                        alt="icon"
-                        width={260}
-                        height={120}
-                        style={{
-                          objectFit: "cover",
-                          width: "100%",
-                          height: "100%",
-                        }}
-                      />
-                    </div>
-
-                    {/* Title */}
-                    <h3
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        color: "#333",
-                        marginBottom: "12px",
-                      }}
-                    >
-                      {elm.typeName[0]}
-                    </h3>
-
-                    {/* Details Section */}
-                    <div
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                      }}
-                    >
-                      {[
-                        {
-                          icon: <FaUserSecret />,
-                          label: "Batch Size",
-                          value: elm.batch_size,
-                        },
-                        {
-                          icon: <Layers />,
-                          label: "Stack",
-                          value: elm.stack.stack,
-                        },
-                        {
-                          icon: <CalendarMonth />,
-                          label: "Year",
-                          value: elm.year,
-                        },
-                        {
-                          icon: <FaClock />,
-                          label: "Duration",
-                          value: elm.duration,
-                        },
-                      ].map((item, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            justifyContent: "flex-start",
-                          }}
-                        >
-                          <span style={{ color: "#5B2C6F", fontSize: "18px" }}>
-                            {item.icon}
-                          </span>
-                          <span
-                            style={{
-                              color: "#333",
-                              fontSize: "14px",
-                              fontWeight: "500",
-                              textAlign: "left",
-                            }}
-                          >
-                            {item.label}: {item.value}
-                          </span>
-                        </div>
-                      ))}
+                    <div style={{ width: "100%", flexGrow: 1, padding: "1rem", textAlign: "center" }}>
+                      <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+                        <img
+                          src={company.image}
+                          alt={company.name}
+                          style={{ height: "3rem", objectFit: "contain" }}
+                        />
+                      </div>
+                      {/* Section Slider */}
+                      <div style={{ padding: "0 5px", position: "relative" }}>
+                        {company.sections && company.sections.length > 1 ? (
+                          <>
+                            <Swiper
+                              modules={[Navigation]}
+                              navigation={{
+                                nextEl: `.section-next-${index}`,
+                                prevEl: `.section-prev-${index}`,
+                              }}
+                              spaceBetween={10}
+                              slidesPerView={1}
+                              style={{ width: "100%" }}
+                            >
+                              {company.sections.map((section, sectionIndex) => {
+                                const currentSectionIndex = sectionRefIndex++;
+                                return (
+                                  <SwiperSlide key={sectionIndex}>
+                                    <div
+                                      ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
+                                      style={{
+                                        backgroundColor: "rgb(154, 123, 216)",
+                                        color: "white",
+                                        borderRadius: "0.375rem",
+                                        padding: "10px 0px",
+                                        marginBottom: "1rem",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
+                                        height: maxSectionHeight || "auto",
+                                      }}
+                                    >
+                                      <p style={{ fontSize: "1rem", marginBottom: "0.5rem", whiteSpace: "pre-line" }}>
+                                        {section.title && section.title.split(",").map((part, i) => (
+                                          <span key={i}>
+                                            {part.trim()}
+                                            <br />
+                                          </span>
+                                        ))}
+                                      </p>
+ 
+                                      <div style={{ fontWeight: "bold", fontSize: "1.875rem" }}>
+                                        {section.count}
+                                      </div>
+                                    </div>
+                                  </SwiperSlide>
+                                );
+                              })}
+                            </Swiper>
+ 
+                            {/* Navigation Arrows */}
+                            <div
+                              className={`section-prev-${index}`}
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "-20px",
+                                transform: "translateY(-50%)",
+                                width: "36px",
+                                height: "36px",
+                                background: "rgba(255, 255, 255, 0.9)", // Light translucent white
+                                borderRadius: "50%",
+                                border: "1px solid rgba(0, 0, 0, 0.1)", // Soft thin border
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                cursor: "pointer",
+                                zIndex: 10,
+                                transition: "all 0.3s ease-in-out",
+                              }}
+                              onMouseOver={(e) => {
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 1)";
+                                e.currentTarget.style.border = "1px solid #FF8C00"; // Orange border
+                              }}
+                              onMouseOut={(e) => {
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
+                                e.currentTarget.style.border = "1px solid rgba(0, 0, 0, 0.1)";
+                              }}
+                            >
+                              <ChevronLeft style={{ fontSize: "24px", color: " #FF8C00" }} />
+                            </div>
+ 
+                            <div
+                              className={`section-next-${index}`}
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                right: "-20px",
+                                transform: "translateY(-50%)",
+                                width: "36px",
+                                height: "36px",
+                                background: "rgba(255, 255, 255, 0.9)", // Light translucent white
+                                borderRadius: "50%",
+                                border: "1px solid rgba(0, 0, 0, 0.1)", // Soft thin border
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                cursor: "pointer",
+                                zIndex: 10,
+                                transition: "all 0.3s ease-in-out",
+                              }}
+                              onMouseOver={(e) => {
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 1)";
+                                e.currentTarget.style.border = "1px solid #FF8C00"; // Orange border
+                              }}
+                              onMouseOut={(e) => {
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
+                                e.currentTarget.style.border = "1px solid rgba(0, 0, 0, 0.1)";
+                              }}
+                            >
+                              <ChevronRight style={{ fontSize: "24px", color: " #FF8C00" }} />
+                            </div>
+ 
+                          </>
+                        ) : (
+                          // Single section case - no slider needed
+                          company.sections && company.sections.map((section, sectionIndex) => {
+                            const currentSectionIndex = sectionRefIndex++;
+                            return (
+                              <div
+                                ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
+                                key={sectionIndex}
+                                style={{
+                                  backgroundColor: "rgb(154, 123, 216)",
+                                  color: "white",
+                                  borderRadius: "0.375rem",
+                                  padding: "-20px 10px",
+                                  marginBottom: "1rem",
+                                  height: maxSectionHeight || "auto",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "center", // Center content vertically
+                                  alignItems: "center", // Center content horizontally
+                                  textAlign: "center", // Ensure text is centered
+                                }}
+                              >
+                                <p
+                                  style={{
+                                    fontSize: "1rem",
+                                    whiteSpace: "pre-line",
+                                    marginBottom: "0.5rem",
+                                    width: "100%",
+                                    padding: "30px",
+                                    textAlign: "left", // Center the text properly
+                                  }}
+                                >
+                                  {section.title && section.title.split(",").map((part, i, arr) => (
+                                    <span key={i}>
+                                     --{part.trim()}
+                                      {i < arr.length - 1 && (
+                                        <hr style={{ margin: "4px 0", border: "0.5px solid #ccc" }} />
+                                      )}
+                                    </span>
+                                  ))}
+                                </p>
+ 
+                                {/* Count positioned at the bottom */}
+                                <div
+                                  style={{
+                                    fontWeight: "bold",
+                                    fontSize: "1.875rem",
+                                  }}
+                                >
+                                  {section.count}
+                                </div>
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
                     </div>
                   </div>
                 </SwiperSlide>
               ))}
+ 
             </Swiper>
-
+ 
             <div className="d-flex justify-center x-gap-15 items-center pt-60 lg:pt-40">
               <div className="col-auto">
                 <button className="d-flex items-center text-24 arrow-left-hover js-prev icon-arrow-left-event-six">
@@ -626,4 +705,4 @@ export default function ExecutionOverview1({ serviceId }) {
     </section>
   );
 }
-
+ 

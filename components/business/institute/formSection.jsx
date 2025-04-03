@@ -25,23 +25,21 @@ export default function FormSection() {
     >
       <div className="container">
         <div className="row y-gap-20 justify-between items-center">
-          <div className="col-xl-4 col-lg-5">
-            <h2 className="text-30 lh-15 text-black">
-              Accelerate Real Impact -
-              <span className="" style={{ color: "#f2775e" }}>
-                {" "}
-                Institute
-              </span>{" "}
-            </h2>
+        <div className="col-xl-8 col-lg-5">
+          <h2 className="text-0 text-black">
+          Equip, Empower, Excel - Partner with Us for {" "}
+                            <span style={{ color: "#f2775e" }}>
+                               
+                             Workforce Transformation                             </span>{" "}
+                        </h2>
           </div>
- 
           <div className="col-auto">
             <button
               className="button px-30 h-50 -outline-dark-11 text-orange-1"
               style={{ color: "#f2775e" }}
               onClick={() => setShowModal(true)}
             >
-              Start Learning Today
+               Let’s Collaborate!
             </button>
           </div>
           <AnimatePresence>
@@ -110,7 +108,7 @@ export default function FormSection() {
                         padding: "0 0 10px 0",
                       }}
                     >
-                      Institute Enquiry Form
+                       Let’s Collaborate!
                       <span
                         style={{
                           position: "absolute",
@@ -167,7 +165,7 @@ export default function FormSection() {
                       scrollbarWidth: "thin",
                     }}
                   >
-                    <InstitutionAddForm availabilities={availabilities} />
+                    <InstitutionAddForm availabilities={availabilities} setShowModal={setShowModal} />
                   </div>
                 </motion.div>
               </motion.div>

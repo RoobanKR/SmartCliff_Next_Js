@@ -28,14 +28,13 @@ export default function FormSection() {
     >
       <div className="container">
         <div className="row y-gap-20 justify-between items-center">
-          <div className="col-xl-4 col-lg-5">
-            <h2 className="text-30 lh-15 text-black">
-              Accelerate Real Impact -
-              <span className="" style={{ color: "#f2775e" }}>
-                {" "}
-                Train From Us
-              </span>{" "}
-            </h2>
+          <div className="col-xl-8 col-lg-5">
+          <h2 className="text-0 text-black">
+          Equip your workforce with the skills they need to excel -  {" "}
+                            <span style={{ color: "#f2775e" }}>
+                               
+                            partner with us today!                             </span>{" "}
+                        </h2>
           </div>
  
           <div className="col-auto">
@@ -169,7 +168,7 @@ export default function FormSection() {
                       scrollbarWidth: "thin",
                     }}
                   >
-                    <TrainFromUsAddForm availabilities={availabilities} />
+                    <TrainFromUsAddForm availabilities={availabilities} setShowModal={setShowModal} />
                   </div>
                 </motion.div>
               </motion.div>

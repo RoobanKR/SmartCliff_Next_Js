@@ -1,19 +1,17 @@
- 
 "use client";
- 
 import { useState, useEffect } from "react";
 import { Navigation, Pagination, Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import React from "react";
 import Image from "next/image";
- 
-export default function Client({ instituteFromUsData }) {
+
+export default function Client({ trainFromUsData }) {
   const [showSlider, setShowSlider] = useState(false);
   useEffect(() => {
     setShowSlider(true);
   }, []);
- 
+
   return (
     <section className="layout-pt-sm layout-pb-sm">
       <div className="container">
@@ -26,7 +24,7 @@ export default function Client({ instituteFromUsData }) {
             </div>
           </div>
         </div>
- 
+
         <div className="pt-30 sm:pt-30">
           <div className="overflow-hidden js-section-slider">
             <div className="swiper-wrapper">
@@ -34,7 +32,10 @@ export default function Client({ instituteFromUsData }) {
                 <Swiper
                   modules={[Navigation, Pagination, Autoplay]}
                   pagination={{ el: ".pagination-skils", clickable: true }}
-                  navigation={{ nextEl: ".arrow-right-one", prevEl: ".arrow-left-one" }}
+                  navigation={{
+                    nextEl: ".arrow-right-one",
+                    prevEl: ".arrow-left-one",
+                  }}
                   autoplay={{ delay: 3000, disableOnInteraction: false }} // Added autoplay
                   spaceBetween={30}
                   slidesPerView={1}
@@ -45,7 +46,7 @@ export default function Client({ instituteFromUsData }) {
                   }}
                   loop={false}
                 >
-                  {instituteFromUsData.map((elm, i) => (
+                  {trainFromUsData.map((elm, i) => (
                     <SwiperSlide key={i}>
                       <div className="swiper-slide h-100 overflow-visible">
                         <div
@@ -72,7 +73,7 @@ export default function Client({ instituteFromUsData }) {
                 </Swiper>
               )}
             </div>
- 
+
             <div className="d-flex justify-center x-gap-15 items-center pt-30 lg:pt-30">
               <div className="col-auto">
                 <div className="pagination-skils -arrows js-pagination"></div>
@@ -84,5 +85,3 @@ export default function Client({ instituteFromUsData }) {
     </section>
   );
 }
- 
- 

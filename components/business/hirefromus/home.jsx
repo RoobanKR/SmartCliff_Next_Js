@@ -5,8 +5,12 @@ import HirefromusAddForm from "../HirefromusAddForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 
-export default function HeroSection({ scrollToSection }) {
+export default function HeroSection({
+  scrollToSection,
+  hasAvailabilities = true,
+}) {
   const [showModal, setShowModal] = useState(false);
+  const [showNoDataAlert, setShowNoDataAlert] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -18,6 +22,20 @@ export default function HeroSection({ scrollToSection }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const handleViewAvailability = () => {
+    if (!hasAvailabilities) {
+      setShowNoDataAlert(true);
+      // Auto-hide the alert after 3 seconds
+      setTimeout(() => {
+        setShowNoDataAlert(false);
+      }, 3000);
+    } else if (typeof scrollToSection === "function") {
+      scrollToSection();
+    } else {
+      console.error("❌ scrollToSection is NOT a function!", scrollToSection);
+    }
+  };
 
   return (
     <div
@@ -51,6 +69,54 @@ export default function HeroSection({ scrollToSection }) {
         }}
       />
 
+      {/* No Data Alert */}
+      <AnimatePresence>
+        {showNoDataAlert && (
+          <motion.div
+            style={{
+              position: "fixed",
+              top: "20px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "#FF5252",
+              color: "white",
+              padding: "12px 24px",
+              borderRadius: "8px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+              zIndex: 2000,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              maxWidth: "90%",
+            }}
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <span style={{ fontSize: "16px", fontWeight: "600" }}>
+              No availabilities found at the moment. Please check back later.
+            </span>
+            <button
+              onClick={() => setShowNoDataAlert(false)}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                color: "white",
+                marginLeft: "12px",
+                cursor: "pointer",
+                fontSize: "18px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FaTimes />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Content Section */}
       <div
         style={{
@@ -77,9 +143,10 @@ export default function HeroSection({ scrollToSection }) {
             color: "#E0E7FF",
           }}
         >
-          Find skilled professionals ready to contribute to your business
-          success. Save time and effort—we connect you with the right
-          candidates, hassle-free.
+          Looking for skilled and job-ready professionals to strengthen your
+          team? We provide top-tier candidates who are trained, industry-ready,
+          and equipped with the right skills to contribute effectively from day
+          one.
         </p>
 
         <div
@@ -104,16 +171,7 @@ export default function HeroSection({ scrollToSection }) {
               zIndex: "1051",
               width: "auto",
             }}
-            onClick={() => {
-              if (typeof scrollToSection === "function") {
-                scrollToSection();
-              } else {
-                console.error(
-                  "❌ scrollToSection is NOT a function!",
-                  scrollToSection
-                );
-              }
-            }}
+            onClick={handleViewAvailability}
           >
             View Current Availability
           </button>{" "}

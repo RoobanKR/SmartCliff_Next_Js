@@ -62,7 +62,11 @@ const CategoriesHomeOne = () => {
         <h2>
           Our <span className="highlight">Services</span>
         </h2>
-        <p>Discover our comprehensive range of business solutions</p>
+        <p>
+          We deliver expert-led, industry-focused training solutions that
+          enhance skills, boost productivity, and drive career growth through
+          practical learning and excellence.
+        </p>
       </div>
 
       {/* Container for Cards */}
@@ -88,32 +92,44 @@ const CategoriesHomeOne = () => {
                   />
                   <div className="card-content">
                     <div className="icon-title">
+                      <h3
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "bold",
+                          margin: "8px 0",
+                        }}
+                      >
+                        {item.title}
+                      </h3>
+                      {/* <span>{item.title.split(" ")[0]}</span> */}
+                    </div>{" "}
+                    <p>
+                      ({" "}
                       {item.logo ? (
                         <img
                           src={item.logo}
                           alt={item.name}
                           className="icon-image"
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            marginRight: "7px",
+                            verticalAlign: "middle",
+                          }}
                         />
                       ) : (
-                        <i className="icon-briefcase"></i>
+                        <i
+                          className="icon-briefcase"
+                          style={{
+                            marginRight: "7px",
+                            fontSize: "16px",
+                            verticalAlign: "middle",
+                          }}
+                        ></i>
                       )}
-                      <span>{item.title.split(" ")[0]}</span>
-                    </div>
-                    <h3
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: "bold",
-                        margin: "8px 0",
-                      }}
-                    >
-                      {item.title}
-                    </h3>{" "}
-                    <p>
-                      ({" "}
-                      {item.name.charAt(0).toUpperCase() +
-                        item.name.slice(1).toLowerCase()}
-                      )
-                    </p>                  </div>
+                      {item.name} {" "})
+                    </p>{" "}
+                  </div>
                 </div>
 
                 {/* Back Side */}
@@ -167,18 +183,17 @@ const CategoriesHomeOne = () => {
           position: relative;
         }
 
-               /* Background Image (Hidden in Mobile) */
+        /* Background Image (Hidden in Mobile) */
         .background-image {
           position: absolute;
           left: -18%;
           top: 0;
           width: 40%;
           height: 100%;
-          background-image: url(/assets/img/service-bck.png);
           background-size: cover;
           background-position: center;
         }
- 
+
         @media (max-width: 768px) {
           .background-image {
             display: none;

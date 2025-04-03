@@ -27,7 +27,7 @@ export default function HiringCategories() {
   }, [dispatch]);
 
   const hireFromUsData = wcyHires.filter(
-    (works) => works.type === "trainfromus"
+    (works) => works.type === "hirefromus"
   );
 
   if (loading) {
@@ -36,8 +36,8 @@ export default function HiringCategories() {
   return (
     <div
       style={{
-        backgroundColor: "#F8FAFC",
-        padding: isMobile ? "40px 5%" : "60px 5%",
+        backgroundColor: " #F8FAFC",
+        padding: isMobile ? "40px 5%" : "30px 5%",
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
         alignItems: "center",
@@ -61,16 +61,7 @@ export default function HiringCategories() {
               {" "}
               {elm.title}
             </h2>
-            <p
-              style={{
-                fontSize: isMobile ? "16px" : "18px",
-                marginBottom: "20px",
-                color: "#475569",
-              }}
-            >
-              {" "}
-              {elm.description}
-            </p>
+            <br></br>
           </div>
         ))}
         <div

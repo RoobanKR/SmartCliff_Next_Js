@@ -48,7 +48,7 @@ import contactReducer from "./slices/contact/contact";
 import careerFormReducer from "./slices/career/careerForm";
 import reviewReducer from "./slices/review/review";
 import jobPositionsReducer from "./slices/joinUs/joinus";
-import homeServiceReducer from "./slices/homeService/homeService";
+import homeServiceReducer from "./slices/home/homeService/homeService";
 import wcuReducer from "./slices/whyThis/whyThis";
 import aboutUsReducer from "./slices/aboutUs/aboutUs";
 import placementTrainingTrackReducer from "./slices/PlacementTrainingTrack/PlacementTrainingTrack";
@@ -65,6 +65,7 @@ import collegesReducer from "./slices/collegeDetails/collegeDetails"
 import yearlyServiceReducer from './slices/history/hsitory'; 
 import skillVerticalReducer from './slices/mca/skillVertical/skillVertical'; 
 import currentAvailabilityReducer from './slices/bussiness/currentAvailbility/currentAvailbility';
+import homeExecutionHighlightsReducer from "./slices/home/homeExecutionHighlights/homeExecutionHighlights";
 
 export default configureStore({
   reducer: {
@@ -135,7 +136,8 @@ export default configureStore({
     yearlyService:yearlyServiceReducer,
     skillVertical:skillVerticalReducer,
     currentAvailability:currentAvailabilityReducer,
-    
+    homeExecutionHighlights:homeExecutionHighlightsReducer
+
 
   },
 });

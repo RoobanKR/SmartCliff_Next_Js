@@ -68,7 +68,7 @@ export default function HeroSection({ scrollToSection }) {
             color: "#FACC15",
           }}
         >
-          train Top Talent Effortlessly with Train From Us
+          Train Top Talent Effortlessly with Train From Us
         </h1>
         <p
           style={{
@@ -78,9 +78,10 @@ export default function HeroSection({ scrollToSection }) {
             color: "#E0E7FF",
           }}
         >
-          Find skilled professionals ready to contribute to your business
-          success. Save time and effort—we connect you with the right
-          candidates, hassle-free.
+          Empower your workforce with industry-relevant skills through our
+          expert-led training programs. We offer comprehensive, hands-on
+          training designed to bridge the gap between academic learning and
+          real-world industry demands.
         </p>
 
         <div
@@ -116,7 +117,7 @@ export default function HeroSection({ scrollToSection }) {
               }
             }}
           >
-            View Enquiry Form
+            Training Enquiry
           </button>{" "}
         </div>
         <AnimatePresence>

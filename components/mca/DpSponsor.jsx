@@ -48,7 +48,7 @@ export default function SponsorsSection() {
       >
         <div className="program-subtitle">
           <span className="subtitle-line"></span>
-          <span className="subtitle-text">  Our Valued Sponsors</span>
+          <span className="subtitle-text">  Sponsorship Details</span>
           <span className="subtitle-line"></span>
         </div>
       </div>

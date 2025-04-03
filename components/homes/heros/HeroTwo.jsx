@@ -58,7 +58,7 @@ export default function HeroTwo() {
           }}
         >
           {/* Slide 1: HeroUITwo */}
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <div
               className="swiper-slide"
               style={{
@@ -70,7 +70,7 @@ export default function HeroTwo() {
             >
               <HeroUITwo />
             </div>
-          </SwiperSlide>
+          </SwiperSlide> */}
           {/* Slide 2: HeroUIOne */}
           <SwiperSlide>
             <div
@@ -86,7 +86,7 @@ export default function HeroTwo() {
             </div>
           </SwiperSlide>
           {/* Slide 3: HeroUIOne */}
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <div
               className="swiper-slide"
               style={{
@@ -98,7 +98,7 @@ export default function HeroTwo() {
             >
               <HeroUIThree />
             </div>
-          </SwiperSlide>{" "}
+          </SwiperSlide>{" "} */}
           {/* Slide 4: HeroUIOne */}
           <SwiperSlide>
             <div

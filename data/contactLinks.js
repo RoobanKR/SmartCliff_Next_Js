@@ -3,7 +3,7 @@ export const contactDetails = [
     id: 1,
     icon: "/assets/img/contact-1/location.png",
     address:
-      "SMARTCLIFF LEARNING SOLUTIONS LLP - 2nd Floor, 103-107 Thiru Venkata swamy St, RS Puram, CBE-641002",
+      "SmartCliff Learning Solutions LLP, Indsil House, Thiruvenkatasamy Road, R S Puram, Coimbatore  641002 ",
   },
   {
     id: 2,
@@ -16,3 +16,5 @@ export const contactDetails = [
     email: "enquiry@smartcliff.in",
   },
 ];
+ 
+ 

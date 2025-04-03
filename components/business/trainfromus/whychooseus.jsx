@@ -6,11 +6,10 @@ import HiringCategories from "./category";
 import HowItWorks from "./howitworks";
 import HeroSection from "./home";
 import FormSection from "./formSection";
+import Client from "./client";
 
 const SkillsetTable2 = () => {
   const sectionRef = useRef(null);
-  const [showModal, setShowModal] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   // Function to scroll to the section
   const scrollToSection = () => {

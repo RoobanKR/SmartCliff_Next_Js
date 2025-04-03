@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect } from "react";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import { selectBusinessServices } from "@/redux/slices/services/services/busines
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { getAllHomeServices } from "@/redux/slices/homeService/homeService";
+import { getAllHomeServicesCount } from "@/redux/slices/home/homeService/homeService";
 import { getAllWCU } from "@/redux/slices/whyThis/whyThis";
 export default function Teachers() {
   const dispatch = useDispatch();
@@ -19,15 +19,10 @@ export default function Teachers() {
   const aboutService = useSelector((state) => state.homeServices.homeServices);
   const all = useSelector((state) => state.wcu.wcuItems);
 
-
   useEffect(() => {
-    dispatch(getAllHomeServices());
+    dispatch(getAllHomeServicesCount());
     dispatch(getAllWCU());
   }, [dispatch]);
-
-
-
-
 
   return (
     <>
@@ -139,25 +134,25 @@ export default function Teachers() {
                 </div>
               ))}
               <div className="y-gap-20 pt-25">
-                {aboutService.length > 0 && aboutService[0].feature.map((elm, i) => (
-                  <div key={elm._id.$oid} className="d-flex items-center">
-                    <div className="d-flex items-center justify-center size-25 rounded-full bg-purple-1 mr-15">
-                      <span
-                        className="text-white"
-                        style={{
-                          fontSize: "10px",
-                          fontWeight: "300",
-                        }}
-                        aria-hidden="true"
-                      >
-                        <FontAwesomeIcon icon={faCheck} />
-                      </span>
+                {aboutService.length > 0 &&
+                  aboutService[0].feature.map((elm, i) => (
+                    <div key={elm._id.$oid} className="d-flex items-center">
+                      <div className="d-flex items-center justify-center size-25 rounded-full bg-purple-1 mr-15">
+                        <span
+                          className="text-white"
+                          style={{
+                            fontSize: "10px",
+                            fontWeight: "300",
+                          }}
+                          aria-hidden="true"
+                        >
+                          <FontAwesomeIcon icon={faCheck} />
+                        </span>
+                      </div>
+                      <div className="fw-500 text-dark-1">{elm.title}</div>
                     </div>
-                    <div className="fw-500 text-dark-1">{elm.title}</div>
-                  </div>
-                ))}
+                  ))}
               </div>
-
             </div>
           </div>
         </div>
@@ -181,4 +176,3 @@ export default function Teachers() {
     </>
   );
 }
-

@@ -6,18 +6,18 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Navigation, Pagination } from "swiper";
-import { fetchExecutionHighlights } from "@/redux/slices/services/executionHighlights/Execution_Highlights";
 import { useDispatch, useSelector } from "react-redux";
-
+import { getAllHomeExecutionHighlights } from "@/redux/slices/home/homeExecutionHighlights/homeExecutionHighlights";
+ 
 export default function ExecutiveOverview2() {
   const dispatch = useDispatch();
-  const executionHighlights = useSelector(
-    (state) => state.executionHighlights.executionHighlights
+  const homeExecutionHighlights = useSelector(
+    (state) => state.homeExecutionHighlights.homeExecutionHighlights
   );
   useEffect(() => {
-    dispatch(fetchExecutionHighlights());
+    dispatch(getAllHomeExecutionHighlights());
   }, [dispatch]);
-
+ 
   const swiperStyles = {
     container: {
       padding: "30px 0",
@@ -55,8 +55,8 @@ export default function ExecutiveOverview2() {
       transition: "all 0.3s ease",
     },
   };
-  const colors = ["#F2775A"];
-
+  const colors = ["#A2D2FF"];
+ 
   return (
     <section
       style={{
@@ -65,7 +65,7 @@ export default function ExecutiveOverview2() {
         // backgroundColor: "#f8f9fa",
       }}
     >
-      <div className="container">
+      <div>
         <Swiper
           modules={[Pagination, Navigation, Autoplay]}
           spaceBetween={30}
@@ -98,62 +98,85 @@ export default function ExecutiveOverview2() {
           }}
           style={swiperStyles.container}
         >
-          {executionHighlights?.map((highlight, i) => (
+          {homeExecutionHighlights?.map((highlight, i) => (
             <SwiperSlide key={i}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "18px 20px", // Left padding for neat alignment
-                  borderBottom: "2px solid #D1D5DB",
+                  padding: "20px",
+                  borderRadius: "16px",
+                  background:
+                    "linear-gradient(135deg, #2C2E54 10%, #1A1C33 90%)", // Deep Indigo Gradient
+                  boxShadow: "0px 12px 24px rgba(10, 10, 25, 0.4)", // Depth Effect
+                  width: "92%",
+                  maxWidth: "420px",
+                  margin: "15px auto",
+                  position: "relative",
+                  overflow: "hidden",
                   transition: "all 0.3s ease-in-out",
-                  cursor: "pointer",
-                  boxShadow: `0px 5px 8px ${colors[i % colors.length]}88`, // Enhanced downward shadow
-                  borderRadius: "10px",
-                  backgroundColor: "#fff",
-                  width: "90%", // Reduced width for a compact design
-                  maxWidth: "350px", // Prevents excessive stretching
-                  margin: "10px auto", // Creates proper space between cards (Top & Bottom)
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.boxShadow =
+                    "0px 15px 30px rgba(10, 10, 25, 0.5)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow =
+                    "0px 12px 24px rgba(10, 10, 25, 0.4)";
+                }}
               >
+                {/* Floating Accent Light */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-15px",
+                    left: "-15px",
+                    width: "90px",
+                    height: "90px",
+                    background: "rgba(122, 72, 199, 0.5)", // Royal Purple Glow
+                    filter: "blur(30px)",
+                    borderRadius: "50%",
+                  }}
+                ></div>
+ 
                 {/* Left Section - Icon & Text */}
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "15px" }}
+                  style={{ display: "flex", alignItems: "center", gap: "18px" }}
                 >
-                  {/* Icon */}
+                  {/* Icon with Glass Effect */}
                   <div
                     style={{
-                      width: "45px",
-                      height: "45px",
-                      background: "#F3F4F6",
+                      width: "52px",
+                      height: "52px",
+                      background: "rgba(255, 255, 255, 0.15)", // Glass Effect
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      borderRadius: "8px",
-                      border: "1px solid #E5E7EB",
-                      paddingLeft: "8px", // Added left padding to the image
+                      borderRadius: "12px",
+                      backdropFilter: "blur(10px)",
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
                     }}
                   >
                     <Image
                       src={highlight.image}
                       alt="icon"
-                      width={28}
-                      height={28}
+                      width={30}
+                      height={30}
                     />
                   </div>
-
-                  {/* Text */}
+ 
+                  {/* Text Content */}
                   <div>
                     <h5
                       style={{
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        color: "#222",
-                        marginBottom: "3px",
-                        letterSpacing: "0.3px",
+                        fontSize: "20px",
+                        fontWeight: "500",
+                        color: "#FFFFFF", // White Text
+                        marginBottom: "5px",
+                        letterSpacing: "0.6px",
                       }}
                     >
                       {highlight.stack}
@@ -161,32 +184,31 @@ export default function ExecutiveOverview2() {
                     <p
                       style={{
                         fontSize: "16px",
-                        color: "#555",
+                        color: "#FFA63D", // Golden Amber for Contrast
                         margin: "0",
-                        fontWeight: "500",
-                        opacity: "0.85",
+                        fontWeight: "600",
                       }}
                     >
                       {highlight.count}
                     </p>
                   </div>
                 </div>
-
-                {/* Thin Multi-Color Divider */}
+ 
+                {/* Neon Accent Divider */}
                 <div
                   style={{
-                    width: "3px",
-                    height: "40px",
-                    backgroundColor: colors[i % colors.length],
-                    borderRadius: "10px",
-                    boxShadow: `0px 3px 5px ${colors[i % colors.length]}BB`, // Stronger downward glow
+                    width: "4px",
+                    height: "50px",
+                    backgroundColor: "#7A48C7", // Royal Purple Divider
+                    borderRadius: "12px",
+                    boxShadow: "0px 4px 10px rgba(122, 72, 199, 0.8)", // Neon Glow
                   }}
                 />
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-
+ 
         {/* Navigation Controls */}
         <div className="d-flex justify-center x-gap-15 items-center pt-40">
           <div className="col-auto">
@@ -207,3 +229,5 @@ export default function ExecutiveOverview2() {
     </section>
   );
 }
+ 
+ 

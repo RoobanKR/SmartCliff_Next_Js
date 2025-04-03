@@ -1,11 +1,11 @@
- 
+
 "use client";
 import React, { useState } from "react";
 import { footerLinks } from "../../../data/footerLinks";
 import Link from "next/link";
 import Socials from "@/components/common/Socials";
 import Image from "next/image";
- 
+
 export default function FooterLinks({ allClasses }) {
   return (
     <div className="row">
@@ -19,7 +19,7 @@ export default function FooterLinks({ allClasses }) {
             alt="logo"
           />
         </div>
- 
+
         <div className="footer-header-socials mt-30">
           <div className="footer-header-socials__list text-white d-flex items-center">
             <Socials
@@ -28,7 +28,7 @@ export default function FooterLinks({ allClasses }) {
           </div>
         </div>
       </div>
- 
+
       {/* Footer Links */}
       {footerLinks.map((elm, i) => (
         <div key={i} className="col-xl-2 col-lg-4 col-md-6">
@@ -63,11 +63,10 @@ export default function FooterLinks({ allClasses }) {
           </div>
         </div>
       ))}
- 
+
       {/* Contact & Newsletter Section */}
       <div className="col-xl-6 col-lg-8 col-md-12">
         <div className="row">
-          {/* Contact Section */}
           {/* Contact Section */}
           <div className="col-md-4">
             <div
@@ -81,44 +80,59 @@ export default function FooterLinks({ allClasses }) {
             >
               Business
             </div>
-            <div className="mt-15">
-              <Link
-                href="/hirefromus"
-                rel="noopener noreferrer"
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                }}
-              >
-                <span style={{ color: "white" }}>Hire From Us</span>
-              </Link>
-              <div className="d-flex flex-column mt-10">
-                <Link
-                  href="/trainfromus"
-                  rel="noopener noreferrer"
+            <div style={{ marginTop: "15px" }}>
+              {/* Corporate Module */}
+              <div style={{ marginBottom: "15px" }}>
+                <div
                   style={{
-                    textDecoration: "none",
+                    fontWeight: "bold",
                     color: "white",
+                    width: "150px",
                   }}
                 >
-                  <span style={{ color: "white" }}>Train From Us</span>
-                </Link>
+                  Corporate
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingLeft: "20px" }}>
+                  <Link
+                    href="/hirefromus"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "white", marginBottom: "5px" }}
+                  >
+                    <span style={{ color: "white" }}>➤ Hire From Us</span>
+                  </Link>
+                  <Link
+                    href="/trainfromus"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    <span style={{ color: "white" }}>➤ Train From Us</span>
+                  </Link>
+                </div>
               </div>
-              <div className="d-flex flex-column mt-10">
-                <Link
-                  href="/institute"
-                  rel="noopener noreferrer"
+
+              {/* Institution Module */}
+              <div>
+                <div
                   style={{
-                    textDecoration: "none",
+                    fontWeight: "bold",
+                    color: "white",
+                    width: "150px",
                   }}
                 >
-                  <span style={{ color: "white" }}>Institute</span>
- 
-                </Link>
+                  Institution
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingLeft: "20px" }}>
+                  <Link
+                    href="/institute"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    <span style={{ color: "white" }}>➤ Institute</span>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
- 
           <div className="col-md-8 text-white">
             <div
               className={allClasses || ""}
@@ -139,17 +153,14 @@ export default function FooterLinks({ allClasses }) {
               <div className="d-flex align-items-start gap-2">
                 <i className="lucide lucide-map-pin"></i>
                 <span>
-                SMARTCLIFF LEARNING SOLUTIONS LLP 2nd Floor, 103-107 ThiruVenkata swamy St, RS Puram,CBE-641002                </span>
+                  SmartCliff Learning Solutions LLP, Indsil House, Thiruvenkatasamy Road, R S Puram, Coimbatore – 641002                 </span>
               </div>
             </div>
           </div>
- 
-          {/* Newsletter Section - Next to Contact */}
         </div>
       </div>
     </div>
   );
 }
- 
- 
- 
+
+

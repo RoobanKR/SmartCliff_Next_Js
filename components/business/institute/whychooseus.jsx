@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import HeroSection from "./home";
 import FormSection from "./formSection";
 import LearningJourney from "./LearningJourney";
+import { fetchAllLearningJourneys } from "@/redux/slices/bussiness/learningJourney/learningJourney";
 
 const SkillsetTable3 = () => {
   const sectionRef = useRef(null);
@@ -28,11 +29,18 @@ const SkillsetTable3 = () => {
   };
 
   const dispatch = useDispatch();
-  const { availabilities, loading, error } = useSelector(
-    (state) => state.currentAvailability
+  const { availabilitie } = useSelector((state) => state.currentAvailability);
+  const { learningJourneys, loading, error } = useSelector(
+    (state) => state.learningJourney
+  );
+
+  // Filter only hirefromus type data
+  const hireFromUsData = learningJourneys.filter(
+    (journey) => journey.type === "institute"
   );
 
   useEffect(() => {
+    dispatch(fetchAllLearningJourneys());
     dispatch(getAllCurrentAvailabilities());
   }, [dispatch]);
 
@@ -44,7 +52,10 @@ const SkillsetTable3 = () => {
       <div className="mt-60">
         <HeroSection scrollToSection={scrollToSection} />
       </div>
-      <LearningJourney />
+
+      {hireFromUsData.length > 0 && (
+        <LearningJourney hireFromUsData={hireFromUsData} />
+      )}
       {/* <HowItWorks /> */}
       <div ref={sectionRef}>
         <FormSection />

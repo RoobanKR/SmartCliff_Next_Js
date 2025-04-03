@@ -5,7 +5,6 @@ import { submitForm } from "@/redux/slices/hirefromus/Hirefromus";
 import { fetchCourses } from "@/redux/slices/course/course";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Modal from "./Modal";
  
 // MUI Icons
 import BusinessIcon from '@mui/icons-material/Business';
@@ -134,7 +133,11 @@ const styles = {
     border: "none",
     color: "#f44336",
     cursor: "pointer",
-    padding: "10px"
+    padding: "10px",
+    display: "flex",
+    alignItems: "center",
+    gap: 1,
+ 
   },
   addMoreButton: {
     display: "flex",
@@ -239,7 +242,7 @@ const VALIDATION_PATTERNS = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 };
  
-export default function InstitutionAddForm({ availabilities }) {
+export default function InstitutionAddForm({ availabilities,setShowModal }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const courses = useSelector((state) => state.courses.courses);
@@ -334,6 +337,9 @@ export default function InstitutionAddForm({ availabilities }) {
                } else {
                  toast.error(response.payload.message[0].value);
                }
+               setTimeout(() => {
+                setShowModal(false);
+              }, 3000);
              } catch (error) {
                const errorMessage = error.response?.data?.message[0]?.value ||
                  error.message ||
@@ -570,7 +576,7 @@ export default function InstitutionAddForm({ availabilities }) {
               icon={PhoneIcon}
               type="text"
               name="mobile"
-              label="Contact Person number"
+              label="Contact number"
               values={values}
             />
  
@@ -579,7 +585,7 @@ export default function InstitutionAddForm({ availabilities }) {
               icon={EmailIcon}
               type="email"
               name="email"
-              label="Contact Person Email"
+              label="Contact Email"
               values={values}
             />
             <FieldArray name="services">
@@ -627,7 +633,7 @@ export default function InstitutionAddForm({ availabilities }) {
                             onClick={() => remove(index)}
                             style={styles.removeButton}
                           >
-                            <DeleteIcon fontSize="small" />
+                            <DeleteIcon fontSize="small" />Delete
                           </button>
                         )}
                       </div>
@@ -722,11 +728,7 @@ export default function InstitutionAddForm({ availabilities }) {
         )}
       </Formik>
  
-      <Modal
-        isOpen={showSuccess}
-        onClose={() => setShowSuccess(false)}
-        message="Contact us soon! Your form has been submitted successfully!"
-      />
+     
     </div>
   );
 }

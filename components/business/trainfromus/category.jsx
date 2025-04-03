@@ -37,7 +37,7 @@ export default function HiringCategories() {
     <div
       style={{
         backgroundColor: "#F8FAFC",
-        padding: isMobile ? "40px 5%" : "60px 5%",
+        padding: isMobile ? "40px 5%" : "30px 5%",
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
         alignItems: "center",
@@ -61,16 +61,7 @@ export default function HiringCategories() {
               {" "}
               {elm.title}
             </h2>
-            <p
-              style={{
-                fontSize: isMobile ? "16px" : "18px",
-                marginBottom: "20px",
-                color: "#475569",
-              }}
-            >
-              {" "}
-              {elm.description}
-            </p>
+            <br></br>
           </div>
         ))}
         <div

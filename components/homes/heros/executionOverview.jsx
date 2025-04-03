@@ -1,11 +1,8 @@
 "use client";
-import { fetchExecutionHighlights } from "@/redux/slices/services/executionHighlights/Execution_Highlights";
-import { fetchExecutionOverview } from "@/redux/slices/services/executionOverview/ExecutionOverview";
-import { selectBusinessServices } from "@/redux/slices/services/services/businessServices";
-import { selectServices } from "@/redux/slices/services/services/Services";
-import Image from "next/image";
+import { getAllHomeServicesCount } from "@/redux/slices/home/homeService/homeService";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
 
 const AnimatedCounter = ({
   startValue = 0,
@@ -16,17 +13,13 @@ const AnimatedCounter = ({
   const [count, setCount] = useState(startValue);
 
   useEffect(() => {
-    // Only start animation if component is visible and endValue is set
     if (!isVisible || endValue === 0) {
       setCount(startValue);
       return;
     }
 
-    // Reset to start value when section becomes visible
     setCount(startValue);
-
-    // Calculate animation steps
-    const steps = Math.floor(duration / 16); // ~60fps
+    const steps = Math.floor(duration / 16);
     const increment = (endValue - startValue) / steps;
     let currentCount = startValue;
     let timer;
@@ -38,7 +31,6 @@ const AnimatedCounter = ({
         (increment > 0 && currentCount >= endValue) ||
         (increment < 0 && currentCount <= endValue)
       ) {
-        // We've reached or passed the target
         setCount(endValue);
         clearInterval(timer);
       } else {
@@ -56,28 +48,16 @@ const AnimatedCounter = ({
 
 export default function HeroSection() {
   const dispatch = useDispatch();
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [displayData, setDisplayData] = useState([]);
-  const [matchedServiceAbouts, setMatchedServiceAbouts] = useState([]);
-  const executionOverviews = useSelector(
-    (state) => state.executionOverviews.executionOverviews
-  );
-
-  const executionHighlights = useSelector(
-    (state) => state.executionHighlights.executionHighlights
-  );
-  const services = useSelector(selectServices);
-  const servicesBusiness = useSelector(selectBusinessServices);
   const [isVisible, setIsVisible] = useState(false);
   const counterSectionRef = useRef(null);
+  const { homeServices, loading, error } = useSelector(
+    (state) => state.homeServices
+  );
 
-  // Counters for different business types
-  const [counters, setCounters] = useState({
-    b2b: 0,
-    b2i: 0,
-    b2c: 0,
-    csr: 0,
-  });
+  // Fetch home services count
+  useEffect(() => {
+    dispatch(getAllHomeServicesCount());
+  }, [dispatch]);
 
   // Set up Intersection Observer to detect when counter section is visible
   useEffect(() => {
@@ -87,15 +67,14 @@ export default function HeroSection() {
           if (entry.isIntersecting) {
             setIsVisible(true);
           } else {
-            // Reset visibility when section leaves viewport
             setIsVisible(false);
           }
         });
       },
       {
-        root: null, // viewport
+        root: null,
         rootMargin: "0px",
-        threshold: 0.1, // trigger when at least 10% of the element is visible
+        threshold: 0.1,
       }
     );
 
@@ -110,151 +89,125 @@ export default function HeroSection() {
     };
   }, [counterSectionRef]);
 
-  useEffect(() => {
-    dispatch(fetchExecutionOverview());
-    dispatch(fetchExecutionHighlights());
-  }, [dispatch]);
+  // Initialize counters
+  const counters = {
+    b2b: 0,
+    b2i: 0,
+    csr: 0,
+    b2c: 0,
+  };
 
-  useEffect(() => {
-    if (!services.length || !servicesBusiness.length) return;
-
-    const fullUrl = typeof window !== "undefined" ? window.location.href : "";
-    const segments = fullUrl.split("/").filter(Boolean);
-    const lastSegment = segments.pop();
-    const secondLastSegment = segments.pop();
-
-    const onematchingData = servicesBusiness.find(
-      (i) => i.slug === secondLastSegment
-    );
-    const twomatchingService = services.find((i) => i.slug === lastSegment);
-
-    if (!onematchingData || !twomatchingService) return;
-
-    const matchedServices = services.filter(
-      (service) => service.business_services?._id === onematchingData?._id
-    );
-
-    const finalMatchedService = matchedServices.find(
-      (service) => service.slug === twomatchingService?.slug
-    );
-
-    if (finalMatchedService && executionOverviews.length) {
-      const filtered = executionOverviews.filter(
-        (i) => i.service._id === finalMatchedService._id
-      );
-      setMatchedServiceAbouts(filtered);
-    }
-  }, [services, servicesBusiness, executionOverviews]);
-
-  // Set initial data and handle year filtering
-  useEffect(() => {
-    if (selectedYear === null) {
-      setDisplayData(
-        matchedServiceAbouts.length > 0
-          ? matchedServiceAbouts
-          : executionOverviews
-      );
-    }
-  }, [selectedYear, matchedServiceAbouts, executionOverviews]);
-
-  // Calculate totals for different business service types
-  useEffect(() => {
-    if (!executionOverviews.length || !servicesBusiness.length) return;
-
-    // Initialize counters
-    const newCounters = {
-      b2b: 0,
-      b2i: 0,
-      b2c: 0,
-      csr: 0,
-    };
-
-    // Loop through all execution overviews
-    executionOverviews.forEach((overview) => {
-      // Find the service associated with this overview
-      const service = services.find((s) => s._id === overview.service?._id);
-
-      if (service && service.business_services) {
-        // Find the business service type
-        const businessService = servicesBusiness.find(
-          (bs) => bs._id === service.business_services._id
-        );
-
-        if (businessService) {
-          // Categorize based on business service name/type
-          const businessType = businessService.name?.toLowerCase() || "";
-
-          if (businessType.includes("corporate")) {
-            newCounters.b2b += overview.batch_size;
-          } else if (businessType.includes("institute")) {
-            newCounters.b2i += overview.batch_size;
-          } else if (businessType.includes("learner")) {
-            newCounters.b2c += overview.batch_size;
-          } else if (businessType.includes("csr")) {
-            newCounters.csr += overview.batch_size;
-          }
-        }
+  // Populate counters based on fetched home services
+  if (homeServices.length > 0) {
+    homeServices.forEach((service) => {
+      if (service.slug === "B2B") {
+        counters.b2b = parseInt(service.count, 10);
+      } else if (service.slug === "B2I") {
+        counters.b2i = parseInt(service.count, 10);
+      } else if (service.slug === "CSR") {
+        counters.csr = parseInt(service.count, 10);
+      } else if (service.slug === "B2C") {
+        counters.b2c = parseInt(service.count, 10);
       }
     });
+  }
 
-    console.log("counters.b2b:", counters.b2b);
-
-    setCounters(newCounters);
-  }, [executionOverviews, services, servicesBusiness]);
-  useEffect(() => {
-    console.log("Updated counters:", counters);
-  }, [counters]);
+  // Calculate total count
+  const totalCount = counters.b2b + counters.b2i + counters.csr + counters.b2c;
 
   return (
     <div
+      className="hero-section"
       style={{
         display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: "column",
+        padding: "1.5rem",
         color: "black",
-        padding: "3rem",
-        gap: "3rem",
       }}
     >
-      {/* Left Content */}
-      <div style={{ flex: 1 }}>
-        <h1
-          style={{
-            fontSize: "2.6rem",
-            fontWeight: "bold",
-            marginBottom: "1rem",
-            lineHeight: "1.2",
-          }}
-        >
-          Unbeatable execution
-          <br />
-          Made for the <span style={{ color: "#f27757" }}>institutes</span>
-        </h1>
-        {/* Subtitle */}
-        <h3 style={{ fontSize: "1.5rem", fontWeight: "500", opacity: 0.8 }}>
-          Empowering institutions with efficiency, automation, and seamless
-          workflows.
-        </h3>
-        {/* Short Description */}
-        <p style={{ fontSize: "1.1rem", marginTop: "1rem", opacity: 0.8 }}>
-          Trusted by millions, our platform simplifies your operations, enhances
-          user experience, and scales effortlessly across the globe.
-        </p>
-        {/* Statistics Section */}
+      {/* Main content container */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "2rem",
+        }}
+      >
+        {/* Left Content */}
         <div
           style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "2rem",
-            marginTop: "2rem",
+            flex: "1 1 350px",
+            minWidth: "280px",
           }}
-          ref={counterSectionRef}
         >
-          <>
-            <div style={{ minWidth: "150px" }}>
+          <h1
+            style={{
+              fontSize: "clamp(1.8rem, 5vw, 2.6rem)",
+              fontWeight: "bold",
+              marginBottom: "1rem",
+              lineHeight: "1.2",
+            }}
+          >
+            <span style={{ color: "#f27757" }}> Unbeatable Execution!</span> /
+            Our Success Metrics!
+          </h1>
+          <h3
+            style={{
+              fontSize: "clamp(1.2rem, 3vw, 1.5rem)",
+              fontWeight: "500",
+              opacity: 0.8,
+            }}
+          >
+            We take pride in our seamless and results-driven execution.{" "}
+          </h3>
+          <p
+            style={{
+              fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
+              marginTop: "1rem",
+              opacity: 0.8,
+            }}
+          >
+            Unbeatable Execution! / Our Success Metrics! We take pride in our
+            seamless and results-driven execution. With a well-structured
+            approach, expert trainers, and industry-relevant content, we deliver
+            impactful learning experiences that drive success.
+          </p>
+          <h3
+            style={{
+              fontSize: "clamp(1.2rem, 3vw, 1.5rem)",
+              fontWeight: "900",
+              marginTop: "1rem",
+              opacity: 0.8,
+            }}
+          >
+            Our impact speaks for itself!{" "}
+          </h3>
+
+          {/* Statistics Section */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "1.5rem",
+              marginTop: "2rem",
+              justifyContent: "center",
+            }}
+            ref={counterSectionRef}
+          >
+            <div
+              style={{
+                flex: "1 1 130px",
+                minWidth: "130px",
+                maxWidth: "180px",
+                marginBottom: "1rem",
+              }}
+            >
               <h2
                 style={{
-                  fontSize: "2rem",
+                  fontSize: "clamp(1.6rem, 4vw, 2rem)",
                   fontWeight: "bold",
                   color: "#f27757",
                 }}
@@ -267,17 +220,23 @@ export default function HeroSection() {
                 />
                 +
               </h2>
-
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>
                 Business to Business
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2B)</p>
             </div>
 
-            <div style={{ minWidth: "150px" }}>
+            <div
+              style={{
+                flex: "1 1 130px",
+                minWidth: "130px",
+                maxWidth: "180px",
+                marginBottom: "1rem",
+              }}
+            >
               <h2
                 style={{
-                  fontSize: "2rem",
+                  fontSize: "clamp(1.6rem, 4vw, 2rem)",
                   fontWeight: "bold",
                   color: "#f27757",
                 }}
@@ -291,15 +250,22 @@ export default function HeroSection() {
                 +
               </h2>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>
-                Business to institute
+                Business to Institute
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2I)</p>
             </div>
 
-            <div style={{ minWidth: "150px" }}>
+            <div
+              style={{
+                flex: "1 1 130px",
+                minWidth: "130px",
+                maxWidth: "180px",
+                marginBottom: "1rem",
+              }}
+            >
               <h2
                 style={{
-                  fontSize: "2rem",
+                  fontSize: "clamp(1.6rem, 4vw, 2rem)",
                   fontWeight: "bold",
                   color: "#f27757",
                 }}
@@ -318,10 +284,17 @@ export default function HeroSection() {
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(CSR)</p>
             </div>
 
-            <div style={{ minWidth: "150px" }}>
+            <div
+              style={{
+                flex: "1 1 130px",
+                minWidth: "130px",
+                maxWidth: "180px",
+                marginBottom: "1rem",
+              }}
+            >
               <h2
                 style={{
-                  fontSize: "2rem",
+                  fontSize: "clamp(1.6rem, 4vw, 2rem)",
                   fontWeight: "bold",
                   color: "#f27757",
                 }}
@@ -339,53 +312,147 @@ export default function HeroSection() {
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2C)</p>
             </div>
-          </>
+          </div>
         </div>
-        {/* Call-To-Action Button */}
-        {/* <button
+
+        {/* Right Side - Image */}
+        <div
           style={{
-            marginTop: "3rem",
-            padding: "0.8rem 2rem",
-            fontSize: "1rem",
-            border: "2px solid black",
-            background: "transparent",
-            color: "black",
-            cursor: "pointer",
+            flex: "0 1 320px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            margin: "0 auto",
           }}
         >
-          MORE ABOUT Smartcliff →
-        </button>{" "} */}
+          <Image
+            src="/assets/img/home-1/newhero/team.png"
+            alt="Team Illustration"
+            width={320}
+            height={250}
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
+          />
+        </div>
       </div>
+      <div
+        style={{
+          width: "96vw",
+          margin: "1.5rem 0",
+          textAlign: "center",
+          marginTop: "1rem",
+          padding: "2rem",
+          background: "linear-gradient(135deg, #FFF1DB 0%, #FCE6C9 100%)", // Soft Gradient
+          borderRadius: "16px",
+          boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.15)", // Deeper shadow for depth
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Subtle Background Decorations */}
+        <div
+          style={{
+            position: "absolute",
+            top: "-30px",
+            left: "-30px",
+            width: "80px",
+            height: "80px",
+            background: "#f27757",
+            opacity: 0.2,
+            borderRadius: "50%",
+          }}
+        ></div>
 
-      {/* Right Side - Image */}
-      <div>
-        <Image
-          src="/assets/img/home-1/newhero/team.png"
-          alt="Zoho Illustration"
-          width={320}
-          height={250}
-        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "-40px",
+            right: "-40px",
+            width: "100px",
+            height: "100px",
+            background: "#405D72",
+            opacity: 0.15,
+            borderRadius: "50%",
+          }}
+        ></div>
+
+        <h2
+          style={{
+            fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
+            fontWeight: "bold",
+            color: "#f27757", // Primary color
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <span
+            style={{
+              color: "#405D72", // Muted navy for heading
+              textDecoration: "underline",
+              paddingBottom: "4px",
+              position: "relative",
+            }}
+          >
+            Total Execution
+            <span
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "3px",
+                background: "#f27757", // Underline in primary color
+                bottom: "-3px",
+                left: "0",
+              }}
+            ></span>
+          </span>
+
+          {/* Animated Counter Section */}
+          <span
+            style={{
+              fontSize: "2.8rem",
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              color: "#f27757",
+              padding: "8px 16px",
+              borderRadius: "12px",
+              backdropFilter: "blur(6px)", // Glassmorphism
+              transition: "transform 0.3s ease-in-out",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.05)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <i
+              className="icon-bar-chart"
+              style={{
+                marginRight: "10px",
+                fontSize: "2rem",
+                color: "#f27757",
+              }}
+            ></i>
+            <AnimatedCounter
+              startValue={0}
+              endValue={totalCount}
+              duration={2000}
+              isVisible={isVisible}
+            />
+          </span>
+        </h2>
       </div>
-
-      {/* Styles for the button */}
+      {/* Media queries for responsive design */}
       <style jsx>{`
-        .cta-button {
-          margin-top: 2rem;
-          padding: 12px 24px;
-          font-size: 1.2rem;
-          font-weight: bold;
-          background-color: #405d72;
-          color: white;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: background 0.3s;
-        }
-        .cta-button:hover {
-          background-color: #6482ad;
+        @media (max-width: 768px) {
+          .hero-section {
+            padding: 1rem;
+          }
         }
       `}</style>
     </div>
   );
 }
-

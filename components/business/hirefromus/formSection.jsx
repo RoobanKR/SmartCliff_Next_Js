@@ -24,13 +24,12 @@ export default function FormSection() {
         >
             <div className="container">
                 <div className="row y-gap-20 justify-between items-center">
-                    <div className="col-xl-4 col-lg-5">
-                        <h2 className="text-30 lh-15 text-black">
-                            Accelerate Real Impact -
-                            <span className="" style={{ color: "#f2775e" }}>
-                                {" "}
-                                Hire From Us
-                            </span>{" "}
+                    <div className="col-xl-7 col-lg-5">
+                        <h2 className="text-0 text-black">
+                        Let us help you find the perfect talent for your company. {" "}
+                            <span style={{ color: "#f2775e" }}>
+                               
+                            Get in touch today!                             </span>{" "}
                         </h2>
                     </div>
 
@@ -165,7 +164,8 @@ export default function FormSection() {
                                             scrollbarWidth: "thin",
                                         }}
                                     >
-                                        <HirefromusAddForm availabilities={availabilities} />
+                                        <HirefromusAddForm availabilities={availabilities} setShowModal={setShowModal}
+  />
                                     </div>
                                 </motion.div>
 

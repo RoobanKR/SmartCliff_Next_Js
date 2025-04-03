@@ -69,7 +69,7 @@ export default function HeroSection({ scrollToSection }) {
             color: "#FACC15",
           }}
         >
-          Top Talent Effortlessly with association Institute with us
+          “Empowering Institutes, Enabling Careers”
         </h1>
         <p
           style={{
@@ -79,9 +79,9 @@ export default function HeroSection({ scrollToSection }) {
             color: "#E0E7FF",
           }}
         >
-          Find skilled professionals ready to contribute to your business
-          success. Save time and effort—we connect you with the right
-          candidates, hassle-free.
+          A degree alone isn't enough in today’s job market. We help educational
+          institutions equip students with industry-aligned training, ensuring
+          they graduate as skilled professionals ready for the workforce.
         </p>
 
         <div
@@ -117,7 +117,7 @@ export default function HeroSection({ scrollToSection }) {
               }
             }}
           >
-            View Enquiry Form
+            Let’s Collaborate!
           </button>{" "}
         </div>
         <AnimatePresence>
