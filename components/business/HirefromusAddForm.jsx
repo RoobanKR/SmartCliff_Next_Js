@@ -133,7 +133,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 1,
- 
+
   },
   addMoreButton: {
     display: "flex",
@@ -237,7 +237,7 @@ const VALIDATION_PATTERNS = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 };
 
-export default function HireFromUsForm({ availabilities,setShowModal }) {
+export default function HireFromUsForm({ availabilities, setShowModal }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -256,10 +256,12 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
   }, {});
 
   const skillsets = Object.keys(skillsetsMap);
+
   const initialValues = {
     ...formData,
-    skillsetRequirements: [{ skillset: '', resources: '', otherSkillset: '' }],
-    otherSkillset: ''
+    skillsetRequirements: [{ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false }],
+    otherSkillset: '',
+    // traineeModel: ''
   };
 
   // Form validation
@@ -332,13 +334,13 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
   // Form submission handler
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     console.log("Submitting values:", values);
-    
+
     try {
       const processedSkillsets = values.skillsetRequirements.map(req => ({
         skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
         resources: parseInt(req.resources, 10)
       }));
-  
+
       const formDataToSubmit = {
         company_name: values.company_name,
         name: values.name,
@@ -347,10 +349,10 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
         skillsetRequirements: processedSkillsets,
         enquiry: values.enquiry,
       };
-  
-  
+
+
       const response = await dispatch(submitForm(formDataToSubmit));
-  
+
       if (response.payload.message[0].key === "success") {
         setShowSuccess(true);
         toast.success("Form submitted successfully!");
@@ -360,7 +362,7 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
       setTimeout(() => {
         setShowModal(false);
       }, 3000);
- 
+
     } catch (error) {
       const errorMessage = error.response?.data?.message[0]?.value ||
         error.message ||
@@ -462,7 +464,7 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
               ))}
               <option value="Other">Other (Please specify)</option>
             </Field>
-            {hasSelectedValue && ( 
+            {hasSelectedValue && (
               <label style={{
                 ...styles.inputLabel,
                 left: Icon ? "10px" : "12px",
@@ -572,12 +574,12 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
     <div style={styles.container}>
       <ToastContainer />
       <Formik
-  initialValues={initialValues}
-  validate={validate}
-  onSubmit={handleSubmit}
->
-  {({ isSubmitting,values,setFieldValue }) => (
-    <Form>          
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting, values, setFieldValue }) => (
+          <Form>
             <FloatingInput
               icon={BusinessIcon}
               type="text"
@@ -631,7 +633,7 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
                     lastSkillset.resources &&
                     parseInt(lastSkillset.resources) > 0;
                 })();
-               
+
                 return (
                   <div>
                     {values.skillsetRequirements.map((req, index) => (
@@ -648,21 +650,41 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
                             index={index}
                           />
                         </div>
-
                         {/* Other Skillset Input */}
                         {req.skillset === "Other" && (
                           <div style={styles.otherSkillsetField}>
-                            <div style={styles.otherSkillsetInput}>
-                              <AssignmentIndIcon
-                                style={styles.otherSkillsetIcon}
-                                fontSize="small"
-                              />
+                            <div style={{
+                              ...styles.inputWrapper,
+                              ...(req.otherSkillsetFocused ? styles.inputWrapperFocused : {})
+                            }}>
+                              <div style={{
+                                ...styles.inputIcon,
+                                ...(req.otherSkillsetFocused ? styles.inputIconFocused : {})
+                              }}>
+                                <AssignmentIndIcon fontSize="small" />
+                              </div>
                               <Field
                                 type="text"
                                 name={`skillsetRequirements.${index}.otherSkillset`}
-                                placeholder="Enter your skillset"
-                                style={styles.otherSkillsetText}
+                                style={styles.inputField}
+                                onFocus={() => {
+                                  const newSkillsetRequirements = [...values.skillsetRequirements];
+                                  newSkillsetRequirements[index].otherSkillsetFocused = true;
+                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
+                                }}
+                                onBlur={() => {
+                                  const newSkillsetRequirements = [...values.skillsetRequirements];
+                                  newSkillsetRequirements[index].otherSkillsetFocused = false;
+                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
+                                }}
                               />
+                              <label style={{
+                                ...styles.inputLabel,
+                                left: "40px",
+                                ...((req.otherSkillsetFocused || req.otherSkillset) ? styles.inputLabelFloated : {})
+                              }}>
+                                Other Skillset
+                              </label>
                             </div>
                             <ErrorMessage
                               name={`skillsetRequirements.${index}.otherSkillset`}
@@ -699,8 +721,8 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
                     {/* Add More Button with Conditional Disabled State */}
                     <button
                       type="button"
-                      onClick={() => push({ skillset: '', resources: '', otherSkillset: '' })}
-                      style={{
+                      // Update the push function in the FieldArray component
+                      onClick={() => push({ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false })} style={{
                         ...styles.addMoreButton,
                         opacity: canAddMoreSkillsets ? 1 : 0.5,
                         cursor: canAddMoreSkillsets ? 'pointer' : 'not-allowed'
@@ -785,7 +807,7 @@ export default function HireFromUsForm({ availabilities,setShowModal }) {
         )}
       </Formik>
 
-     
+
     </div>
   );
 }

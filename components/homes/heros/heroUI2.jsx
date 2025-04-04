@@ -2,7 +2,7 @@
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-
+ 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 export default function HeroFour() {
@@ -10,10 +10,10 @@ export default function HeroFour() {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-
+ 
   return (
     <>
-      <section className="masthead -type-3 bg-light-6">
+      <section className="masthead -type-3">
         <div
           style={{
             position: "absolute",
@@ -21,8 +21,8 @@ export default function HeroFour() {
             left: 0,
             width: "100%",
             height: "100%",
-            background:
-              "url('/assets/img/about-1/bckimg13.jpg') no-repeat center center/cover",
+            // background:
+            //   "url('/assets/img/about-1/bckimg13.jpg') no-repeat center center/cover",
             opacity: 0.5, // Adjust opacity here
             zIndex: -1, // Keeps it behind content
           }}
@@ -35,7 +35,7 @@ export default function HeroFour() {
                   <br /> <span className="text-purple-1">SmartCliff</span> -
                   Where Learning Meets Success!
                 </h1>
-
+ 
                 <p className="masthead__text text-17 text-dark-1 mt-25">
                   At SmartCliff, we redefine learning with expert-led training
                   programs,
@@ -101,7 +101,7 @@ export default function HeroFour() {
                       </div>
                     </button>
                   </Link>
-
+ 
                   <Image
                     src="/assets/img/about/img3.svg"
                     alt="Texture"
@@ -111,7 +111,7 @@ export default function HeroFour() {
                 </div>
               </div>
             </div>
-
+ 
             <div
               className="col-xl-5 col-lg-7 relative z-2"
               style={{ marginTop: "20px" }}
@@ -119,40 +119,14 @@ export default function HeroFour() {
               <div className="masthead-image">
                 <div className="masthead-image__img1">
                   <img
-                    src="/assets/img/hmebck.png"
+                    src="/assets/img/about/abtimg.png"
                     alt="image"
                     data-move="20"
-                    style={{ width: "450px", height: "450px" }}
+                    style={{ width: "550px", height: "400px" }}
                   />
                 </div>
-
+ 
                 <div className="masthead-image__el1"></div>
-
-                {/* <div className="masthead-image__el2">
-                  <div
-                    data-move="40"
-                    className="shadow-4 img-el -w-260 px-40 py-20 d-flex items-center bg-white rounded-8 js-mouse-move"
-                  >
-                    <div className="img-el__side">
-                      <div className="size-50 d-flex justify-center items-center bg-dark-1 rounded-full">
-                        <Image
-                          width={20}
-                          height={27}
-                          src="/assets/img/masthead/2.svg"
-                          alt="icon"
-                        />
-                      </div>
-                    </div>
-                    <div className="">
-                      <div className="text-purple-1 text-16 fw-500 lh-1">
-                        Let's Build Success Together!
-                      </div>
-                      <div className="mt-3">
-                        Partner with us to drive innovation and growth
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>
@@ -161,3 +135,5 @@ export default function HeroFour() {
     </>
   );
 }
+ 
+ 

@@ -3,7 +3,7 @@ import { getAllHomeServicesCount } from "@/redux/slices/home/homeService/homeSer
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-
+ 
 const AnimatedCounter = ({
   startValue = 0,
   endValue = 0,
@@ -11,22 +11,22 @@ const AnimatedCounter = ({
   isVisible = false,
 }) => {
   const [count, setCount] = useState(startValue);
-
+ 
   useEffect(() => {
     if (!isVisible || endValue === 0) {
       setCount(startValue);
       return;
     }
-
+ 
     setCount(startValue);
     const steps = Math.floor(duration / 16);
     const increment = (endValue - startValue) / steps;
     let currentCount = startValue;
     let timer;
-
+ 
     const updateCounter = () => {
       currentCount += increment;
-
+ 
       if (
         (increment > 0 && currentCount >= endValue) ||
         (increment < 0 && currentCount <= endValue)
@@ -37,15 +37,15 @@ const AnimatedCounter = ({
         setCount(Math.round(currentCount));
       }
     };
-
+ 
     timer = setInterval(updateCounter, 16);
-
+ 
     return () => clearInterval(timer);
   }, [startValue, endValue, duration, isVisible]);
-
+ 
   return <>{count}</>;
 };
-
+ 
 export default function HeroSection() {
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
@@ -53,12 +53,12 @@ export default function HeroSection() {
   const { homeServices, loading, error } = useSelector(
     (state) => state.homeServices
   );
-
+ 
   // Fetch home services count
   useEffect(() => {
     dispatch(getAllHomeServicesCount());
   }, [dispatch]);
-
+ 
   // Set up Intersection Observer to detect when counter section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,18 +77,18 @@ export default function HeroSection() {
         threshold: 0.1,
       }
     );
-
+ 
     if (counterSectionRef.current) {
       observer.observe(counterSectionRef.current);
     }
-
+ 
     return () => {
       if (counterSectionRef.current) {
         observer.unobserve(counterSectionRef.current);
       }
     };
   }, [counterSectionRef]);
-
+ 
   // Initialize counters
   const counters = {
     b2b: 0,
@@ -96,7 +96,7 @@ export default function HeroSection() {
     csr: 0,
     b2c: 0,
   };
-
+ 
   // Populate counters based on fetched home services
   if (homeServices.length > 0) {
     homeServices.forEach((service) => {
@@ -111,10 +111,10 @@ export default function HeroSection() {
       }
     });
   }
-
+ 
   // Calculate total count
   const totalCount = counters.b2b + counters.b2i + counters.csr + counters.b2c;
-
+ 
   return (
     <div
       className="hero-section"
@@ -185,7 +185,7 @@ export default function HeroSection() {
           >
             Our impact speaks for itself!{" "}
           </h3>
-
+ 
           {/* Statistics Section */}
           <div
             style={{
@@ -220,12 +220,25 @@ export default function HeroSection() {
                 />
                 +
               </h2>
-              <p style={{ fontSize: "1rem", opacity: 0.8 }}>
+              <p
+                style={{
+                  fontSize: "clamp(1rem, 1vw, 4rem)",
+                  fontWeight: "600",
+                  opacity: 0.8,
+                }}
+              >
                 Business to Business
               </p>
-              <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2B)</p>
+              <p
+                style={{
+                  fontSize: "1rem",
+                  opacity: 0.8,
+                }}
+              >
+                (B2B)
+              </p>
             </div>
-
+ 
             <div
               style={{
                 flex: "1 1 130px",
@@ -249,12 +262,18 @@ export default function HeroSection() {
                 />
                 +
               </h2>
-              <p style={{ fontSize: "1rem", opacity: 0.8 }}>
+              <p
+                style={{
+                  fontSize: "clamp(1rem, 1vw, 4rem)",
+                  fontWeight: "600",
+                  opacity: 0.8,
+                }}
+              >
                 Business to Institute
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2I)</p>
             </div>
-
+ 
             <div
               style={{
                 flex: "1 1 130px",
@@ -278,12 +297,18 @@ export default function HeroSection() {
                 />
                 +
               </h2>
-              <p style={{ fontSize: "1rem", opacity: 0.8 }}>
+              <p
+                style={{
+                  fontSize: "clamp(1rem, 1vw, 4rem)",
+                  fontWeight: "600",
+                  opacity: 0.8,
+                }}
+              >
                 Corporate Social Responsibility
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(CSR)</p>
             </div>
-
+ 
             <div
               style={{
                 flex: "1 1 130px",
@@ -307,14 +332,20 @@ export default function HeroSection() {
                 />
                 +
               </h2>
-              <p style={{ fontSize: "1rem", opacity: 0.8 }}>
+              <p
+                style={{
+                  fontSize: "clamp(1rem, 1vw, 4rem)",
+                  fontWeight: "600",
+                  opacity: 0.8,
+                }}
+              >
                 Business to Client
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2C)</p>
             </div>
           </div>
         </div>
-
+ 
         {/* Right Side - Image */}
         <div
           style={{
@@ -343,7 +374,7 @@ export default function HeroSection() {
           margin: "1.5rem 0",
           textAlign: "center",
           marginTop: "1rem",
-          padding: "2rem",
+          padding: "0.8rem",
           background: "linear-gradient(135deg, #FFF1DB 0%, #FCE6C9 100%)", // Soft Gradient
           borderRadius: "16px",
           boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.15)", // Deeper shadow for depth
@@ -364,7 +395,7 @@ export default function HeroSection() {
             borderRadius: "50%",
           }}
         ></div>
-
+ 
         <div
           style={{
             position: "absolute",
@@ -377,24 +408,23 @@ export default function HeroSection() {
             borderRadius: "50%",
           }}
         ></div>
-
+ 
         <h2
           style={{
             fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
             fontWeight: "bold",
-            color: "#f27757", // Primary color
+            color: "#405D72", // Muted navy for heading
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             gap: "0.5rem",
+            position: "relative",
           }}
         >
           <span
             style={{
-              color: "#405D72", // Muted navy for heading
-              textDecoration: "underline",
-              paddingBottom: "4px",
               position: "relative",
+              paddingBottom: "4px",
             }}
           >
             Total Execution
@@ -403,17 +433,18 @@ export default function HeroSection() {
                 position: "absolute",
                 width: "100%",
                 height: "3px",
-                background: "#f27757", // Underline in primary color
-                bottom: "-3px",
+                background: "#f27757", // Single underline in primary color
+                bottom: "-2px",
                 left: "0",
+                borderRadius: "2px",
               }}
             ></span>
           </span>
-
-          {/* Animated Counter Section */}
+ 
+          {/* Counter Section */}
           <span
             style={{
-              fontSize: "2.8rem",
+              fontSize: "3rem",
               fontWeight: "bold",
               display: "flex",
               alignItems: "center",
@@ -445,6 +476,7 @@ export default function HeroSection() {
           </span>
         </h2>
       </div>
+ 
       {/* Media queries for responsive design */}
       <style jsx>{`
         @media (max-width: 768px) {
@@ -456,3 +488,5 @@ export default function HeroSection() {
     </div>
   );
 }
+ 
+ 

@@ -14437,7 +14437,20 @@ h6 {
     display: flex !important;
   }
 }
+.mt-70 {
+  margin-top: 70px;
+}
 
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+  .mt-70 {
+    margin-top: 30px; /* Adjust the margin for smaller screens */
+  }
+}
+
+.responsive-image {
+  width: 100%; /* Make the image responsive */
+  height: auto; /* Maintain aspect ratio */
+}
 .order-1 {
   order: 1;
 }

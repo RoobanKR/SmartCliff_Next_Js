@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import HeroSection from "./home";
 import HiringCategories from "./category";
 import HowItWorks from "./howitworks";
-import LearningJourney from "./LearningJourney";
+import LearningJourney from "../institute/LearningJourney";
 import { fetchAllLearningJourneys } from "@/redux/slices/bussiness/learningJourney/learningJourney";
 
 const SkillsetTable = () => {

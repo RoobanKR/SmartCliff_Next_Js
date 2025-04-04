@@ -5,7 +5,7 @@ import { submitForm } from "@/redux/slices/hirefromus/Hirefromus";
 import { fetchCourses } from "@/redux/slices/course/course";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
- 
+
 // MUI Icons
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
@@ -22,8 +22,8 @@ import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { createTrainFromUs } from "@/redux/slices/hiring/trainFromUs/trainFromus";
- 
- 
+
+
 // Styles
 const styles = {
   container: {
@@ -138,7 +138,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 1,
- 
+
   },
   addMoreButton: {
     display: "flex",
@@ -152,7 +152,7 @@ const styles = {
     fontSize: "10px",
     gap: "8px",
     marginTop: "10px",
-    marginBottom:"10px"
+    marginBottom: "10px"
   },
   submitButton: {
     background: "#F2775E",
@@ -235,15 +235,15 @@ const styles = {
     color: "#F2775E"
   }
 };
- 
+
 // Validation patterns
 const VALIDATION_PATTERNS = {
   name: /^[a-zA-Z\s]+$/,
   phone: /^[6-9]\d{0,9}$/,
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 };
- 
-export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
+
+export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const [isSubmitting, setSubmitting] = useState(false);
@@ -260,21 +260,21 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
     });
     return acc;
   }, {});
- 
+
   const skillsets = Object.keys(skillsetsMap);
   const TRAINEE_MODELS = [
     'Hire Train Deploy (HTD)',
     'Hiring Only',
     'Training Only'
   ];
- 
+
   const initialValues = {
     ...formData,
-    skillsetRequirements: [{ skillset: '', resources: '', otherSkillset: '' }],
+    skillsetRequirements: [{ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false }],
     otherSkillset: '',
     traineeModel: ''
   };
- 
+
   // Form validation
   const validate = (values) => {
     const errors = {};
@@ -286,30 +286,30 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
     } else if (!VALIDATION_PATTERNS.name.test(values.name)) {
       errors.name = "Invalid name";
     }
- 
- 
+
+
     if (!values.company_name) {
       errors.company_name = "Company name is required";
     } else if (!VALIDATION_PATTERNS.name.test(values.company_name)) {
       errors.company_name = "Invalid company name";
     }
- 
+
     if (!values.mobile) {
       errors.mobile = "Mobile number is required";
     } else if (!VALIDATION_PATTERNS.phone.test(values.mobile)) {
       errors.mobile = "Invalid mobile number";
     }
- 
+
     if (!values.email) {
       errors.email = "Email is required";
     } else if (!VALIDATION_PATTERNS.email.test(values.email)) {
       errors.email = "Invalid email address";
     }
- 
+
     if (!values.enquiry) {
       errors.enquiry = "Enquiry is required";
     }
- 
+
     // Skillset requirements validation
     values.skillsetRequirements.forEach((req, index) => {
       if (!req.skillset) {
@@ -323,7 +323,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
           otherSkillset: "Please specify the skillset"
         };
       }
- 
+
       if (!req.resources) {
         errors.skillsetRequirements = errors.skillsetRequirements || [];
         errors.skillsetRequirements[index] = {
@@ -341,20 +341,20 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
         errors.traineeModel = "Trainee model is required";
       }
     });
- 
+
     return errors;
   };
- 
+
   // Form submission handler
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true); // Start submitting
-  
+
     try {
       const processedSkillsets = values.skillsetRequirements.map(req => ({
         skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
         resources: parseInt(req.resources, 10)
       }));
-  
+
       const formDataToSubmit = {
         company_name: values.company_name,
         name: values.name,
@@ -364,35 +364,35 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
         enquiry: values.enquiry,
         trainee_modal: values.traineeModel
       };
-  
- 
- 
+
+
+
       const response = await dispatch(createTrainFromUs(formDataToSubmit));
       if (response.payload.message[0].key === "success") {
-            setShowSuccess(true);
-            toast.success("Form submitted successfully!");
-          } else {
-            toast.error(response.payload.message[0].value);
-          }
-          setTimeout(() => {
-            setShowModal(false);
-          }, 3000);
-        } 
-        
-        catch (error) {
-          const errorMessage = error.response?.data?.message[0]?.value ||
-            error.message ||
-            "An error occurred while submitting the form";
-          toast.error(errorMessage);
-        } finally {
-          setSubmitting(false);
-        }
-      };
-  
+        setShowSuccess(true);
+        toast.success("Form submitted successfully!");
+      } else {
+        toast.error(response.payload.message[0].value);
+      }
+      setTimeout(() => {
+        setShowModal(false);
+      }, 3000);
+    }
+
+    catch (error) {
+      const errorMessage = error.response?.data?.message[0]?.value ||
+        error.message ||
+        "An error occurred while submitting the form";
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
- 
+
     return (
       <div style={styles.fieldContainer}>
         <div style={{
@@ -426,7 +426,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
         <ErrorMessage name={name} component="div" style={styles.errorMessage} />
       </div>
     );
-  };  const FloatingSelect = ({
+  }; const FloatingSelect = ({
     icon: Icon,
     label,
     name,
@@ -436,12 +436,12 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
     index
   }) => {
     const [isFocused, setIsFocused] = useState(false);
- 
+
     // Determine hasSelectedValue based on whether it's a skillset or trainee model
     const hasSelectedValue = index !== undefined
       ? values?.skillsetRequirements?.[index]?.skillset
       : values?.[name];
- 
+
     return (
       <div style={styles.fieldContainer}>
         <div style={{
@@ -464,7 +464,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
               onBlur={() => setIsFocused(false)}
               onChange={(e) => {
                 const selectedValue = e.target.value;
- 
+
                 // For skillset dropdown
                 if (index !== undefined) {
                   setFieldValue(name, selectedValue);
@@ -487,7 +487,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
                   {option}
                 </option>
               ))}
-                <option value="Other">Other (Please specify)</option>
+              <option value="Other">Other (Please specify)</option>
             </Field>
             {hasSelectedValue && (
               <label style={{
@@ -510,11 +510,11 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
       </div>
     );
   };
- 
+
   const FloatingTextarea = ({ icon: Icon, label, name, values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
- 
+
     return (
       <div style={styles.fieldContainers}>
         <div style={{
@@ -552,11 +552,11 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
       </div>
     );
   };
- 
+
   const ResourceInput = ({ icon: Icon, label, name, values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values?.skillsetRequirements?.[props.index]?.resources !== '';
- 
+
     return (
       <div style={styles.fieldContainer}>
         <div style={{
@@ -594,16 +594,16 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
       </div>
     );
   };
- 
+
   return (
     <div style={styles.container}>
       <ToastContainer />
-       <Formik
-       initialValues={initialValues}
-       validate={validate}
-       onSubmit={handleSubmit}
-     >
-       {({ isSubmitting,values,setFieldValue }) => (
+      <Formik
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting, values, setFieldValue }) => (
           <Form style={styles.form}>
             {/* Company Name */}
             <FloatingInput
@@ -613,7 +613,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
               label="Company Name"
               values={values}
             />
- 
+
             {/* Name */}
             <FloatingInput
               icon={PersonIcon}
@@ -622,7 +622,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
               label="Contact Person Name"
               values={values}
             />
- 
+
             {/* Mobile Number */}
             <FloatingInput
               icon={PhoneIcon}
@@ -631,7 +631,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
               label="Contact Number"
               values={values}
             />
- 
+
             {/* Email */}
             <FloatingInput
               icon={EmailIcon}
@@ -640,26 +640,26 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
               label="Contact Email"
               values={values}
             />
- 
+
             {/* Skillset Requirements */}
             <FieldArray name="skillsetRequirements">
               {({ push, remove }) => {
                 const canAddMoreSkillsets = (() => {
                   const lastSkillset = values.skillsetRequirements[values.skillsetRequirements.length - 1];
- 
+
                   // If it's an "Other" skillset, check otherSkillset
                   if (lastSkillset.skillset === "Other") {
                     return lastSkillset.otherSkillset &&
                       lastSkillset.resources &&
                       parseInt(lastSkillset.resources) > 0;
                   }
- 
+
                   // For predefined skillsets
                   return lastSkillset.skillset &&
                     lastSkillset.resources &&
                     parseInt(lastSkillset.resources) > 0;
                 })();
- 
+
                 return (
                   <div>
                     {values.skillsetRequirements.map((req, index) => (
@@ -667,7 +667,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
                         {/* Skillset Dropdown */}
                         <div style={styles.skillsetField}>
                           <FloatingSelect
-                            icon={EngineeringIcon }
+                            icon={EngineeringIcon}
                             name={`skillsetRequirements.${index}.skillset`}
                             label="Select Skillset"
                             options={skillsets}
@@ -676,21 +676,41 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
                             index={index}
                           />
                         </div>
- 
                         {/* Other Skillset Input */}
                         {req.skillset === "Other" && (
                           <div style={styles.otherSkillsetField}>
-                            <div style={styles.otherSkillsetInput}>
-                              <AssignmentIndIcon
-                                style={styles.otherSkillsetIcon}
-                                fontSize="small"
-                              />
+                            <div style={{
+                              ...styles.inputWrapper,
+                              ...(req.otherSkillsetFocused ? styles.inputWrapperFocused : {})
+                            }}>
+                              <div style={{
+                                ...styles.inputIcon,
+                                ...(req.otherSkillsetFocused ? styles.inputIconFocused : {})
+                              }}>
+                                <AssignmentIndIcon fontSize="small" />
+                              </div>
                               <Field
                                 type="text"
                                 name={`skillsetRequirements.${index}.otherSkillset`}
-                                placeholder="Enter your skillset"
-                                style={styles.otherSkillsetText}
+                                style={styles.inputField}
+                                onFocus={() => {
+                                  const newSkillsetRequirements = [...values.skillsetRequirements];
+                                  newSkillsetRequirements[index].otherSkillsetFocused = true;
+                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
+                                }}
+                                onBlur={() => {
+                                  const newSkillsetRequirements = [...values.skillsetRequirements];
+                                  newSkillsetRequirements[index].otherSkillsetFocused = false;
+                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
+                                }}
                               />
+                              <label style={{
+                                ...styles.inputLabel,
+                                left: "40px",
+                                ...((req.otherSkillsetFocused || req.otherSkillset) ? styles.inputLabelFloated : {})
+                              }}>
+                                Other Skillset
+                              </label>
                             </div>
                             <ErrorMessage
                               name={`skillsetRequirements.${index}.otherSkillset`}
@@ -699,18 +719,18 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
                             />
                           </div>
                         )}
- 
+
                         {/* Resources Input */}
                         <div style={styles.resourcesField}>
                           <ResourceInput
-                            icon={InventoryIcon }
+                            icon={InventoryIcon}
                             name={`skillsetRequirements.${index}.resources`}
                             label="Resources"
                             values={values}
                             index={index}
                           />
                         </div>
- 
+
                         {/* Remove Button */}
                         {index > 0 && (
                           <button
@@ -723,16 +743,16 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
                         )}
                       </div>
                     ))}
- 
+
                     {/* Add More Button with Conditional Disabled State */}
                     <button
                       type="button"
-                      onClick={() => push({ skillset: '', resources: '', otherSkillset: '' })}
-                      style={{
+                      // Update the push function in the FieldArray component
+                      onClick={() => push({ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false })} style={{
                         ...styles.addMoreButton,
                         opacity: canAddMoreSkillsets ? 1 : 0.5,
                         cursor: canAddMoreSkillsets ? 'pointer' : 'not-allowed'
- 
+
                       }}
                       disabled={!canAddMoreSkillsets}
                     >
@@ -765,7 +785,7 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
               label="Please describe your hiring requirements..."
               values={values}
             />
- 
+
             {/* Submit Button */}
             <div
               style={{
@@ -799,8 +819,8 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
                   opacity: isSubmitting ? "0.8" : "1",
                 }}
               >
-  {isSubmitting ? "Submitting..." : "Get started"}
-  <span
+                {isSubmitting ? "Submitting..." : "Get started"}
+                <span
                   style={{
                     background: "white",
                     marginLeft: "50px",
@@ -828,9 +848,8 @@ export default function TrainFromUsAddForm({ availabilities,setShowModal }) {
           </Form>
         )}
       </Formik>
- 
-     
+
+
     </div>
   );
 }
- 

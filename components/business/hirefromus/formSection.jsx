@@ -14,7 +14,7 @@ export default function FormSection() {
         (state) => state.currentAvailability
     );
 
-    // console.log("availabilities", availabilities);
+    console.log("availabilities", availabilities);
 
 
     return (
@@ -164,8 +164,7 @@ export default function FormSection() {
                                             scrollbarWidth: "thin",
                                         }}
                                     >
-                                        <HirefromusAddForm availabilities={availabilities} setShowModal={setShowModal}
-  />
+                                        <HirefromusAddForm availabilities={availabilities} setShowModal={setShowModal} />
                                     </div>
                                 </motion.div>
 

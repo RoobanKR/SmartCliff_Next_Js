@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Navigation, Pagination } from "swiper";
+import { Autoplay, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExecutionOverview } from "@/redux/slices/services/executionOverview/ExecutionOverview";
@@ -17,7 +17,7 @@ import {
 import Image from "next/image";
 import { FaClock, FaUserSecret } from "react-icons/fa";
 import { CalendarMonth, ChevronLeft, ChevronRight, Layers } from "@mui/icons-material";
- 
+
 // Animated Counter Component
 const AnimatedCounter = ({
   startValue = 0,
@@ -26,26 +26,26 @@ const AnimatedCounter = ({
   isVisible = false,
 }) => {
   const [count, setCount] = useState(startValue);
- 
+
   useEffect(() => {
     // Only start animation if component is visible and endValue is set
     if (!isVisible || endValue === 0) {
       setCount(startValue);
       return;
     }
- 
+
     // Reset to start value when section becomes visible
     setCount(startValue);
- 
+
     // Calculate animation steps
     const steps = Math.floor(duration / 16); // ~60fps
     const increment = (endValue - startValue) / steps;
     let currentCount = startValue;
     let timer;
- 
+
     const updateCounter = () => {
       currentCount += increment;
- 
+
       if (
         (increment > 0 && currentCount >= endValue) ||
         (increment < 0 && currentCount <= endValue)
@@ -57,15 +57,15 @@ const AnimatedCounter = ({
         setCount(Math.round(currentCount));
       }
     };
- 
+
     timer = setInterval(updateCounter, 16);
- 
+
     return () => clearInterval(timer);
   }, [startValue, endValue, duration, isVisible]);
- 
+
   return <>{count}</>;
 };
- 
+
 export default function ExecutionOverview1({ serviceId }) {
   const dispatch = useDispatch();
   const [showSlider, setShowSlider] = useState(false);
@@ -82,7 +82,7 @@ export default function ExecutionOverview1({ serviceId }) {
   const counterSectionRef = useRef(null);
   const cardRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState(0);
- 
+
   useEffect(() => {
     if (cardRef.current) {
       const cardHeight = cardRef.current.offsetHeight;
@@ -108,18 +108,18 @@ export default function ExecutionOverview1({ serviceId }) {
         threshold: 0.1, // trigger when at least 10% of the element is visible
       }
     );
- 
+
     if (counterSectionRef.current) {
       observer.observe(counterSectionRef.current);
     }
- 
+
     return () => {
       if (counterSectionRef.current) {
         observer.unobserve(counterSectionRef.current);
       }
     };
   }, [counterSectionRef]);
- 
+
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([
@@ -130,33 +130,33 @@ export default function ExecutionOverview1({ serviceId }) {
       ]);
       setShowSlider(true);
     };
- 
+
     fetchData();
   }, [dispatch]); // Only depend on dispatch
- 
+
   useEffect(() => {
     if (!services.length || !servicesBusiness.length) return;
- 
+
     const fullUrl = typeof window !== "undefined" ? window.location.href : "";
     const segments = fullUrl.split("/").filter(Boolean);
     const lastSegment = segments.pop();
     const secondLastSegment = segments.pop();
- 
+
     const onematchingData = servicesBusiness.find(
       (i) => i.slug === secondLastSegment
     );
     const twomatchingService = services.find((i) => i.slug === lastSegment);
- 
+
     if (!onematchingData || !twomatchingService) return;
- 
+
     const matchedServices = services.filter(
       (service) => service.business_services?._id === onematchingData?._id
     );
- 
+
     const finalMatchedService = matchedServices.find(
       (service) => service.slug === twomatchingService?.slug
     );
- 
+
     if (finalMatchedService && executionOverviews.length) {
       const filtered = executionOverviews.filter(
         (i) => i.service?._id === finalMatchedService._id
@@ -164,7 +164,7 @@ export default function ExecutionOverview1({ serviceId }) {
       setMatchedServiceAbouts(filtered);
     }
   }, [services, servicesBusiness, executionOverviews]);
- 
+
   // Set initial data and handle year filtering
   useEffect(() => {
     if (selectedYear === null) {
@@ -176,7 +176,7 @@ export default function ExecutionOverview1({ serviceId }) {
       setDisplayData(yearData);
     }
   }, [selectedYear, matchedServiceAbouts]);
- 
+
   const swiperStyles = {
     container: {
       position: "relative",
@@ -213,25 +213,25 @@ export default function ExecutionOverview1({ serviceId }) {
       transition: "all 0.3s ease",
     },
   };
- 
+
   // Calculate total candidates from displayData
   const totalCandidates = displayData.reduce(
     (total, item) => total + (item.sections?.[0]?.count || 0),
     0
   );
- 
+
   const [maxSectionHeight, setMaxSectionHeight] = useState(0);
   const slideRefs = useRef([]);
   const sectionRefs = useRef([]);
- 
+
   useEffect(() => {
     slideRefs.current = slideRefs.current.slice(0, displayData.length);
- 
+
     // Create a flat array to store all section refs
     const allSectionsCount = displayData.reduce((count, company) => count + (company.sections?.length || 0), 0);
     sectionRefs.current = sectionRefs.current.slice(0, allSectionsCount);
   }, [displayData]);
- 
+
   // Calculate heights after render
   useEffect(() => {
     // Wait for next render cycle to ensure all elements are properly rendered
@@ -240,24 +240,24 @@ export default function ExecutionOverview1({ serviceId }) {
       const heights = slideRefs.current
         .filter(ref => ref !== null && ref !== undefined)
         .map(ref => ref.offsetHeight || 0);
- 
+
       if (heights.length > 0) {
         setMaxHeight(Math.max(...heights));
       }
- 
+
       // Find max height for section divs
       const sectionHeights = sectionRefs.current
         .filter(ref => ref !== null && ref !== undefined)
         .map(ref => ref.offsetHeight || 0);
- 
+
       if (sectionHeights.length > 0) {
         setMaxSectionHeight(Math.max(...sectionHeights));
       }
     }, 300); // Short delay to ensure content has rendered
- 
+
     return () => clearTimeout(timer);
   }, [displayData]);
- 
+
   let sectionRefIndex = 0;
   return (
     <section
@@ -290,7 +290,7 @@ export default function ExecutionOverview1({ serviceId }) {
               }}
             >
               {/* Total Client */}
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -348,8 +348,8 @@ export default function ExecutionOverview1({ serviceId }) {
                     />
                   </span>
                 </span>
-              </div>
- 
+              </div> */}
+
               {/* Execution Overview */}
               <div
                 style={{
@@ -361,16 +361,17 @@ export default function ExecutionOverview1({ serviceId }) {
               >
                 <h2
                   style={{
-                    fontSize: window.innerWidth < 768 ? "20px" : "25px",
+                    fontSize: window.innerWidth < 768 ? "20px" : "29px",
                     margin: 0,
+                    marginBottom: "20px"
                   }}
                 >
                   Execution Overview
                 </h2>
               </div>
- 
+
               {/* Total Candidate */}
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -428,25 +429,25 @@ export default function ExecutionOverview1({ serviceId }) {
                     />
                   </span>
                 </span>
-              </div>
+              </div> */}
             </div>
- 
+
             <p
               style={{
                 marginTop: window.innerWidth < 768 ? "-20px" : "-30px", color: "#EC5228", fontWeight: "bold",
                 marginLeft: window.innerWidth < 768 ? "0px" : "30px",
               }}
             >
-              (By Client)
+              
             </p>
           </div>
         </div>
         {showSlider && (
           <>
             <br />
- 
+
             <Swiper
-              modules={[Navigation, Pagination]}
+              modules={[Navigation, Pagination, Autoplay]}
               pagination={{
                 el: ".event-six-pagination",
                 clickable: true,
@@ -455,6 +456,7 @@ export default function ExecutionOverview1({ serviceId }) {
                 nextEl: ".icon-arrow-right-event-six",
                 prevEl: ".icon-arrow-left-event-six",
               }}
+              autoplay={{ delay: 3000, disableOnInteraction: false }} // Added autoplay
               spaceBetween={30}
               slidesPerView={1}
               breakpoints={{
@@ -477,7 +479,6 @@ export default function ExecutionOverview1({ serviceId }) {
                     key={index}
                     style={{
                       borderRadius: "12px",
-                      padding: "20px",
                       backgroundColor: " #FFFFFF",
                       textAlign: "center",
                       boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
@@ -492,15 +493,30 @@ export default function ExecutionOverview1({ serviceId }) {
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "translateY(-3px)";
-                      e.currentTarget.style.boxShadow = "0px 8px 20px rgba(0, 0, 0, 0.15)";
+                      e.currentTarget.style.boxShadow =
+                        "0px 8px 20px rgba(0, 0, 0, 0.15)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.boxShadow = "0px 4px 12px rgba(0, 0, 0, 0.1)";
+                      e.currentTarget.style.boxShadow =
+                        "0px 4px 12px rgba(0, 0, 0, 0.1)";
                     }}
                   >
-                    <div style={{ width: "100%", flexGrow: 1, padding: "1rem", textAlign: "center" }}>
-                      <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+                    <div
+                      style={{
+                        width: "100%",
+                        flexGrow: 1,
+                        padding: "1rem",
+                        textAlign: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginBottom: "1rem",
+                        }}
+                      >
                         <img
                           src={company.image}
                           alt={company.name}
@@ -509,6 +525,7 @@ export default function ExecutionOverview1({ serviceId }) {
                       </div>
                       {/* Section Slider */}
                       <div style={{ padding: "0 5px", position: "relative" }}>
+                        {/* multi section case - with slider */}
                         {company.sections && company.sections.length > 1 ? (
                           <>
                             <Swiper
@@ -526,55 +543,137 @@ export default function ExecutionOverview1({ serviceId }) {
                                 return (
                                   <SwiperSlide key={sectionIndex}>
                                     <div
-                                      ref={(el) =>
-                                      (sectionRefs.current[
-                                        currentSectionIndex
-                                      ] = el)
-                                      }
+                                      ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
                                       style={{
-                                        backgroundColor: "rgb(154, 123, 216)",
-                                        color: "white",
-                                        borderRadius: "0.375rem",
-                                        padding: "10px 0px",
-                                        marginBottom: "1rem",
                                         display: "flex",
                                         flexDirection: "column",
-                                        justifyContent: "center",
+                                        gap: "16px",
                                         height: maxSectionHeight || "auto",
                                       }}
                                     >
-                                      <p
-                                        style={{
-                                          fontSize: "1rem",
-                                          marginBottom: "0.5rem",
-                                          whiteSpace: "pre-line",
-                                        }}
-                                      >
-                                        {section.title &&
-                                          section.title
-                                            .split(",")
-                                            .map((part, i) => (
-                                              <span key={i}>
-                                                {part.trim()}
-                                                <br />
-                                              </span>
-                                            ))}
-                                      </p>
- 
+                                      {/* Title Section */}
                                       <div
                                         style={{
-                                          fontWeight: "bold",
-                                          fontSize: "1.875rem",
+                                          position: "relative",
+                                          overflow: "hidden",
+                                          borderRadius: "8px",
+                                          background: "#ffffff",
+                                          padding: "16px 10px",
+                                          border: "1px solid #e9ecef",
                                         }}
                                       >
-                                        {section.count}
+                                        {/* Background color accent */}
+                                        <div
+                                          style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            height: "100%",
+                                            width: "4px",
+                                            background: "linear-gradient(to bottom, #4361ee, #3a0ca3)",
+                                            borderTopLeftRadius: "8px",
+                                            borderBottomLeftRadius: "8px",
+                                          }}
+                                        ></div>
+
+                                        {section.title &&
+                                          section.title.split(",").map((part, i, arr) => (
+                                            <div key={i}>
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  // alignItems: "center",
+                                                  gap: "8px",
+                                                  marginBottom: "4px",
+                                                  textAlign: "left",
+                                                  padding: "10px 20px",
+                                                }}
+                                              >
+                                                <span
+                                                  style={{
+
+                                                    fontSize: "14px",
+                                                    fontWeight: "500",
+                                                    color: "#495057",
+                                                  }}
+                                                >
+                                                  {part.trim()}
+                                                </span>
+                                              </div>
+
+                                              {i < section.title.split(",").length - 1 && (
+                                                <div
+                                                  style={{
+                                                    height: "1px",
+                                                    marginLeft: "32px",
+                                                    marginRight: "0",
+                                                    marginTop: "4px",
+                                                    marginBottom: "4px",
+                                                    background: "#e9ecef",
+                                                  }}
+                                                ></div>
+                                              )}
+                                            </div>
+                                          ))}
+                                      </div>
+
+                                      {/* Count Section */}
+                                      <div
+                                        style={{
+                                          position: "relative",
+                                          overflow: "hidden",
+                                          borderRadius: "8px",
+                                          background: "linear-gradient(135deg, #4361ee, #3a0ca3)",
+                                          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                          padding: "1px",
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          height: "50px",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            position: "absolute",
+                                            top: "50%",
+                                            left: "10%",
+                                            width: "60px",
+                                            height: "60px",
+                                            borderRadius: "50%",
+                                            background: "rgba(255, 255, 255, 0.1)",
+                                          }}
+                                        ></div>
+
+                                        <div
+                                          style={{
+                                            position: "absolute",
+                                            bottom: "-10px",
+                                            right: "10%",
+                                            width: "40px",
+                                            height: "40px",
+                                            borderRadius: "50%",
+                                            background: "rgba(255, 255, 255, 0.1)",
+                                          }}
+                                        ></div>
+
+                                        <div
+                                          style={{
+                                            fontSize: "28px",
+                                            fontWeight: "700",
+                                            color: "#ffffff",
+                                            zIndex: 1,
+                                            textShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+                                          }}
+                                        >
+                                          {section.count}
+                                        </div>
                                       </div>
                                     </div>
                                   </SwiperSlide>
                                 );
                               })}
                             </Swiper>
- 
+
                             {/* Navigation Arrows */}
                             <div
                               className={`section-prev-${index}`}
@@ -585,9 +684,9 @@ export default function ExecutionOverview1({ serviceId }) {
                                 transform: "translateY(-50%)",
                                 width: "36px",
                                 height: "36px",
-                                background: "rgba(255, 255, 255, 0.9)", // Light translucent white
+                                background: "rgba(255, 255, 255, 0.9)",
                                 borderRadius: "50%",
-                                border: "1px solid rgba(0, 0, 0, 0.1)", // Soft thin border
+                                border: "1px solid rgba(0, 0, 0, 0.1)",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
@@ -596,23 +695,17 @@ export default function ExecutionOverview1({ serviceId }) {
                                 transition: "all 0.3s ease-in-out",
                               }}
                               onMouseOver={(e) => {
-                                e.currentTarget.style.background =
-                                  "rgba(255, 255, 255, 1)";
-                                e.currentTarget.style.border =
-                                  "1px solid #FF8C00"; // Orange border
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 1)";
+                                e.currentTarget.style.border = "1px solid #4361ee";
                               }}
                               onMouseOut={(e) => {
-                                e.currentTarget.style.background =
-                                  "rgba(255, 255, 255, 0.9)";
-                                e.currentTarget.style.border =
-                                  "1px solid rgba(0, 0, 0, 0.1)";
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
+                                e.currentTarget.style.border = "1px solid rgba(0, 0, 0, 0.1)";
                               }}
                             >
-                              <ChevronLeft
-                                style={{ fontSize: "24px", color: " #FF8C00" }}
-                              />
+                              <ChevronLeft style={{ fontSize: "24px", color: "#4361ee" }} />
                             </div>
- 
+
                             <div
                               className={`section-next-${index}`}
                               style={{
@@ -622,9 +715,9 @@ export default function ExecutionOverview1({ serviceId }) {
                                 transform: "translateY(-50%)",
                                 width: "36px",
                                 height: "36px",
-                                background: "rgba(255, 255, 255, 0.9)", // Light translucent white
+                                background: "rgba(255, 255, 255, 0.9)",
                                 borderRadius: "50%",
-                                border: "1px solid rgba(0, 0, 0, 0.1)", // Soft thin border
+                                border: "1px solid rgba(0, 0, 0, 0.1)",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
@@ -633,27 +726,21 @@ export default function ExecutionOverview1({ serviceId }) {
                                 transition: "all 0.3s ease-in-out",
                               }}
                               onMouseOver={(e) => {
-                                e.currentTarget.style.background =
-                                  "rgba(255, 255, 255, 1)";
-                                e.currentTarget.style.border =
-                                  "1px solid #FF8C00"; // Orange border
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 1)";
+                                e.currentTarget.style.border = "1px solid #4361ee";
                               }}
                               onMouseOut={(e) => {
-                                e.currentTarget.style.background =
-                                  "rgba(255, 255, 255, 0.9)";
-                                e.currentTarget.style.border =
-                                  "1px solid rgba(0, 0, 0, 0.1)";
+                                e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)";
+                                e.currentTarget.style.border = "1px solid rgba(0, 0, 0, 0.1)";
                               }}
                             >
-                              <ChevronRight
-                                style={{ fontSize: "24px", color: " #FF8C00" }}
-                              />
+                              <ChevronRight style={{ fontSize: "24px", color: "#4361ee" }} />
                             </div>
                           </>
- 
                         ) : (
                           // Single section case - no slider needed
-                          company.sections && company.sections.map((section, sectionIndex) => {
+                          company.sections &&
+                          company.sections.map((section, sectionIndex) => {
                             const currentSectionIndex = sectionRefIndex++;
                             return (
                               <>
@@ -661,81 +748,145 @@ export default function ExecutionOverview1({ serviceId }) {
                                   ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
                                   key={sectionIndex}
                                   style={{
-                                    background: "rgba(154, 123, 216, 0.15)", // Light purple translucent background
-                                    color: "#4B0082", // Deep purple text for contrast
-                                    borderRadius: "0.375rem",
-                                    marginBottom: "1rem",
-                                    backdropFilter: "blur(10px)", // Glassmorphism effect
-                                    border: "2px solid transparent",
-                                    backgroundImage:
-                                      "linear-gradient(white, white), linear-gradient(135deg, #9A7BD8, #B8A2EC)",
-                                    backgroundClip: "padding-box, border-box",
-                                    height: maxSectionHeight || "auto",
+                                    overflow: "hidden",
                                     display: "flex",
                                     flexDirection: "column",
-                                    justifyContent: "center", // Center content vertically
-                                    alignItems: "center", // Center content horizontally
-                                    textAlign: "center", // Ensure text is centered
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    textAlign: "center",
+                                    borderRadius: "10px",
+                                    marginBottom: "16px",
+                                    background: "#ffffff",
+                                    height: maxSectionHeight || "auto",
                                   }}
                                 >
-                                  <p
+                                  <div
                                     style={{
-                                      fontSize: "1rem",
-                                      whiteSpace: "pre-line",
-                                      marginBottom: "0.5rem",
-                                      width: "100%",
-                                      padding: "30px",
-                                      textAlign: "left", // Center the text properly
+                                      position: "relative",
+                                      marginBottom: "8px",
+                                      padding: "16px 10px",
+                                      background: "#f8f9fa",
+                                      borderRadius: "8px",
+                                      border: "1px solid #e9ecef",
                                     }}
                                   >
+                                    {/* Background color accent */}
+                                    <div
+                                      style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                        height: "100%",
+                                        width: "4px",
+                                        background: "linear-gradient(to bottom, #4361ee, #3a0ca3)",
+                                        borderTopLeftRadius: "8px",
+                                        borderBottomLeftRadius: "8px",
+                                      }}
+                                    ></div>
                                     {section.title &&
-                                      section.title
-                                        .split(",")
-                                        .map((part, i, arr) => (
-                                          <span key={i}>
-                                            ✨ {part.trim()}
-                                            {i < arr.length - 1 && (
-                                              <hr
-                                                style={{
-                                                  margin: "8px 0",
-                                                  border: "0.5px solid #C4A7E7",
-                                                }}
-                                              />
-                                            )}
-                                          </span>
-                                        ))}
- 
-                                  </p>
+                                      section.title.split(",").map((part, i, arr) => (
+                                        <div key={i}>
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              alignItems: "center",
+                                              gap: "8px",
+                                              marginBottom: "4px",
+                                              textAlign: "left",
+                                            }}
+                                          >
+                                            <div
+                                              style={{
+                                                width: "24px",
+                                                height: "24px",
+                                                borderRadius: "50%",
+                                                background: "linear-gradient(135deg, #4361ee, #3a0ca3)",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                color: "#ffffff",
+                                                fontSize: "12px",
+                                                fontWeight: "bold",
+                                                flexShrink: 0,
+                                              }}
+                                            >
+                                              {i + 1}
+                                            </div>
+                                            <span
+                                              style={{
+                                                fontSize: "14px",
+                                                fontWeight: "500",
+                                                color: "#495057",
+                                              }}
+                                            >
+                                              {part.trim()}
+                                            </span>
+                                          </div>
+
+                                          {i < section.title.split(",").length - 1 && (
+                                            <div
+                                              style={{
+                                                height: "1px",
+                                                marginLeft: "32px",
+                                                marginRight: "0",
+                                                marginTop: "4px",
+                                                marginBottom: "4px",
+                                                background: "#e9ecef",
+                                              }}
+                                            ></div>
+                                          )}
+                                        </div>
+                                      ))}
+                                  </div>
                                 </div>
                                 <div
                                   style={{
-                                    background: "rgb(25, 36, 72)",
-                                    color: "rgb(255, 255, 255)",
-                                    borderRadius: "12px",
-                                    padding: "25px",
-                                    fontWeight: "bold",
-                                    fontSize: "2rem",
-                                    width: "100%",
-                                    textAlign: "center",
-                                    boxShadow:
-                                      "0px 6px 20px rgba(0, 0, 0, 0.1)",
-                                    transition: "all 0.3s ease-in-out",
                                     position: "relative",
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform =
-                                      "translateY(-5px)";
-                                    e.currentTarget.style.boxShadow =
-                                      "0px 12px 25px rgba(0, 0, 0, 0.15)";
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform =
-                                      "translateY(0)";
-                                    e.currentTarget.style.boxShadow =
-                                      "0px 6px 20px rgba(0, 0, 0, 0.1)";
+                                    overflow: "hidden",
+                                    borderRadius: "8px",
+                                    background: "linear-gradient(135deg, #4361ee, #3a0ca3)",
+                                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                    padding: "1px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
                                   }}
                                 >
-                                  {section.count}
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      top: "50%",
+                                      left: "10%",
+                                      width: "60px",
+                                      height: "60px",
+                                      borderRadius: "50%",
+                                      background: "rgba(255, 255, 255, 0.1)",
+                                    }}
+                                  ></div>
+
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      bottom: "-10px",
+                                      right: "10%",
+                                      width: "40px",
+                                      height: "40px",
+                                      borderRadius: "50%",
+                                      background: "rgba(255, 255, 255, 0.1)",
+                                    }}
+                                  ></div>
+
+                                  <div
+                                    style={{
+                                      fontSize: "28px",
+                                      fontWeight: "700",
+                                      color: "#ffffff",
+                                      zIndex: 1,
+                                      textShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+                                    }}
+                                  >
+                                    {section.count}
+                                  </div>
                                 </div>
                               </>
                             );
@@ -746,9 +897,9 @@ export default function ExecutionOverview1({ serviceId }) {
                   </div>
                 </SwiperSlide>
               ))}
- 
+
             </Swiper>
- 
+
             <div className="d-flex justify-center x-gap-15 items-center pt-60 lg:pt-40">
               <div className="col-auto">
                 <button className="d-flex items-center text-24 arrow-left-hover js-prev icon-arrow-left-event-six">
@@ -770,5 +921,4 @@ export default function ExecutionOverview1({ serviceId }) {
     </section>
   );
 }
- 
- 
+

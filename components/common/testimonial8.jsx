@@ -86,7 +86,7 @@ export default function TestimonialsEight() {
 
         if (ref) {
           const lineHeight = 21;
-          const maxHeight = lineHeight * 5;
+          const maxHeight = lineHeight * 3;
           newOverflowingStates[id] = ref.scrollHeight > maxHeight;
         }
       });
@@ -309,28 +309,24 @@ export default function TestimonialsEight() {
                           <div
                             className="swiper-slide pt-30"
                             style={{
-                              paddingTop:
-                                window.innerWidth <= 480 ? "15px" : "30px",
+                              paddingTop: window.innerWidth <= 480 ? "15px" : "30px",
+                              height: expandedStates[reviewId] ? "auto" : "300px", // Auto height when expanded
                             }}
                           >
                             <div
                               className="pt-20 pb-30 px-20 border-light rounded-8"
                               style={{
-                                padding:
-                                  window.innerWidth <= 480
-                                    ? "15px"
-                                    : "20px 20px 30px",
+                                padding: window.innerWidth <= 480 ? "15px" : "20px 20px 30px",
                                 boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
+                                height: expandedStates[reviewId] ? "auto" : "100%", // Auto height when expanded
+                                transition: "height 0.3s ease-in-out",
                               }}
                             >
                               <div className="testimonials__content">
                                 <p
                                   className="fw-500"
                                   style={{
-                                    fontSize:
-                                      window.innerWidth <= 480
-                                        ? "16px"
-                                        : "20px",
+                                    fontSize: window.innerWidth <= 480 ? "16px" : "20px",
                                     marginBottom: "5px",
                                   }}
                                 >
@@ -338,10 +334,7 @@ export default function TestimonialsEight() {
                                   <span
                                     className="text-18 fw-500 text-orange-1"
                                     style={{
-                                      fontSize:
-                                        window.innerWidth <= 480
-                                          ? "16px"
-                                          : "18px",
+                                      fontSize: window.innerWidth <= 480 ? "16px" : "18px",
                                     }}
                                   >
                                     {" "}
@@ -351,10 +344,7 @@ export default function TestimonialsEight() {
                                 <p
                                   className="fw-500"
                                   style={{
-                                    fontSize:
-                                      window.innerWidth <= 480
-                                        ? "16px"
-                                        : "20px",
+                                    fontSize: window.innerWidth <= 480 ? "16px" : "20px",
                                     marginBottom: "10px",
                                   }}
                                 >
@@ -362,10 +352,7 @@ export default function TestimonialsEight() {
                                   <span
                                     className="text-18 fw-500 text-orange-1"
                                     style={{
-                                      fontSize:
-                                        window.innerWidth <= 480
-                                          ? "16px"
-                                          : "18px",
+                                      fontSize: window.innerWidth <= 480 ? "16px" : "18px",
                                     }}
                                   >
                                     {" "}
@@ -374,23 +361,16 @@ export default function TestimonialsEight() {
                                 </p>
                                 <div>
                                   <p
-                                    ref={(el) =>
-                                      (textRefs.current[reviewId] = el)
-                                    }
+                                    ref={(el) => (textRefs.current[reviewId] = el)}
                                     className="fw-500 mt-15"
                                     style={{
                                       color: "#5b2c6f",
-                                      fontSize:
-                                        window.innerWidth <= 480
-                                          ? "13px"
-                                          : "14px",
+                                      fontSize: window.innerWidth <= 480 ? "13px" : "14px",
                                       lineHeight: "1.5",
                                       display: "-webkit-box",
                                       WebkitBoxOrient: "vertical",
                                       overflow: "hidden",
-                                      WebkitLineClamp: expandedStates[reviewId]
-                                        ? "unset"
-                                        : 5,
+                                      WebkitLineClamp: expandedStates[reviewId] ? "unset" : 3,
                                       transition: "all 0.3s ease-in-out",
                                       textAlign: "justify",
                                       marginTop: "15px",
@@ -406,10 +386,7 @@ export default function TestimonialsEight() {
                                         alignItems: "center",
                                         gap: "5px",
                                         cursor: "pointer",
-                                        fontSize:
-                                          window.innerWidth <= 480
-                                            ? "12px"
-                                            : "14px",
+                                        fontSize: window.innerWidth <= 480 ? "12px" : "14px",
                                         color: "#007bff",
                                         marginTop: "5px",
                                         fontWeight: "500",
@@ -420,10 +397,7 @@ export default function TestimonialsEight() {
                                           <span>View Less</span>
                                           <ExpandLess
                                             style={{
-                                              fontSize:
-                                                window.innerWidth <= 480
-                                                  ? "16px"
-                                                  : "20px",
+                                              fontSize: window.innerWidth <= 480 ? "16px" : "20px",
                                             }}
                                           />
                                         </>
@@ -432,10 +406,7 @@ export default function TestimonialsEight() {
                                           <span>View More</span>
                                           <ExpandMore
                                             style={{
-                                              fontSize:
-                                                window.innerWidth <= 480
-                                                  ? "16px"
-                                                  : "20px",
+                                              fontSize: window.innerWidth <= 480 ? "16px" : "20px",
                                             }}
                                           />
                                         </>
@@ -444,11 +415,10 @@ export default function TestimonialsEight() {
                                   )}
                                 </div>
                                 <div
-                                  className="row x-gap-20 y-gap-20 items-center pt-15"
+                                  className="row x-gap-20 items-center pt-15"
                                   style={{
                                     display: "flex",
                                     alignItems: "center",
-                                    marginTop: "15px",
                                     gap: "10px",
                                   }}
                                 >
@@ -462,14 +432,8 @@ export default function TestimonialsEight() {
                                       src={elm.profile}
                                       alt={elm.name}
                                       style={{
-                                        width:
-                                          window.innerWidth <= 480
-                                            ? "36px"
-                                            : "42px",
-                                        height:
-                                          window.innerWidth <= 480
-                                            ? "36px"
-                                            : "42px",
+                                        width: window.innerWidth <= 480 ? "36px" : "42px",
+                                        height: window.innerWidth <= 480 ? "36px" : "42px",
                                         borderRadius: "50%",
                                         objectFit: "cover",
                                       }}
@@ -484,10 +448,7 @@ export default function TestimonialsEight() {
                                     <div
                                       className="lh-12 fw-500 text-dark-1"
                                       style={{
-                                        fontSize:
-                                          window.innerWidth <= 480
-                                            ? "14px"
-                                            : "16px",
+                                        fontSize: window.innerWidth <= 480 ? "14px" : "16px",
                                         fontWeight: "500",
                                       }}
                                     >
@@ -496,10 +457,7 @@ export default function TestimonialsEight() {
                                     <div
                                       className="text-13 lh-1 mt-5"
                                       style={{
-                                        fontSize:
-                                          window.innerWidth <= 480
-                                            ? "12px"
-                                            : "13px",
+                                        fontSize: window.innerWidth <= 480 ? "12px" : "13px",
                                         marginTop: "5px",
                                       }}
                                     >
@@ -571,7 +529,7 @@ export default function TestimonialsEight() {
                   <Swiper
                     modules={[Navigation, Pagination]}
                     pagination={{
-                      el: ".pagination-videos",
+                      el: ".pagination-testimonials-eight",
                       clickable: true,
                     }}
                     ref={videoSwiperRef}
@@ -585,96 +543,87 @@ export default function TestimonialsEight() {
                     {reviewsWithVideos.slice(0, 3).map((review, i) => (
                       <SwiperSlide key={i}>
                         <div
-                          className="composition -type-7 relative"
                           style={{
-                            position: "relative",
                             width: "100%",
-                            height:
-                              window.innerWidth <= 480
-                                ? "240px"
-                                : window.innerWidth <= 768
-                                  ? "300px"
-                                  : "360px",
-                            maxWidth: "100%",
+                            height: "270px",
+                            borderRadius: "10px",
+                            overflow: "hidden",
+                            position: "relative"
                           }}
                         >
-                          <div
-                            className="-el-1"
+                          <video
+                            src={review.video}
                             style={{
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
                               width: "100%",
-                              height: "100%",
+                              height: "300px",
+                              borderRadius: "10px",
+                              // backgroundColor: "#000",
+                              objectFit: "cover"
                             }}
-                          >
-                            <ReactPlayer
-                              url={review.video}
-                              width="100%"
-                              height="100%"
-                              style={{
-                                borderRadius: "12px",
-                                overflow: "hidden",
-                              }}
-                            />
-                          </div>
-                          <div
-                            className="-el-2"
                             onClick={() => openVideoModal(review.video)}
+                          />
+
+                          {/* Play button overlay with guaranteed click functionality */}
+                          <div
                             style={{
-                              cursor: "pointer",
                               position: "absolute",
                               top: "50%",
                               left: "50%",
                               transform: "translate(-50%, -50%)",
-                              zIndex: 2,
+                              zIndex: 10,
+                              cursor: "pointer",
+                              pointerEvents: "auto" // Ensures clicks are registered
                             }}
+                            onClick={() => openVideoModal(review.video)}
                           >
                             <div
-                              className="d-flex items-center justify-center bg-white rounded-full js-gallery"
-                              data-gallery="gallery1"
                               style={{
+                                backgroundColor: "#ffffff",
+                                borderRadius: "50%",
                                 boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-                                transition:
-                                  "transform 0.3s ease, box-shadow 0.3s ease",
-                                width:
-                                  window.innerWidth <= 480 ? "70px" : "90px",
-                                height:
-                                  window.innerWidth <= 480 ? "70px" : "90px",
+                                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                                width: "90px",
+                                height: "90px",
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: "50%",
+                                justifyContent: "center"
                               }}
                               onMouseEnter={(e) => {
                                 e.currentTarget.style.transform = "scale(1.1)";
-                                e.currentTarget.style.boxShadow =
-                                  "0 15px 25px rgba(0,0,0,0.15)";
+                                e.currentTarget.style.boxShadow = "0 15px 25px rgba(0,0,0,0.15)";
                               }}
                               onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = "scale(1)";
-                                e.currentTarget.style.boxShadow =
-                                  "0 10px 20px rgba(0,0,0,0.1)";
+                                e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.1)";
                               }}
                             >
                               <div
-                                className="icon-play text-30"
                                 style={{
                                   color: "#e8543e",
-                                  fontSize:
-                                    window.innerWidth <= 480 ? "24px" : "30px",
+                                  fontSize: "30px"
                                 }}
-                              ></div>
+                              >
+                                ▶
+                              </div>
                             </div>
                           </div>
-                          {/* Overlay to darken the image */}
+
+                          {/* Dark overlay that doesn't block click events */}
                           <div
                             style={{
                               position: "absolute",
-
                               top: 0,
                               left: 0,
                               right: 0,
                               bottom: 0,
-                              borderRadius: "12px",
+                              backgroundColor: "black",
+                              opacity: 0.3,
+                              borderRadius: "10px",
                               zIndex: 1,
+                              pointerEvents: "none" // Ensures overlay doesn't block clicks
                             }}
                           />
                         </div>

@@ -46,6 +46,8 @@ import {
   selectPlacementTrainingTrackState,
 } from "@/redux/slices/PlacementTrainingTrack/PlacementTrainingTrack";
 import CsrDegreeProgram from "../../servicesDegreeProgrammig1";
+import FormSection from "@/components/business/institute/formSection";
+import ServiceClient from "@/components/services/Clients";
 
 export default function HTD() {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
@@ -218,15 +220,16 @@ export default function HTD() {
   if (matchedexecutionOverviews.length > 0) {
     availableSections.push({
       id: "execution-overview",
-      title: "Execution Overview (By Client)",
+      title: "Execution Overview",
     });
   }
-  if (filteredHighlights.length > 0) {
-    availableSections.push({
-      id: "execution-highlights",
-      title: "Execution Overview (By Domain)",
-    });
-  }
+  // if (filteredHighlights.length > 0) {
+  //   availableSections.push({
+  //     id: "execution-highlights",
+  //     title: "Execution Overview (By Domain)",
+  //   });
+  // }
+
   if (matchedOppertunity.length > 0) {
     availableSections.push({ id: "opportunities", title: "Opportunities" });
   }
@@ -240,6 +243,7 @@ export default function HTD() {
     availableSections.push({ id: "faq", title: "FAQ" });
   }
 
+  
   return (
     <>
       <div className="main-content homeModeChange ">
@@ -428,10 +432,12 @@ export default function HTD() {
                     {matchedexecutionOverviews.length > 0 && (
                       <div id="execution-overview">
                         <ExecutionOverview serviceId={services} />
+
                       </div>
                     )}
+                    
                     {filteredHighlights.length > 0 && (
-                      <div id="execution-highlights">
+                      <div >
                         <ExecutiveHighlights
                           filteredHighlights={filteredHighlights}
                         />
@@ -456,6 +462,9 @@ export default function HTD() {
                         <TrainingTracksTable />
                       </div>
                     )}
+                     {(secondLastSegment === "b2i") && <ServiceClient />}
+
+                                  {(secondLastSegment === "b2i") && <FormSection />}
                     {matchedFaq.length > 0 && (
                       <div id="faq">
                         <FAQComponent faq={matchedFaq} />

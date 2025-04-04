@@ -7,6 +7,8 @@ import HowItWorks from "./howitworks";
 import HeroSection from "./home";
 import FormSection from "./formSection";
 import Client from "./client";
+import LearningJourney from "./LearningJourney";
+import { fetchAllLearningJourneys } from "@/redux/slices/bussiness/learningJourney/learningJourney";
 
 const SkillsetTable2 = () => {
   const sectionRef = useRef(null);
@@ -28,14 +30,22 @@ const SkillsetTable2 = () => {
   };
 
   const dispatch = useDispatch();
-  const { availabilities, loading, error } = useSelector(
-    (state) => state.currentAvailability
-  );
 
+  const { learningJourneys, loading, error } = useSelector(
+    (state) => state.learningJourney
+  );
   useEffect(() => {
+    dispatch(fetchAllLearningJourneys());
     dispatch(getAllCurrentAvailabilities());
+
   }, [dispatch]);
 
+  // Filter only hirefromus type data
+  const hireFromUsData = learningJourneys.filter(
+    (journey) => journey.type === "trainfromus"
+  );
+  console.log("hireFromUsData", hireFromUsData);
+  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -44,6 +54,10 @@ const SkillsetTable2 = () => {
       <div className="mt-60">
         <HeroSection scrollToSection={scrollToSection} />
       </div>
+            {hireFromUsData.length > 0 && (
+              <LearningJourney hireFromUsData={hireFromUsData} />
+            )}
+      
       <HiringCategories />
       <HowItWorks />
       <div ref={sectionRef}>

@@ -1,8 +1,7 @@
- 
+
 "use client";
 import React, { useEffect } from "react";
-import ModalVideo from "react-modal-video";
- 
+
 export default function ModalVideoComponent({ isOpen, setIsOpen, videoId, videoUrl, videoType }) {
   useEffect(() => {
     if (isOpen) {
@@ -10,14 +9,14 @@ export default function ModalVideoComponent({ isOpen, setIsOpen, videoId, videoU
     } else {
       document.body.style.overflow = "auto";
     }
- 
+
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
- 
+
   if (!isOpen) return null;
- 
+
   return (
     <div
       style={{
@@ -66,44 +65,35 @@ export default function ModalVideoComponent({ isOpen, setIsOpen, videoId, videoU
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
- 
+
       {/* Video Modal Content */}
       <div
         style={{
           position: "relative",
           width: "90%",
           maxWidth: "800px",
-          height: "auto",
+          height: "100%",
           borderRadius: "8px",
           overflow: "hidden",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {videoType === "youtube" && videoId ? (
-          <ModalVideo
-            channel="youtube"
-            youtube={{ mute: 0, autoplay: 1 }}
-            isOpen={isOpen}
-            videoId={videoId}
-            onClose={() => setIsOpen(false)}
-          />
-        ) : (
-          <video
-            style={{
-              width: "100%",
-              height: "auto",
-              borderRadius: "8px",
-            }}
-            controls
-            autoPlay
-          >
-            <source src={videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
+        <video
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            borderRadius: "8px",
+            objectFit: "cover"
+          }}
+          controls
+          autoPlay
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   );
 }
- 
- 
+

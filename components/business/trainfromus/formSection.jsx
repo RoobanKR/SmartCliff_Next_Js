@@ -12,14 +12,16 @@ import TrainFromUsAddForm from "../TrainfromusAddForm";
 export default function FormSection() {
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { availabilities, loading, error } = useSelector(
-    (state) => state.currentAvailability
+
+   const { learningJourneys, loading, error } = useSelector(
+     (state) => state.learningJourney
+   );
+   const hireFromUsData = learningJourneys.filter(
+    (journey) => journey.type === "trainfromus"
   );
+  console.log("hireFromUsData", hireFromUsData);
+
  
- 
- 
- 
-  console.log("availabilities", availabilities);
  
   return (
     <section
@@ -168,7 +170,7 @@ export default function FormSection() {
                       scrollbarWidth: "thin",
                     }}
                   >
-                    <TrainFromUsAddForm availabilities={availabilities} setShowModal={setShowModal} />
+                    <TrainFromUsAddForm hireFromUsData={hireFromUsData} setShowModal={setShowModal} />
                   </div>
                 </motion.div>
               </motion.div>

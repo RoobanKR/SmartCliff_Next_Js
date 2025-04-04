@@ -5,7 +5,7 @@ import { submitForm } from "@/redux/slices/hirefromus/Hirefromus";
 import { fetchCourses } from "@/redux/slices/course/course";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
- 
+
 // MUI Icons
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
@@ -22,8 +22,8 @@ import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { createInstitute } from "@/redux/slices/hiring/institute/institute";
- 
- 
+
+
 // Styles
 const styles = {
   container: {
@@ -109,7 +109,8 @@ const styles = {
   },
   otherSkillsetField: {
     flex: 2,
-    marginTop: "10px"
+    marginTop: "10px",
+    marginBottom: "20px"
   },
   otherSkillsetInput: {
     display: "flex",
@@ -137,7 +138,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 1,
- 
+
   },
   addMoreButton: {
     display: "flex",
@@ -234,21 +235,21 @@ const styles = {
     color: "#F2775E"
   }
 };
- 
+
 // Validation patterns
 const VALIDATION_PATTERNS = {
   name: /^[a-zA-Z\s]+$/,
   phone: /^[6-9]\d{0,9}$/,
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 };
- 
-export default function InstitutionAddForm({ availabilities,setShowModal }) {
+
+export default function InstitutionAddForm({ availabilities, setShowModal }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const courses = useSelector((state) => state.courses.courses);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
- 
+
   // Process availabilities data
   const skillsetsMap = availabilities.reduce((acc, item) => {
     if (!acc[item.service]) {
@@ -260,24 +261,27 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
     });
     return acc;
   }, {});
- 
+
   const skillsets = Object.keys(skillsetsMap);
   const TRAINEE_MODELS = [
-    'Hire Train Deploy (HTD)',
-    'Hiring Only',
-    'Training Only'
+    'Placement Training',
+    'Skilling',
+    'Degree Program',
+    'Internship'
   ];
- 
+
   const initialValues = {
     ...formData,
-    // services: [{ service: '', resources: '', otherSkillset: '' }],
-    services: [{ traineeModel: '', resources: '' }],
+    services: [{ service: '', resources: '', otherSkillset: '', otherSkillsetFocused: false }],
+    otherSkillset: '',
+
+    // services: [{ traineeModel: '', resources: '' }],
   };
- 
+
   // Form validation
   const validate = (values) => {
     const errors = {};
-  
+
     // Basic field validations
     if (!values.name) {
       errors.name = "Contact person is required";
@@ -294,7 +298,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
     if (!values.enquiry) {
       errors.enquiry = "Enquiry is required";
     }
-  
+
     // Validate services
     values.services.forEach((req, index) => {
       if (!req.traineeModel) {
@@ -306,20 +310,21 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
         errors.services[index] = { resources: "Resources is required" };
       }
     });
-  
+
     return errors;
-  }; 
+  };
   // Form submission handler
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
-  
+
     try {
       // Map the services to match the backend schema
       const processedServices = values.services.map(req => ({
+        skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
         service: req.traineeModel, // Assuming traineeModel corresponds to the service
         resources: req.resources
       }));
-  
+
       const formDataWithCourseId = {
         name: values.name,
         institute_name: values.institute_name,
@@ -328,32 +333,32 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
         enquiry: values.enquiry,
         services: processedServices // Send the processed services
       };
-  
+
       const response = await dispatch(createInstitute(formDataWithCourseId));
-  
+
       if (response.payload.message[0].key === "success") {
-                 setShowSuccess(true);
-                 toast.success("Form submitted successfully!");
-               } else {
-                 toast.error(response.payload.message[0].value);
-               }
-               setTimeout(() => {
-                setShowModal(false);
-              }, 3000);
-             } catch (error) {
-               const errorMessage = error.response?.data?.message[0]?.value ||
-                 error.message ||
-                 "An error occurred while submitting the form";
-               toast.error(errorMessage);
-             } finally {
-              setIsSubmitting(false);
-             }
-           };
+        setShowSuccess(true);
+        toast.success("Form submitted successfully!");
+      } else {
+        toast.error(response.payload.message[0].value);
+      }
+      setTimeout(() => {
+        setShowModal(false);
+      }, 3000);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message[0]?.value ||
+        error.message ||
+        "An error occurred while submitting the form";
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   // Custom form components
   const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
- 
+
     return (
       <div style={styles.fieldContainer}>
         <div style={{
@@ -387,7 +392,10 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
         <ErrorMessage name={name} component="div" style={styles.errorMessage} />
       </div>
     );
-  }; const FloatingSelect = ({
+  };
+
+  // Inside the FloatingSelect component:
+  const FloatingSelect = ({
     icon: Icon,
     label,
     name,
@@ -397,8 +405,9 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
     index
   }) => {
     const [isFocused, setIsFocused] = useState(false);
+    // Fix: Change this to match the actual path used in the form
     const hasSelectedValue = values?.services?.[index]?.traineeModel;
- 
+
     return (
       <div style={styles.fieldContainer}>
         <div style={{
@@ -422,12 +431,12 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
               onChange={(e) => {
                 const selectedValue = e.target.value;
                 setFieldValue(name, selectedValue);
-                setFieldValue(`services.${index}.resources`, '');
               }}
               style={{
                 ...styles.inputField,
                 appearance: "none",
                 paddingRight: "40px",
+
               }}
             >
               <option value="">Select {label}</option>
@@ -436,6 +445,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
                   {option}
                 </option>
               ))}
+              <option value="Other">Other (Please specify)</option>
             </Field>
             {hasSelectedValue && (
               <label style={{
@@ -458,11 +468,11 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
       </div>
     );
   };
- 
+
   const FloatingTextarea = ({ icon: Icon, label, name, values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
- 
+
     return (
       <div style={styles.fieldContainers}>
         <div style={{
@@ -500,11 +510,11 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
       </div>
     );
   };
- 
+
   const ResourceInput = ({ icon: Icon, label, name, values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values?.services?.[props.index]?.resources !== '';
- 
+
     return (
       <div style={styles.fieldContainer}>
         <div style={{
@@ -542,7 +552,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
       </div>
     );
   };
- 
+
   return (
     <div style={styles.container}>
       <ToastContainer />
@@ -561,7 +571,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
               label="Company Name"
               values={values}
             />
- 
+
             {/* Name */}
             <FloatingInput
               icon={PersonIcon}
@@ -570,7 +580,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
               label="Contact Person Name"
               values={values}
             />
- 
+
             {/* Mobile Number */}
             <FloatingInput
               icon={PhoneIcon}
@@ -579,7 +589,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
               label="Contact number"
               values={values}
             />
- 
+
             {/* Email */}
             <FloatingInput
               icon={EmailIcon}
@@ -592,18 +602,19 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
               {({ push, remove }) => {
                 const canAddMoreSkillsets = (() => {
                   const lastSkillset = values.services[values.services.length - 1];
+
+                  // Check if traineeModel is selected and resources is provided
                   return lastSkillset.traineeModel &&
                     lastSkillset.resources &&
                     parseInt(lastSkillset.resources) > 0;
                 })();
- 
+
                 return (
                   <div>
                     {values.services.map((req, index) => (
                       <div key={index} style={styles.skillsetRow}>
-                        {/* Skillset Dropdown */}
+                        {/* Trainee Model Dropdown */}
                         <div style={styles.skillsetField}>
- 
                           <FloatingSelect
                             icon={ModelTrainingIcon}
                             name={`services.${index}.traineeModel`}
@@ -614,7 +625,51 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
                             index={index}
                           />
                         </div>
- 
+
+                        {/* Other Trainee Model Input */}
+                        {req.traineeModel === "Other" && (
+                          <div style={styles.otherSkillsetField}>
+                            <div style={{
+                              ...styles.inputWrapper,
+                              ...(req.otherModelFocused ? styles.inputWrapperFocused : {})
+                            }}>
+                              <div style={{
+                                ...styles.inputIcon,
+                                ...(req.otherModelFocused ? styles.inputIconFocused : {})
+                              }}>
+                                <AssignmentIndIcon fontSize="small" />
+                              </div>
+                              <Field
+                                type="text"
+                                name={`services.${index}.otherModel`}
+                                style={styles.inputField}
+                                onFocus={() => {
+                                  const newServices = [...values.services];
+                                  newServices[index].otherModelFocused = true;
+                                  setFieldValue('services', newServices);
+                                }}
+                                onBlur={() => {
+                                  const newServices = [...values.services];
+                                  newServices[index].otherModelFocused = false;
+                                  setFieldValue('services', newServices);
+                                }}
+                              />
+                              <label style={{
+                                ...styles.inputLabel,
+                                left: "40px",
+                                ...((req.otherModelFocused || req.otherModel) ? styles.inputLabelFloated : {})
+                              }}>
+                                Other Model Type
+                              </label>
+                            </div>
+                            <ErrorMessage
+                              name={`services.${index}.otherModel`}
+                              component="div"
+                              style={styles.errorMessage}
+                            />
+                          </div>
+                        )}
+
                         {/* Resources Input */}
                         <div style={styles.resourcesField}>
                           <ResourceInput
@@ -625,7 +680,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
                             index={index}
                           />
                         </div>
- 
+
                         {/* Remove Button */}
                         {index > 0 && (
                           <button
@@ -638,7 +693,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
                         )}
                       </div>
                     ))}
- 
+
                     {/* Add More Button with Conditional Disabled State */}
                     <button
                       type="button"
@@ -650,13 +705,13 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
                       }}
                       disabled={!canAddMoreSkillsets}
                     >
-                      <AddIcon fontSize="small" /> Add Another Skillset
+                      <AddIcon fontSize="small" /> Add Another Model
                     </button>
                   </div>
                 );
               }}
             </FieldArray>
- 
+
             {/* Enquiry Textarea */}
             <FloatingTextarea
               icon={SendIcon}
@@ -664,7 +719,7 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
               label="Please describe your enquiry requirements..."
               values={values}
             />
- 
+
             {/* Submit Button */}
             <div
               style={{
@@ -727,9 +782,8 @@ export default function InstitutionAddForm({ availabilities,setShowModal }) {
           </Form>
         )}
       </Formik>
- 
-     
+
+
     </div>
   );
 }
- 

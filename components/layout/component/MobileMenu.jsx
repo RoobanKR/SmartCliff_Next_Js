@@ -16,8 +16,8 @@ import {
   selectCategories,
 } from "@/redux/slices/category/category";
 import { fetchCourses } from "@/redux/slices/course/course";
-import { menuList } from "@/data/menu";  // Importing menuList from the same source as BusinessDropdown
-
+import { menuList } from "@/data/menu";
+ 
 export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
   const dispatch = useDispatch();
   const pathname = usePathname();
@@ -25,16 +25,15 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
   const businessServices = useSelector(selectBusinessServices);
   const categories = useSelector(selectCategories);
   const courses = useSelector((state) => state.courses.courses);
-
+ 
   const [showMenu, setShowMenu] = useState(false);
-  const [activeBusinessService, setActiveBusinessService] = useState(null);
-  const [activeService, setActiveService] = useState(null);
-  const [activeCategory, setActiveCategory] = useState(null);
-
-  // New states for Business dropdown
-  const [activeBusinessDropdown, setActiveBusinessDropdown] = useState(false);
+ 
+  // Use separate state variables for different dropdown levels
+  const [activeMainDropdown, setActiveMainDropdown] = useState(null);
+  const [activeServiceBusiness, setActiveServiceBusiness] = useState(null);
+  const [activeProgramCategory, setActiveProgramCategory] = useState(null);
   const [activeCorporateDropdown, setActiveCorporateDropdown] = useState(false);
-
+ 
   useEffect(() => {
     dispatch(getAllBusinessServices());
     dispatch(fetchServices());
@@ -42,7 +41,7 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
     dispatch(fetchCourses());
     setShowMenu(true);
   }, [dispatch]);
-
+ 
   // Group courses by category
   const coursesByCategory = {};
   if (courses && courses.length) {
@@ -51,14 +50,14 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
         course.category?._id ||
         (typeof course.category === "object" && course.category?._id) ||
         course.category;
-
+ 
       if (!coursesByCategory[categoryId]) {
         coursesByCategory[categoryId] = [];
       }
       coursesByCategory[categoryId].push(course);
     });
   }
-
+ 
   // Main menu items with Services, Programs, and Business dropdowns
   const staticMenuItems = [
     { title: "Home", href: "/" },
@@ -111,18 +110,31 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
     { title: "Career", href: "/career" },
     { title: "Contact", href: "/contact" },
   ];
-
+ 
   // Helper function to check if path is active
   const isActive = (path) => pathname.startsWith(path);
-
+ 
+  // Helper function to handle main dropdown toggles
+  const handleMainDropdownToggle = (title) => {
+    // If the same dropdown is clicked, close it
+    if (activeMainDropdown === title) {
+      setActiveMainDropdown(null);
+    } else {
+      // Open the clicked dropdown and reset sub-level dropdowns
+      setActiveMainDropdown(title);
+      setActiveServiceBusiness(null);
+      setActiveProgramCategory(null);
+      setActiveCorporateDropdown(false);
+    }
+  };
+ 
   return (
     <div
-      className={`header-menu js-mobile-menu-toggle ${activeMobileMenu ? "-is-el-visible" : ""
-        }`}
+      className={`header-menu js-mobile-menu-toggle ${activeMobileMenu ? "-is-el-visible" : ""}`}
     >
       <div className="header-menu__content">
         <div className="mobile-bg js-mobile-bg"></div>
-
+ 
         {showMenu && activeMobileMenu && (
           <div className="mobileMenu text-dark-1">
             {staticMenuItems.map((item, i) => (
@@ -131,33 +143,11 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
                   <>
                     <div
                       className="title"
-                      onClick={() => {
-                        // Reset other dropdowns
-                        setActiveBusinessService(null);
-                        setActiveService(null);
-                        setActiveCategory(null);
-
-                        // Toggle specific dropdown
-                        if (item.title === "Services") {
-                          setActiveBusinessService(
-                            activeBusinessService === item.title ? null : item.title
-                          );
-                        } else if (item.title === "Programs") {
-                          setActiveCategory(
-                            activeCategory === item.title ? null : item.title
-                          );
-                        } else if (item.title === "Business") {
-                          setActiveBusinessDropdown(
-                            !activeBusinessDropdown
-                          );
-                        }
-                      }}
+                      onClick={() => handleMainDropdownToggle(item.title)}
                     >
                       <span
                         className={
-                          (item.title === "Services" && activeBusinessService === item.title) ||
-                            (item.title === "Programs" && activeCategory === item.title) ||
-                            (item.title === "Business" && activeBusinessDropdown)
+                          activeMainDropdown === item.title
                             ? "activeMenu"
                             : "inActiveMenu"
                         }
@@ -165,17 +155,13 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
                         {item.title}
                       </span>
                       <i
-                        className={`icon-chevron-right text-13 ml-10 ${(item.title === "Services" && activeBusinessService === item.title) ||
-                          (item.title === "Programs" && activeCategory === item.title) ||
-                          (item.title === "Business" && activeBusinessDropdown)
-                          ? "active"
-                          : ""
+                        className={`icon-chevron-right text-13 ml-10 ${activeMainDropdown === item.title ? "active" : ""
                           }`}
                       ></i>
                     </div>
-
+ 
                     {/* Business Dropdown */}
-                    {item.title === "Business" && activeBusinessDropdown && (
+                    {item.title === "Business" && activeMainDropdown === "Business" && (
                       <div className="toggle active">
                         {item.links.map((subItem, index) => (
                           <div key={index}>
@@ -217,7 +203,7 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
                                 </span>
                               </Link>
                             )}
-
+ 
                             {/* Corporate Submenu Dropdown */}
                             {subItem.links && activeCorporateDropdown && (
                               <div className="pl-30">
@@ -244,60 +230,42 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
                         ))}
                       </div>
                     )}
-
-                    {/* Existing Services and Programs Dropdowns */}
-                    {(item.title === "Services" || item.title === "Programs") &&
-                      ((item.title === "Services" && activeBusinessService === item.title) ||
-                        (item.title === "Programs" && activeCategory === item.title)) &&
-                      item.links?.map((subItem, index) => (
-                        <div key={index} className="toggle active">
-                          <div
-                            className="title pl-20"
-                            onClick={() => {
-                              if (item.title === "Services") {
-                                setActiveService((prev) =>
-                                  prev === subItem.id ? null : subItem.id
+ 
+                    {/* Services Dropdown */}
+                    {item.title === "Services" && activeMainDropdown === "Services" && (
+                      <div className="toggle active">
+                        {item.links?.map((business, index) => (
+                          <div key={index}>
+                            <div
+                              className="title pl-20"
+                              onClick={() => {
+                                setActiveServiceBusiness(
+                                  activeServiceBusiness === business.id ? null : business.id
                                 );
-                              } else if (item.title === "Programs") {
-                                setActiveCategory((prev) =>
-                                  prev === subItem.id ? null : subItem.id
-                                );
-                              }
-                            }}
-                          >
-                            <span
-                              className={
-                                (item.title === "Services" &&
-                                  activeService === subItem.id) ||
-                                  (item.title === "Programs" &&
-                                    activeCategory === subItem.id)
-                                  ? "activeMenu"
-                                  : "inActiveMenu"
-                              }
+                              }}
                             >
-                              {subItem.title}
-                            </span>
-                            <i
-                              className={`icon-chevron-right text-13 ml-10 ${(item.title === "Services" &&
-                                activeService === subItem.id) ||
-                                (item.title === "Programs" &&
-                                  activeCategory === subItem.id)
-                                ? "active"
-                                : ""
-                                }`}
-                            ></i>
-                          </div>
-
-                          {((item.title === "Services" &&
-                            activeService === subItem.id) ||
-                            (item.title === "Programs" &&
-                              activeCategory === subItem.id)) && (
+                              <span
+                                className={
+                                  activeServiceBusiness === business.id
+                                    ? "activeMenu"
+                                    : "inActiveMenu"
+                                }
+                              >
+                                {business.title}
+                              </span>
+                              <i
+                                className={`icon-chevron-right text-13 ml-10 ${activeServiceBusiness === business.id ? "active" : ""
+                                  }`}
+                              ></i>
+                            </div>
+ 
+                            {activeServiceBusiness === business.id && (
                               <div className="pl-30">
-                                {subItem.links?.map((link, linkIndex) => (
+                                {business.links?.map((service, serviceIndex) => (
                                   <Link
-                                    key={linkIndex}
-                                    href={link.href}
-                                    className={`link ${pathname === link.href
+                                    key={serviceIndex}
+                                    href={service.href}
+                                    className={`link ${pathname === service.href
                                       ? "activeMenu"
                                       : "inActiveMenu"
                                       }`}
@@ -307,13 +275,69 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
                                       padding: "10px 0",
                                     }}
                                   >
-                                    {link.label}
+                                    {service.label}
                                   </Link>
                                 ))}
                               </div>
                             )}
-                        </div>
-                      ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+ 
+                    {/* Programs Dropdown */}
+                    {item.title === "Programs" && activeMainDropdown === "Programs" && (
+                      <div className="toggle active">
+                        {item.links?.map((category, index) => (
+                          <div key={index}>
+                            <div
+                              className="title pl-20"
+                              onClick={() => {
+                                setActiveProgramCategory(
+                                  activeProgramCategory === category.id ? null : category.id
+                                );
+                              }}
+                            >
+                              <span
+                                className={
+                                  activeProgramCategory === category.id
+                                    ? "activeMenu"
+                                    : "inActiveMenu"
+                                }
+                              >
+                                {category.title}
+                              </span>
+                              <i
+                                className={`icon-chevron-right text-13 ml-10 ${activeProgramCategory === category.id ? "active" : ""
+                                  }`}
+                              ></i>
+                            </div>
+ 
+                            {activeProgramCategory === category.id && (
+                              <div className="pl-30">
+                                {category.links?.map((course, courseIndex) => (
+                                  <Link
+                                    key={courseIndex}
+                                    href={course.href}
+                                    className={`link ${pathname === course.href
+                                      ? "activeMenu"
+                                      : "inActiveMenu"
+                                      }`}
+                                    onClick={() => setActiveMobileMenu(false)}
+                                    style={{
+                                      display: "block",
+                                      padding: "10px 0",
+                                    }}
+                                  >
+                                    {course.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </>
                 ) : (
                   <Link
@@ -335,7 +359,7 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
           </div>
         )}
       </div>
-
+ 
       <div
         className="header-menu-close"
         onClick={() => setActiveMobileMenu(false)}
@@ -345,7 +369,7 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
           <div className="icon-close text-dark-1 text-16"></div>
         </div>
       </div>
-
+ 
       <div
         className="header-menu-bg"
         onClick={() => setActiveMobileMenu(false)}
@@ -353,3 +377,4 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
     </div>
   );
 }
+ 

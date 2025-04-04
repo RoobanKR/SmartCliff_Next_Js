@@ -13,7 +13,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
               <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
                 {item.heading}
               </h2>
-              <p className="text-dark-1 mt-10">{item.subHeading}</p>
+              <p className="text-dark-1 mt-10" style={{textAlign:"justify"}}>{item.subHeading}</p>
 
               <div className="row y-gap-20 pt-30">
                 {item.feature.map((elm, i) => (
@@ -57,20 +57,19 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
             <div className="elements-image">
               {/* Main Dynamic Image */}
               {matchedServiceAbouts[0]?.images?.length > 0 && (
-                <div
-                  data-move="60"
-                  className="elements-image__main mb-20 js-mouse-move"
-                >
-                  <img
-                    className="js-mouse-move rounded"
-                    style={{ height: "400px", width: "350px" }}
-                    data-move="40"
-                    src={
-                      matchedServiceAbouts[0].images[0] || "/fallback-image.jpg"
-                    }
-                    alt="Main image"
-                  />
-                </div>
+              <div
+              data-move="60"
+              className="elements-image__main mt-70 js-mouse-move"
+            >
+              <img
+                className="js-mouse-move rounded responsive-image"
+                data-move="40"
+                src={
+                  matchedServiceAbouts[0].images[0] || "/fallback-image.jpg"
+                }
+                alt="Main image"
+              />
+            </div>
               )}
             </div>
           </div>

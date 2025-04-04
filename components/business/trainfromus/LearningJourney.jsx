@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import Image from "next/image";
+
 export default function LearningJourney({ hireFromUsData }) {
   return (
     <section className="layout-pt-sm layout-pb-sm">
