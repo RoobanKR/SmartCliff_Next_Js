@@ -12,9 +12,16 @@ import InstitutionAddForm from "../InstituteAddForm";
 export default function FormSection() {
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { availabilities, loading, error } = useSelector(
-    (state) => state.currentAvailability
+ 
+  const { learningJourneys } = useSelector(
+    (state) => state.learningJourney
   );
+ 
+  // Filter only hirefromus type data
+  const hireFromUsData = learningJourneys.filter(
+    (journey) => journey.type === "institute"
+  );
+ 
  
   // console.log("availabilities", availabilities);
  
@@ -165,7 +172,7 @@ export default function FormSection() {
                       scrollbarWidth: "thin",
                     }}
                   >
-                    <InstitutionAddForm availabilities={availabilities} setShowModal={setShowModal} />
+                    <InstitutionAddForm  setShowModal={setShowModal} hireFromUsData={hireFromUsData}/>
                   </div>
                 </motion.div>
               </motion.div>

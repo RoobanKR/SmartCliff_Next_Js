@@ -243,7 +243,7 @@ const VALIDATION_PATTERNS = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 };
 
-export default function InstitutionAddForm({ availabilities, setShowModal }) {
+export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const courses = useSelector((state) => state.courses.courses);
@@ -251,25 +251,7 @@ export default function InstitutionAddForm({ availabilities, setShowModal }) {
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Process availabilities data
-  const skillsetsMap = availabilities.reduce((acc, item) => {
-    if (!acc[item.service]) {
-      acc[item.service] = [];
-    }
-    acc[item.service].push({
-      name: item.resources,
-      count: parseInt(item.resources) || 0
-    });
-    return acc;
-  }, {});
-
-  const skillsets = Object.keys(skillsetsMap);
-  const TRAINEE_MODELS = [
-    'Placement Training',
-    'Skilling',
-    'Degree Program',
-    'Internship'
-  ];
-
+  const TRAINEE_MODELS = hireFromUsData.map((i) => i.title)
   const initialValues = {
     ...formData,
     services: [{ service: '', resources: '', otherSkillset: '', otherSkillsetFocused: false }],
@@ -568,7 +550,7 @@ export default function InstitutionAddForm({ availabilities, setShowModal }) {
               icon={BusinessIcon}
               type="text"
               name="institute_name"
-              label="Company Name"
+              label="Institute Name"
               values={values}
             />
 
