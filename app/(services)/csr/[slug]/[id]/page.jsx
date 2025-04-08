@@ -1,24 +1,30 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
-import { fetchAllFAQs } from "@/redux/slices/faq/faq";
 import { useParams, useRouter } from "next/navigation";
-import FAQComponent from "@/components/courseSingle/Faq";
-import FooterTwo from "@/components/layout/footers/Footer";
-import HeaderTwo from "@/components/layout/headers/HeaderTwo";
-import Preloader from "@/components/common/Preloader";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/swiper-bundle.min.css";
-import { fetchAboutCollegeData } from "@/redux/slices/mca/aboutCollege/aboutCollege";
+
+// Layout components
+import HeaderTwo from "@/components/layout/headers/HeaderTwo";
+import FooterTwo from "@/components/layout/footers/Footer";
+import Preloader from "@/components/common/Preloader";
+
+// MCA components
 import About from "@/components/mca/About";
 import PartnersSection from "@/components/mca/DpPartners";
 import SponsorsSection from "@/components/mca/DpSponsor";
-import { fetchAllOurPartners } from "@/redux/slices/degreeProgram/dpPartner";
-import { fetchAllOurSponsors } from "@/redux/slices/degreeProgram/dpSponsor";
 import ProgrammeHighlights from "@/components/mca/csr/programHighlights";
 import TestimonialsSection from "@/components/mca/csr/programOutcome";
 import TargetStudentsSection from "@/components/mca/csr/targetStudents";
+import FAQComponent from "@/components/courseSingle/Faq";
+
+// Redux actions
+import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
+import { fetchAllFAQs } from "@/redux/slices/faq/faq";
+import { fetchAboutCollegeData } from "@/redux/slices/mca/aboutCollege/aboutCollege";
+import { fetchAllOurPartners } from "@/redux/slices/degreeProgram/dpPartner";
+import { fetchAllOurSponsors } from "@/redux/slices/degreeProgram/dpSponsor";
 import { fetchOurPrograms } from "@/redux/slices/mca/ourProgram/ourProgram";
 import { getAllOutcomes } from "@/redux/slices/mca/outcomes/Outcomes";
 import { getAllTargetStudents } from "@/redux/slices/mca/targetStudent/targetStudent";
@@ -27,108 +33,127 @@ SwiperCore.use([Navigation, Pagination]);
 
 export default function Page() {
   const dispatch = useDispatch();
-  const params = useParams();
-  const programId = params.id;
   const router = useRouter();
+  const { id } = useParams();
+  const programId = useParams().id;
 
-  const { ourPartners } = useSelector(
-    (state) => state.ourPartners
-  );
+  // State
+  const [activeSection, setActiveSection] = useState("");
+  const [programRefs, setProgramRefs] = useState({});
+  const [selectedProgramId, setSelectedProgramId] = useState(programId);
+  const [isMobileView, setIsMobileView] = useState(false);
+  const navLinksRef = useRef(null);
+
+  // Section refs
+  const aboutRef = useRef(null);
+  const partnersRef = useRef(null);
+  const highlightsRef = useRef(null);
+  const outcomeRef = useRef(null);
+  const targetRef = useRef(null);
+  const sponsorsRef = useRef(null);
+  const faqRef = useRef(null);
+  const sectionNavRef = useRef(null);
+
+  // Redux selectors
+  const { ourPartners } = useSelector((state) => state.ourPartners);
+  const { ourSponsors } = useSelector((state) => state.ourSponsors);
   const ourProgram = useSelector((state) => state.ourProgram.ourProgram);
   const outcomes = useSelector((state) => state.outcomes.outcomes);
-  const { targetStudents, loading, error } = useSelector(
-    (state) => state.targetStudent
+  const { targetStudents } = useSelector((state) => state.targetStudent);
+  const degreeProgramData = useSelector(
+    (state) => state.degreeProgram.degreeProgramData
   );
-
-
   const faq = useSelector((state) => state.faq.faq);
   const aboutCollegeData = useSelector(
     (state) => state.aboutCollege.aboutCollegeData
   );
-  const { id } = useParams();
-  const { ourSponsors } = useSelector((state) => state.ourSponsors);
-  // const [isMobileView, setIsMobileView] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
 
-  // **Refs for sections**
-  const aboutRef = useRef(null);
-  const partnersRef = useRef(null);
-  const highlightsRef = useRef(null);
-  const programsRef = useRef(null);
-  const targetsRef = useRef(null);
-  const sponsorsRef = useRef(null);
-  const faqRef = useRef(null);
+  // Matched program data based on URL id
+  const matchedData = degreeProgramData.filter(
+    (item) => item.company?._id === id
+  );
 
-  const handleResize = () => {
-    setIsMobileView(window.innerWidth < 768);
-  };
+  // Filtered data based on selected program ID
+  const finalPartners =
+    ourPartners?.filter(
+      (partner) => partner.degree_program._id === selectedProgramId
+    ) || [];
+  const finalHighlights =
+    ourProgram?.filter(
+      (highlight) => highlight.degree_program._id === selectedProgramId
+    ) || [];
+  const finalProgramOutcome =
+    outcomes?.filter(
+      (outcome) => outcome.degree_program._id === selectedProgramId
+    ) || [];
+  const finalTarget =
+    targetStudents?.filter(
+      (target) => target.degree_program._id === selectedProgramId
+    ) || [];
+  const finalSponsor =
+    ourSponsors?.filter(
+      (sponsor) => sponsor.degree_program._id === selectedProgramId
+    ) || [];
+  const selectedAboutCollege = aboutCollegeData.find(
+    (program) => program._id === selectedProgramId
+  );
+  const filteredFAQ = faq.filter(
+    (item) =>
+      selectedAboutCollege &&
+      String(item.degree_program) === String(selectedAboutCollege._id)
+  );
 
+  // Section navigation active state
+  const [activeSectionNav, setActiveSectionNav] = useState("About");
+
+  // Fetch data on component mount
   useEffect(() => {
-    dispatch(fetchDegreeProgramData());
-    dispatch(fetchAllOurSponsors());
-    dispatch(fetchAboutCollegeData());
-    dispatch(fetchOurPrograms());
-    dispatch(getAllOutcomes());
-    dispatch(getAllTargetStudents());
-    dispatch(fetchAllFAQs());
-    dispatch(fetchAllOurPartners());
+    const actions = [
+      fetchDegreeProgramData(),
+      fetchAllOurSponsors(),
+      fetchAboutCollegeData(),
+      fetchOurPrograms(),
+      getAllOutcomes(),
+      getAllTargetStudents(),
+      fetchAllFAQs(),
+      fetchAllOurPartners(),
+    ];
+
+    actions.forEach((action) => dispatch(action));
+
+    // Handle responsive view
+    const handleResize = () => setIsMobileView(window.innerWidth < 768);
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, [dispatch]);
 
-  const finalPartners =
-    ourPartners?.filter(
-      (partner) => partner.degree_program._id === programId
-    ) || [];
+  useEffect(() => {
+    if (matchedData?.length > 0 && !activeSection) {
+      // Only set default if no activeSection is already set
+      setActiveSection(matchedData[0].program_name);
+      setSelectedProgramId(matchedData[0]._id);
+    }
+  }, [matchedData]);
 
-  const finalHightlights =
-    ourProgram?.filter(
-      (partner) => partner.degree_program._id === programId
-    ) || [];
-
-  const finalProgramoutcome =
-    outcomes?.filter(
-      (partner) => partner.degree_program._id === programId
-    ) || [];
-
-  const finalTarget =
-    targetStudents?.filter(
-      (partner) => partner.degree_program._id === programId
-    ) || [];
-
-  const finalSponsor =
-    ourSponsors?.filter(
-      (partner) => partner.degree_program._id === programId
-    ) || [];
-
-
-  const finalfaq =
-    faq?.filter(
-      (partner) => partner.degree_program?._id === programId
-    ) || [];
-
+  // Handle scroll to highlight active section
   useEffect(() => {
     const handleScroll = () => {
-      const sectionRefs = [
-        { label: "About", ref: aboutRef },
-        { label: "Partners", ref: partnersRef },
-        { label: "Highlights", ref: highlightsRef },
-        { label: "Programoutcome", ref: programsRef },
-        { label: "Target", ref: targetsRef },
-        { label: "Sponsors", ref: sponsorsRef },
-        { label: "FAQ", ref: faqRef },
-      ];
+      if (!matchedData?.length) return;
 
-      const scrollPosition = window.scrollY + 200; // Adjust for navbar offset
+      const sectionRefs = matchedData.map((program) => ({
+        label: program.program_name,
+        ref: programRefs[program._id],
+      }));
+
+      const scrollPosition = window.scrollY + 200;
 
       for (const section of sectionRefs) {
-        if (section.ref.current) {
+        if (section.ref?.current) {
           const sectionTop = section.ref.current.offsetTop;
           const sectionHeight = section.ref.current.offsetHeight;
+
           if (
             scrollPosition >= sectionTop &&
             scrollPosition < sectionTop + sectionHeight
@@ -138,69 +163,73 @@ export default function Page() {
           }
         }
       }
+
+      // Check which section is in view for the section navigation
+      const contentSections = [
+        { label: "About", ref: aboutRef },
+        { label: "Partners", ref: partnersRef },
+        { label: "Highlights", ref: highlightsRef },
+        { label: "Program Outcome", ref: outcomeRef },
+        { label: "Target Students", ref: targetRef },
+        { label: "Sponsors", ref: sponsorsRef },
+        { label: "FAQ", ref: faqRef },
+      ];
+
+      for (const section of contentSections) {
+        if (section.ref?.current) {
+          const sectionTop = section.ref.current.offsetTop;
+          const sectionHeight = section.ref.current.offsetHeight;
+
+          if (
+            scrollPosition >= sectionTop &&
+            scrollPosition < sectionTop + sectionHeight
+          ) {
+            setActiveSectionNav(section.label);
+            break;
+          }
+        }
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [matchedData, programRefs]);
 
-  const selectedAboutCollege = aboutCollegeData.find(
-    (program) => program._id === id
-  );
-  const filteredFAQ = faq.filter(
-    (item) =>
-      selectedAboutCollege &&
-      String(item.degree_program) === String(selectedAboutCollege._id)
-  );
+  // Navigation handlers
+  const handleProgramClick = (programId, ref, programName) => {
+    setSelectedProgramId(programId);
+    setActiveSection(programName);
+    scrollToSection(ref, programName);
+  };
+
   const scrollToSection = (ref, section) => {
     if (ref?.current) {
       window.scrollTo({
-        top: ref.current.offsetTop - 150, // Adjust offset for fixed navbar
+        top: ref.current.offsetTop - 150,
         behavior: "smooth",
       });
       setActiveSection(section);
     }
   };
 
-  const navLinksRef = useRef(null);
-
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 768);
-  const [showNavArrows, setShowNavArrows] = useState(false);
-
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (navLinksRef.current) {
-      setShowNavArrows(navLinksRef.current.scrollWidth > navLinksRef.current.clientWidth);
-    }
-  }, [isMobileView]);
-
-  const handleBack = () => {
-    if (typeof window !== "undefined") {
-      const fullUrl = window.location.pathname; // Get current path
-      const segments = fullUrl.split("/").filter(Boolean); // Split into segments
-      segments.pop(); // Remove last segment
-
-      const previousRoute = segments.length > 0 ? `/${segments.join("/")}` : "/"; // Reconstruct URL
-
-      router.push(previousRoute); // Navigate back
+  // Section navigation handler
+  const scrollToContentSection = (ref, section) => {
+    if (ref?.current) {
+      window.scrollTo({
+        top: ref.current.offsetTop - 180, // Account for both nav bars
+        behavior: "smooth",
+      });
+      setActiveSectionNav(section);
     }
   };
 
+  const handleBack = () => {
+    const fullUrl = window.location.pathname;
+    const segments = fullUrl.split("/").filter(Boolean);
+    segments.pop();
+    const previousRoute = segments.length > 0 ? `/${segments.join("/")}` : "/";
+    router.push(previousRoute);
+  };
 
   return (
     <div className="main-content overflow-hidden">
@@ -212,14 +241,14 @@ export default function Page() {
         className="navigation-controls"
         style={{
           position: "fixed",
-          top: "60px",
+          top: isMobileView ? "60px" : "65px",
           zIndex: "10",
           backgroundColor: "rgb(229, 226, 236)",
-          padding: window.innerWidth <= 768 ? "6px 0px" : "10px 0px",
+          padding: isMobileView ? "6px 0" : "8px 0",
           display: "flex",
           alignItems: "center",
           width: "100%",
-          marginTop: window.innerWidth <= 768 ? "10px" : "10px",
+          marginTop: "10px",
         }}
       >
         {/* Back Button */}
@@ -233,34 +262,28 @@ export default function Page() {
             gap: "5px",
             color: "black",
             border: "2px solid black",
-            padding: window.innerWidth <= 768 ? "3px 5px" : "6px 12px",
+            padding: isMobileView ? "3px 5px" : "6px 12px",
             borderRadius: "6px",
             cursor: "pointer",
-            fontSize: window.innerWidth <= 768 ? "10px" : "14px",
+            fontSize: isMobileView ? "10px" : "14px",
             fontWeight: "600",
             transition: "all 0.3s ease",
             marginLeft: "8px",
           }}
         >
           <svg
-            width={window.innerWidth <= 768 ? "12" : "18"}
-            height={window.innerWidth <= 768 ? "12" : "18"}
+            width={isMobileView ? "12" : "18"}
+            height={isMobileView ? "12" : "18"}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            style={{ transition: "transform 0.3s ease" }}
           >
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
-          <span
-            className="button-text"
-            style={{ transition: "transform 0.3s ease" }}
-          >
-            Back
-          </span>
+          <span className="button-text">Back</span>
         </button>
 
         {/* Navigation Links */}
@@ -275,13 +298,92 @@ export default function Page() {
             justifyContent: "center",
           }}
         >
-
           <div
             ref={navLinksRef}
             className="nav-links"
             style={{
               display: "flex",
-              gap: window.innerWidth <= 768 ? "15px" : "30px",
+              gap: isMobileView ? "15px" : "30px",
+              overflowX: "auto",
+              flex: 1,
+              scrollBehavior: "smooth",
+              padding: "0 20px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {matchedData?.length > 0 &&
+              matchedData.map((program, index) => {
+                const isActive = activeSection === program.program_name;
+
+                return (
+                  <button
+                    key={program._id}
+                    onClick={() =>
+                      handleProgramClick(
+                        program._id,
+                        programRefs[program._id],
+                        program.program_name
+                      )
+                    }
+                    className={`nav-button ${isActive ? "active" : ""}`}
+                    style={{
+                      position: "relative",
+                      border: "none",
+                      fontSize: isMobileView ? "12px" : "14px",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                      padding: "5px 10px",
+                      borderRadius: "5px", // Pill shape
+                      color: isActive ? "white" : "#5B2C6F",
+                      backgroundColor: isActive ? "#5B2C6F" : "transparent", // Active bg
+                      transition: "all 0.3s ease",
+                      flexShrink: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    {program.program_name}
+                  </button>
+                );
+              })}
+          </div>
+        </div>
+      </div>
+
+      {/* Section Navigation Bar - NEW */}
+      <div
+        ref={sectionNavRef}
+        className="section-navigation"
+        style={{
+          position: "fixed",
+          top: isMobileView ? "110px" : "130px",
+          zIndex: "9",
+          backgroundColor: "rgb(199, 199, 216)",
+          padding: isMobileView ? "6px 0" : "8px 0",
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          justifyContent: "center",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            position: "relative",
+            overflow: "hidden",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            className="section-links"
+            style={{
+              display: "flex",
+              gap: isMobileView ? "10px" : "20px",
               overflowX: "auto",
               flex: 1,
               scrollBehavior: "smooth",
@@ -291,26 +393,41 @@ export default function Page() {
           >
             {[
               { label: "About", ref: aboutRef },
-              ...(finalPartners.length > 0 ? [{ label: "Partners", ref: partnersRef }] : []),
-              ...(finalHightlights.length > 0 ? [{ label: "Highlights", ref: highlightsRef }] : []),
-              ...(finalProgramoutcome.length > 0 ? [{ label: "Programoutcome", ref: programsRef }] : []),
-              ...(finalTarget.length > 0 ? [{ label: "Target", ref: targetsRef }] : []),
-              ...(finalSponsor.length > 0 ? [{ label: "Sponsors", ref: sponsorsRef }] : []),
-              ...(finalfaq.length > 0 ? [{ label: "FAQ", ref: faqRef }] : []),
+              ...(finalPartners.length > 0
+                ? [{ label: "Partners", ref: partnersRef }]
+                : []),
+              ...(finalHighlights.length > 0
+                ? [{ label: "Highlights", ref: highlightsRef }]
+                : []),
+              ...(finalProgramOutcome.length > 0
+                ? [{ label: "Program Outcome", ref: outcomeRef }]
+                : []),
+              ...(finalTarget.length > 0
+                ? [{ label: "Target Students", ref: targetRef }]
+                : []),
+              ...(finalSponsor.length > 0
+                ? [{ label: "Sponsors", ref: sponsorsRef }]
+                : []),
+              ...(filteredFAQ.length > 0
+                ? [{ label: "FAQ", ref: faqRef }]
+                : []),
             ].map((item) => (
               <button
                 key={item.label}
-                onClick={() => scrollToSection(item.ref, item.label)}
-                className={`nav-button ${activeSection === item.label ? "active" : ""}`}
+                onClick={() => scrollToContentSection(item.ref, item.label)}
+                className={`section-button ${
+                  activeSectionNav === item.label ? "active" : ""
+                }`}
                 style={{
                   position: "relative",
                   background: "none",
                   border: "none",
-                  fontSize: window.innerWidth <= 768 ? "12px" : "16px",
-                  fontWeight: "600",
+                  fontSize: isMobileView ? "11px" : "14px",
+                  fontWeight: activeSectionNav === item.label ? "700" : "600",
                   cursor: "pointer",
-                  paddingBottom: "5px",
-                  transition: "color 0.3s ease",
+                  paddingBottom: "4px",
+                  color: activeSectionNav === item.label ? "#1E40AF" : "#666",
+                  transition: "all 0.3s ease",
                   flexShrink: 0,
                 }}
               >
@@ -321,9 +438,9 @@ export default function Page() {
                     position: "absolute",
                     bottom: "0",
                     left: "0",
-                    width: activeSection === item.label ? "100%" : "0",
+                    width: activeSectionNav === item.label ? "100%" : "0",
                     height: "2px",
-                    backgroundColor: "#000",
+                    backgroundColor: "#1E40AF",
                     transition: "width 0.3s ease-in-out",
                   }}
                 />
@@ -333,45 +450,51 @@ export default function Page() {
         </div>
       </div>
 
-
-      <div className="content-wrapper js-content-wrapper overflow-hidden mt-80">
-        {/* About Section */}
-        <div ref={aboutRef} id="about">
-          <About />
+      <div
+        className="content-wrapper js-content-wrapper overflow-hidden mt-80"
+        style={{ marginTop: "160px" }}
+      >
+        {/* Content Sections with refs */}
+        <div ref={aboutRef}>
+          <About ids={selectedProgramId} />
         </div>
-        {/* Partners Section */}
+
         {finalPartners.length > 0 && (
-          <div ref={partnersRef} id="partners">
-            <PartnersSection />
+          <div ref={partnersRef}>
+            <PartnersSection ids={selectedProgramId} />
           </div>
         )}
-        {finalHightlights.length > 0 && (
-          <div ref={highlightsRef} id="Highlights">
-            <ProgrammeHighlights />
+
+        {finalHighlights.length > 0 && (
+          <div ref={highlightsRef}>
+            <ProgrammeHighlights ids={selectedProgramId} />
           </div>
         )}
-        {finalProgramoutcome.length > 0 && (
-          <div ref={programsRef} id="Programoutcome">
-            <TestimonialsSection />
+
+        {finalProgramOutcome.length > 0 && (
+          <div ref={outcomeRef}>
+            <TestimonialsSection ids={selectedProgramId} />
           </div>
         )}
+
         {finalTarget.length > 0 && (
-          <div ref={targetsRef} id="Target">
-            <TargetStudentsSection />
+          <div ref={targetRef}>
+            <TargetStudentsSection ids={selectedProgramId} />
           </div>
         )}
-        {/* Sponsors Section */}
+
         {finalSponsor.length > 0 && (
-          <div ref={sponsorsRef} id="sponsors">
-            <SponsorsSection />
+          <div ref={sponsorsRef}>
+            <SponsorsSection ids={selectedProgramId} />
           </div>
         )}
-        {/* FAQ Section */}
-        {finalfaq.length > 0 && (
-          <div ref={faqRef} id="faq">
+
+        {filteredFAQ.length > 0 && (
+          <div ref={faqRef}>
             <FAQComponent faq={filteredFAQ} />
           </div>
         )}
+
         <br />
         <FooterTwo />
       </div>

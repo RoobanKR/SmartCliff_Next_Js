@@ -61,11 +61,13 @@ import learningJourneyReducer from "./slices/bussiness/learningJourney/learningJ
 import howItWorksReducer from "./slices/bussiness/howItWorks/howItWorks";
 import wcyHireReducer from "./slices/bussiness/whyCanYou//whyCanYou";
 import careerReducer from "./slices/career/career";
-import collegesReducer from "./slices/collegeDetails/collegeDetails"
-import yearlyServiceReducer from './slices/history/hsitory'; 
-import skillVerticalReducer from './slices/mca/skillVertical/skillVertical'; 
-import currentAvailabilityReducer from './slices/bussiness/currentAvailbility/currentAvailbility';
+import collegesReducer from "./slices/collegeDetails/collegeDetails";
+import yearlyServiceReducer from "./slices/history/hsitory";
+import skillVerticalReducer from "./slices/mca/skillVertical/skillVertical";
+import currentAvailabilityReducer from "./slices/bussiness/currentAvailbility/currentAvailbility";
 import homeExecutionHighlightsReducer from "./slices/home/homeExecutionHighlights/homeExecutionHighlights";
+// import companyReducer from "./slices/";
+import companyReducer from "./slices/mca/companyDetails/companyDetails";
 
 export default configureStore({
   reducer: {
@@ -113,7 +115,7 @@ export default configureStore({
     placementTestimonial: placementTestimonialReducer,
     institute: instituteReducer,
     colleges: collegesReducer,
-    
+
     engagedGovernance: engagedGovernanceReducer,
     enquiry: enquiryReducer,
     contact: contactReducer,
@@ -133,11 +135,10 @@ export default configureStore({
     howItWorks: howItWorksReducer,
     wcyHire: wcyHireReducer,
     career: careerReducer,
-    yearlyService:yearlyServiceReducer,
-    skillVertical:skillVerticalReducer,
-    currentAvailability:currentAvailabilityReducer,
-    homeExecutionHighlights:homeExecutionHighlightsReducer
-
-
+    yearlyService: yearlyServiceReducer,
+    skillVertical: skillVerticalReducer,
+    currentAvailability: currentAvailabilityReducer,
+    homeExecutionHighlights: homeExecutionHighlightsReducer,
+    companies: companyReducer,
   },
 });

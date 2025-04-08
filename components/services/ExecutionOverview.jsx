@@ -17,55 +17,6 @@ import {
 import Image from "next/image";
 import { FaClock, FaUserSecret } from "react-icons/fa";
 import { CalendarMonth, ChevronLeft, ChevronRight, Layers } from "@mui/icons-material";
-
-// Animated Counter Component
-const AnimatedCounter = ({
-  startValue = 0,
-  endValue = 0,
-  duration = 2000,
-  isVisible = false,
-}) => {
-  const [count, setCount] = useState(startValue);
-
-  useEffect(() => {
-    // Only start animation if component is visible and endValue is set
-    if (!isVisible || endValue === 0) {
-      setCount(startValue);
-      return;
-    }
-
-    // Reset to start value when section becomes visible
-    setCount(startValue);
-
-    // Calculate animation steps
-    const steps = Math.floor(duration / 16); // ~60fps
-    const increment = (endValue - startValue) / steps;
-    let currentCount = startValue;
-    let timer;
-
-    const updateCounter = () => {
-      currentCount += increment;
-
-      if (
-        (increment > 0 && currentCount >= endValue) ||
-        (increment < 0 && currentCount <= endValue)
-      ) {
-        // We've reached or passed the target
-        setCount(endValue);
-        clearInterval(timer);
-      } else {
-        setCount(Math.round(currentCount));
-      }
-    };
-
-    timer = setInterval(updateCounter, 16);
-
-    return () => clearInterval(timer);
-  }, [startValue, endValue, duration, isVisible]);
-
-  return <>{count}</>;
-};
-
 export default function ExecutionOverview1({ serviceId }) {
   const dispatch = useDispatch();
   const [showSlider, setShowSlider] = useState(false);
@@ -223,6 +174,8 @@ export default function ExecutionOverview1({ serviceId }) {
   const [maxSectionHeight, setMaxSectionHeight] = useState(0);
   const slideRefs = useRef([]);
   const sectionRefs = useRef([]);
+  const titleRefs = useRef([]);
+  const [maxTitleHeight, setMaxTitleHeight] = useState(0);
 
   useEffect(() => {
     slideRefs.current = slideRefs.current.slice(0, displayData.length);
@@ -252,6 +205,14 @@ export default function ExecutionOverview1({ serviceId }) {
 
       if (sectionHeights.length > 0) {
         setMaxSectionHeight(Math.max(...sectionHeights));
+      }
+
+      const titleHeights = titleRefs.current
+        .filter(ref => ref !== null && ref !== undefined)
+        .map(ref => ref.offsetHeight || 0);
+
+      if (titleHeights.length > 0) {
+        setMaxTitleHeight(Math.max(...titleHeights));
       }
     }, 300); // Short delay to ensure content has rendered
 
@@ -289,67 +250,6 @@ export default function ExecutionOverview1({ serviceId }) {
                 gap: window.innerWidth < 768 ? "30px" : "0",
               }}
             >
-              {/* Total Client */}
-              {/* <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginRight: window.innerWidth < 768 ? "0" : "100px",
-                  width: window.innerWidth < 768 ? "100%" : "auto",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: window.innerWidth < 768 ? "18px" : "20px",
-                    fontWeight: "bold",
-                    color: "#5B2c6F",
-                  }}
-                >
-                  Total Client
-                </span>
-                <hr
-                  style={{
-                    width: window.innerWidth < 768 ? "60%" : "80%",
-                    borderTop: "3px solid #5B2c6F",
-                    margin: "5px 0",
-                  }}
-                />
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: window.innerWidth < 768 ? "100%" : "80%",
-                    fontSize: window.innerWidth < 768 ? "16px" : "18px",
-                    fontWeight: "bold",
-                    color: " #5B2c6F",
-                    position: "relative",
-                  }}
-                >
-                  <span
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: window.innerWidth < 768 ? "60%" : "80%",
-                      height: "40px",
-                      padding: "3px 10px",
-                      backgroundColor: "#8F87F1",
-                      color: "white",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <AnimatedCounter
-                      startValue={0}
-                      endValue={displayData.length}
-                      duration={2000}
-                      isVisible={isVisible}
-                    />
-                  </span>
-                </span>
-              </div> */}
-
               {/* Execution Overview */}
               <div
                 style={{
@@ -369,67 +269,6 @@ export default function ExecutionOverview1({ serviceId }) {
                   Execution Overview
                 </h2>
               </div>
-
-              {/* Total Candidate */}
-              {/* <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginLeft: window.innerWidth < 768 ? "0" : "100px",
-                  width: window.innerWidth < 768 ? "100%" : "auto",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: window.innerWidth < 768 ? "18px" : "20px",
-                    fontWeight: "bold",
-                    color: "#5B2c6F",
-                  }}
-                >
-                  Total Candidate
-                </span>
-                <hr
-                  style={{
-                    width: window.innerWidth < 768 ? "60%" : "80%",
-                    borderTop: "3px solid #5B2c6F",
-                    margin: "5px 0",
-                  }}
-                />
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: window.innerWidth < 768 ? "100%" : "80%",
-                    fontSize: window.innerWidth < 768 ? "16px" : "18px",
-                    fontWeight: "bold",
-                    color: "#5B2c6F",
-                    position: "relative",
-                  }}
-                >
-                  <span
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: window.innerWidth < 768 ? "60%" : "80%",
-                      height: "40px",
-                      padding: "3px 10px",
-                      backgroundColor: "#8F87F1",
-                      color: "white",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <AnimatedCounter
-                      startValue={0}
-                      endValue={totalCandidates}
-                      duration={2000}
-                      isVisible={isVisible}
-                    />
-                  </span>
-                </span>
-              </div> */}
             </div>
 
             <p
@@ -438,7 +277,7 @@ export default function ExecutionOverview1({ serviceId }) {
                 marginLeft: window.innerWidth < 768 ? "0px" : "30px",
               }}
             >
-              
+
             </p>
           </div>
         </div>
@@ -473,7 +312,17 @@ export default function ExecutionOverview1({ serviceId }) {
               style={swiperStyles.container}
             >
               {displayData.map((company, index) => (
-                <SwiperSlide key={index} style={{ padding: "10px" }}>
+                <SwiperSlide
+                  key={index}
+                  style={{
+                    padding: "10px",
+                    // Apply styling to center slides when less than 3 items
+                    ...(displayData.length < 3 ? {
+                      width: displayData.length === 1 ? '100%' : '50%',
+                      margin: '0 auto'
+                    } : {})
+                  }}
+                >
                   <div
                     ref={(el) => (slideRefs.current[index] = el)}
                     key={index}
@@ -506,23 +355,34 @@ export default function ExecutionOverview1({ serviceId }) {
                       style={{
                         width: "100%",
                         flexGrow: 1,
-                        padding: "1rem",
+                        padding: "10px 20px",
                         textAlign: "center",
                       }}
                     >
+
                       <div
                         style={{
                           display: "flex",
                           justifyContent: "center",
-                          marginBottom: "1rem",
+                          alignItems: "center",
+                          height: "4rem",
+                          width: "100%",
+                          overflow: "hidden"
                         }}
                       >
                         <img
                           src={company.image}
                           alt={company.name}
-                          style={{ height: "3rem", objectFit: "contain" }}
+                          style={{
+                            maxHeight: "100%",
+                            maxWidth: "100%",
+                            objectFit: "contain",
+                            width: "auto",
+                            height: "auto"
+                          }}
                         />
                       </div>
+
                       {/* Section Slider */}
                       <div style={{ padding: "0 5px", position: "relative" }}>
                         {/* multi section case - with slider */}
@@ -548,7 +408,8 @@ export default function ExecutionOverview1({ serviceId }) {
                                         display: "flex",
                                         flexDirection: "column",
                                         gap: "16px",
-                                        height: maxSectionHeight || "auto",
+                                        height: "100%",
+                                        padding: "16px 10px",
                                       }}
                                     >
                                       {/* Title Section */}
@@ -560,7 +421,12 @@ export default function ExecutionOverview1({ serviceId }) {
                                           background: "#ffffff",
                                           padding: "16px 10px",
                                           border: "1px solid #e9ecef",
+                                          height: maxTitleHeight > 0 ? `${maxTitleHeight}px` : "auto",
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          justifyContent: "center",
                                         }}
+                                        ref={(el) => (titleRefs.current[currentSectionIndex] = el)}
                                       >
                                         {/* Background color accent */}
                                         <div
@@ -582,7 +448,6 @@ export default function ExecutionOverview1({ serviceId }) {
                                               <div
                                                 style={{
                                                   display: "flex",
-                                                  // alignItems: "center",
                                                   gap: "8px",
                                                   marginBottom: "4px",
                                                   textAlign: "left",
@@ -591,7 +456,6 @@ export default function ExecutionOverview1({ serviceId }) {
                                               >
                                                 <span
                                                   style={{
-
                                                     fontSize: "14px",
                                                     fontWeight: "500",
                                                     color: "#495057",
@@ -748,28 +612,22 @@ export default function ExecutionOverview1({ serviceId }) {
                                   ref={(el) => (sectionRefs.current[currentSectionIndex] = el)}
                                   key={sectionIndex}
                                   style={{
-                                    overflow: "hidden",
+                                    color: "#4B0082",
+                                    borderRadius: "0.375rem",
+                                    marginBottom: "1rem",
+                                    backdropFilter: "blur(10px)",
+                                    border: "2px solid transparent",
+                                    backgroundClip: "padding-box, border-box",
+                                    height: maxSectionHeight || "auto",
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
                                     alignItems: "center",
                                     textAlign: "center",
-                                    borderRadius: "10px",
-                                    marginBottom: "16px",
-                                    background: "#ffffff",
-                                    height: maxSectionHeight || "auto",
+                                    padding: "16px 10px",
                                   }}
                                 >
-                                  <div
-                                    style={{
-                                      position: "relative",
-                                      marginBottom: "8px",
-                                      padding: "16px 10px",
-                                      background: "#f8f9fa",
-                                      borderRadius: "8px",
-                                      border: "1px solid #e9ecef",
-                                    }}
-                                  >
+                                  <div>
                                     {/* Background color accent */}
                                     <div
                                       style={{

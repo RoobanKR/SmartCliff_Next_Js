@@ -1,250 +1,160 @@
-import { fetchAllOurSponsors } from "@/redux/slices/degreeProgram/dpSponsor";
-import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
 
-export default function SponsorsSection() {
-  const dispatch = useDispatch();
-  const params = useParams();
-  const programId = params.id;
-  const { ourSponsors, loading, error } = useSelector(
-    (state) => state.ourSponsors
-  );
+import { useState } from "react";
 
-  const finalSponsor =
-    ourSponsors?.filter(
-      (partner) => partner.degree_program._id === programId
-    ) || [];
+export default function Home({ids}) {
+  const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Function to generate a unique gradient for each sponsor
-  const generateGradient = (index) => {
-    const gradients = [
-      "linear-gradient(135deg, #6366f1, #8b5cf6)",
-      "linear-gradient(135deg, #10b981, #059669)",
-      "linear-gradient(135deg, #f59e0b, #d97706)",
-      "linear-gradient(135deg, #ef4444, #dc2626)",
-    ];
-    return gradients[index % gradients.length];
+  const baseCardStyle = {
+    flex: 1,
+    margin: "20px",
+    padding: "40px",
+    borderRadius: "12px",
+    backgroundColor: "#F9FAFB",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+    transition: "all 0.3s ease",
+    cursor: "pointer",
+    minWidth: "320px",
+  };
+
+  const getCardStyle = (index) => ({
+    ...baseCardStyle,
+    transform: hoveredCard === index ? "translateY(-6px)" : "none",
+    backgroundColor: hoveredCard === index ? "#EAF6F6" : "#EAF6F6",
+  });
+
+  const containerStyle = {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    padding: "3px 4px",
+    fontFamily: "sans-serif",
+    minHeight: "100vh",
+  };
+
+  const headerStyle = {
+    color: "#000",
+    fontSize: "36px",
+    fontWeight: "600",
+    margin: "10px 0 20px",
+    lineHeight: "1.3",
+  };
+
+  const tagStyle = {
+    color: "#16A34A",
+    backgroundColor: "#E0F2F1",
+    padding: "5px 12px",
+    borderRadius: "5px",
+    fontSize: "14px",
+    fontWeight: 600,
+    display: "inline-block",
+    marginBottom: "15px",
   };
 
   return (
-    <section
-      style={{
-        padding: "30px 40px",
-        textAlign: "center",
-        fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
-        background: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)",
-        borderRadius: "16px",
-        margin: "40px auto",
-        maxWidth: "1400px",
-      }}
-    >
-      {/* Header with animation */}
+    <div style={{ padding: "2px 2px" }}>
+      <br></br>
       <div
         style={{
-          marginBottom: "60px",
           position: "relative",
         }}
       >
         <div className="program-subtitle">
           <span className="subtitle-line"></span>
-          <span className="subtitle-text">  Sponsorship Details</span>
+          <span className="subtitle-text"> Sponsership Details</span>
           <span className="subtitle-line"></span>
         </div>
       </div>
-      {/* Sponsor Cards - Improved Grid Layout */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "30px",
-          justifyContent: "center",
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
-        {finalSponsor.map((sponsor, index) => (
+      <br></br>
+      <div style={containerStyle}>
+        <div
+          style={getCardStyle(0)}
+          onMouseEnter={() => setHoveredCard(0)}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
+          <div style={tagStyle}>SPONSORSHIP HIGHLIGHTS</div>
+          <h2 style={headerStyle}>
+            Empowering Our Vision <br /> Through Strategic Sponsorships
+          </h2>
+
+          {/* Sponsorship Section */}
           <div
-            key={index}
             style={{
-              position: "relative",
-              background: "white",
+              backgroundColor: "#fff",
+              padding: "30px",
               borderRadius: "16px",
-              padding: "30px 25px",
-              textAlign: "left",
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
-              border: "1px solid rgba(255, 255, 255, 0.8)",
-              overflow: "hidden",
-              transition: "transform 0.4s ease, box-shadow 0.4s ease",
-              cursor: "pointer",
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-10px)";
-              e.currentTarget.style.boxShadow =
-                "0 20px 40px rgba(0, 0, 0, 0.15)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow =
-                "0 10px 30px rgba(0, 0, 0, 0.05)";
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              width: "100%",
             }}
           >
-            {/* Top Accent Bar */}
-            <div
-              style={{
-                position: "absolute",
-                top: "0",
-                left: "0",
-                width: "100%",
-                height: "8px",
-                background: generateGradient(index),
-              }}
-            ></div>
-
-            {/* Card Content */}
-            <div>
-              {/* Header Section */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: "10px",
-                  marginBottom: "25px",
-                }}
-              >
-                {/* Logo Container */}
-                <div
+            <ul style={{ listStyleType: "none", paddingLeft: 0, margin: 0 }}>
+              {[
+                {
+                  name: "A key supporter in agricultural machinery innovation and student development initiatives.",
+                  amount: "₹5,00,000",
+                },
+                {
+                  name: "Partnering with us to promote financial literacy programs and entrepreneurial projects.",
+                  amount: "₹3,50,000",
+                },
+                {
+                  name: "Supporting digital transformation workshops and internship opportunities for students.",
+                  amount: "₹2,75,000",
+                },
+                {
+                  name: "Empowering students through career-building sessions and digital banking infrastructure.",
+                  amount: "₹4,20,000",
+                },
+              ].map((sponsor, idx) => (
+                <li
+                  key={idx}
                   style={{
-                    width: "70px",
-                    height: "70px",
-                    borderRadius: "12px",
-                    background: "white",
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.08)",
-                    border: "1px solid rgba(229, 231, 235, 0.8)",
-                    padding: "10px",
-                    marginRight: "15px",
-                    transition: "transform 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.05)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)";
+                    alignItems: "flex-start",
+                    gap: "12px",
+                    padding: "12px 0",
+                    borderBottom: idx !== 3 ? "1px solid #e5e7eb" : "none",
                   }}
                 >
-                  <img
-                    src={sponsor.logo}
-                    alt={sponsor.name}
+                  <span
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                    }}
-                  />
-                </div>
-
-                {/* Name and Type */}
-                <div>
-                  <h4
-                    style={{
-                      fontSize: "22px",
-                      fontWeight: "700",
-                      color: "#1e293b",
-                      marginBottom: "6px",
+                      fontSize: "18px",
+                      color: "#3b82f6",
+                      fontWeight: "bold",
+                      lineHeight: "1.2",
+                      marginTop: "2px",
+                      flexShrink: 0,
                     }}
                   >
-                    {sponsor.name}
-                  </h4>
-                  <div
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 10px",
-                      borderRadius: "20px",
-                      fontSize: "13px",
-                      fontWeight: "600",
-                      color: "white",
-                      background: generateGradient(index),
-                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    {sponsor.category}
+                    →
+                  </span>
+                  <div>
+                    <p style={{ margin: 0, fontWeight: 500, color: "#111827" }}>
+                      <i> {sponsor.name}</i>
+                    </p>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: "14px",
+                        color: "#6b7280",
+                        marginTop: "4px",
+                      }}
+                    >
+                      Sponsorship Amount:{" "}
+                      <strong style={{ color: "#008b33" }}>
+                        {sponsor.amount}
+                      </strong>
+                    </p>
                   </div>
-                </div>
-              </div>
-
-              {/* Sponsor Type */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "20px",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "16px",
-                    color: "#64748b",
-                    fontWeight: "500",
-                  }}
-                >
-                  {sponsor.type}
-                </span>
-              </div>
-            </div>
-
-            {/* Contributions Section */}
-            <div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "10px",
-                }}
-              >
-                {sponsor.contributions.map((item, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      background: "rgba(243, 244, 246, 0.7)",
-                      padding: "12px 15px",
-                      borderRadius: "10px",
-                      fontSize: "14px",
-                      color: "#4b5563",
-                      fontWeight: "500",
-                      display: "flex",
-                      alignItems: "flex-start",
-                      transition:
-                        "transform 0.2s ease, background-color 0.2s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateX(5px)";
-                      e.currentTarget.style.backgroundColor =
-                        "rgba(243, 244, 246, 0.9)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateX(0)";
-                      e.currentTarget.style.backgroundColor =
-                        "rgba(243, 244, 246, 0.7)";
-                    }}
-                  >
-
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
+                </li>
+              ))}
+            </ul>
           </div>
-        ))}
+        </div>
       </div>
+
       <style jsx>{`
-              .program-subtitle {
+        .program-subtitle {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -291,6 +201,6 @@ export default function SponsorsSection() {
           }
         }
       `}</style>
-    </section>
+    </div>
   );
 }

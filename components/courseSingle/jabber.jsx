@@ -24,7 +24,7 @@ export default function CourseDetailsSix() {
     { id: 1, text: "course outline", isActive: true },
     { id: 2, text: "course summary", isActive: false },
     { id: 3, text: "software tools", isActive: false },
-    { id: 4, text: "FAQ", isActive: false },
+    { id: 4, text: "FAQ", isActive: false }
   ]);
  
   useEffect(() => {
@@ -51,11 +51,11 @@ export default function CourseDetailsSix() {
  
   const handleTabClick = (id) => {
     setActiveTab(id);
- 
+   
     // Update active status in menuItems
-    const updatedMenuItems = menuItems.map((item) => ({
+    const updatedMenuItems = menuItems.map(item => ({
       ...item,
-      isActive: item.id === id,
+      isActive: item.id === id
     }));
     setMenuItems(updatedMenuItems);
   };
@@ -131,9 +131,8 @@ export default function CourseDetailsSix() {
                         <button
                           key={i}
                           onClick={() => handleTabClick(elm.id)}
-                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${
-                            i !== 0 ? "ml-30" : ""
-                          }`}
+                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${i !== 0 ? "ml-30" : ""
+                            }`}
                           style={{
                             cursor: "pointer",
                             color: activeTab === elm.id ? "#5b2c6f" : "black",
@@ -197,24 +196,22 @@ export default function CourseDetailsSix() {
                 backgroundColor: "#f9f9f9",
                 borderLeft: "4px solid #5b2c6f",
                 borderRadius: "4px",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
               }}
             >
               <div style={{ display: "flex", alignItems: "center" }}>
-                <span
-                  style={{
-                    backgroundColor: "#5b2c6f",
-                    color: "white",
-                    borderRadius: "50%",
-                    width: "24px",
-                    height: "24px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginRight: "10px",
-                    fontSize: "14px",
-                  }}
-                >
+                <span style={{
+                  backgroundColor: "#5b2c6f",
+                  color: "white",
+                  borderRadius: "50%",
+                  width: "24px",
+                  height: "24px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: "10px",
+                  fontSize: "14px"
+                }}>
                   {index + 1}
                 </span>
                 <span style={{ fontSize: "16px" }}>{module}</span>
@@ -228,11 +225,7 @@ export default function CourseDetailsSix() {
  
   // Course Summary Component
   const CourseSummary = ({ matchedCourse }) => {
-    if (
-      !matchedCourse ||
-      !matchedCourse.courseSummary ||
-      matchedCourse.courseSummary.length === 0
-    ) {
+    if (!matchedCourse || !matchedCourse.courseSummary || matchedCourse.courseSummary.length === 0) {
       return <p>No course summary available.</p>;
     }
  
@@ -241,24 +234,8 @@ export default function CourseDetailsSix() {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ backgroundColor: "#5b2c6f", color: "white" }}>
-              <th
-                style={{
-                  padding: "12px 15px",
-                  textAlign: "left",
-                  borderRadius: "8px 0 0 0",
-                }}
-              >
-                Course Elements
-              </th>
-              <th
-                style={{
-                  padding: "12px 15px",
-                  textAlign: "center",
-                  borderRadius: "0 8px 0 0",
-                }}
-              >
-                Hours
-              </th>
+              <th style={{ padding: "12px 15px", textAlign: "left", borderRadius: "8px 0 0 0" }}>Course Elements</th>
+              <th style={{ padding: "12px 15px", textAlign: "center", borderRadius: "0 8px 0 0" }}>Hours</th>
             </tr>
           </thead>
           <tbody>
@@ -267,13 +244,11 @@ export default function CourseDetailsSix() {
                 key={index}
                 style={{
                   backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white",
-                  borderBottom: "1px solid #ddd",
+                  borderBottom: "1px solid #ddd"
                 }}
               >
                 <td style={{ padding: "12px 15px" }}>{item.elements}</td>
-                <td style={{ padding: "12px 15px", textAlign: "center" }}>
-                  {item.hours} hrs
-                </td>
+                <td style={{ padding: "12px 15px", textAlign: "center" }}>{item.hours} hrs</td>
               </tr>
             ))}
           </tbody>
@@ -287,10 +262,8 @@ export default function CourseDetailsSix() {
     // This is placeholder. In a real implementation, you would fetch tool/software data
     // For now, we're creating a visual representation based on the data structure
     return (
-      <div style={{ padding: "20px" }}>
-        {matchedCourse &&
-        matchedCourse.tool_software &&
-        matchedCourse.tool_software.length > 0 ? (
+      <div style={{ padding: "20px" }}>        
+        {matchedCourse && matchedCourse.tool_software && matchedCourse.tool_software.length > 0 ? (
           <div
             style={{
               display: "grid",
@@ -324,19 +297,18 @@ export default function CourseDetailsSix() {
                     marginBottom: "10px",
                   }}
                 >
-                  <img
-                    style={{
-                      width: "2.5rem",
-                      height: "2.5rem",
-                      objectFit: "contain",
-                      marginBottom: "0.5rem",
-                    }}
-                    src={tool.image}
-                    alt={tool.software_name}
-                  />{" "}
-                </div>
+ <img
+                      style={{
+                        width: "2.5rem",
+                        height: "2.5rem",
+                        objectFit: "contain",
+                        marginBottom: "0.5rem",
+                      }}
+                      src={tool.image}
+                      alt={tool.software_name}
+                    />                </div>
                 <p style={{ textAlign: "center", margin: 0 }}>
-                  {tool.software_name}
+                {tool.software_name}
                 </p>
               </div>
             ))}
@@ -423,7 +395,56 @@ export default function CourseDetailsSix() {
                   </div>
  
                   {/* Star Ratings */}
-                 
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#f2775e",
+                      }}
+                    >
+                      {[...Array(5)].map((_, i) => {
+                        if (
+                          i + 1 <=
+                          Math.floor(matchedCourse?.course_rating || 0)
+                        ) {
+                          return (
+                            <Star
+                              key={i}
+                              fontSize="small"
+                              style={{ color: "#f2775e" }}
+                            />
+                          );
+                        } else if (i < matchedCourse?.course_rating) {
+                          return (
+                            <StarHalf
+                              key={i}
+                              fontSize="small"
+                              style={{ color: "#f2775e" }}
+                            />
+                          );
+                        } else {
+                          return (
+                            <StarBorder
+                              key={i}
+                              fontSize="small"
+                              style={{ color: "#f2775e" }}
+                            />
+                          );
+                        }
+                      })}
+                    </div>
+                    <span style={{ color: "#f2775e" }}>
+                      {matchedCourse?.course_rating?.toFixed(2) || "0.00"}/5.00
+                    </span>
+                  </div>
                 </div>
               )}
  
@@ -538,5 +559,4 @@ export default function CourseDetailsSix() {
     </>
   );
 }
- 
  

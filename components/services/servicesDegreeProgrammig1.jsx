@@ -14,6 +14,7 @@ import { selectBusinessServices } from "@/redux/slices/services/services/busines
 import { getAllServiceClients } from "@/redux/slices/services/services/clientServices";
 import { FaCalendarAlt } from "react-icons/fa";
 import Banner from "../common/Banner";
+import { fetchAllCompanies } from "@/redux/slices/companyDetails/companyDetails";
 
 export default function CsrDegreeProgram() {
   const dispatch = useDispatch();
@@ -22,6 +23,11 @@ export default function CsrDegreeProgram() {
   const degreeProgramData = useSelector(
     (state) => state.degreeProgram.degreeProgramData
   );
+
+  const degreeCompanyDetails = useSelector(
+    (state) => state.companies.companies
+  );
+
   const services = useSelector(selectServices);
   const servicesBusiness = useSelector(selectBusinessServices);
 
@@ -43,16 +49,22 @@ export default function CsrDegreeProgram() {
     (service) => service.slug === twomatchingService?.slug
   );
 
-  const matchedDegree = degreeProgramData.filter(
+  const matchedDegrees = degreeProgramData.filter(
     (service) => service.service?._id === final?._id
   );
 
+  const matchedDegree = degreeCompanyDetails.filter(
+    (service) => service.service?._id === final?._id
+  );
 
   useEffect(() => {
     dispatch(fetchServices());
     dispatch(getAllServiceClients());
     dispatch(fetchDegreeProgramData());
+    dispatch(fetchAllCompanies());
   }, [dispatch]);
+
+  console.log("degreeCompanyDetails", degreeCompanyDetails);
 
   // Extract unique years from degree programs
   const uniqueYears = [
@@ -210,7 +222,10 @@ export default function CsrDegreeProgram() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fill, minmax(300px, 1fr))",
+              gridTemplateColumns:
+                window.innerWidth <= 768
+                  ? "1fr"
+                  : "repeat(auto-fill, minmax(300px, 1fr))",
               gap: "30px",
               margin: "0 auto",
             }}
@@ -281,7 +296,7 @@ export default function CsrDegreeProgram() {
                     <Image
                       width={510}
                       height={360}
-                      src={program.images[1]}
+                      src={program.logo}
                       alt={program.program_name}
                       style={{
                         width: "100%",
@@ -330,7 +345,7 @@ export default function CsrDegreeProgram() {
                           textShadow: "0 2px 4px rgba(0,0,0,0.3)",
                         }}
                       >
-                        {program.program_name}
+                        {program.companyName}
                       </h3>
                     </div>
                   </div>
@@ -355,7 +370,7 @@ export default function CsrDegreeProgram() {
                           lineHeight: "1.4",
                         }}
                       >
-                        {program.program_name}
+                        {program.companyName}
                       </h3>
 
                       <div
@@ -373,7 +388,7 @@ export default function CsrDegreeProgram() {
                             color: "#666",
                           }}
                         >
-                          {program.slogan}
+                          {program.description}
                         </span>
                       </div>
                     </div>

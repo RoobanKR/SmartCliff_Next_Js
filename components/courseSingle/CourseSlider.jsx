@@ -50,7 +50,7 @@ export default function CourseSlider() {
 
   return (
     <section
-      className="layout-pt-md layout-pb-lg"
+      className="layout-pt-sm layout-pb-sm"
       style={{ fontFamily: "Serif" }}
     >
       <div className="container">

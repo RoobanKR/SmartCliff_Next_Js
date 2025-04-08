@@ -104,8 +104,6 @@ export default function ContactPage() {
     }
   };
 
-
-
   return (
     <>
       <ToastContainer
@@ -136,9 +134,7 @@ export default function ContactPage() {
                     </div>
                     <div className="ml-20 fw-600">
                       {elm.address
-                        ? `${elm.address
-                          .split(" ")
-                          .join(" ")} `
+                        ? `${elm.address.split(" ").join(" ")} `
                         : elm.email || elm.phoneNumber}
                     </div>
                   </div>

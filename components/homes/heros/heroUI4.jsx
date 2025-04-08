@@ -65,18 +65,18 @@ export default function HeroUIFour() {
               position: "relative",
               width: "300px",
               height: "450px",
-              backgroundColor: "#000",
+              backgroundColor: "#fff",
               borderRadius: "20px",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
               padding: "15px",
-              color: "#fff",
+              color: "#000",
             }}
           >
             <img
-              src="https://th.bing.com/th/id/OIP.qXmaS4Znxb4yE4vNiiZOmgHaLH?w=202&h=303&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+              src="/assets/img/homeing.png"
               alt="Digital Fashion"
               style={{ width: "100%", height: "87%", objectFit: "cover" }}
             />

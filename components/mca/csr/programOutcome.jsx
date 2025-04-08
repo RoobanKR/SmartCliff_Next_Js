@@ -15,7 +15,7 @@ const bgColors = [
   "#DC3545",
   "#17A2B8",
   "#FFC107",
-  "#20C997"
+  "#20C997",
 ];
 
 const TestimonialCard = ({ index, title, bgColor, isMobile }) => (
@@ -41,7 +41,7 @@ const TestimonialCard = ({ index, title, bgColor, isMobile }) => (
         fontSize: isMobile ? "16px" : "24px",
         fontWeight: "bold",
         color: "#fff",
-        flexShrink: 0
+        flexShrink: 0,
       }}
     >
       {String(index + 1).padStart(2, "0")}
@@ -53,7 +53,7 @@ const TestimonialCard = ({ index, title, bgColor, isMobile }) => (
           color: "#333",
           fontSize: isMobile ? "14px" : "16px",
           fontWeight: "bold",
-          margin: 0
+          margin: 0,
         }}
       >
         {title}
@@ -73,7 +73,7 @@ const RightSideImage = ({ isMobile }) => (
       borderRadius: "10px",
       overflow: "hidden",
       marginTop: isMobile ? "20px" : 0,
-      width: isMobile ? "100%" : "auto"
+      width: isMobile ? "100%" : "auto",
     }}
   >
     <img
@@ -82,23 +82,19 @@ const RightSideImage = ({ isMobile }) => (
       style={{
         width: isMobile ? "80%" : "60%",
         borderRadius: "10px",
-        maxWidth: "400px"
+        maxWidth: "400px",
       }}
     />
   </div>
 );
 
-const TestimonialsSection = () => {
+const TestimonialsSection = ({ ids }) => {
   const dispatch = useDispatch();
   const params = useParams();
   const programId = params.id;
   const outcomes = useSelector((state) => state.outcomes.outcomes);
   const filteredOutcomes =
-    outcomes?.filter(
-      (partner) => partner.degree_program._id === programId
-    ) || [];
-
-
+    outcomes?.filter((partner) => partner.degree_program._id === ids) || [];
 
   useEffect(() => {
     dispatch(getAllOutcomes());
@@ -118,13 +114,15 @@ const TestimonialsSection = () => {
       }}
     >
       {/* About College Section */}
-      <div style={{
-        backgroundColor: "#f8f9fa",
-        padding: isMobile ? "10px" : "20px",
-        width: "100%",
-        marginBottom: "30px",
-        borderBottom: "1px solid #e0e0e0"
-      }}>
+      <div
+        style={{
+          backgroundColor: "#f8f9fa",
+          padding: isMobile ? "10px" : "20px",
+          width: "100%",
+          marginBottom: "30px",
+          borderBottom: "1px solid #e0e0e0",
+        }}
+      >
         <div className="program-subtitle">
           <span className="subtitle-line"></span>
           <span className="subtitle-text">Program Outcome</span>
@@ -142,18 +140,22 @@ const TestimonialsSection = () => {
           maxWidth: "1200px",
         }}
       >
-        <div style={{
-          flex: 1,
-          minWidth: isMobile ? "100%" : "350px",
-          padding: isMobile ? "0" : "0 10px"
-        }}>
-          <h6 style={{
-            color: "#505050",
-            marginBottom: "20px",
-            fontSize: isMobile ? "14px" : "16px",
-            fontStyle: "italic",
-            textAlign: isMobile ? "center" : "left"
-          }}>
+        <div
+          style={{
+            flex: 1,
+            minWidth: isMobile ? "100%" : "350px",
+            padding: isMobile ? "0" : "0 10px",
+          }}
+        >
+          <h6
+            style={{
+              color: "#505050",
+              marginBottom: "20px",
+              fontSize: isMobile ? "14px" : "16px",
+              fontStyle: "italic",
+              textAlign: isMobile ? "center" : "left",
+            }}
+          >
             Our program equips students with industry-relevant skills and
             guaranteed placement opportunities to ensure a successful career
           </h6>

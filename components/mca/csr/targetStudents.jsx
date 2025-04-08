@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const PageWithFixedBackground = () => {
+const PageWithFixedBackground = ({ ids }) => {
   const dispatch = useDispatch();
   const { targetStudents, loading, error } = useSelector(
     (state) => state.targetStudent
@@ -13,9 +13,8 @@ const PageWithFixedBackground = () => {
   const programId = params.id;
 
   const filteredOutcomes =
-    targetStudents?.filter(
-      (partner) => partner.degree_program?._id === programId
-    ) || [];
+    targetStudents?.filter((partner) => partner.degree_program?._id === ids) ||
+    [];
 
   const cardRefs = useRef([]);
 

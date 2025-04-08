@@ -5,7 +5,7 @@ import Image from "next/image";
 import { fetchAboutCollegeData } from "@/redux/slices/mca/aboutCollege/aboutCollege";
 import { useParams, useRouter } from "next/navigation";
 
-export default function About({ collegeId }) {
+export default function About({ collegeId, ids }) {
   const dispatch = useDispatch();
   const aboutCollegeData = useSelector(
     (state) => state.aboutCollege.aboutCollegeData
@@ -24,13 +24,15 @@ export default function About({ collegeId }) {
     dispatch(fetchAboutCollegeData());
   }, [dispatch]);
 
+  // console.log("idssss", ids);
+
   // Filter colleges based on collegeId parameter
   const matchedAboutColleges = aboutCollegeData.filter(
     (about) => about.college && about.college.some((i) => i._id === collegeId)
   );
 
   const selectedAboutCollege = aboutCollegeData.find(
-    (program) => program._id === id
+    (program) => program._id === ids
   );
 
   // Determine which data to display based on the URL segment
@@ -52,7 +54,7 @@ export default function About({ collegeId }) {
           <React.Fragment key={collegeIndex}>
             <section
               style={{
-                paddingTop: thirdLastSegment === "csr" ? "60px" : "50px",
+                paddingTop: thirdLastSegment === "csr" ? "90px" : "50px",
                 backgroundColor: "white",
               }}
             >

@@ -20,7 +20,7 @@ export default function Highlights() {
 
   return (
     <section
-      className="layout-pt-md layout-pb-md bg-light-3"
+      className="layout-pt-sm layout-pb-md bg-light-3"
       style={{ fontFamily: "Serif" }}
     >
       <div className="container">

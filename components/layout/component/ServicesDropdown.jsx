@@ -12,6 +12,7 @@ import {
   selectServices,
 } from "@/redux/slices/services/services/Services";
 import { usePathname, useRouter } from "next/navigation";
+import EnquiryModal from "@/components/common/EnquiryModal";
 
 // SVG Components for card decorations
 const ScatteredSquaresIcon = () => (
@@ -170,7 +171,7 @@ const ServicesDropdown = () => {
   const [loadingServiceId, setLoadingServiceId] = useState(null);
   const [isNavigating, setIsNavigating] = useState(false);
   const pathname = usePathname();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isActive = (path) => pathname.startsWith(path);
 
   useEffect(() => {
@@ -196,11 +197,6 @@ const ServicesDropdown = () => {
     };
 
     const handleRouteChangeComplete = () => {
-      setIsNavigating(false);
-      setLoadingServiceId(null);
-    };
-
-    const handleRouteChangeError = () => {
       setIsNavigating(false);
       setLoadingServiceId(null);
     };
@@ -254,11 +250,24 @@ const ServicesDropdown = () => {
         return <ScatteredSquaresIcon />;
     }
   };
+  const handleLearnMoreClick = (
+    serviceId,
+    businessServiceSlug,
+    serviceSlug
+  ) => {
+    // Check if it's the specific service we want to handle differently
+    if (businessServiceSlug === "b2c" && serviceSlug === "enquiryform") {
+      setIsModalOpen(true); // Open the modal instead of showing alert
+      return; // Prevent navigation
+    }
 
-  const handleLearnMoreClick = (serviceId) => {
+    // Normal behavior for other services
     setLoadingServiceId(serviceId);
     setIsNavigating(true);
-    // Now the loading state will be cleared by the route change handlers
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -449,7 +458,21 @@ const ServicesDropdown = () => {
                             key={service._id}
                             href={serviceUrl}
                             passHref
-                            onClick={() => handleLearnMoreClick(service._id)}
+                            onClick={(e) => {
+                              handleLearnMoreClick(
+                                service._id,
+                                currentBusinessService?.slug,
+                                service.slug
+                              );
+
+                              // Prevent default if it's our special case
+                              if (
+                                currentBusinessService?.slug === "b2c" &&
+                                service.slug === "enquiryform"
+                              ) {
+                                e.preventDefault();
+                              }
+                            }}
                             style={{
                               textDecoration: "none",
                               color: "inherit",
@@ -652,6 +675,7 @@ const ServicesDropdown = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
     </li>
   );
 };

@@ -5,17 +5,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // MUI Icons
-import BusinessIcon from '@mui/icons-material/Business';
-import PersonIcon from '@mui/icons-material/Person';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import WorkIcon from '@mui/icons-material/Work';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import SendIcon from '@mui/icons-material/Send';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import BusinessIcon from "@mui/icons-material/Business";
+import PersonIcon from "@mui/icons-material/Person";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import WorkIcon from "@mui/icons-material/Work";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import SendIcon from "@mui/icons-material/Send";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { getAPIURL } from "@/utils/utils";
 import { submitForm } from "@/redux/slices/hirefromus/Hirefromus";
 
@@ -25,20 +25,20 @@ const styles = {
     fontFamily: "'Inter', sans-serif",
     padding: "10px",
     maxWidth: "800px",
-    margin: "0 auto"
+    margin: "0 auto",
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: "5px"
+    gap: "5px",
   },
   fieldContainer: {
     // marginTop:"10px",
-    marginBottom: "16px"
+    marginBottom: "16px",
   },
   fieldContainers: {
     marginTop: "10px",
-    marginBottom: "16px"
+    marginBottom: "16px",
   },
   inputWrapper: {
     position: "relative",
@@ -47,19 +47,19 @@ const styles = {
     display: "flex",
     alignItems: "center",
     backgroundColor: "#f9f9f9",
-    transition: "all 0.3s ease"
+    transition: "all 0.3s ease",
   },
   inputWrapperFocused: {
-    borderColor: "#F2775E"
+    borderColor: "#F2775E",
   },
   inputIcon: {
     marginLeft: "12px",
     color: "#666",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   inputIconFocused: {
-    color: "#F2775E"
+    color: "#F2775E",
   },
   inputField: {
     width: "100%",
@@ -68,7 +68,7 @@ const styles = {
     border: "none",
     backgroundColor: "transparent",
     outline: "none",
-    borderRadius: "8px"
+    borderRadius: "8px",
   },
   inputLabel: {
     position: "absolute",
@@ -79,41 +79,41 @@ const styles = {
     backgroundColor: "#f9f9f9",
     padding: "0 4px",
     transition: "all 0.3s ease",
-    pointerEvents: "none"
+    pointerEvents: "none",
   },
   inputLabelFloated: {
     top: "-8px",
     fontSize: "12px",
-    color: "#F2775E"
+    color: "#F2775E",
   },
   errorMessage: {
     color: "#e53935",
     fontSize: "13px",
-    marginTop: "6px"
+    marginTop: "6px",
   },
   skillsetRow: {
     gap: "10px",
     marginBottom: "16px",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
   skillsetField: {
-    flex: 2
+    flex: 2,
   },
   resourcesField: {
     flex: 1,
-    marginTop: "15px"
+    marginTop: "15px",
   },
   otherSkillsetField: {
     flex: 2,
-    marginTop: "10px"
+    marginTop: "10px",
   },
   otherSkillsetInput: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   otherSkillsetIcon: {
     marginRight: "10px",
-    color: "#666"
+    color: "#666",
   },
   otherSkillsetText: {
     width: "100%",
@@ -122,7 +122,7 @@ const styles = {
     border: "1px solid #ddd",
     borderRadius: "8px",
     outline: "none",
-    backgroundColor: "#f9f9f9"
+    backgroundColor: "#f9f9f9",
   },
   removeButton: {
     background: "none",
@@ -133,7 +133,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 1,
-
   },
   addMoreButton: {
     display: "flex",
@@ -146,7 +145,7 @@ const styles = {
     cursor: "pointer",
     fontSize: "10px",
     gap: "8px",
-    marginTop: "10px"
+    marginTop: "10px",
   },
   submitButton: {
     background: "#F2775E",
@@ -168,11 +167,11 @@ const styles = {
     transition: "transform 0.2s ease, opacity 0.2s ease",
     opacity: "1",
     marginTop: "24px",
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
   },
   submitButtonDisabled: {
     opacity: "0.8",
-    cursor: "default"
+    cursor: "default",
   },
   submitIcon: {
     background: "white",
@@ -186,11 +185,11 @@ const styles = {
     borderRadius: "50%",
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     right: "0.3em",
-    transition: "all 0.3s"
+    transition: "all 0.3s",
   },
   selectWrapper: {
     position: "relative",
-    width: "100%"
+    width: "100%",
   },
   selectArrow: {
     position: "absolute",
@@ -198,14 +197,14 @@ const styles = {
     top: "50%",
     transform: "translateY(-50%)",
     color: "#666",
-    pointerEvents: "none"
+    pointerEvents: "none",
   },
   selectArrowFocused: {
-    color: "#2196f3"
+    color: "#2196f3",
   },
   textareaWrapper: {
     position: "relative",
-    width: "100%"
+    width: "100%",
   },
   textareaField: {
     width: "100%",
@@ -216,25 +215,25 @@ const styles = {
     outline: "none",
     borderRadius: "8px",
     resize: "vertical",
-    minHeight: "120px"
+    minHeight: "120px",
   },
   textareaIcon: {
     marginLeft: "12px",
     marginTop: "12px",
     color: "#666",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   textareaIconFocused: {
-    color: "#2196f3"
-  }
+    color: "#2196f3",
+  },
 };
 
 // Validation patterns
 const VALIDATION_PATTERNS = {
   name: /^[a-zA-Z\s]+$/,
   phone: /^[6-9]\d{0,9}$/,
-  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 };
 
 export default function HireFromUsForm({ availabilities, setShowModal }) {
@@ -250,7 +249,7 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
     }
     acc[item.skillset].push({
       name: item.resources,
-      count: parseInt(item.resources) || 0
+      count: parseInt(item.resources) || 0,
     });
     return acc;
   }, {});
@@ -259,71 +258,171 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
 
   const initialValues = {
     ...formData,
-    skillsetRequirements: [{ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false }],
-    otherSkillset: '',
+    skillsetRequirements: [
+      {
+        skillset: "",
+        resources: "",
+        otherSkillset: "",
+        otherSkillsetFocused: false,
+      },
+    ],
+    otherSkillset: "",
     // traineeModel: ''
   };
 
-  // Form validation
+  const VALIDATION_PATTERNS = {
+    name: /^[a-zA-Z.\s]*$/, // First letter capital, allows letters, spaces, and periods
+    phone: /^[6-9]\d{0,9}$/,
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  };
+
+  // Single field validation function
+  const validateField = (name, value, values) => {
+    let error = "";
+
+    switch (name) {
+      case "name":
+        if (!value) {
+          error = "Contact person is required";
+        } else if (!VALIDATION_PATTERNS.name.test(value)) {
+          error = "Only contain letters, spaces, and periods";
+        }
+        break;
+      case "company_name":
+        if (!value) {
+          error = "Company name is required";
+        }
+        break;
+
+      case "mobile":
+        if (!value) {
+          error = "Mobile number is required";
+        } else if (!VALIDATION_PATTERNS.phone.test(value)) {
+          error = "Invalid mobile number";
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          error = "Email is required";
+        } else if (!VALIDATION_PATTERNS.email.test(value)) {
+          error = "Invalid email address";
+        }
+        break;
+
+      case "enquiry":
+        if (!value) {
+          error = "Enquiry is required";
+        }
+        break;
+
+      case "traineeModel":
+        if (!value) {
+          error = "Trainee model is required";
+        }
+        break;
+
+      default:
+        if (name.startsWith("skillsetRequirements")) {
+          // Parse index and field from name (e.g., skillsetRequirements[0].skillset)
+          const matches = name.match(/skillsetRequirements\[(\d+)\]\.(.+)/);
+          if (matches) {
+            const [, index, field] = matches;
+            const idx = parseInt(index, 10);
+
+            if (field === "skillset") {
+              if (!value) {
+                error = "Skillset is required";
+              } else if (
+                value === "Other" &&
+                (!values.skillsetRequirements[idx].otherSkillset ||
+                  values.skillsetRequirements[idx].otherSkillset.trim() === "")
+              ) {
+                error = "Please specify the skillset";
+              }
+            } else if (field === "otherSkillset") {
+              if (
+                values.skillsetRequirements[idx].skillset === "Other" &&
+                (!value || value.trim() === "")
+              ) {
+                error = "Please specify the skillset";
+              }
+            } else if (field === "resources") {
+              if (!value) {
+                error = "Resources is required";
+              } else if (isNaN(value) || parseInt(value) <= 0) {
+                error = "Please enter a valid number of resources";
+              }
+            }
+          }
+        }
+        break;
+    }
+
+    return error;
+  };
+
+  // Full form validation (still needed for submit)
   const validate = (values) => {
     const errors = {};
 
-    // Basic field validations
-    if (!values.name) {
-      errors.name = "Contact person is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.name)) {
-      errors.name = "Invalid name";
-    }
+    // Validate standard fields
+    const fieldNames = [
+      "name",
+      "company_name",
+      "mobile",
+      "email",
+      "enquiry",
+      "traineeModel",
+    ];
+    fieldNames.forEach((fieldName) => {
+      const error = validateField(fieldName, values[fieldName], values);
+      if (error) errors[fieldName] = error;
+    });
 
-
-    if (!values.company_name) {
-      errors.company_name = "Company name is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.company_name)) {
-      errors.company_name = "Invalid company name";
-    }
-
-    if (!values.mobile) {
-      errors.mobile = "Mobile number is required";
-    } else if (!VALIDATION_PATTERNS.phone.test(values.mobile)) {
-      errors.mobile = "Invalid mobile number";
-    }
-
-    if (!values.email) {
-      errors.email = "Email is required";
-    } else if (!VALIDATION_PATTERNS.email.test(values.email)) {
-      errors.email = "Invalid email address";
-    }
-
-    if (!values.enquiry) {
-      errors.enquiry = "Enquiry is required";
-    }
-
-
-    // Skillset requirements validation
+    // Validate skillset requirements
     values.skillsetRequirements.forEach((req, index) => {
-      if (!req.skillset) {
+      // Validate skillset
+      const skillsetError = validateField(
+        `skillsetRequirements[${index}].skillset`,
+        req.skillset,
+        values
+      );
+      if (skillsetError) {
         errors.skillsetRequirements = errors.skillsetRequirements || [];
         errors.skillsetRequirements[index] = {
-          skillset: "Skillset is required"
-        };
-      } else if (req.skillset === "Other" && !req.otherSkillset) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          otherSkillset: "Please specify the skillset"
+          ...(errors.skillsetRequirements[index] || {}),
+          skillset: skillsetError,
         };
       }
 
-      if (!req.resources) {
+      // Validate otherSkillset if needed
+      if (req.skillset === "Other") {
+        const otherSkillsetError = validateField(
+          `skillsetRequirements[${index}].otherSkillset`,
+          req.otherSkillset,
+          values
+        );
+        if (otherSkillsetError) {
+          errors.skillsetRequirements = errors.skillsetRequirements || [];
+          errors.skillsetRequirements[index] = {
+            ...(errors.skillsetRequirements[index] || {}),
+            otherSkillset: otherSkillsetError,
+          };
+        }
+      }
+
+      // Validate resources
+      const resourcesError = validateField(
+        `skillsetRequirements[${index}].resources`,
+        req.resources,
+        values
+      );
+      if (resourcesError) {
         errors.skillsetRequirements = errors.skillsetRequirements || [];
         errors.skillsetRequirements[index] = {
-          ...(errors.skillsetRequirements?.[index] || {}),
-          resources: "Resources is required"
-        };
-      } else if (isNaN(req.resources) || parseInt(req.resources) <= 0) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          ...(errors.skillsetRequirements?.[index] || {}),
-          resources: "Please enter a valid number of resources"
+          ...(errors.skillsetRequirements[index] || {}),
+          resources: resourcesError,
         };
       }
     });
@@ -336,9 +435,9 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
     console.log("Submitting values:", values);
 
     try {
-      const processedSkillsets = values.skillsetRequirements.map(req => ({
+      const processedSkillsets = values.skillsetRequirements.map((req) => ({
         skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
-        resources: parseInt(req.resources, 10)
+        resources: parseInt(req.resources, 10),
       }));
 
       const formDataToSubmit = {
@@ -349,7 +448,6 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
         skillsetRequirements: processedSkillsets,
         enquiry: values.enquiry,
       };
-
 
       const response = await dispatch(submitForm(formDataToSubmit));
 
@@ -362,9 +460,9 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
       setTimeout(() => {
         setShowModal(false);
       }, 3000);
-
     } catch (error) {
-      const errorMessage = error.response?.data?.message[0]?.value ||
+      const errorMessage =
+        error.response?.data?.message[0]?.value ||
         error.message ||
         "An error occurred while submitting the form";
       toast.error(errorMessage);
@@ -373,22 +471,45 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
     }
   };
 
-  // Custom form components
-  const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
+  const FloatingInput = ({
+    icon: Icon,
+    label,
+    name,
+    type = "text",
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
 
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(name, value, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
+
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -397,14 +518,17 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
             name={name}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onChange={handleChange}
             style={styles.inputField}
             {...props}
           />
-          <label style={{
-            ...styles.inputLabel,
-            left: Icon ? "40px" : "12px",
-            ...((isFocused || hasValue) ? styles.inputLabelFloated : {})
-          }}>
+          <label
+            style={{
+              ...styles.inputLabel,
+              left: Icon ? "40px" : "12px",
+              ...(isFocused || hasValue ? styles.inputLabelFloated : {}),
+            }}
+          >
             {label}
           </label>
         </div>
@@ -412,7 +536,6 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
       </div>
     );
   };
-
   const FloatingSelect = ({
     icon: Icon,
     label,
@@ -420,22 +543,66 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
     options,
     values,
     setFieldValue,
-    index
+    setFieldError,
+    setFieldTouched,
+    index,
   }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasSelectedValue = values?.skillsetRequirements?.[index]?.skillset;
+
+    // Determine hasSelectedValue based on whether it's a skillset or trainee model
+    const hasSelectedValue =
+      index !== undefined
+        ? values?.skillsetRequirements?.[index]?.skillset
+        : values?.[name];
+
+    const handleChange = (e) => {
+      const selectedValue = e.target.value;
+
+      // For skillset dropdown
+      if (index !== undefined) {
+        setFieldValue(name, selectedValue);
+        setFieldValue(`skillsetRequirements.${index}.resources`, "");
+
+        // Clear otherSkillset if skillset is not "Other"
+        if (selectedValue !== "Other") {
+          setFieldValue(`skillsetRequirements.${index}.otherSkillset`, "");
+        }
+
+        // Validate on change
+        const error = validateField(
+          `skillsetRequirements[${index}].skillset`,
+          selectedValue,
+          values
+        );
+        setFieldError(`skillsetRequirements[${index}].skillset`, error);
+        setFieldTouched(`skillsetRequirements[${index}].skillset`, true, false);
+      }
+      // For trainee model dropdown
+      else {
+        setFieldValue(name, selectedValue);
+
+        // Validate on change
+        const error = validateField(name, selectedValue, values);
+        setFieldError(name, error);
+        setFieldTouched(name, true, false);
+      }
+    };
 
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -445,18 +612,14 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              onChange={(e) => {
-                const selectedValue = e.target.value;
-                setFieldValue(name, selectedValue);
-                setFieldValue(`skillsetRequirements.${index}.resources`, '');
-              }}
+              onChange={handleChange}
               style={{
                 ...styles.inputField,
                 appearance: "none",
                 paddingRight: "40px",
               }}
             >
-              <option value="">Select {label}</option>
+              <option value="">{label}</option>
               {options.map((option) => (
                 <option key={option} value={option}>
                   {option}
@@ -465,18 +628,22 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
               <option value="Other">Other (Please specify)</option>
             </Field>
             {hasSelectedValue && (
-              <label style={{
-                ...styles.inputLabel,
-                left: Icon ? "10px" : "12px",
-                ...styles.inputLabelFloated
-              }}>
+              <label
+                style={{
+                  ...styles.inputLabel,
+                  left: Icon ? "10px" : "12px",
+                  ...styles.inputLabelFloated,
+                }}
+              >
                 {label}
               </label>
             )}
-            <div style={{
-              ...styles.selectArrow,
-              ...(isFocused ? styles.selectArrowFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.selectArrow,
+                ...(isFocused ? styles.selectArrowFocused : {}),
+              }}
+            >
               <KeyboardArrowDownIcon fontSize="small" />
             </div>
           </div>
@@ -485,64 +652,49 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
       </div>
     );
   };
-
-  const FloatingTextarea = ({ icon: Icon, label, name, values, ...props }) => {
+  const ResourceInput = ({
+    icon: Icon,
+    label,
+    name,
+    values,
+    index,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasValue = values && values[name];
+    const hasValue = values?.skillsetRequirements?.[index]?.resources !== "";
 
-    return (
-      <div style={styles.fieldContainers}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {}),
-          alignItems: "flex-start"
-        }}>
-          {Icon && (
-            <div style={{
-              ...styles.textareaIcon,
-              ...(isFocused ? styles.textareaIconFocused : {})
-            }}>
-              <Icon fontSize="small" />
-            </div>
-          )}
-          <div style={styles.textareaWrapper}>
-            <Field
-              as="textarea"
-              name={name}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              style={styles.textareaField}
-              {...props}
-            />
-            <label style={{
-              ...styles.inputLabel,
-              left: Icon ? "10px" : "12px",
-              ...((isFocused || hasValue) ? styles.inputLabelFloated : {})
-            }}>
-              {label}
-            </label>
-          </div>
-        </div>
-        <ErrorMessage name={name} component="div" style={styles.errorMessage} />
-      </div>
-    );
-  };
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
 
-  const ResourceInput = ({ icon: Icon, label, name, values, ...props }) => {
-    const [isFocused, setIsFocused] = useState(false);
-    const hasValue = values?.skillsetRequirements?.[props.index]?.resources !== '';
+      // Validate on change
+      const error = validateField(
+        `skillsetRequirements[${index}].resources`,
+        value,
+        values
+      );
+      setFieldError(`skillsetRequirements[${index}].resources`, error);
+      setFieldTouched(`skillsetRequirements[${index}].resources`, true, false);
+    };
 
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -552,15 +704,86 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
+              onChange={handleChange}
               style={styles.inputField}
               min="1"
               {...props}
             />
-            <label style={{
-              ...styles.inputLabel,
-              left: Icon ? "10px" : "12px",
-              ...(hasValue ? styles.inputLabelFloated : {})
-            }}>
+            <label
+              style={{
+                ...styles.inputLabel,
+                left: Icon ? "10px" : "12px",
+                ...(hasValue ? styles.inputLabelFloated : {}),
+              }}
+            >
+              {label}
+            </label>
+          </div>
+        </div>
+        <ErrorMessage name={name} component="div" style={styles.errorMessage} />
+      </div>
+    );
+  };
+
+  const FloatingTextarea = ({
+    icon: Icon,
+    label,
+    name,
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const hasValue = values && values[name];
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(name, value, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
+
+    return (
+      <div style={styles.fieldContainers}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+            alignItems: "flex-start",
+          }}
+        >
+          {Icon && (
+            <div
+              style={{
+                ...styles.textareaIcon,
+                ...(isFocused ? styles.textareaIconFocused : {}),
+              }}
+            >
+              <Icon fontSize="small" />
+            </div>
+          )}
+          <div style={styles.textareaWrapper}>
+            <Field
+              as="textarea"
+              name={name}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onChange={handleChange}
+              style={styles.textareaField}
+              {...props}
+            />
+            <label
+              style={{
+                ...styles.inputLabel,
+                left: Icon ? "10px" : "12px",
+                ...(isFocused || hasValue ? styles.inputLabelFloated : {}),
+              }}
+            >
               {label}
             </label>
           </div>
@@ -577,8 +800,16 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
         initialValues={initialValues}
         validate={validate}
         onSubmit={handleSubmit}
+        validateOnChange={true}
+        validateOnBlur={true}
       >
-        {({ isSubmitting, values, setFieldValue }) => (
+        {({
+          isSubmitting,
+          values,
+          setFieldValue,
+          setFieldError,
+          setFieldTouched,
+        }) => (
           <Form>
             <FloatingInput
               icon={BusinessIcon}
@@ -586,15 +817,20 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
               name="company_name"
               label="Company Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
-            {/* Name */}
             <FloatingInput
               icon={PersonIcon}
               type="text"
               name="name"
               label="Contact Person Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Mobile Number */}
@@ -604,6 +840,9 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
               name="mobile"
               label="Contact Number"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Email */}
@@ -613,25 +852,35 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
               name="email"
               label="Contact Email"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Skillset Requirements */}
             <FieldArray name="skillsetRequirements">
               {({ push, remove }) => {
                 const canAddMoreSkillsets = (() => {
-                  const lastSkillset = values.skillsetRequirements[values.skillsetRequirements.length - 1];
+                  const lastSkillset =
+                    values.skillsetRequirements[
+                      values.skillsetRequirements.length - 1
+                    ];
 
                   // If it's an "Other" skillset, check otherSkillset
                   if (lastSkillset.skillset === "Other") {
-                    return lastSkillset.otherSkillset &&
+                    return (
+                      lastSkillset.otherSkillset &&
                       lastSkillset.resources &&
-                      parseInt(lastSkillset.resources) > 0;
+                      parseInt(lastSkillset.resources) > 0
+                    );
                   }
 
                   // For predefined skillsets
-                  return lastSkillset.skillset &&
+                  return (
+                    lastSkillset.skillset &&
                     lastSkillset.resources &&
-                    parseInt(lastSkillset.resources) > 0;
+                    parseInt(lastSkillset.resources) > 0
+                  );
                 })();
 
                 return (
@@ -647,20 +896,30 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                             options={skillsets}
                             values={values}
                             setFieldValue={setFieldValue}
+                            setFieldError={setFieldError}
+                            setFieldTouched={setFieldTouched}
                             index={index}
                           />
                         </div>
                         {/* Other Skillset Input */}
                         {req.skillset === "Other" && (
                           <div style={styles.otherSkillsetField}>
-                            <div style={{
-                              ...styles.inputWrapper,
-                              ...(req.otherSkillsetFocused ? styles.inputWrapperFocused : {})
-                            }}>
-                              <div style={{
-                                ...styles.inputIcon,
-                                ...(req.otherSkillsetFocused ? styles.inputIconFocused : {})
-                              }}>
+                            <div
+                              style={{
+                                ...styles.inputWrapper,
+                                ...(req.otherSkillsetFocused
+                                  ? styles.inputWrapperFocused
+                                  : {}),
+                              }}
+                            >
+                              <div
+                                style={{
+                                  ...styles.inputIcon,
+                                  ...(req.otherSkillsetFocused
+                                    ? styles.inputIconFocused
+                                    : {}),
+                                }}
+                              >
                                 <AssignmentIndIcon fontSize="small" />
                               </div>
                               <Field
@@ -668,21 +927,40 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                                 name={`skillsetRequirements.${index}.otherSkillset`}
                                 style={styles.inputField}
                                 onFocus={() => {
-                                  const newSkillsetRequirements = [...values.skillsetRequirements];
-                                  newSkillsetRequirements[index].otherSkillsetFocused = true;
-                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
+                                  const newSkillsetRequirements = [
+                                    ...values.skillsetRequirements,
+                                  ];
+                                  newSkillsetRequirements[
+                                    index
+                                  ].otherSkillsetFocused = true;
+                                  setFieldValue(
+                                    "skillsetRequirements",
+                                    newSkillsetRequirements
+                                  );
                                 }}
                                 onBlur={() => {
-                                  const newSkillsetRequirements = [...values.skillsetRequirements];
-                                  newSkillsetRequirements[index].otherSkillsetFocused = false;
-                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
+                                  const newSkillsetRequirements = [
+                                    ...values.skillsetRequirements,
+                                  ];
+                                  newSkillsetRequirements[
+                                    index
+                                  ].otherSkillsetFocused = false;
+                                  setFieldValue(
+                                    "skillsetRequirements",
+                                    newSkillsetRequirements
+                                  );
                                 }}
                               />
-                              <label style={{
-                                ...styles.inputLabel,
-                                left: "40px",
-                                ...((req.otherSkillsetFocused || req.otherSkillset) ? styles.inputLabelFloated : {})
-                              }}>
+                              <label
+                                style={{
+                                  ...styles.inputLabel,
+                                  left: "40px",
+                                  ...(req.otherSkillsetFocused ||
+                                  req.otherSkillset
+                                    ? styles.inputLabelFloated
+                                    : {}),
+                                }}
+                              >
                                 Other Skillset
                               </label>
                             </div>
@@ -702,6 +980,9 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                             label="Resources"
                             values={values}
                             index={index}
+                            setFieldValue={setFieldValue}
+                            setFieldError={setFieldError}
+                            setFieldTouched={setFieldTouched}
                           />
                         </div>
 
@@ -712,7 +993,8 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                             onClick={() => remove(index)}
                             style={styles.removeButton}
                           >
-                            <DeleteIcon fontSize="small" />Delete
+                            <DeleteIcon fontSize="small" />
+                            Delete
                           </button>
                         )}
                       </div>
@@ -722,10 +1004,18 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                     <button
                       type="button"
                       // Update the push function in the FieldArray component
-                      onClick={() => push({ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false })} style={{
+                      onClick={() =>
+                        push({
+                          skillset: "",
+                          resources: "",
+                          otherSkillset: "",
+                          otherSkillsetFocused: false,
+                        })
+                      }
+                      style={{
                         ...styles.addMoreButton,
                         opacity: canAddMoreSkillsets ? 1 : 0.5,
-                        cursor: canAddMoreSkillsets ? 'pointer' : 'not-allowed'
+                        cursor: canAddMoreSkillsets ? "pointer" : "not-allowed",
                       }}
                       disabled={!canAddMoreSkillsets}
                     >
@@ -742,6 +1032,9 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
               name="enquiry"
               label="Please describe your hiring requirements..."
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Submit Button */}
@@ -806,8 +1099,6 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
           </Form>
         )}
       </Formik>
-
-
     </div>
   );
 }

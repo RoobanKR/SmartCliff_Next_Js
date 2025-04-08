@@ -3,7 +3,7 @@ import Image from "next/image";
 import { fetchOurPrograms } from "@/redux/slices/mca/ourProgram/ourProgram";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function ProgrammeHighlights() {
+export default function ProgrammeHighlights({ids}) {
   const dispatch = useDispatch();
   const ourProgram = useSelector((state) => state.ourProgram.ourProgram);
 
@@ -14,33 +14,44 @@ export default function ProgrammeHighlights() {
     dispatch(fetchOurPrograms());
   }, [dispatch]);
 
-  const final = ourProgram.filter((program) => program.degree_program?._id === lastSegment);
+  const final = ourProgram.filter(
+    (program) => program.degree_program?._id === ids
+  );
 
-  
   return (
-    <section className="layout-pt-md layout-pb-xs bg-white">
+    <section className="layout-pt-sm layout-pb-xs bg-white">
       <div className="container">
         <div className="row justify-center text-center">
           <div className="col-auto">
-            <div >
+            <div>
               <div className="program-subtitle">
                 <span className="subtitle-line"></span>
-                <span className="subtitle-text">MCA – Programme Highlights</span>
+                <span className="subtitle-text">
+                  MCA – Programme Highlights
+                </span>
                 <span className="subtitle-line"></span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="row y-gap-30 pt-60 lg:pt-50">
+        <div
+          className="pt-40 lg:pt-50"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "30px", // for spacing between items
+          }}
+        >
           {final.map((elm) => (
             <div
               key={elm._id}
-              className="col-lg-4 col-md-6 col-sm-12" // Responsive classes
               style={{
+                flex: "0 1 300px", // width of card
+                maxWidth: "100%",
                 display: "flex",
                 justifyContent: "center",
-                marginBottom: "30px", // Add margin for spacing
               }}
             >
               <div
@@ -55,8 +66,12 @@ export default function ProgrammeHighlights() {
                   <Image width={60} height={60} src={elm.icon} alt="image" />
                 </div>
                 <div className="coursesCard__content mt-30">
-                  <h5 className="coursesCard__title text-18 lh-1 fw-500">{elm.title}</h5>
-                  <p className="coursesCard__text text-14 mt-10">{elm.description}</p>
+                  <h5 className="coursesCard__title text-18 lh-1 fw-500">
+                    {elm.title}
+                  </h5>
+                  <p className="coursesCard__text text-14 mt-10">
+                    {elm.description}
+                  </p>
                 </div>
               </div>
             </div>
@@ -65,7 +80,7 @@ export default function ProgrammeHighlights() {
       </div>
 
       <style jsx>{`
-              .program-subtitle {
+        .program-subtitle {
           display: flex;
           align-items: center;
           justify-content: center;
