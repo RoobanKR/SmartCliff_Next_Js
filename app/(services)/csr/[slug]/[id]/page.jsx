@@ -459,11 +459,11 @@ export default function Page() {
           <About ids={selectedProgramId} />
         </div>
 
-        {/* {finalPartners.length > 0 && (
+        {finalPartners.length > 0 && (
           <div ref={partnersRef}>
             <PartnersSection ids={selectedProgramId} />
           </div>
-        )} */}
+        )}
 
         {finalHighlights.length > 0 && (
           <div ref={highlightsRef}>
