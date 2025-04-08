@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-
+ 
 export default function CourseSlider() {
   const dispatch = useDispatch();
   const courses = useSelector(selectCourses);
@@ -16,19 +16,19 @@ export default function CourseSlider() {
   const courseSlug = params?.slug || "";
   const [matchedCourse, setMatchedCourse] = useState(null);
   const [coursesWithSameCategory, setCoursesWithSameCategory] = useState([]);
-
+ 
   useEffect(() => {
     dispatch(fetchCourses())
       .then(() => setShowSlider(true))
       .catch((error) => console.error("Error fetching courses:", error));
   }, [dispatch]);
-
+ 
   useEffect(() => {
     if (courses.length > 0) {
       // Find the current course by slug instead of ID
       const matched = courses.find((course) => course.slug === courseSlug);
       setMatchedCourse(matched);
-
+ 
       if (matched && matched.category) {
         const categoryID = matched.category._id;
         // Filter to get courses with the same category but not the current course
@@ -42,12 +42,12 @@ export default function CourseSlider() {
       }
     }
   }, [courseSlug, courses]);
-
+ 
   // Don't render if there are no related courses
   if (!coursesWithSameCategory.length) {
     return null;
   }
-
+ 
   return (
     <section
       className="layout-pt-sm layout-pb-sm"
@@ -89,7 +89,7 @@ export default function CourseSlider() {
                           <div
                             className="coursesCard__image overflow-hidden rounded-8"
                             style={{
-                              width: "100%",
+                              width: "74%",
                               height: "200px",
                               position: "relative",
                             }}
@@ -126,7 +126,7 @@ export default function CourseSlider() {
                                 {course.projects || course.projects} Projects
                               </div>
                             </div>
-
+ 
                             <div className="d-flex items-center">
                               <div className="mr-8">
                                 <Image
@@ -140,7 +140,7 @@ export default function CourseSlider() {
                                 {course.duration}
                               </div>
                             </div>
-
+ 
                             <div className="d-flex items-center">
                               <div className="mr-8">
                                 <Image
@@ -178,3 +178,5 @@ export default function CourseSlider() {
     </section>
   );
 }
+ 
+ 

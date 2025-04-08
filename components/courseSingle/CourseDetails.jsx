@@ -312,18 +312,18 @@ export default function CourseDetailsSix() {
                   justifyContent: "center",
                 }}
               >
-                <div
+                {/* <div
                   style={{
                     width: "50px",
                     height: "50px",
                     backgroundColor: "#5b2c6f",
-                    borderRadius: "50%",
+                    // borderRadius: "50%",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     marginBottom: "10px",
                   }}
-                >
+                > */}
                   <img
                     style={{
                       width: "2.5rem",
@@ -334,7 +334,7 @@ export default function CourseDetailsSix() {
                     src={tool.image}
                     alt={tool.software_name}
                   />{" "}
-                </div>
+                {/* </div> */}
                 <p style={{ textAlign: "center", margin: 0 }}>
                   {tool.software_name}
                 </p>
@@ -538,5 +538,6 @@ export default function CourseDetailsSix() {
     </>
   );
 }
+ 
  
  

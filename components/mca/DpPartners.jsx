@@ -111,6 +111,23 @@ export default function PartnersSection({ ids }) {
                 >
                   {partner.company}
                 </h3>
+
+                <span
+                  style={{
+                    display: "inline-block",
+                    padding: "4px 12px",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    color: " #16a34a",
+                    backgroundColor: "#e0f2f1", // light gray background
+                    borderRadius: "9px", // fully rounded badge
+                    textAlign: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  {partner.type}
+                </span>
+
                 <p
                   style={{
                     fontSize: "14px",

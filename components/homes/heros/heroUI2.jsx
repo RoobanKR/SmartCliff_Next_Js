@@ -1,139 +1,261 @@
-"use client";
-import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
- 
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
-export default function HeroFour() {
-  const router = useRouter();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
- 
+import { useEffect, useState } from "react";
+
+export default function HeroUIFour() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle responsive detection
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <>
-      <section className="masthead -type-3">
+    <section
+      style={{
+        display: "flex",
+        flexDirection: isMobile ? "column" : "row",
+        alignItems: "center",
+        justifyContent: isMobile ? "center" : "space-between",
+        padding: isMobile ? "30px 20px" : "60px 80px",
+        borderRadius: "15px",
+        marginTop: "3%",
+        position: "relative",
+      }}
+    >
+      {/* Background Overlay for Opacity Effect */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background:
+            "url('/assets/img/about-1/bckimg13.jpg') no-repeat center center/cover",
+          opacity: 0.5,
+          zIndex: -1,
+        }}
+      ></div>
+
+      {/* Left Side - Bigger Images - Hidden on Mobile */}
+      {!isMobile && (
         <div
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            // background:
-            //   "url('/assets/img/about-1/bckimg13.jpg') no-repeat center center/cover",
-            opacity: 0.5, // Adjust opacity here
-            zIndex: -1, // Keeps it behind content
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            flex: 1,
           }}
-        ></div>
-        <div className="container">
-          <div className="row y-gap-30 items-center justify-center">
-            <div className="col-xl-7 col-lg-11 relative z-5">
-              <div className="masthead__content pl-32 lg:pl-0">
-                <h1 className="masthead__title">
-                  <br /> <span className="text-purple-1">SmartCliff</span> -
-                  Where Learning Meets Success!
-                </h1>
- 
-                <p className="masthead__text text-17 text-dark-1 mt-25">
-                  At SmartCliff, we redefine learning with expert-led training
-                  programs,
-                  <br className="lg:d-none" />
-                  and cutting-edge technology solutions.{" "}
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "15px",
-                    marginTop: "20px",
-                  }}
-                >
-                  <Link href="/aboutUs" passHref>
-                    <button
-                      style={{
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        fontSize: "18px",
-                        fontWeight: "600",
-                        padding: "10px 20px",
-                        borderRadius: "50px",
-                        border: "none",
-                        cursor: "pointer",
-                        transition: "all 0.3s ease",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        width: "200px",
-                        gap: "10px",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "scale(1.05)";
-                        e.currentTarget.style.backgroundColor = "#333";
-                        e.currentTarget.style.boxShadow =
-                          "0px 6px 12px rgba(0,0,0,0.4)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "scale(1)";
-                        e.currentTarget.style.backgroundColor = "#000";
-                        e.currentTarget.style.boxShadow =
-                          "0px 4px 8px rgba(0,0,0,0.3)";
-                      }}
-                    >
-                      Learn More
-                      <div
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          backgroundColor: "#fff",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
-                          fontSize: "20px",
-                          transition: "all 0.3s ease",
-                          color: "#000",
-                        }}
-                      >
-                        →
-                      </div>
-                    </button>
-                  </Link>
- 
-                  <Image
-                    src="/assets/img/about/img3.svg"
-                    alt="Texture"
-                    width={50}
-                    height={50}
-                  />
-                </div>
-              </div>
-            </div>
- 
+        >
+          {/* Bigger Image Card */}
+          <div
+            style={{
+              position: "relative",
+              width: "300px",
+              height: "450px",
+              backgroundColor: "#000",
+              borderRadius: "20px",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              padding: "15px",
+              color: "#fff",
+            }}
+          >
+            <img
+              src="https://th.bing.com/th/id/OIP.qXmaS4Znxb4yE4vNiiZOmgHaLH?w=202&h=303&c=7&r=0&o=5&dpr=1.5&pid=1.7"
+              alt="Digital Fashion"
+              style={{ width: "100%", height: "87%", objectFit: "cover" }}
+            />
+
             <div
-              className="col-xl-5 col-lg-7 relative z-2"
-              style={{ marginTop: "20px" }}
+              style={{ fontSize: "15px", fontWeight: "900", marginTop: "auto" }}
             >
-              <div className="masthead-image">
-                <div className="masthead-image__img1">
-                  <img
-                    src="/assets/img/about/abtimg.png"
-                    alt="image"
-                    data-move="20"
-                    style={{ width: "550px", height: "400px" }}
-                  />
-                </div>
- 
-                <div className="masthead-image__el1"></div>
-              </div>
+              SHAPE YOUR <br /> FUTURE WITH SMARTCLIFF
+            </div>
+          </div>
+
+          {/* Award Card + Bigger 3D Sphere */}
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {/* Bigger Award Card */}
+            <div
+              style={{
+                width: "200px",
+                height: "300px",
+                backgroundColor: "#90E0BC",
+                borderRadius: "20px",
+                padding: "25px",
+                textAlign: "center",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "700",
+                  marginBottom: "10px",
+                }}
+              >
+                BEGIN CAREER AT SMARTCLIFF
+              </p>
+              <Image
+                src="/assets/img/about/img1.svg"
+                alt="Award Badge"
+                width={100}
+                height={100}
+              />
+            </div>
+
+            {/* Bigger 3D Sphere */}
+            <div
+              style={{
+                width: "130px",
+                height: "130px",
+                backgroundColor: "#fff",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0px 4px 15px rgba(0,0,0,0.15)",
+                position: "absolute",
+                bottom: "-55px",
+              }}
+            >
+              <img
+                src="https://th.bing.com/th/id/OIP.yFgZerKM6keOrX7srHy6EgHaHa?pid=ImgDet&w=178&h=178&c=7&dpr=1.5"
+                alt="Digital Fashion"
+                style={{ width: "60%", height: "60%", objectFit: "cover" }}
+              />
             </div>
           </div>
         </div>
-      </section>
-    </>
+      )}
+
+      {/* Right Side - Text & Button Section - Always Visible */}
+      <div
+        style={{
+          textAlign: isMobile ? "center" : "left",
+          width: "100%",
+          maxWidth: "600px",
+          flex: isMobile ? "none" : 1,
+          paddingTop: isMobile ? "90px" : "0px",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: isMobile ? "32px" : "42px",
+            fontWeight: "800",
+            color: "#000",
+            marginBottom: "20px",
+          }}
+        >
+          <span style={{ color: "#3b82f6", fontWeight: "bold" }}>
+            SmartCliff
+          </span>{" "}
+          <br /> Shaping Success Through Learning!
+        </h2>
+
+        <p
+          style={{
+            fontSize: isMobile ? "18px" : "20px",
+            color: "#333",
+            marginBottom: "25px",
+          }}
+        >
+          SmartCliff empowers learners with industry-aligned training and
+          breakthrough tech to shape smarter careers.
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: isMobile ? "center" : "flex-start",
+            gap: "15px",
+          }}
+        >
+          <Link href="/aboutUs" passHref>
+            <button
+              style={{
+                backgroundColor: "#000",
+                color: "#fff",
+                fontSize: isMobile ? "16px" : "18px",
+                fontWeight: "600",
+                padding: isMobile ? "8px 16px" : "10px 20px",
+                borderRadius: "50px",
+                border: "none",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: isMobile ? "180px" : "200px",
+                gap: "10px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.backgroundColor = "#333";
+                e.currentTarget.style.boxShadow =
+                  "0px 6px 12px rgba(0,0,0,0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.backgroundColor = "#000";
+                e.currentTarget.style.boxShadow = "0px 4px 8px rgba(0,0,0,0.3)";
+              }}
+            >
+              Learn More
+              <div
+                style={{
+                  width: isMobile ? "36px" : "40px",
+                  height: isMobile ? "36px" : "40px",
+                  backgroundColor: "#fff",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
+                  fontSize: isMobile ? "18px" : "20px",
+                  transition: "all 0.3s ease",
+                  color: "#000",
+                }}
+              >
+                →
+              </div>
+            </button>
+          </Link>
+
+          <Image
+            src="/assets/img/about/img3.svg"
+            alt="Texture"
+            width={50}
+            height={50}
+          />
+        </div>
+      </div>
+    </section>
   );
 }
- 
- 

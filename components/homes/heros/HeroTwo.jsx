@@ -6,7 +6,7 @@ import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useEffect, useState } from "react";
- 
+
 import React from "react";
 import { featureTwo } from "../../../data/features";
 import { slidesData } from "../../../data/hero";
@@ -18,11 +18,11 @@ import HeroUIThree from "./heroUI3";
 export default function HeroTwo() {
   const router = useRouter();
   const [showSlider, setShowSlider] = useState(false);
- 
+
   useEffect(() => {
     setShowSlider(true);
   }, []);
- 
+
   return (
     <section
       className="mainSlider -type-1 js-mainSlider customizedHeroBackground"
@@ -47,7 +47,7 @@ export default function HeroTwo() {
           slidesPerView={1}
           speed={1200}
           autoplay={{
-            delay: 3000,
+            delay: 10000,
             disableOnInteraction: false,
           }}
           loop={true}
@@ -68,7 +68,7 @@ export default function HeroTwo() {
                 background: "#f0f0f0",
               }}
             >
-              <HeroUITwo />
+              <HeroUIOne />
             </div>
           </SwiperSlide>
           {/* Slide 2: HeroUIOne */}
@@ -82,7 +82,7 @@ export default function HeroTwo() {
                 background: "#e0e0e0",
               }}
             >
-              <HeroUIOne />
+              <HeroUITwo />
             </div>
           </SwiperSlide>
           {/* Slide 3: HeroUIOne */}
@@ -115,7 +115,7 @@ export default function HeroTwo() {
           </SwiperSlide>
         </Swiper>
       )}
- 
+
       {/* Navigation Buttons */}
       <button
         className="swiper-prev hero-slider-prev button -white-20 text-white size-60 rounded-full d-flex justify-center items-center"
@@ -133,7 +133,7 @@ export default function HeroTwo() {
       >
         <i className="icon icon-arrow-left text-24"></i>
       </button>
- 
+
       <button
         className="swiper-next hero-slider-next button -white-20 text-white size-60 rounded-full d-flex justify-center items-center"
         style={{
@@ -153,5 +153,3 @@ export default function HeroTwo() {
     </section>
   );
 }
- 
- 

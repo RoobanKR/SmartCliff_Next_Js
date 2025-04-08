@@ -6,7 +6,6 @@ import { menuList } from "@/data/menu";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
- 
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
 import {
   fetchServices,

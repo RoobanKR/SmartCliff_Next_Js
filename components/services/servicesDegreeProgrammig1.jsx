@@ -272,7 +272,7 @@ export default function CsrDegreeProgram() {
                       position: "absolute",
                       top: "20px",
                       right: "-35px",
-                      background: "#5B2C6F",
+                      background: "#306072",
                       color: "white",
                       padding: "5px 40px",
                       transform: "rotate(45deg)",
@@ -293,26 +293,27 @@ export default function CsrDegreeProgram() {
                       position: "relative",
                     }}
                   >
-                    <Image
-                      width={510}
-                      height={360}
-                      src={program.logo}
-                      alt={program.program_name}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        transition:
-                          "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "scale(1.1)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "scale(1)";
-                      }}
-                    />
-
+                    <div style={{ padding: "20px" }}>
+                      <Image
+                        width={510}
+                        height={360}
+                        src={program.logo}
+                        alt={program.program_name}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          transition:
+                            "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "scale(1.1)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "scale(1)";
+                        }}
+                      />
+                    </div>
                     {/* Gradient overlay */}
                     <div
                       style={{
@@ -403,7 +404,7 @@ export default function CsrDegreeProgram() {
                         width: "100%",
                         borderRadius: "10px",
                         background:
-                          "linear-gradient(to right, #5B2C6F, #8E44AD)",
+                          "linear-gradient(to right, #306072,rgb(68, 150, 173))",
                         color: "white",
                         fontWeight: "600",
                         textDecoration: "none",
@@ -503,39 +504,39 @@ export default function CsrDegreeProgram() {
             <div
               style={{
                 textAlign: "center",
-                padding: "50px 20px",
+                padding: "60px 20px",
                 animation: "fadeIn 0.5s ease",
               }}
             >
               <div
                 style={{
-                  fontSize: "80px",
+                  fontSize: "90px",
                   marginBottom: "20px",
-                  color: "#ddd",
+                  color: "#ffb74d", // construction yellow-orange
                 }}
               >
-                🔍
+                🚧
               </div>
               <h3
                 style={{
-                  fontSize: "24px",
-                  fontWeight: "600",
-                  color: "#555",
+                  fontSize: "26px",
+                  fontWeight: "700",
+                  color: "#444",
                   marginBottom: "15px",
                 }}
               >
-                No programs found
+                Page Under Construction
               </h3>
               <p
                 style={{
                   fontSize: "16px",
-                  color: "#777",
+                  color: "#666",
                   maxWidth: "500px",
                   margin: "0 auto",
                 }}
               >
-                Try adjusting your filter criteria or check back later for new
-                programs.
+                We're working hard to bring this page to life. Please check back
+                soon!
               </p>
             </div>
           )}

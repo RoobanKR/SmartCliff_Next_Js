@@ -7,22 +7,20 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // MUI Icons
-import BusinessIcon from '@mui/icons-material/Business';
-import PersonIcon from '@mui/icons-material/Person';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import WorkIcon from '@mui/icons-material/Work';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import SendIcon from '@mui/icons-material/Send';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
-import EngineeringIcon from '@mui/icons-material/Engineering';
-import InventoryIcon from '@mui/icons-material/Inventory';
+import BusinessIcon from "@mui/icons-material/Business";
+import PersonIcon from "@mui/icons-material/Person";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import WorkIcon from "@mui/icons-material/Work";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import SendIcon from "@mui/icons-material/Send";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
+import InventoryIcon from "@mui/icons-material/Inventory";
 import { createTrainFromUs } from "@/redux/slices/hiring/trainFromUs/trainFromus";
-
 
 // Styles
 const styles = {
@@ -30,20 +28,19 @@ const styles = {
     fontFamily: "'Inter', sans-serif",
     padding: "10px",
     maxWidth: "800px",
-    margin: "0 auto"
+    margin: "0 auto",
   },
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: "5px"
+    gap: "5px",
   },
   fieldContainer: {
-    // marginTop:"10px",
-    marginBottom: "16px"
+    marginBottom: "16px",
   },
   fieldContainers: {
     marginTop: "10px",
-    marginBottom: "16px"
+    marginBottom: "16px",
   },
   inputWrapper: {
     position: "relative",
@@ -52,19 +49,19 @@ const styles = {
     display: "flex",
     alignItems: "center",
     backgroundColor: "#f9f9f9",
-    transition: "all 0.3s ease"
+    transition: "all 0.3s ease",
   },
   inputWrapperFocused: {
-    borderColor: "#F2775E"
+    borderColor: "#F2775E",
   },
   inputIcon: {
     marginLeft: "12px",
     color: "#666",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   inputIconFocused: {
-    color: "#F2775E"
+    color: "#F2775E",
   },
   inputField: {
     width: "100%",
@@ -73,7 +70,7 @@ const styles = {
     border: "none",
     backgroundColor: "transparent",
     outline: "none",
-    borderRadius: "8px"
+    borderRadius: "8px",
   },
   inputLabel: {
     position: "absolute",
@@ -84,50 +81,30 @@ const styles = {
     backgroundColor: "#f9f9f9",
     padding: "0 4px",
     transition: "all 0.3s ease",
-    pointerEvents: "none"
+    pointerEvents: "none",
   },
   inputLabelFloated: {
     top: "-8px",
     fontSize: "12px",
-    color: "#F2775E"
+    color: "#F2775E",
   },
   errorMessage: {
     color: "#e53935",
     fontSize: "13px",
-    marginTop: "6px"
+    marginTop: "6px",
   },
-  skillsetRow: {
+  resourcesRow: {
+    display: "flex",
     gap: "10px",
     marginBottom: "16px",
-    alignItems: "flex-start"
-  },
-  skillsetField: {
-    flex: 2
+    alignItems: "center",
   },
   resourcesField: {
-    flex: 1,
-    marginTop: "15px"
-  },
-  otherSkillsetField: {
     flex: 2,
-    marginTop: "10px"
   },
-  otherSkillsetInput: {
-    display: "flex",
-    alignItems: "center"
-  },
-  otherSkillsetIcon: {
-    marginRight: "10px",
-    color: "#666"
-  },
-  otherSkillsetText: {
-    width: "100%",
-    padding: "7px 15px",
-    fontSize: "12px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    outline: "none",
-    backgroundColor: "#f9f9f9"
+  otherModelField: {
+    marginTop: "10px",
+    marginBottom: "20px",
   },
   removeButton: {
     background: "none",
@@ -138,7 +115,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 1,
-
   },
   addMoreButton: {
     display: "flex",
@@ -152,66 +128,11 @@ const styles = {
     fontSize: "10px",
     gap: "8px",
     marginTop: "10px",
-    marginBottom: "10px"
-  },
-  submitButton: {
-    background: "#F2775E",
-    color: "white",
-    padding: "0.35em 1.2em 0.35em 1.2em",
-    fontSize: "17px",
-    fontWeight: "500",
-    borderRadius: "0.9em",
-    border: "none",
-    letterSpacing: "0.05em",
-    display: "flex",
-    alignItems: "center",
-    boxShadow: "inset 0 0 1.6em -0.6em #F2775E",
-    overflow: "hidden",
-    position: "relative",
-    height: "2.8em",
-    paddingRight: "3.3em",
-    cursor: "pointer",
-    transition: "transform 0.2s ease, opacity 0.2s ease",
-    opacity: "1",
-    marginTop: "24px",
-    alignSelf: "flex-end"
-  },
-  submitButtonDisabled: {
-    opacity: "0.8",
-    cursor: "default"
-  },
-  submitIcon: {
-    background: "white",
-    marginLeft: "1em",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "2.2em",
-    width: "2.2em",
-    borderRadius: "50%",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    right: "0.3em",
-    transition: "all 0.3s"
-  },
-  selectWrapper: {
-    position: "relative",
-    width: "100%"
-  },
-  selectArrow: {
-    position: "absolute",
-    right: "12px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    color: "#666",
-    pointerEvents: "none"
-  },
-  selectArrowFocused: {
-    color: "#F2775E"
+    marginBottom: "10px",
   },
   textareaWrapper: {
     position: "relative",
-    width: "100%"
+    width: "100%",
   },
   textareaField: {
     width: "100%",
@@ -222,63 +143,63 @@ const styles = {
     outline: "none",
     borderRadius: "8px",
     resize: "vertical",
-    minHeight: "120px"
+    minHeight: "120px",
   },
   textareaIcon: {
     marginLeft: "12px",
     marginTop: "12px",
     color: "#666",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   textareaIconFocused: {
-    color: "#F2775E"
-  }
+    color: "#F2775E",
+  },
+  traineeModelContainer: {
+    marginBottom: "5px",
+  },
+  selectWrapper: {
+    position: "relative",
+    width: "100%",
+  },
+  selectArrow: {
+    position: "absolute",
+    right: "12px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    color: "#666",
+    pointerEvents: "none",
+  },
+  selectArrowFocused: {
+    color: "#F2775E",
+  },
 };
 
 // Validation patterns
 const VALIDATION_PATTERNS = {
   name: /^[a-zA-Z\s]+$/,
   phone: /^[6-9]\d{0,9}$/,
-  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 };
 
-export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
+export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const [isSubmitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  console.log("Is submitting:", isSubmitting);
-  // Process availabilities data
-  const skillsetsMap = availabilities.reduce((acc, item) => {
-    if (!acc[item.skillset]) {
-      acc[item.skillset] = [];
-    }
-    acc[item.skillset].push({
-      name: item.resources,
-      count: parseInt(item.resources) || 0
-    });
-    return acc;
-  }, {});
 
-  const skillsets = Object.keys(skillsetsMap);
-  const TRAINEE_MODELS = [
-    'Hire Train Deploy (HTD)',
-    'Hiring Only',
-    'Training Only'
-  ];
+  const TRAINEE_MODELS = hireFromUsData.map((i) => i.title);
 
   const initialValues = {
     ...formData,
-    skillsetRequirements: [{ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false }],
-    otherSkillset: '',
-    traineeModel: ''
+    resourceRequirements: [{ resources: "" }],
+    traineeModel: "",
+    otherTraineeModel: "",
   };
 
   // Form validation
   const validate = (values) => {
     const errors = {};
-    console.log("Validation errors:", errors); // Add this line to log errors
 
     // Basic field validations
     if (!values.name) {
@@ -286,7 +207,6 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
     } else if (!VALIDATION_PATTERNS.name.test(values.name)) {
       errors.name = "Invalid name";
     }
-
 
     if (!values.company_name) {
       errors.company_name = "Company name is required";
@@ -310,35 +230,24 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
       errors.enquiry = "Enquiry is required";
     }
 
-    // Skillset requirements validation
-    values.skillsetRequirements.forEach((req, index) => {
-      if (!req.skillset) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          skillset: "Skillset is required"
-        };
-      } else if (req.skillset === "Other" && !req.otherSkillset) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          otherSkillset: "Please specify the skillset"
-        };
-      }
+    if (!values.traineeModel) {
+      errors.traineeModel = "Trainee model is required";
+    } else if (values.traineeModel === "Other" && !values.otherTraineeModel) {
+      errors.otherTraineeModel = "Please specify the trainee model";
+    }
 
+    // Resources requirements validation
+    values.resourceRequirements.forEach((req, index) => {
       if (!req.resources) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          ...(errors.skillsetRequirements?.[index] || {}),
-          resources: "Resources is required"
+        errors.resourceRequirements = errors.resourceRequirements || [];
+        errors.resourceRequirements[index] = {
+          resources: "Resources is required",
         };
       } else if (isNaN(req.resources) || parseInt(req.resources) <= 0) {
-        errors.skillsetRequirements = errors.skillsetRequirements || [];
-        errors.skillsetRequirements[index] = {
-          ...(errors.skillsetRequirements?.[index] || {}),
-          resources: "Please enter a valid number of resources"
+        errors.resourceRequirements = errors.resourceRequirements || [];
+        errors.resourceRequirements[index] = {
+          resources: "Please enter a valid number of resources",
         };
-      }
-      if (!values.traineeModel) {
-        errors.traineeModel = "Trainee model is required";
       }
     });
 
@@ -347,12 +256,11 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
 
   // Form submission handler
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    setSubmitting(true); // Start submitting
+    setSubmitting(true);
 
     try {
-      const processedSkillsets = values.skillsetRequirements.map(req => ({
-        skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
-        resources: parseInt(req.resources, 10)
+      const processedResources = values.resourceRequirements.map((req) => ({
+        resources: parseInt(req.resources, 10),
       }));
 
       const formDataToSubmit = {
@@ -360,12 +268,13 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
         name: values.name,
         mobile: values.mobile,
         email: values.email,
-        skillsetRequirements: processedSkillsets,
+        resourceRequirements: processedResources,
         enquiry: values.enquiry,
-        trainee_modal: values.traineeModel
+        trainee_modal:
+          values.traineeModel === "Other"
+            ? values.otherTraineeModel
+            : values.traineeModel,
       };
-
-
 
       const response = await dispatch(createTrainFromUs(formDataToSubmit));
       if (response.payload.message[0].key === "success") {
@@ -377,10 +286,9 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
       setTimeout(() => {
         setShowModal(false);
       }, 3000);
-    }
-
-    catch (error) {
-      const errorMessage = error.response?.data?.message[0]?.value ||
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message[0]?.value ||
         error.message ||
         "An error occurred while submitting the form";
       toast.error(errorMessage);
@@ -389,21 +297,32 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
     }
   };
 
-  const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
+  const FloatingInput = ({
+    icon: Icon,
+    label,
+    name,
+    type = "text",
+    values,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
 
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -415,44 +334,47 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
             style={styles.inputField}
             {...props}
           />
-          <label style={{
-            ...styles.inputLabel,
-            left: Icon ? "40px" : "12px",
-            ...((isFocused || hasValue) ? styles.inputLabelFloated : {})
-          }}>
+          <label
+            style={{
+              ...styles.inputLabel,
+              left: Icon ? "40px" : "12px",
+              ...(isFocused || hasValue ? styles.inputLabelFloated : {}),
+            }}
+          >
             {label}
           </label>
         </div>
         <ErrorMessage name={name} component="div" style={styles.errorMessage} />
       </div>
     );
-  }; const FloatingSelect = ({
+  };
+
+  const FloatingSelect = ({
     icon: Icon,
     label,
     name,
     options,
     values,
     setFieldValue,
-    index
   }) => {
     const [isFocused, setIsFocused] = useState(false);
-
-    // Determine hasSelectedValue based on whether it's a skillset or trainee model
-    const hasSelectedValue = index !== undefined
-      ? values?.skillsetRequirements?.[index]?.skillset
-      : values?.[name];
+    const hasSelectedValue = values?.[name];
 
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -464,15 +386,9 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
               onBlur={() => setIsFocused(false)}
               onChange={(e) => {
                 const selectedValue = e.target.value;
-
-                // For skillset dropdown
-                if (index !== undefined) {
-                  setFieldValue(name, selectedValue);
-                  setFieldValue(`skillsetRequirements.${index}.resources`, '');
-                }
-                // For trainee model dropdown
-                else {
-                  setFieldValue(name, selectedValue);
+                setFieldValue(name, selectedValue);
+                if (selectedValue !== "Other") {
+                  setFieldValue("otherTraineeModel", "");
                 }
               }}
               style={{
@@ -482,26 +398,30 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
               }}
             >
               <option value="">{label}</option>
-              {options.map((option) => (
+              {options?.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
               ))}
-              <option value="Other">Other (Please specify)</option>
+              <option value="Other">Other</option>
             </Field>
             {hasSelectedValue && (
-              <label style={{
-                ...styles.inputLabel,
-                left: Icon ? "10px" : "12px",
-                ...styles.inputLabelFloated
-              }}>
+              <label
+                style={{
+                  ...styles.inputLabel,
+                  left: Icon ? "10px" : "12px",
+                  ...styles.inputLabelFloated,
+                }}
+              >
                 {label}
               </label>
             )}
-            <div style={{
-              ...styles.selectArrow,
-              ...(isFocused ? styles.selectArrowFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.selectArrow,
+                ...(isFocused ? styles.selectArrowFocused : {}),
+              }}
+            >
               <KeyboardArrowDownIcon fontSize="small" />
             </div>
           </div>
@@ -517,16 +437,20 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
 
     return (
       <div style={styles.fieldContainers}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {}),
-          alignItems: "flex-start"
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+            alignItems: "flex-start",
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.textareaIcon,
-              ...(isFocused ? styles.textareaIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.textareaIcon,
+                ...(isFocused ? styles.textareaIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -539,11 +463,13 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
               style={styles.textareaField}
               {...props}
             />
-            <label style={{
-              ...styles.inputLabel,
-              left: Icon ? "10px" : "12px",
-              ...((isFocused || hasValue) ? styles.inputLabelFloated : {})
-            }}>
+            <label
+              style={{
+                ...styles.inputLabel,
+                left: Icon ? "10px" : "12px",
+                ...(isFocused || hasValue ? styles.inputLabelFloated : {}),
+              }}
+            >
               {label}
             </label>
           </div>
@@ -555,19 +481,24 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
 
   const ResourceInput = ({ icon: Icon, label, name, values, ...props }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasValue = values?.skillsetRequirements?.[props.index]?.resources !== '';
+    const hasValue =
+      values?.resourceRequirements?.[props.index]?.resources !== "";
 
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -581,11 +512,13 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
               min="1"
               {...props}
             />
-            <label style={{
-              ...styles.inputLabel,
-              left: Icon ? "10px" : "12px",
-              ...(hasValue ? styles.inputLabelFloated : {})
-            }}>
+            <label
+              style={{
+                ...styles.inputLabel,
+                left: Icon ? "10px" : "12px",
+                ...(hasValue ? styles.inputLabelFloated : {}),
+              }}
+            >
               {label}
             </label>
           </div>
@@ -594,7 +527,6 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
       </div>
     );
   };
-
   return (
     <div style={styles.container}>
       <ToastContainer />
@@ -641,90 +573,54 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
               values={values}
             />
 
-            {/* Skillset Requirements */}
-            <FieldArray name="skillsetRequirements">
+            {/* Trainee Model */}
+            <div style={styles.traineeModelContainer}>
+              <FloatingSelect
+                icon={ModelTrainingIcon}
+                name="traineeModel"
+                label="Trainee Model"
+                options={TRAINEE_MODELS}
+                values={values}
+                setFieldValue={setFieldValue}
+              />
+
+              {/* Conditional Other Trainee Model Input */}
+              {values.traineeModel === "Other" && (
+                <div style={styles.otherModelField}>
+                  <FloatingInput
+                    icon={AssignmentIndIcon}
+                    type="text"
+                    name="otherTraineeModel"
+                    label="Specify Other Trainee Model"
+                    values={values}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Resources Requirements */}
+            <FieldArray name="resourceRequirements">
               {({ push, remove }) => {
-                const canAddMoreSkillsets = (() => {
-                  const lastSkillset = values.skillsetRequirements[values.skillsetRequirements.length - 1];
-
-                  // If it's an "Other" skillset, check otherSkillset
-                  if (lastSkillset.skillset === "Other") {
-                    return lastSkillset.otherSkillset &&
-                      lastSkillset.resources &&
-                      parseInt(lastSkillset.resources) > 0;
-                  }
-
-                  // For predefined skillsets
-                  return lastSkillset.skillset &&
-                    lastSkillset.resources &&
-                    parseInt(lastSkillset.resources) > 0;
+                const canAddMoreResources = (() => {
+                  const lastResource =
+                    values.resourceRequirements[
+                      values.resourceRequirements.length - 1
+                    ];
+                  return (
+                    lastResource.resources &&
+                    parseInt(lastResource.resources) > 0
+                  );
                 })();
 
                 return (
                   <div>
-                    {values.skillsetRequirements.map((req, index) => (
-                      <div key={index} style={styles.skillsetRow}>
-                        {/* Skillset Dropdown */}
-                        <div style={styles.skillsetField}>
-                          <FloatingSelect
-                            icon={EngineeringIcon}
-                            name={`skillsetRequirements.${index}.skillset`}
-                            label="Select Skillset"
-                            options={skillsets}
-                            values={values}
-                            setFieldValue={setFieldValue}
-                            index={index}
-                          />
-                        </div>
-                        {/* Other Skillset Input */}
-                        {req.skillset === "Other" && (
-                          <div style={styles.otherSkillsetField}>
-                            <div style={{
-                              ...styles.inputWrapper,
-                              ...(req.otherSkillsetFocused ? styles.inputWrapperFocused : {})
-                            }}>
-                              <div style={{
-                                ...styles.inputIcon,
-                                ...(req.otherSkillsetFocused ? styles.inputIconFocused : {})
-                              }}>
-                                <AssignmentIndIcon fontSize="small" />
-                              </div>
-                              <Field
-                                type="text"
-                                name={`skillsetRequirements.${index}.otherSkillset`}
-                                style={styles.inputField}
-                                onFocus={() => {
-                                  const newSkillsetRequirements = [...values.skillsetRequirements];
-                                  newSkillsetRequirements[index].otherSkillsetFocused = true;
-                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
-                                }}
-                                onBlur={() => {
-                                  const newSkillsetRequirements = [...values.skillsetRequirements];
-                                  newSkillsetRequirements[index].otherSkillsetFocused = false;
-                                  setFieldValue('skillsetRequirements', newSkillsetRequirements);
-                                }}
-                              />
-                              <label style={{
-                                ...styles.inputLabel,
-                                left: "40px",
-                                ...((req.otherSkillsetFocused || req.otherSkillset) ? styles.inputLabelFloated : {})
-                              }}>
-                                Other Skillset
-                              </label>
-                            </div>
-                            <ErrorMessage
-                              name={`skillsetRequirements.${index}.otherSkillset`}
-                              component="div"
-                              style={styles.errorMessage}
-                            />
-                          </div>
-                        )}
-
+                    {values.resourceRequirements.map((req, index) => (
+                      <div key={index} style={styles.resourcesRow}>
                         {/* Resources Input */}
                         <div style={styles.resourcesField}>
                           <ResourceInput
                             icon={InventoryIcon}
-                            name={`skillsetRequirements.${index}.resources`}
+                            name={`resourceRequirements.${index}.resources`}
                             label="Resources"
                             values={values}
                             index={index}
@@ -738,7 +634,8 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
                             onClick={() => remove(index)}
                             style={styles.removeButton}
                           >
-                            <DeleteIcon fontSize="small" />Delete
+                            <DeleteIcon fontSize="small" />
+                            Delete
                           </button>
                         )}
                       </div>
@@ -747,37 +644,21 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
                     {/* Add More Button with Conditional Disabled State */}
                     <button
                       type="button"
-                      // Update the push function in the FieldArray component
-                      onClick={() => push({ skillset: '', resources: '', otherSkillset: '', otherSkillsetFocused: false })} style={{
+                      onClick={() => push({ resources: "" })}
+                      style={{
                         ...styles.addMoreButton,
-                        opacity: canAddMoreSkillsets ? 1 : 0.5,
-                        cursor: canAddMoreSkillsets ? 'pointer' : 'not-allowed'
-
+                        opacity: canAddMoreResources ? 1 : 0.5,
+                        cursor: canAddMoreResources ? "pointer" : "not-allowed",
                       }}
-                      disabled={!canAddMoreSkillsets}
+                      disabled={!canAddMoreResources}
                     >
-                      <AddIcon fontSize="small" /> Add Another Skillset
+                      <AddIcon fontSize="small" /> Add Another Resource
                     </button>
                   </div>
                 );
               }}
             </FieldArray>
-            {/* <FloatingSelect
-              icon={ModelTrainingIcon}
-              name="traineeModel"
-              label="Select Trainee Model"
-              options={TRAINEE_MODELS}
-              values={values}
-              setFieldValue={setFieldValue}
-            /> */}
-            <FloatingSelect
-              icon={ModelTrainingIcon}
-              name="traineeModel"
-              label="Trainee Model"
-              options={TRAINEE_MODELS}
-              values={values}
-              setFieldValue={setFieldValue}
-            />
+
             {/* Enquiry Textarea */}
             <FloatingTextarea
               icon={SendIcon}
@@ -848,8 +729,6 @@ export default function TrainFromUsAddForm({ availabilities, setShowModal }) {
           </Form>
         )}
       </Formik>
-
-
     </div>
   );
 }

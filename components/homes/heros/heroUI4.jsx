@@ -82,7 +82,7 @@ export default function HeroUIFour() {
             />
 
             <div
-              style={{ fontSize: "15px", fontWeight: "500", marginTop: "auto" }}
+              style={{ fontSize: "15px", fontWeight: "900", marginTop: "auto" }}
             >
               SHAPE YOUR <br /> FUTURE WITH SMARTCLIFF
             </div>

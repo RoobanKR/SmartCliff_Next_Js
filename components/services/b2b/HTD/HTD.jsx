@@ -243,7 +243,6 @@ export default function HTD() {
     availableSections.push({ id: "faq", title: "FAQ" });
   }
 
-  
   return (
     <>
       <div className="main-content homeModeChange ">
@@ -254,8 +253,9 @@ export default function HTD() {
           setIsSidebarClosed={setIsSidebarClosed}
         />
         <div
-          className={`dashboard -home-9 px-0 js-dashboard-home-9 ${isSidebarClosed ? "-is-sidebar-hidden" : ""
-            } `}
+          className={`dashboard -home-9 px-0 js-dashboard-home-9 ${
+            isSidebarClosed ? "-is-sidebar-hidden" : ""
+          } `}
         >
           <div
             className="dashboard__sidebar -base scroll-bar-1 border-right-light lg:px-30"
@@ -273,28 +273,38 @@ export default function HTD() {
                   position: "fixed",
                   left: "20px",
                   bottom: "20px",
-                  zIndex: "120",
+                  zIndex: "99",
                 }}
               >
                 <button
                   onClick={toggleSidebar}
                   onMouseEnter={(e) => {
-                    e.currentTarget.querySelector(".front").style.transform = "translateY(-3px)";
-                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(3px)";
-                    e.currentTarget.querySelector(".front").style.background = " #DDA853";
+                    e.currentTarget.querySelector(".front").style.transform =
+                      "translateY(-3px)";
+                    e.currentTarget.querySelector(".shadow").style.transform =
+                      "translateY(3px)";
+                    e.currentTarget.querySelector(".front").style.background =
+                      " #DDA853";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.querySelector(".front").style.transform = "translateY(-1px)";
-                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(2px)";
-                    e.currentTarget.querySelector(".front").style.background = " #DDA853";
+                    e.currentTarget.querySelector(".front").style.transform =
+                      "translateY(-1px)";
+                    e.currentTarget.querySelector(".shadow").style.transform =
+                      "translateY(2px)";
+                    e.currentTarget.querySelector(".front").style.background =
+                      " #DDA853";
                   }}
                   onMouseDown={(e) => {
-                    e.currentTarget.querySelector(".front").style.transform = "translateY(0px)";
-                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(1px)";
+                    e.currentTarget.querySelector(".front").style.transform =
+                      "translateY(0px)";
+                    e.currentTarget.querySelector(".shadow").style.transform =
+                      "translateY(1px)";
                   }}
                   onMouseUp={(e) => {
-                    e.currentTarget.querySelector(".front").style.transform = "translateY(-3px)";
-                    e.currentTarget.querySelector(".shadow").style.transform = "translateY(3px)";
+                    e.currentTarget.querySelector(".front").style.transform =
+                      "translateY(-3px)";
+                    e.currentTarget.querySelector(".shadow").style.transform =
+                      "translateY(3px)";
                   }}
                   style={{
                     position: "relative",
@@ -319,7 +329,8 @@ export default function HTD() {
                       borderRadius: "8px",
                       background: "hsl(0deg 0% 0% / 0.15)",
                       transform: "translateY(2px)",
-                      transition: "transform 200ms cubic-bezier(0.3, 0.7, 0.4, 1)",
+                      transition:
+                        "transform 200ms cubic-bezier(0.3, 0.7, 0.4, 1)",
                     }}
                   ></span>
 
@@ -432,12 +443,11 @@ export default function HTD() {
                     {matchedexecutionOverviews.length > 0 && (
                       <div id="execution-overview">
                         <ExecutionOverview serviceId={services} />
-
                       </div>
                     )}
-                    
+
                     {filteredHighlights.length > 0 && (
-                      <div >
+                      <div>
                         <ExecutiveHighlights
                           filteredHighlights={filteredHighlights}
                         />
@@ -462,9 +472,9 @@ export default function HTD() {
                         <TrainingTracksTable />
                       </div>
                     )}
-                     {(secondLastSegment === "b2i") && <ServiceClient />}
+                    {secondLastSegment === "b2i" && <ServiceClient />}
 
-                                  {(secondLastSegment === "b2i") && <FormSection />}
+                    {secondLastSegment === "b2i" && <FormSection />}
                     {matchedFaq.length > 0 && (
                       <div id="faq">
                         <FAQComponent faq={matchedFaq} />
