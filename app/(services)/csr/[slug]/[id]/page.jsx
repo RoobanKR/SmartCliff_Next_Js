@@ -459,6 +459,35 @@ export default function Page() {
           <About ids={selectedProgramId} />
         </div>
 
+        {finalPartners.length > 0 && (
+          <div ref={partnersRef}>
+            <PartnersSection ids={selectedProgramId} />
+          </div>
+        )}
+
+        {finalHighlights.length > 0 && (
+          <div ref={highlightsRef}>
+            <ProgrammeHighlights ids={selectedProgramId} />
+          </div>
+        )}
+
+        {finalProgramOutcome.length > 0 && (
+          <div ref={outcomeRef}>
+            <TestimonialsSection ids={selectedProgramId} />
+          </div>
+        )}
+
+        {finalTarget.length > 0 && (
+          <div ref={targetRef}>
+            <TargetStudentsSection ids={selectedProgramId} />
+          </div>
+        )}
+
+        {finalSponsor.length > 0 && (
+          <div ref={sponsorsRef}>
+            <SponsorsSection ids={selectedProgramId} />
+          </div>
+        )}
 
         {filteredFAQ.length > 0 && (
           <div ref={faqRef}>
