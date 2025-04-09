@@ -451,9 +451,88 @@ const ServicesDropdown = () => {
                       .map((service, index) => {
                         const currentBusinessService =
                           getCurrentBusinessService(hoveredService);
-
                         const isLoading = loadingServiceId === service._id;
                         const serviceUrl = `/${currentBusinessService?.slug}/${service.slug}`;
+
+                        // Check if this is a B2C enquiry form
+                        const isB2CEnquiry =
+                          currentBusinessService?.slug === "b2c" &&
+                          service.slug === "enquiryform";
+
+                        // For B2C enquiry form, render the full width special card
+                        if (isB2CEnquiry) {
+                          return (
+                            <div
+                              key={service._id}
+                              style={{
+                                gridColumn: "span 2",
+                                backgroundColor: "#F9FAFB",
+                                padding: "30px 40px",
+                                borderRadius: "16px",
+                                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                border: "1px solid #E5E7EB",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                textAlign: "center",
+                              }}
+                            >
+                              <h2
+                                style={{
+                                  fontSize: "20px",
+                                  fontWeight: "600",
+                                  color: "#002856",
+                                  marginBottom: "12px",
+                                }}
+                              >
+                                {service.title}
+                              </h2>
+                              <p
+                                style={{
+                                  fontSize: "14px",
+                                  color: "#6B7280",
+                                  marginBottom: "20px",
+                                  maxWidth: "600px",
+                                  justifyContent: "center",
+                                  textAlign: "justify",
+                                }}
+                              >
+                                {service.description ||
+                                  `Reach out to us through this service for personalized support.`}
+                              </p>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "flex-start", // <-- Aligns button to the left end
+                                  width: "100%", // Optional: ensures it spans full row
+                                }}
+                              >
+                                <button
+                                  onClick={(e) => {
+                                    handleLearnMoreClick(
+                                      service._id,
+                                      currentBusinessService?.slug,
+                                      service.slug
+                                    );
+                                    e.preventDefault(); // Prevent full page navigation
+                                  }}
+                                  style={{
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: "#0047AB",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  Enquiry Now
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        // For all other service cards, render the standard card
                         return (
                           <Link
                             key={service._id}
@@ -465,11 +544,9 @@ const ServicesDropdown = () => {
                                 currentBusinessService?.slug,
                                 service.slug
                               );
+
                               // Prevent default if it's our special case
-                              if (
-                                currentBusinessService?.slug === "b2c" &&
-                                service.slug === "enquiryform"
-                              ) {
+                              if (isB2CEnquiry) {
                                 e.preventDefault();
                               }
                             }}
@@ -519,7 +596,6 @@ const ServicesDropdown = () => {
                                 <div
                                   style={{
                                     display: "flex",
-
                                     zIndex: "1",
                                   }}
                                 >
@@ -626,9 +702,7 @@ const ServicesDropdown = () => {
                                           alignItems: "center",
                                         }}
                                       >
-                                        {currentBusinessService?.slug ===
-                                          "b2c" &&
-                                        service.slug === "enquiryform"
+                                        {isB2CEnquiry
                                           ? "Enquiry Now"
                                           : "Read More"}
                                       </span>

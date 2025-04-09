@@ -22,165 +22,7 @@ import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import { createTrainFromUs } from "@/redux/slices/hiring/trainFromUs/trainFromus";
 
-// Styles
-const styles = {
-  container: {
-    fontFamily: "'Inter', sans-serif",
-    padding: "10px",
-    maxWidth: "800px",
-    margin: "0 auto",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "5px",
-  },
-  fieldContainer: {
-    marginBottom: "16px",
-  },
-  fieldContainers: {
-    marginTop: "10px",
-    marginBottom: "16px",
-  },
-  inputWrapper: {
-    position: "relative",
-    borderRadius: "8px",
-    border: "1px solid  #ddd",
-    display: "flex",
-    alignItems: "center",
-    backgroundColor: "#f9f9f9",
-    transition: "all 0.3s ease",
-  },
-  inputWrapperFocused: {
-    borderColor: "#F2775E",
-  },
-  inputIcon: {
-    marginLeft: "12px",
-    color: "#666",
-    display: "flex",
-    alignItems: "center",
-  },
-  inputIconFocused: {
-    color: "#F2775E",
-  },
-  inputField: {
-    width: "100%",
-    padding: "10px 12px 6px 12px",
-    fontSize: "12px",
-    border: "none",
-    backgroundColor: "transparent",
-    outline: "none",
-    borderRadius: "8px",
-  },
-  inputLabel: {
-    position: "absolute",
-    left: "40px",
-    top: "10px",
-    fontSize: "12px",
-    color: "#666",
-    backgroundColor: "#f9f9f9",
-    padding: "0 4px",
-    transition: "all 0.3s ease",
-    pointerEvents: "none",
-  },
-  inputLabelFloated: {
-    top: "-8px",
-    fontSize: "12px",
-    color: "#F2775E",
-  },
-  errorMessage: {
-    color: "#e53935",
-    fontSize: "13px",
-    marginTop: "6px",
-  },
-  resourcesRow: {
-    display: "flex",
-    gap: "10px",
-    marginBottom: "16px",
-    alignItems: "center",
-  },
-  resourcesField: {
-    flex: 2,
-  },
-  otherModelField: {
-    marginTop: "10px",
-    marginBottom: "20px",
-  },
-  removeButton: {
-    background: "none",
-    border: "none",
-    color: "#f44336",
-    cursor: "pointer",
-    padding: "10px",
-    display: "flex",
-    alignItems: "center",
-    gap: 1,
-  },
-  addMoreButton: {
-    display: "flex",
-    alignItems: "center",
-    background: "rgba(61, 61, 231, 0.74)",
-    color: "white",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "10px",
-    gap: "8px",
-    marginTop: "10px",
-    marginBottom: "10px",
-  },
-  textareaWrapper: {
-    position: "relative",
-    width: "100%",
-  },
-  textareaField: {
-    width: "100%",
-    padding: "20px 12px 6px 12px",
-    fontSize: "15px",
-    border: "none",
-    backgroundColor: "transparent",
-    outline: "none",
-    borderRadius: "8px",
-    resize: "vertical",
-    minHeight: "120px",
-  },
-  textareaIcon: {
-    marginLeft: "12px",
-    marginTop: "12px",
-    color: "#666",
-    display: "flex",
-    alignItems: "center",
-  },
-  textareaIconFocused: {
-    color: "#F2775E",
-  },
-  traineeModelContainer: {
-    marginBottom: "5px",
-  },
-  selectWrapper: {
-    position: "relative",
-    width: "100%",
-  },
-  selectArrow: {
-    position: "absolute",
-    right: "12px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    color: "#666",
-    pointerEvents: "none",
-  },
-  selectArrowFocused: {
-    color: "#F2775E",
-  },
-};
-
-// Validation patterns
-const VALIDATION_PATTERNS = {
-  name: /^[a-zA-Z\s]+$/,
-  phone: /^[6-9]\d{0,9}$/,
-  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-};
+import { styles } from "./formStyle";
 
 export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
   const dispatch = useDispatch();
@@ -197,56 +39,130 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
     otherTraineeModel: "",
   };
 
-  // Form validation
+  const VALIDATION_PATTERNS = {
+    name: /^[a-zA-Z.\s]*$/, // First letter capital, allows letters, spaces, and periods
+    phone: /^[6-9]\d{0,9}$/,
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  };
+
+  // Single field validation function
+  const validateField = (name, value, values) => {
+    let error = "";
+
+    switch (name) {
+      case "name":
+        if (!value) {
+          error = "Contact person is required";
+        } else if (!VALIDATION_PATTERNS.name.test(value)) {
+          error = "Only contain letters, spaces, and periods";
+        }
+        break;
+
+      case "company_name":
+        if (!value) {
+          error = "Company name is required";
+        } else if (!VALIDATION_PATTERNS.name.test(value)) {
+          error = "Invalid company name";
+        }
+        break;
+
+      case "mobile":
+        if (!value) {
+          error = "Mobile number is required";
+        } else if (!VALIDATION_PATTERNS.phone.test(value)) {
+          error = "Invalid mobile number";
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          error = "Email is required";
+        } else if (!VALIDATION_PATTERNS.email.test(value)) {
+          error = "Invalid email address";
+        }
+        break;
+
+      case "enquiry":
+        if (!value) {
+          error = "Enquiry is required";
+        }
+        break;
+
+      case "traineeModel":
+        if (!value) {
+          error = "Trainee model is required";
+        } else if (
+          value === "Other" &&
+          (!values.otherTraineeModel || values.otherTraineeModel.trim() === "")
+        ) {
+          error = "Please specify the trainee model";
+        }
+        break;
+
+      case "otherTraineeModel":
+        if (
+          values.traineeModel === "Other" &&
+          (!value || value.trim() === "")
+        ) {
+          error = "Please specify the trainee model";
+        }
+        break;
+
+      default:
+        if (name.startsWith("resourceRequirements")) {
+          // Parse index and field from name (e.g., resourceRequirements[0].resources)
+          const matches = name.match(/resourceRequirements\[(\d+)\]\.(.+)/);
+          if (matches) {
+            const [, index, field] = matches;
+
+            if (field === "resources") {
+              if (!value) {
+                error = "Resources is required";
+              } else if (isNaN(value) || parseInt(value) <= 0) {
+                error = "Please enter a valid number of resources";
+              }
+            }
+          }
+        }
+        break;
+    }
+
+    return error;
+  };
+
+  // Full form validation (still needed for submit)
   const validate = (values) => {
     const errors = {};
 
-    // Basic field validations
-    if (!values.name) {
-      errors.name = "Contact person is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.name)) {
-      errors.name = "Invalid name";
-    }
+    // Validate standard fields
+    const fieldNames = [
+      "name",
+      "company_name",
+      "mobile",
+      "email",
+      "enquiry",
+      "traineeModel",
+      "otherTraineeModel",
+    ];
 
-    if (!values.company_name) {
-      errors.company_name = "Company name is required";
-    } else if (!VALIDATION_PATTERNS.name.test(values.company_name)) {
-      errors.company_name = "Invalid company name";
-    }
-
-    if (!values.mobile) {
-      errors.mobile = "Mobile number is required";
-    } else if (!VALIDATION_PATTERNS.phone.test(values.mobile)) {
-      errors.mobile = "Invalid mobile number";
-    }
-
-    if (!values.email) {
-      errors.email = "Email is required";
-    } else if (!VALIDATION_PATTERNS.email.test(values.email)) {
-      errors.email = "Invalid email address";
-    }
-
-    if (!values.enquiry) {
-      errors.enquiry = "Enquiry is required";
-    }
-
-    if (!values.traineeModel) {
-      errors.traineeModel = "Trainee model is required";
-    } else if (values.traineeModel === "Other" && !values.otherTraineeModel) {
-      errors.otherTraineeModel = "Please specify the trainee model";
-    }
+    fieldNames.forEach((fieldName) => {
+      const error = validateField(fieldName, values[fieldName], values);
+      if (error) errors[fieldName] = error;
+    });
 
     // Resources requirements validation
     values.resourceRequirements.forEach((req, index) => {
-      if (!req.resources) {
+      const resourcesError = validateField(
+        `resourceRequirements[${index}].resources`,
+        req.resources,
+        values
+      );
+
+      if (resourcesError) {
         errors.resourceRequirements = errors.resourceRequirements || [];
         errors.resourceRequirements[index] = {
-          resources: "Resources is required",
-        };
-      } else if (isNaN(req.resources) || parseInt(req.resources) <= 0) {
-        errors.resourceRequirements = errors.resourceRequirements || [];
-        errors.resourceRequirements[index] = {
-          resources: "Please enter a valid number of resources",
+          ...(errors.resourceRequirements[index] || {}),
+          resources: resourcesError,
         };
       }
     });
@@ -303,10 +219,23 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
     name,
     type = "text",
     values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
     ...props
   }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(name, value, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
 
     return (
       <div style={styles.fieldContainer}>
@@ -331,6 +260,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
             name={name}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onChange={handleChange}
             style={styles.inputField}
             {...props}
           />
@@ -356,12 +286,29 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
     options,
     values,
     setFieldValue,
+    setFieldError,
+    setFieldTouched,
   }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasSelectedValue = values?.[name];
 
+    const handleChange = (e) => {
+      const selectedValue = e.target.value;
+      setFieldValue(name, selectedValue);
+
+      // If not "Other", clear otherTraineeModel field
+      if (selectedValue !== "Other") {
+        setFieldValue("otherTraineeModel", "");
+      }
+
+      // Validate on change
+      const error = validateField(name, selectedValue, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
+
     return (
-      <div style={styles.fieldContainer}>
+      <div style={styles.fieldContainers}>
         <div
           style={{
             ...styles.inputWrapper,
@@ -384,13 +331,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              onChange={(e) => {
-                const selectedValue = e.target.value;
-                setFieldValue(name, selectedValue);
-                if (selectedValue !== "Other") {
-                  setFieldValue("otherTraineeModel", "");
-                }
-              }}
+              onChange={handleChange}
               style={{
                 ...styles.inputField,
                 appearance: "none",
@@ -431,9 +372,28 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
     );
   };
 
-  const FloatingTextarea = ({ icon: Icon, label, name, values, ...props }) => {
+  const FloatingTextarea = ({
+    icon: Icon,
+    label,
+    name,
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(name, value, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
 
     return (
       <div style={styles.fieldContainers}>
@@ -460,6 +420,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
+              onChange={handleChange}
               style={styles.textareaField}
               {...props}
             />
@@ -479,10 +440,37 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
     );
   };
 
-  const ResourceInput = ({ icon: Icon, label, name, values, ...props }) => {
+  const ResourceInput = ({
+    icon: Icon,
+    label,
+    name,
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue =
       values?.resourceRequirements?.[props.index]?.resources !== "";
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(
+        `resourceRequirements[${props.index}].resources`,
+        value,
+        values
+      );
+      setFieldError(`resourceRequirements[${props.index}].resources`, error);
+      setFieldTouched(
+        `resourceRequirements[${props.index}].resources`,
+        true,
+        false
+      );
+    };
 
     return (
       <div style={styles.fieldContainer}>
@@ -508,6 +496,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
+              onChange={handleChange}
               style={styles.inputField}
               min="1"
               {...props}
@@ -527,6 +516,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
       </div>
     );
   };
+
   return (
     <div style={styles.container}>
       <ToastContainer />
@@ -534,8 +524,16 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
         initialValues={initialValues}
         validate={validate}
         onSubmit={handleSubmit}
+        validateOnChange={true}
+        validateOnBlur={true}
       >
-        {({ isSubmitting, values, setFieldValue }) => (
+        {({
+          isSubmitting,
+          values,
+          setFieldValue,
+          setFieldError,
+          setFieldTouched,
+        }) => (
           <Form style={styles.form}>
             {/* Company Name */}
             <FloatingInput
@@ -544,6 +542,9 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name="company_name"
               label="Company Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Name */}
@@ -553,6 +554,9 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name="name"
               label="Contact Person Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Mobile Number */}
@@ -562,6 +566,9 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name="mobile"
               label="Contact Number"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Email */}
@@ -571,10 +578,13 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name="email"
               label="Contact Email"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Trainee Model */}
-            <div style={styles.traineeModelContainer}>
+            <div>
               <FloatingSelect
                 icon={ModelTrainingIcon}
                 name="traineeModel"
@@ -582,6 +592,8 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
                 options={TRAINEE_MODELS}
                 values={values}
                 setFieldValue={setFieldValue}
+                setFieldError={setFieldError}
+                setFieldTouched={setFieldTouched}
               />
 
               {/* Conditional Other Trainee Model Input */}
@@ -593,6 +605,9 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
                     name="otherTraineeModel"
                     label="Specify Other Trainee Model"
                     values={values}
+                    setFieldValue={setFieldValue}
+                    setFieldError={setFieldError}
+                    setFieldTouched={setFieldTouched}
                   />
                 </div>
               )}
@@ -624,6 +639,9 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
                             label="Resources"
                             values={values}
                             index={index}
+                            setFieldValue={setFieldValue}
+                            setFieldError={setFieldError}
+                            setFieldTouched={setFieldTouched}
                           />
                         </div>
 
@@ -665,6 +683,9 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
               name="enquiry"
               label="Please describe your hiring requirements..."
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Submit Button */}

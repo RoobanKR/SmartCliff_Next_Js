@@ -1,5 +1,5 @@
 "use client";
- 
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,21 +8,19 @@ import HirefromusAddForm from "../HirefromusAddForm";
 import { useSelector } from "react-redux";
 import Trainfromus from "../trainfromus";
 import TrainFromUsAddForm from "../TrainfromusAddForm";
- 
+
 export default function FormSection() {
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-   const { learningJourneys, loading, error } = useSelector(
-     (state) => state.learningJourney
-   );
-   const hireFromUsData = learningJourneys.filter(
+  const { learningJourneys, loading, error } = useSelector(
+    (state) => state.learningJourney
+  );
+  const hireFromUsData = learningJourneys.filter(
     (journey) => journey.type === "trainfromus"
   );
   console.log("hireFromUsData", hireFromUsData);
 
- 
- 
   return (
     <section
       className="layout-pt-sm layout-pb-sm"
@@ -31,14 +29,12 @@ export default function FormSection() {
       <div className="container">
         <div className="row y-gap-20 justify-between items-center">
           <div className="col-xl-8 col-lg-5">
-          <h2 className="text-0 text-black">
-          Equip your workforce with the skills they need to excel -  {" "}
-                            <span style={{ color: "#f2775e" }}>
-                               
-                            partner with us today!                             </span>{" "}
-                        </h2>
+            <h2 className="text-0 text-black">
+              Equip your workforce with the skills they need to excel -{" "}
+              <span style={{ color: "#f2775e" }}>partner with us today! </span>{" "}
+            </h2>
           </div>
- 
+
           <div className="col-auto">
             <button
               className="button px-30 h-50 -outline-dark-11 text-orange-1"
@@ -111,7 +107,6 @@ export default function FormSection() {
                         position: "relative",
                         padding: "0 0 10px 0",
                       }}
- 
                     >
                       Training Enquiry Form
                       <span
@@ -137,7 +132,7 @@ export default function FormSection() {
                         }}
                       ></span>
                     </h1>
- 
+
                     <button
                       type="button"
                       onClick={() => setShowModal(false)}
@@ -160,7 +155,7 @@ export default function FormSection() {
                       <FaTimes />
                     </button>
                   </div>
- 
+
                   {/* Modal Content */}
                   <div
                     style={{
@@ -170,7 +165,10 @@ export default function FormSection() {
                       scrollbarWidth: "thin",
                     }}
                   >
-                    <TrainFromUsAddForm hireFromUsData={hireFromUsData} setShowModal={setShowModal} />
+                    <TrainFromUsAddForm
+                      hireFromUsData={hireFromUsData}
+                      setShowModal={setShowModal}
+                    />
                   </div>
                 </motion.div>
               </motion.div>
@@ -181,5 +179,3 @@ export default function FormSection() {
     </section>
   );
 }
- 
- 

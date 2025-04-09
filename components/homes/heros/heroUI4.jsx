@@ -76,7 +76,7 @@ export default function HeroUIFour() {
             }}
           >
             <img
-              src="/assets/img/homeing.png"
+              src="/assets/img/homeing2.png"
               alt="Digital Fashion"
               style={{ width: "100%", height: "87%", objectFit: "cover" }}
             />
@@ -172,7 +172,7 @@ export default function HeroUIFour() {
             marginBottom: "20px",
           }}
         >
-          <span style={{ color: "#3b82f6", fontWeight: "bold" }}>
+          <span style={{ color: "#f27757", fontWeight: "bold" }}>
             SmartCliff
           </span>{" "}
           <br /> Where Learning Meets Success!

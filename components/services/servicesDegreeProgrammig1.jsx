@@ -104,114 +104,116 @@ export default function CsrDegreeProgram() {
       </div>
 
       {/* Filter Section */}
-      <div
-        style={{
-          position: "sticky",
-          marginTop: "10px",
-          animation: "slideInDown 0.6s ease 0.5s forwards",
-        }}
-      >
-        <div className="container">
-          <div
-            style={{
-              display: "flex",
-              // justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "15px",
-            }}
-          >
-            <h4
-              style={{
-                margin: "0",
-                fontSize: "18px",
-                fontWeight: "600",
-                color: "#333",
-              }}
-            >
-              Filter by Year:
-            </h4>
-
+      {featuredItems.length > 0 && (
+        <div
+          style={{
+            position: "sticky",
+            marginTop: "10px",
+            animation: "slideInDown 0.6s ease 0.5s forwards",
+          }}
+        >
+          <div className="container">
             <div
               style={{
                 display: "flex",
-                gap: "10px",
+                // justifyContent: "space-between",
+                alignItems: "center",
                 flexWrap: "wrap",
+                gap: "15px",
               }}
             >
-              <button
+              <h4
                 style={{
-                  padding: "10px 20px",
-                  borderRadius: "30px",
-                  border: "none",
-                  background: yearFilter === "" ? "#5B2C6F" : "transparent",
-                  color: yearFilter === "" ? "white" : "#333",
+                  margin: "0",
+                  fontSize: "18px",
                   fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  boxShadow:
-                    yearFilter === ""
-                      ? "0 5px 15px rgba(91, 44, 111, 0.2)"
-                      : "none",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                onClick={() => setYearFilter("")}
-                onMouseEnter={(e) => {
-                  if (yearFilter !== "") {
-                    e.currentTarget.style.background = "#f0f0f0";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (yearFilter !== "") {
-                    e.currentTarget.style.background = "transparent";
-                  }
+                  color: "#333",
                 }}
               >
-                All Years
-              </button>
+                Filter by Year:
+              </h4>
 
-              {uniqueYears.map((year) => (
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                }}
+              >
                 <button
-                  key={year}
                   style={{
                     padding: "10px 20px",
                     borderRadius: "30px",
                     border: "none",
-                    background: yearFilter === year ? "#5B2C6F" : "transparent",
-                    color: yearFilter === year ? "white" : "#333",
+                    background: yearFilter === "" ? "#5B2C6F" : "transparent",
+                    color: yearFilter === "" ? "white" : "#333",
                     fontWeight: "600",
                     fontSize: "14px",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     boxShadow:
-                      yearFilter === year
+                      yearFilter === ""
                         ? "0 5px 15px rgba(91, 44, 111, 0.2)"
                         : "none",
                     position: "relative",
                     overflow: "hidden",
                   }}
-                  onClick={() => setYearFilter(year)}
+                  onClick={() => setYearFilter("")}
                   onMouseEnter={(e) => {
-                    if (yearFilter !== year) {
+                    if (yearFilter !== "") {
                       e.currentTarget.style.background = "#f0f0f0";
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (yearFilter !== year) {
+                    if (yearFilter !== "") {
                       e.currentTarget.style.background = "transparent";
                     }
                   }}
                 >
-                  {year}
+                  All Years
                 </button>
-              ))}
+
+                {uniqueYears.map((year) => (
+                  <button
+                    key={year}
+                    style={{
+                      padding: "10px 20px",
+                      borderRadius: "30px",
+                      border: "none",
+                      background:
+                        yearFilter === year ? "#5B2C6F" : "transparent",
+                      color: yearFilter === year ? "white" : "#333",
+                      fontWeight: "600",
+                      fontSize: "14px",
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                      boxShadow:
+                        yearFilter === year
+                          ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                          : "none",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                    onClick={() => setYearFilter(year)}
+                    onMouseEnter={(e) => {
+                      if (yearFilter !== year) {
+                        e.currentTarget.style.background = "#f0f0f0";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (yearFilter !== year) {
+                        e.currentTarget.style.background = "transparent";
+                      }
+                    }}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+      )}
       {/* Programs Grid */}
       <section
         style={{

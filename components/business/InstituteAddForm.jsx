@@ -7,243 +7,25 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // MUI Icons
-import BusinessIcon from '@mui/icons-material/Business';
-import PersonIcon from '@mui/icons-material/Person';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import WorkIcon from '@mui/icons-material/Work';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import SendIcon from '@mui/icons-material/Send';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
-import EngineeringIcon from '@mui/icons-material/Engineering';
-import InventoryIcon from '@mui/icons-material/Inventory';
+import BusinessIcon from "@mui/icons-material/Business";
+import PersonIcon from "@mui/icons-material/Person";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import WorkIcon from "@mui/icons-material/Work";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import SendIcon from "@mui/icons-material/Send";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import InventoryIcon from "@mui/icons-material/Inventory";
 import { createInstitute } from "@/redux/slices/hiring/institute/institute";
 
+import { styles } from "./formStyle";
 
-// Styles
-const styles = {
-  container: {
-    fontFamily: "'Inter', sans-serif",
-    padding: "10px",
-    maxWidth: "800px",
-    margin: "0 auto"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "5px"
-  },
-  fieldContainer: {
-    // marginTop:"10px",
-    marginBottom: "16px"
-  },
-  fieldContainers: {
-    marginTop: "10px",
-    marginBottom: "16px"
-  },
-  inputWrapper: {
-    position: "relative",
-    borderRadius: "8px",
-    border: "1px solid  #ddd",
-    display: "flex",
-    alignItems: "center",
-    backgroundColor: "#f9f9f9",
-    transition: "all 0.3s ease"
-  },
-  inputWrapperFocused: {
-    borderColor: "#F2775E"
-  },
-  inputIcon: {
-    marginLeft: "12px",
-    color: "#666",
-    display: "flex",
-    alignItems: "center"
-  },
-  inputIconFocused: {
-    color: "#F2775E"
-  },
-  inputField: {
-    width: "100%",
-    padding: "10px 12px 6px 12px",
-    fontSize: "12px",
-    border: "none",
-    backgroundColor: "transparent",
-    outline: "none",
-    borderRadius: "8px"
-  },
-  inputLabel: {
-    position: "absolute",
-    left: "40px",
-    top: "10px",
-    fontSize: "12px",
-    color: "#666",
-    backgroundColor: "#f9f9f9",
-    padding: "0 4px",
-    transition: "all 0.3s ease",
-    pointerEvents: "none"
-  },
-  inputLabelFloated: {
-    top: "-8px",
-    fontSize: "12px",
-    color: "#F2775E"
-  },
-  errorMessage: {
-    color: "#e53935",
-    fontSize: "13px",
-    marginTop: "6px"
-  },
-  skillsetRow: {
-    gap: "10px",
-    marginBottom: "16px",
-    alignItems: "flex-start"
-  },
-  skillsetField: {
-    flex: 2
-  },
-  resourcesField: {
-    flex: 1,
-  },
-  otherSkillsetField: {
-    flex: 2,
-    marginTop: "10px",
-    marginBottom: "20px"
-  },
-  otherSkillsetInput: {
-    display: "flex",
-    alignItems: "center"
-  },
-  otherSkillsetIcon: {
-    marginRight: "10px",
-    color: "#666"
-  },
-  otherSkillsetText: {
-    width: "100%",
-    padding: "7px 15px",
-    fontSize: "12px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    outline: "none",
-    backgroundColor: "#f9f9f9"
-  },
-  removeButton: {
-    background: "none",
-    border: "none",
-    color: "#f44336",
-    cursor: "pointer",
-    padding: "10px",
-    display: "flex",
-    alignItems: "center",
-    gap: 1,
-
-  },
-  addMoreButton: {
-    display: "flex",
-    alignItems: "center",
-    background: "rgba(61, 61, 231, 0.74)",
-    color: "white",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "10px",
-    gap: "8px",
-    marginTop: "10px",
-    marginBottom: "10px"
-  },
-  submitButton: {
-    background: "#F2775E",
-    color: "white",
-    padding: "0.35em 1.2em 0.35em 1.2em",
-    fontSize: "17px",
-    fontWeight: "500",
-    borderRadius: "0.9em",
-    border: "none",
-    letterSpacing: "0.05em",
-    display: "flex",
-    alignItems: "center",
-    boxShadow: "inset 0 0 1.6em -0.6em #F2775E",
-    overflow: "hidden",
-    position: "relative",
-    height: "2.8em",
-    paddingRight: "3.3em",
-    cursor: "pointer",
-    transition: "transform 0.2s ease, opacity 0.2s ease",
-    opacity: "1",
-    marginTop: "24px",
-    alignSelf: "flex-end"
-  },
-  submitButtonDisabled: {
-    opacity: "0.8",
-    cursor: "default"
-  },
-  submitIcon: {
-    background: "white",
-    marginLeft: "1em",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "2.2em",
-    width: "2.2em",
-    borderRadius: "50%",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    right: "0.3em",
-    transition: "all 0.3s"
-  },
-  selectWrapper: {
-    position: "relative",
-    width: "100%"
-  },
-  selectArrow: {
-    position: "absolute",
-    right: "12px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    color: "#666",
-    pointerEvents: "none"
-  },
-  selectArrowFocused: {
-    color: "#F2775E"
-  },
-  textareaWrapper: {
-    position: "relative",
-    width: "100%"
-  },
-  textareaField: {
-    width: "100%",
-    padding: "20px 12px 6px 12px",
-    fontSize: "15px",
-    border: "none",
-    backgroundColor: "transparent",
-    outline: "none",
-    borderRadius: "8px",
-    resize: "vertical",
-    minHeight: "120px"
-  },
-  textareaIcon: {
-    marginLeft: "12px",
-    marginTop: "12px",
-    color: "#666",
-    display: "flex",
-    alignItems: "center"
-  },
-  textareaIconFocused: {
-    color: "#F2775E"
-  }
-};
-
-// Validation patterns
-const VALIDATION_PATTERNS = {
-  name: /^[a-zA-Z\s]+$/,
-  phone: /^[6-9]\d{0,9}$/,
-  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-};
-
-export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
+export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.hirefromus.formData);
   const courses = useSelector((state) => state.courses.courses);
@@ -251,13 +33,107 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Process availabilities data
-  const TRAINEE_MODELS = hireFromUsData.map((i) => i.title)
+  const TRAINEE_MODELS = hireFromUsData.map((i) => i.title);
+
   const initialValues = {
     ...formData,
-    services: [{ service: '', resources: '', otherSkillset: '', otherSkillsetFocused: false }],
-    otherSkillset: '',
+    services: [
+      {
+        traineeModel: "",
+        resources: "",
+        otherModel: "",
+        otherModelFocused: false,
+      },
+    ],
+  };
 
-    // services: [{ traineeModel: '', resources: '' }],
+  // Validation patterns
+  const VALIDATION_PATTERNS = {
+    name: /^[a-zA-Z.\s]*$/, // First letter capital, allows letters, spaces, and periods
+    phone: /^[6-9]\d{0,9}$/,
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  };
+
+  // Single field validation function
+  const validateField = (name, value, values) => {
+    let error = "";
+
+    switch (name) {
+      case "name":
+        if (!value) {
+          error = "Contact person is required";
+        } else if (!VALIDATION_PATTERNS.name.test(value)) {
+          error = "Only contain letters, spaces, and periods";
+        }
+        break;
+
+      case "institute_name":
+        if (!value) {
+          error = "Institute name is required";
+        } else if (!VALIDATION_PATTERNS.name.test(value)) {
+          error = "Invalid institute name";
+        }
+        break;
+
+      case "mobile":
+        if (!value) {
+          error = "Mobile number is required";
+        } else if (!VALIDATION_PATTERNS.phone.test(value)) {
+          error = "Invalid mobile number";
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          error = "Email is required";
+        } else if (!VALIDATION_PATTERNS.email.test(value)) {
+          error = "Invalid email address";
+        }
+        break;
+
+      case "enquiry":
+        if (!value) {
+          error = "Enquiry is required";
+        }
+        break;
+
+      default:
+        if (name.startsWith("services")) {
+          // Parse index and field from name (e.g., services[0].traineeModel)
+          const matches = name.match(/services\[(\d+)\]\.(.+)/);
+          if (matches) {
+            const [, index, field] = matches;
+
+            if (field === "traineeModel") {
+              if (!value) {
+                error = "Trainee model is required";
+              } else if (
+                value === "Other" &&
+                (!values.services[index].otherModel ||
+                  values.services[index].otherModel.trim() === "")
+              ) {
+                error = "Please specify the other model";
+              }
+            } else if (field === "otherModel") {
+              if (
+                values.services[index].traineeModel === "Other" &&
+                (!value || value.trim() === "")
+              ) {
+                error = "Please specify the other model";
+              }
+            } else if (field === "resources") {
+              if (!value) {
+                error = "Resources is required";
+              } else if (isNaN(value) || parseInt(value) <= 0) {
+                error = "Please enter a valid number of resources";
+              }
+            }
+          }
+        }
+        break;
+    }
+
+    return error;
   };
 
   // Form validation
@@ -265,46 +141,65 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
     const errors = {};
 
     // Basic field validations
-    if (!values.name) {
-      errors.name = "Contact person is required";
-    }
-    if (!values.institute_name) {
-      errors.institute_name = "Institute name is required";
-    }
-    if (!values.mobile) {
-      errors.mobile = "Mobile number is required";
-    }
-    if (!values.email) {
-      errors.email = "Email is required";
-    }
-    if (!values.enquiry) {
-      errors.enquiry = "Enquiry is required";
-    }
+    const fieldNames = ["name", "institute_name", "mobile", "email", "enquiry"];
+
+    fieldNames.forEach((fieldName) => {
+      const error = validateField(fieldName, values[fieldName], values);
+      if (error) errors[fieldName] = error;
+    });
 
     // Validate services
-    values.services.forEach((req, index) => {
-      if (!req.traineeModel) {
-        errors.services = errors.services || [];
-        errors.services[index] = { traineeModel: "Trainee model is required" };
+    if (values.services && values.services.length > 0) {
+      const serviceErrors = [];
+      values.services.forEach((service, index) => {
+        const serviceError = {};
+
+        const traineeModelError = validateField(
+          `services[${index}].traineeModel`,
+          service.traineeModel,
+          values
+        );
+        if (traineeModelError) serviceError.traineeModel = traineeModelError;
+
+        const resourcesError = validateField(
+          `services[${index}].resources`,
+          service.resources,
+          values
+        );
+        if (resourcesError) serviceError.resources = resourcesError;
+
+        if (service.traineeModel === "Other") {
+          const otherModelError = validateField(
+            `services[${index}].otherModel`,
+            service.otherModel,
+            values
+          );
+          if (otherModelError) serviceError.otherModel = otherModelError;
+        }
+
+        if (Object.keys(serviceError).length > 0) {
+          serviceErrors[index] = serviceError;
+        }
+      });
+
+      if (serviceErrors.length > 0) {
+        errors.services = serviceErrors;
       }
-      if (!req.resources) {
-        errors.services = errors.services || [];
-        errors.services[index] = { resources: "Resources is required" };
-      }
-    });
+    }
 
     return errors;
   };
+
   // Form submission handler
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
 
     try {
       // Map the services to match the backend schema
-      const processedServices = values.services.map(req => ({
-        skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
-        service: req.traineeModel, // Assuming traineeModel corresponds to the service
-        resources: req.resources
+      const processedServices = values.services.map((req) => ({
+        service:
+          req.traineeModel === "Other" ? req.otherModel : req.traineeModel,
+        resources: parseInt(req.resources, 10),
       }));
 
       const formDataWithCourseId = {
@@ -313,7 +208,7 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
         mobile: values.mobile,
         email: values.email,
         enquiry: values.enquiry,
-        services: processedServices // Send the processed services
+        services: processedServices, // Send the processed services
       };
 
       const response = await dispatch(createInstitute(formDataWithCourseId));
@@ -328,7 +223,8 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
         setShowModal(false);
       }, 3000);
     } catch (error) {
-      const errorMessage = error.response?.data?.message[0]?.value ||
+      const errorMessage =
+        error.response?.data?.message[0]?.value ||
         error.message ||
         "An error occurred while submitting the form";
       toast.error(errorMessage);
@@ -336,22 +232,47 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
       setIsSubmitting(false);
     }
   };
+
   // Custom form components
-  const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
+  const FloatingInput = ({
+    icon: Icon,
+    label,
+    name,
+    type = "text",
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
 
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(name, value, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
+
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -360,14 +281,17 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
             name={name}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onChange={handleChange}
             style={styles.inputField}
             {...props}
           />
-          <label style={{
-            ...styles.inputLabel,
-            left: Icon ? "40px" : "12px",
-            ...((isFocused || hasValue) ? styles.inputLabelFloated : {})
-          }}>
+          <label
+            style={{
+              ...styles.inputLabel,
+              left: Icon ? "40px" : "12px",
+              ...(isFocused || hasValue ? styles.inputLabelFloated : {}),
+            }}
+          >
             {label}
           </label>
         </div>
@@ -384,23 +308,47 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
     options,
     values,
     setFieldValue,
-    index
+    setFieldError,
+    setFieldTouched,
+    index,
   }) => {
     const [isFocused, setIsFocused] = useState(false);
-    // Fix: Change this to match the actual path used in the form
-    const hasSelectedValue = values?.services?.[index]?.traineeModel;
+    // Fix to match the actual path used in the form
+    const hasSelectedValue =
+      index !== undefined
+        ? values?.services?.[index]?.traineeModel
+        : values?.[name];
+
+    const handleChange = (e) => {
+      const selectedValue = e.target.value;
+      setFieldValue(name, selectedValue);
+
+      // If not "Other", clear otherModel field if it exists
+      if (selectedValue !== "Other" && index !== undefined) {
+        setFieldValue(`services.${index}.otherModel`, "");
+      }
+
+      // Validate on change
+      const error = validateField(name, selectedValue, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
 
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -410,15 +358,11 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              onChange={(e) => {
-                const selectedValue = e.target.value;
-                setFieldValue(name, selectedValue);
-              }}
+              onChange={handleChange}
               style={{
                 ...styles.inputField,
                 appearance: "none",
                 paddingRight: "40px",
-
               }}
             >
               <option value="">Select {label}</option>
@@ -430,18 +374,22 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               <option value="Other">Other (Please specify)</option>
             </Field>
             {hasSelectedValue && (
-              <label style={{
-                ...styles.inputLabel,
-                left: Icon ? "10px" : "12px",
-                ...styles.inputLabelFloated
-              }}>
+              <label
+                style={{
+                  ...styles.inputLabel,
+                  left: Icon ? "10px" : "12px",
+                  ...styles.inputLabelFloated,
+                }}
+              >
                 {label}
               </label>
             )}
-            <div style={{
-              ...styles.selectArrow,
-              ...(isFocused ? styles.selectArrowFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.selectArrow,
+                ...(isFocused ? styles.selectArrowFocused : {}),
+              }}
+            >
               <KeyboardArrowDownIcon fontSize="small" />
             </div>
           </div>
@@ -451,22 +399,45 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
     );
   };
 
-  const FloatingTextarea = ({ icon: Icon, label, name, values, ...props }) => {
+  const FloatingTextarea = ({
+    icon: Icon,
+    label,
+    name,
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values && values[name];
 
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(name, value, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
+
     return (
       <div style={styles.fieldContainers}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {}),
-          alignItems: "flex-start"
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+            alignItems: "flex-start",
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.textareaIcon,
-              ...(isFocused ? styles.textareaIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.textareaIcon,
+                ...(isFocused ? styles.textareaIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -476,14 +447,17 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
+              onChange={handleChange}
               style={styles.textareaField}
               {...props}
             />
-            <label style={{
-              ...styles.inputLabel,
-              left: Icon ? "10px" : "12px",
-              ...((isFocused || hasValue) ? styles.inputLabelFloated : {})
-            }}>
+            <label
+              style={{
+                ...styles.inputLabel,
+                left: Icon ? "10px" : "12px",
+                ...(isFocused || hasValue ? styles.inputLabelFloated : {}),
+              }}
+            >
               {label}
             </label>
           </div>
@@ -493,21 +467,48 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
     );
   };
 
-  const ResourceInput = ({ icon: Icon, label, name, values, ...props }) => {
+  const ResourceInput = ({
+    icon: Icon,
+    label,
+    name,
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    ...props
+  }) => {
     const [isFocused, setIsFocused] = useState(false);
-    const hasValue = values?.services?.[props.index]?.resources !== '';
+    const hasValue = values?.services?.[props.index]?.resources !== "";
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(
+        `services[${props.index}].resources`,
+        value,
+        values
+      );
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
 
     return (
       <div style={styles.fieldContainer}>
-        <div style={{
-          ...styles.inputWrapper,
-          ...(isFocused ? styles.inputWrapperFocused : {})
-        }}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
           {Icon && (
-            <div style={{
-              ...styles.inputIcon,
-              ...(isFocused ? styles.inputIconFocused : {})
-            }}>
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
               <Icon fontSize="small" />
             </div>
           )}
@@ -517,18 +518,91 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
+              onChange={handleChange}
               style={styles.inputField}
               min="1"
               {...props}
             />
-            <label style={{
-              ...styles.inputLabel,
-              left: Icon ? "10px" : "12px",
-              ...(hasValue ? styles.inputLabelFloated : {})
-            }}>
+            <label
+              style={{
+                ...styles.inputLabel,
+                left: Icon ? "10px" : "12px",
+                ...(hasValue ? styles.inputLabelFloated : {}),
+              }}
+            >
               {label}
             </label>
           </div>
+        </div>
+        <ErrorMessage name={name} component="div" style={styles.errorMessage} />
+      </div>
+    );
+  };
+
+  const OtherModelInput = ({
+    icon: Icon,
+    label,
+    name,
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
+    index,
+    ...props
+  }) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const hasValue = values?.services?.[index]?.otherModel || false;
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(
+        `services[${index}].otherModel`,
+        value,
+        values
+      );
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
+
+    return (
+      <div style={styles.fieldContainer}>
+        <div
+          style={{
+            ...styles.inputWrapper,
+            ...(isFocused ? styles.inputWrapperFocused : {}),
+          }}
+        >
+          {Icon && (
+            <div
+              style={{
+                ...styles.inputIcon,
+                ...(isFocused ? styles.inputIconFocused : {}),
+              }}
+            >
+              <Icon fontSize="small" />
+            </div>
+          )}
+          <Field
+            type="text"
+            name={name}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onChange={handleChange}
+            style={styles.inputField}
+            {...props}
+          />
+          <label
+            style={{
+              ...styles.inputLabel,
+              left: Icon ? "40px" : "12px",
+              ...(isFocused || hasValue ? styles.inputLabelFloated : {}),
+            }}
+          >
+            {label}
+          </label>
         </div>
         <ErrorMessage name={name} component="div" style={styles.errorMessage} />
       </div>
@@ -542,16 +616,21 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
         initialValues={initialValues}
         validate={validate}
         onSubmit={handleSubmit}
+        validateOnChange={true}
+        validateOnBlur={true}
       >
-        {({ values, setFieldValue }) => (
+        {({ values, setFieldValue, setFieldError, setFieldTouched }) => (
           <Form style={styles.form}>
-            {/* Company Name */}
+            {/* Institute Name */}
             <FloatingInput
               icon={BusinessIcon}
               type="text"
               name="institute_name"
               label="Institute Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Name */}
@@ -561,6 +640,9 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               name="name"
               label="Contact Person Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Mobile Number */}
@@ -570,6 +652,9 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               name="mobile"
               label="Contact number"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Email */}
@@ -579,16 +664,23 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               name="email"
               label="Contact Email"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
+
             <FieldArray name="services">
               {({ push, remove }) => {
                 const canAddMoreSkillsets = (() => {
-                  const lastSkillset = values.services[values.services.length - 1];
+                  const lastSkillset =
+                    values.services[values.services.length - 1];
 
                   // Check if traineeModel is selected and resources is provided
-                  return lastSkillset.traineeModel &&
+                  return (
+                    lastSkillset.traineeModel &&
                     lastSkillset.resources &&
-                    parseInt(lastSkillset.resources) > 0;
+                    parseInt(lastSkillset.resources) > 0
+                  );
                 })();
 
                 return (
@@ -604,6 +696,8 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
                             options={TRAINEE_MODELS}
                             values={values}
                             setFieldValue={setFieldValue}
+                            setFieldError={setFieldError}
+                            setFieldTouched={setFieldTouched}
                             index={index}
                           />
                         </div>
@@ -611,43 +705,15 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
                         {/* Other Trainee Model Input */}
                         {req.traineeModel === "Other" && (
                           <div style={styles.otherSkillsetField}>
-                            <div style={{
-                              ...styles.inputWrapper,
-                              ...(req.otherModelFocused ? styles.inputWrapperFocused : {})
-                            }}>
-                              <div style={{
-                                ...styles.inputIcon,
-                                ...(req.otherModelFocused ? styles.inputIconFocused : {})
-                              }}>
-                                <AssignmentIndIcon fontSize="small" />
-                              </div>
-                              <Field
-                                type="text"
-                                name={`services.${index}.otherModel`}
-                                style={styles.inputField}
-                                onFocus={() => {
-                                  const newServices = [...values.services];
-                                  newServices[index].otherModelFocused = true;
-                                  setFieldValue('services', newServices);
-                                }}
-                                onBlur={() => {
-                                  const newServices = [...values.services];
-                                  newServices[index].otherModelFocused = false;
-                                  setFieldValue('services', newServices);
-                                }}
-                              />
-                              <label style={{
-                                ...styles.inputLabel,
-                                left: "40px",
-                                ...((req.otherModelFocused || req.otherModel) ? styles.inputLabelFloated : {})
-                              }}>
-                                Other Model Type
-                              </label>
-                            </div>
-                            <ErrorMessage
+                            <OtherModelInput
+                              icon={AssignmentIndIcon}
                               name={`services.${index}.otherModel`}
-                              component="div"
-                              style={styles.errorMessage}
+                              label="Other Model Type"
+                              values={values}
+                              setFieldValue={setFieldValue}
+                              setFieldError={setFieldError}
+                              setFieldTouched={setFieldTouched}
+                              index={index}
                             />
                           </div>
                         )}
@@ -659,6 +725,9 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
                             name={`services.${index}.resources`}
                             label="Resources"
                             values={values}
+                            setFieldValue={setFieldValue}
+                            setFieldError={setFieldError}
+                            setFieldTouched={setFieldTouched}
                             index={index}
                           />
                         </div>
@@ -670,7 +739,8 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
                             onClick={() => remove(index)}
                             style={styles.removeButton}
                           >
-                            <DeleteIcon fontSize="small" />Delete
+                            <DeleteIcon fontSize="small" />
+                            Delete
                           </button>
                         )}
                       </div>
@@ -679,11 +749,11 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
                     {/* Add More Button with Conditional Disabled State */}
                     <button
                       type="button"
-                      onClick={() => push({ traineeModel: '', resources: '' })}
+                      onClick={() => push({ traineeModel: "", resources: "" })}
                       style={{
                         ...styles.addMoreButton,
                         opacity: canAddMoreSkillsets ? 1 : 0.5,
-                        cursor: canAddMoreSkillsets ? 'pointer' : 'not-allowed'
+                        cursor: canAddMoreSkillsets ? "pointer" : "not-allowed",
                       }}
                       disabled={!canAddMoreSkillsets}
                     >
@@ -700,6 +770,9 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
               name="enquiry"
               label="Please describe your enquiry requirements..."
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Submit Button */}
@@ -764,8 +837,6 @@ export default function InstitutionAddForm({  setShowModal,hireFromUsData }) {
           </Form>
         )}
       </Formik>
-
-
     </div>
   );
 }

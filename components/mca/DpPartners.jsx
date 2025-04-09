@@ -109,7 +109,7 @@ export default function PartnersSection({ ids }) {
                     color: "#111827",
                   }}
                 >
-                  {partner.companyName}
+                  {partner.company}
                 </h3>
 
                 <span

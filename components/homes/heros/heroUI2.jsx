@@ -172,7 +172,7 @@ export default function HeroUIFour() {
             marginBottom: "20px",
           }}
         >
-          <span style={{ color: "#3b82f6", fontWeight: "bold" }}>
+          <span style={{ color: "#f27757", fontWeight: "bold" }}>
             SmartCliff
           </span>{" "}
           <br /> Shaping Success Through Learning!
