@@ -12,8 +12,7 @@ import {
   Wc as WcIcon
 } from '@mui/icons-material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
- 
- 
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchJobPositions,
@@ -22,7 +21,7 @@ import {
 import { addCareerForm } from "@/redux/slices/career/careerForm";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
- 
+
 const styles = {
   container: {
     fontFamily: "'Inter', sans-serif",
@@ -131,14 +130,120 @@ const styles = {
     overflowY: "auto",
     scrollbarWidth: "none",
     msOverflowStyle: "none",
+  },
+  selectWrapper: {
+    position: "relative",
+    width: "100%",
+  },
+  selectArrow: {
+    position: "absolute",
+    right: "8px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    color: "#666",
+    pointerEvents: "none"
+  },
+  selectArrowFocused: {
+    color: "#F2775E"
   }
 };
- 
+
+// Validation functions
+const validateField = (name, value, values) => {
+  let error = "";
+
+  switch (name) {
+    case "name":
+      if (!value) {
+        error = "Name is required";
+      } else if (!/^[A-Za-z]+(?: [A-Za-z]+)*$/.test(value)) {
+        error = "Only letters and a single space between names are allowed";
+      }
+
+      break;
+
+    case "email":
+      if (!value) {
+        error = "Email is required";
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+        error = "Invalid email address";
+      }
+      break;
+
+    case "phone":
+      if (!value) {
+        error = "Phone is required";
+      } else if (!/^\d{10}$/.test(value)) {
+        error = "Phone number must be 10 digits";
+      }
+      break;
+
+    case "gender":
+      if (!value) {
+        error = "Gender is required";
+      }
+      break;
+
+    case "job_position":
+      if (!value) {
+        error = "Job position is required";
+      }
+      break;
+
+    case "qualification":
+      if (!value) {
+        error = "Qualification is required";
+      }
+      break;
+
+    case "yearOfRelevantExperience":
+      if (!value) {
+        error = "Years of experience is required";
+      }
+      break;
+
+    case "resume":
+      if (!value) {
+        error = "Resume is required";
+      } else if (value.type !== 'application/pdf') {
+        error = "Only PDF files are supported";
+      } else if (value.size > 5 * 1024 * 1024) {
+        error = "File size must be less than 5MB";
+      }
+      break;
+
+    default:
+      break;
+  }
+
+  return error;
+};
+
 // Floating Input Component
-const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...props }) => {
+const FloatingInput = ({
+  icon: Icon,
+  label,
+  name,
+  type = "text",
+  values,
+  setFieldValue,
+  setFieldError,
+  setFieldTouched,
+  ...props
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const hasValue = values && values[name];
- 
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setFieldValue(name, value);
+
+    // Validate on change
+    const error = validateField(name, value, values);
+    setFieldError(name, error);
+    setFieldTouched(name, true, false);
+  };
+
   return (
     <div style={styles.fieldContainer}>
       <div style={{
@@ -158,6 +263,7 @@ const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...prop
           name={name}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onChange={handleChange}
           style={styles.inputField}
           {...props}
         />
@@ -173,12 +279,32 @@ const FloatingInput = ({ icon: Icon, label, name, type = "text", values, ...prop
     </div>
   );
 };
- 
+
 // Floating Select Component
-const FloatingSelect = ({ icon: Icon, label, name, options, values, ...props }) => {
+const FloatingSelect = ({
+  icon: Icon,
+  label,
+  name,
+  options,
+  values,
+  setFieldValue,
+  setFieldError,
+  setFieldTouched,
+  ...props
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const hasSelectedValue = values && values[name];
- 
+
+  const handleChange = (e) => {
+    const selectedValue = e.target.value;
+    setFieldValue(name, selectedValue);
+
+    // Validate on change
+    const error = validateField(name, selectedValue, values);
+    setFieldError(name, error);
+    setFieldTouched(name, true, false);
+  };
+
   return (
     <div style={styles.fieldContainer}>
       <div style={{
@@ -193,54 +319,76 @@ const FloatingSelect = ({ icon: Icon, label, name, options, values, ...props }) 
             <Icon fontSize="small" />
           </div>
         )}
-        <Field
-          as="select"
-          name={name}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          style={{
-            ...styles.inputField,
-            appearance: "none",
-            paddingRight: "40px"
-          }}
-          {...props}
-        >
-          <option value="">Select {label}</option>
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </Field>
-        <label style={{
-          ...styles.inputLabel,
-          left: Icon ? "40px" : "12px",
-          ...((isFocused || hasSelectedValue) ? styles.inputLabelFloated : {})
-        }}>
-          {label}
-        </label>
+        <div style={styles.selectWrapper}>
+          <Field
+            as="select"
+            name={name}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onChange={handleChange}
+            style={{
+              ...styles.inputField,
+              appearance: "none",
+              paddingRight: "40px"
+            }}
+            {...props}
+          >
+            <option value="">Select {label}</option>
+            {options && options.map((option) => (
+              <option key={typeof option === 'string' ? option : option.job_position} value={typeof option === 'string' ? option : option.job_position}>
+                {typeof option === 'string' ? option : option.job_position}
+              </option>
+            ))}
+          </Field>
+          <label style={{
+            ...styles.inputLabel,
+            left: Icon ? "40px" : "12px",
+            ...((isFocused || hasSelectedValue) ? styles.inputLabelFloated : {})
+          }}>
+            {label}
+          </label>
+          <div style={{
+            ...styles.selectArrow,
+            ...(isFocused ? styles.selectArrowFocused : {})
+          }}>
+            {/* You can add an arrow icon here */}
+          </div>
+        </div>
       </div>
       <ErrorMessage name={name} component="div" style={styles.errorMessage} />
     </div>
   );
 };
- 
+
 // File Upload Input Component
-const FileUploadInput = ({ name, values, setFieldValue, ...props }) => {
+const FileUploadInput = ({
+  name,
+  values,
+  setFieldValue,
+  setFieldError,
+  setFieldTouched,
+  ...props
+}) => {
   const [fileName, setFileName] = useState('');
- 
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setFileName(file.name);
+      setFieldValue(name, file);
+
+      // Validate on change
+      const error = validateField(name, file, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+
       if (file.type !== 'application/pdf' || file.size > 5 * 1024 * 1024) {
         toast.error('Please upload a PDF file less than 5MB');
         return;
       }
-      setFileName(file.name);
-      setFieldValue(name, file);
     }
   };
- 
+
   return (
     <div style={styles.fieldContainer}>
       <div style={styles.fileUploadContainer}>
@@ -263,16 +411,16 @@ const FileUploadInput = ({ name, values, setFieldValue, ...props }) => {
     </div>
   );
 };
- 
+
 export default function CareerEnquiryForm({ closeModal }) {
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const jobPositions = useSelector(selectJobPositions);
- 
+
   useEffect(() => {
     dispatch(fetchJobPositions());
   }, [dispatch]);
- 
+
   const initialValues = {
     name: '',
     email: '',
@@ -283,7 +431,7 @@ export default function CareerEnquiryForm({ closeModal }) {
     yearOfRelevantExperience: '',
     resume: null
   };
- 
+
   const validationSchema = Yup.object({
     name: Yup.string().required('Name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
@@ -301,99 +449,146 @@ export default function CareerEnquiryForm({ closeModal }) {
       .test('fileSize', 'File size must be less than 5MB',
         (value) => value && value.size <= 5 * 1024 * 1024)
   });
- 
+
+  // Form validation - this will be used for validation on submit
+  const validate = (values) => {
+    const errors = {};
+    const fieldNames = ["name", "email", "phone", "gender", "job_position", "qualification", "yearOfRelevantExperience", "resume"];
+
+    fieldNames.forEach((fieldName) => {
+      const error = validateField(fieldName, values[fieldName], values);
+      if (error) errors[fieldName] = error;
+    });
+
+    return errors;
+  };
+
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
-    
+
     try {
       const formData = new FormData();
       Object.keys(values).forEach(key => {
         formData.append(key, values[key]);
       });
-  
+
       const response = await dispatch(addCareerForm(formData));
-      console.log("Response from API:", response);
-  
+
       if (addCareerForm.fulfilled.match(response)) {
         toast.success("Form submitted successfully!");
+        setTimeout(() => {
+          closeModal(false); // ✅ Close modal only on success
+        }, 3000);
       } else {
         toast.error(response.payload[0]?.value || "An error occurred");
       }
+    
+
     } catch (error) {
       const errorMessage = error.response?.data?.message[0]?.value || error.message || "An error occurred while submitting the form";
       toast.error(errorMessage);
-    } finally {
+    }
+
+    finally {
+     
       setIsSubmitting(false);
     }
   };
-           return (
+
+  return (
     <div style={styles.container}>
       <ToastContainer />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
+        validate={validate}
+        validateOnChange={true}
+        validateOnBlur={true}
       >
-        {({ values, setFieldValue }) => (
+        {({ values, setFieldValue, setFieldError, setFieldTouched }) => (
           <Form style={styles.form}>
             <FloatingInput
               icon={PersonIcon}
               name="name"
               label="Full Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             <FloatingInput
               icon={EmailIcon}
               name="email"
               type="email"
               label="Email Address"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             <FloatingInput
               icon={PhoneIcon}
               name="phone"
               label="Phone Number"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             <FloatingSelect
               icon={WcIcon}
               name="gender"
               label="Gender"
               options={['Male', 'Female', 'Other']}
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             <FloatingSelect
               icon={WorkIcon}
               name="job_position"
               label="Job Position"
-              options={jobPositions.map(job => job.job_position)}
+              options={jobPositions}
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             <FloatingInput
               icon={GradeIcon}
               name="qualification"
               label="Higher Qualification"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             <FloatingInput
               icon={WorkIcon}
               name="yearOfRelevantExperience"
               label="Years of Relevant Experience"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             <FileUploadInput
               name="resume"
               values={values}
               setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
- 
+
             {/* Submit Button */}
             <div
               style={{
@@ -459,4 +654,3 @@ export default function CareerEnquiryForm({ closeModal }) {
     </div>
   );
 }
- 

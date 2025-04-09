@@ -16,7 +16,6 @@ export default function page() {
     (client) => client.type === "trainfromus"
   );
 
-  console.log("trainFromUsData", trainFromUsData);
 
   useEffect(() => {
     dispatch(getAllClient());

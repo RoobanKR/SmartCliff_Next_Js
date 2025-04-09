@@ -15,11 +15,6 @@ const Curriculum = ({ level, matchedCourse }) => {
   const [filteredLevels, setFilteredLevels] = useState([]);
   const selectedCourse = useSelector((state) => state.courses.courses);
   const [courseSlug, setCourseSlug] = useState(null);
-  // const matchedCourse = selectedCourse.find(
-  //   (course) => course.slug === courseSlug
-  // );
-
-  console.log("matchedCourse", matchedCourse);
 
   const faq = useSelector((state) => state.faq.faq);
   const matchedCourseId = matchedCourse ? matchedCourse._id : null;

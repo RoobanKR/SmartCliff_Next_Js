@@ -63,9 +63,6 @@ export default function CsrDegreeProgram() {
     dispatch(fetchDegreeProgramData());
     dispatch(fetchAllCompanies());
   }, [dispatch]);
-
-  console.log("degreeCompanyDetails", degreeCompanyDetails);
-
   // Extract unique years from degree programs
   const uniqueYears = [
     ...new Set(matchedDegree?.map((item) => item.year)),
@@ -239,7 +236,8 @@ export default function CsrDegreeProgram() {
                   opacity: "0",
                   transform: `perspective(1000px) rotateY(10deg) translateZ(-50px)`,
                   animation: `cardAppear 0.6s ease ${index * 0.1}s forwards`,
-                  height: "80%",
+                  height: "100%", // Fixed height for the entire card
+                
                 }}
               >
                 <div
@@ -248,8 +246,7 @@ export default function CsrDegreeProgram() {
                     overflow: "hidden",
                     backgroundColor: "white",
                     boxShadow: "0 10px 30px rgba(0,0,0,0.07)",
-                    transition:
-                      "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                    transition: "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
@@ -257,15 +254,12 @@ export default function CsrDegreeProgram() {
                     position: "relative",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform =
-                      "translateY(-15px) scale(1.02)";
-                    e.currentTarget.style.boxShadow =
-                      "0 20px 40px rgba(91, 44, 111, 0.15)";
+                    e.currentTarget.style.transform = "translateY(-15px) scale(1.02)";
+                    e.currentTarget.style.boxShadow = "0 20px 40px rgba(91, 44, 111, 0.15)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0) scale(1)";
-                    e.currentTarget.style.boxShadow =
-                      "0 10px 30px rgba(0,0,0,0.07)";
+                    e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.07)";
                   }}
                 >
                   {/* Card ribbon */}
@@ -286,38 +280,36 @@ export default function CsrDegreeProgram() {
                   >
                     {program.year}
                   </div>
-
-                  {/* Image container */}
+                  {/* Image container - fixed height */}
                   <div
                     style={{
-                      height: "220px",
+                      height: "160px", // Fixed height for image container
                       overflow: "hidden",
                       position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "20px",
+                      backgroundColor: "#f8f9fa", // Light background for better contrast
                     }}
                   >
-                    <div style={{ padding: "20px" }}>
-                      <img
-                        src={program.logo}
-                        alt={program.program_name}
-                        style={{
-                          width: "100%",
-                          // height: "150px",
-                          objectFit: "contain", // 'cover' ensures the image fills the container without distortion
-                          display: "block",
-                          marginBottom: "20px",
-                          marginInline: "auto",
-                          borderRadius: "8px", // optional: gives slightly rounded corners
-                          transition:
-                            "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = "scale(1.1)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = "scale(1)";
-                        }}
-                      />
-                    </div>
+                    <img
+                      src={program.logo}
+                      alt={program.program_name}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain", // Ensures image fits while maintaining aspect ratio
+                        display: "block",
+                        transition: "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                      }}
+                    />
                     {/* Gradient overlay */}
                     <div
                       style={{
@@ -326,8 +318,7 @@ export default function CsrDegreeProgram() {
                         left: "0",
                         width: "100%",
                         height: "60%",
-                        background:
-                          "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)",
+                        background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)",
                         opacity: "0",
                         transition: "opacity 0.4s ease",
                         display: "flex",
@@ -354,15 +345,13 @@ export default function CsrDegreeProgram() {
                       </h3>
                     </div>
                   </div>
- 
- 
-                  {/* Content */}
+                  {/* Content - fixed height */}
                   <div
                     style={{
-                      padding: "25px",
+                      padding: "20px",
                       display: "flex",
                       flexDirection: "column",
-                      flex: "1",
+                      flex: "1", // Takes remaining space
                       justifyContent: "space-between",
                     }}
                   >
@@ -374,6 +363,9 @@ export default function CsrDegreeProgram() {
                           margin: "0 0 10px",
                           color: "#333",
                           lineHeight: "1.4",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
                         }}
                       >
                         {program.companyName}
@@ -381,23 +373,16 @@ export default function CsrDegreeProgram() {
 
                       <div
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginBottom: "15px",
+                          overflow: "hidden",
+                          fontSize: "14px",
+                          color: "#666",
+                          lineHeight: "1.5",
                         }}
                       >
-                        <span
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            fontSize: "14px",
-                            color: "#666",
-                          }}
-                        >
-                          {program.description}
-                        </span>
+                        {program.description}
                       </div>
                     </div>
+
                     <a
                       href={`${pathname}/${program._id}`}
                       onClick={(e) => handleProgramClick(program._id, e)}
@@ -408,8 +393,7 @@ export default function CsrDegreeProgram() {
                         textAlign: "center",
                         width: "100%",
                         borderRadius: "10px",
-                        background:
-                          "linear-gradient(to right, #306072,rgb(68, 150, 173))",
+                        background: "linear-gradient(to right, #306072,rgb(68, 150, 173))",
                         color: "white",
                         fontWeight: "600",
                         textDecoration: "none",
@@ -424,8 +408,7 @@ export default function CsrDegreeProgram() {
                       }}
                       onMouseEnter={(e) => {
                         if (!loadingStates[program._id]) {
-                          e.currentTarget.style.boxShadow =
-                            "0 5px 15px rgba(91, 44, 111, 0.3)";
+                          e.currentTarget.style.boxShadow = "0 5px 15px rgba(91, 44, 111, 0.3)";
                         }
                       }}
                       onMouseLeave={(e) => {
@@ -483,8 +466,7 @@ export default function CsrDegreeProgram() {
                           height: "100%",
                           top: "0",
                           left: "-100%",
-                          background:
-                            "linear-gradient(to right, #8E44AD, #5B2C6F)",
+                          background: "linear-gradient(to right, #8E44AD, #5B2C6F)",
                           transition: "all 0.4s ease",
                           zIndex: "0",
                         }}

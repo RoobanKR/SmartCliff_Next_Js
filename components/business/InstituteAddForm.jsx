@@ -49,7 +49,7 @@ export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
 
   // Validation patterns
   const VALIDATION_PATTERNS = {
-    name: /^[a-zA-Z.\s]*$/, // First letter capital, allows letters, spaces, and periods
+    name: /^[A-Za-z]+(?: [A-Za-z]+)*$/, // First letter capital, allows letters, spaces, and periods
     phone: /^[6-9]\d{0,9}$/,
     email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   };
@@ -216,12 +216,13 @@ export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
       if (response.payload.message[0].key === "success") {
         setShowSuccess(true);
         toast.success("Form submitted successfully!");
+        setTimeout(() => {
+          setShowModal(false);
+        }, 3000);
       } else {
         toast.error(response.payload.message[0].value);
       }
-      setTimeout(() => {
-        setShowModal(false);
-      }, 3000);
+    
     } catch (error) {
       const errorMessage =
         error.response?.data?.message[0]?.value ||

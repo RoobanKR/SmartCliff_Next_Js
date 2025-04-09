@@ -31,225 +31,11 @@ import CategoryIcon from '@mui/icons-material/Category';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import { selectCategories } from "@/redux/slices/category/category";
-
-// Styles
-const styles = {
-  container: {
-    fontFamily: "'Inter', sans-serif",
-    padding: "10px",
-    maxWidth: "800px",
-    margin: "0 auto"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "5px"
-  },
-  overlay: {
-    padding: "10px",
-    maxWidth: "800px",
-    margin: "0 auto"
-  },
-
-  closeBtn: {
-    position: "absolute",
-    top: "15px",
-    right: "15px",
-    border: "none",
-    background: "none",
-    fontSize: "22px",
-    cursor: "pointer",
-    color: "black",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  heading: {
-    fontFamily: "'Raleway', sans-serif",
-    fontWeight: "500",
-    fontSize: "28px",
-    letterSpacing: "0",
-    lineHeight: "1.5em",
-    paddingBottom: "15px",
-    position: "relative",
-    display: "inline-block",
-    color: "#5b2c6f",
-    marginBottom: "18px",
-  },
-  headingUnderline: {
-    content: '""',
-    position: "absolute",
-    left: "0",
-    bottom: "0",
-    height: "5px",
-    width: "55px",
-    backgroundColor: "#5b2c6f",
-  },
-  headingThinLine: {
-    content: '""',
-    position: "absolute",
-    left: "0",
-    bottom: "2px",
-    height: "1px",
-    width: "95%",
-    maxWidth: "255px",
-    backgroundColor: "#5b2c6f",
-  },
-  fieldContainer: {
-    marginBottom: "16px"
-  },
-  inputWrapper: {
-    position: "relative",
-    borderRadius: "8px",
-    border: "1px solid #5b2c6f",
-    display: "flex",
-    alignItems: "center",
-    backgroundColor: "#f9f9f9",
-    transition: "all 0.3s ease"
-  },
-  inputWrapperFocused: {
-    borderColor: "#f2775e"
-  },
-  inputIcon: {
-    marginLeft: "12px",
-    color: "#666",
-    display: "flex",
-    alignItems: "center"
-  },
-  inputIconFocused: {
-    color: "#f2775e"
-  },
-  inputField: {
-    width: "100%",
-    padding: "10px 12px 6px 12px",
-    fontSize: "12px",
-    border: "none",
-    backgroundColor: "transparent",
-    outline: "none",
-    borderRadius: "8px"
-  },
-  inputLabel: {
-    position: "absolute",
-    left: "40px",
-    top: "10px",
-    fontSize: "12px",
-    color: "#666",
-    backgroundColor: "#f9f9f9",
-    padding: "0 4px",
-    transition: "all 0.3s ease",
-    pointerEvents: "none"
-  },
-  inputLabels: {
-    position: "absolute",
-    left: "40px",
-    top: "10px",
-    fontSize: "12px",
-    color: "#666",
-    backgroundColor: "#f9f9f9",
-    padding: "0 4px",
-    transition: "all 0.3s ease",
-    marginLeft: "-30px",
-    pointerEvents: "none"
-  },
-  inputLabelFloated: {
-    top: "-8px",
-    fontSize: "12px",
-    color: "#f2775e",
-    // marginLeft: "-30px"
-  },
-  errorMessage: {
-    color: "#e53935",
-    fontSize: "13px",
-    marginTop: "6px"
-  },
-  selectWrapper: {
-    position: "relative",
-    width: "100%"
-  },
-  selectArrow: {
-    position: "absolute",
-    right: "12px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    color: "#666",
-    pointerEvents: "none"
-  },
-  selectArrowFocused: {
-    color: "#f2775e"
-  },
-  textareaWrapper: {
-    position: "relative",
-    width: "100%"
-  },
-  textareaField: {
-    width: "100%",
-    padding: "20px 12px 6px 12px",
-    fontSize: "15px",
-    border: "none",
-    backgroundColor: "transparent",
-    outline: "none",
-    borderRadius: "8px",
-    resize: "vertical",
-    minHeight: "90px"
-  },
-  textareaIcon: {
-    marginLeft: "12px",
-    marginTop: "12px",
-    color: "#666",
-    display: "flex",
-    alignItems: "center"
-  },
-  textareaIconFocused: {
-    color: "#f2775e"
-  },
-  submitButton: {
-    background: "#f2775e",
-    color: "white",
-    padding: "0.35em 1.2em 0.35em 1.2em",
-    fontSize: "12px",
-    fontWeight: "500",
-    borderRadius: "0.9em",
-    border: "none",
-    letterSpacing: "0.05em",
-    display: "flex",
-    alignItems: "center",
-    boxShadow: "inset 0 0 1.6em -0.6em #f2775e",
-    overflow: "hidden",
-    position: "relative",
-    height: "2.8em",
-    paddingRight: "3.3em",
-    cursor: "pointer",
-    transition: "transform 0.2s ease, opacity 0.2s ease",
-    opacity: "1",
-    marginTop: "24px",
-    alignSelf: "flex-end"
-  },
-  submitButtonDisabled: {
-    opacity: "0.8",
-    cursor: "default"
-  },
-  submitIcon: {
-    background: "white",
-    marginLeft: "1em",
-    position: "absolute",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "2.2em",
-    width: "2.2em",
-    borderRadius: "50%",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    right: "0.3em",
-    transition: "all 0.3s"
-  },
-  otherCourseField: {
-    marginTop: "10px"
-  }
-};
+import { styles } from "../business/formStyle"
 
 // Validation patterns
 const VALIDATION_PATTERNS = {
-  name: /^[a-zA-Z\s]+$/,
+  name: /^[A-Za-z]+(?: [A-Za-z]+)*$/,
   phone: /^\d{10}$/,
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 };
@@ -271,10 +57,11 @@ export default function EnquiryModal({ isOpen, onClose }) {
     name: "",
     email: "",
     phone: "",
-    business_service: "",
-    service: "",
+    category: "",
+    courses: "",
     otherCourse: "",
-    message: ""
+    message: "",
+    touched: {}
   };
 
   // Load data on component mount
@@ -306,36 +93,86 @@ export default function EnquiryModal({ isOpen, onClose }) {
     }
   }, [error]);
 
+  // Single field validation function
+  const validateField = (name, value, values) => {
+    let error = "";
+
+    switch (name) {
+      case "name":
+        if (!value) {
+          error = "Name is required";
+        } else if (!VALIDATION_PATTERNS.name.test(value)) {
+          error = "Only letters and spaces are allowed";
+        }
+        break;
+
+      case "email":
+        if (!value) {
+          error = "Email is required";
+        } else if (!VALIDATION_PATTERNS.email.test(value)) {
+          error = "Invalid email format";
+        }
+        break;
+
+      case "phone":
+        if (!value) {
+          error = "Phone number is required";
+        } else if (!VALIDATION_PATTERNS.phone.test(value)) {
+          error = "Phone number must be exactly 10 digits";
+        }
+        break;
+
+      case "category":
+        if (!value) {
+          error = "Business courses is required";
+        }
+        break;
+
+      // In your validate function, modify the courses validation logic
+      case "courses":
+        // Only show error if the category is selected AND the field is touched
+        if (values.category && values.touched?.courses && !value && !values.otherCourse) {
+          error = "Course selection is required";
+        }
+        break;
+
+      case "otherCourse":
+        if (values.courses === "Other" && !value) {
+          error = "Please specify the course";
+        }
+        break;
+
+      case "message":
+        if (!value) {
+          error = "Message is required";
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    return error;
+  };
+
   // Form validation
   const validate = (values) => {
     const errors = {};
+    const touched = values.touched || {};
 
-    if (!values.name) {
-      errors.name = "Name is required";
-    }
-    if (!values.email) {
-      errors.email = "Email is required";
-    } else if (!VALIDATION_PATTERNS.email.test(values.email)) {
-      errors.email = "Invalid email format";
-    }
-    if (!values.phone) {
-      errors.phone = "Phone number is required";
-    } else if (!VALIDATION_PATTERNS.phone.test(values.phone)) {
-      errors.phone = "Phone number must be exactly 10 digits";
-    }
-    if (!values.business_service) {
-      errors.business_service = "Business service is required";
-    }
-    if (!values.service && !values.otherCourse) {
-      errors.service = "Course selection is required";
-    }
-    if (values.service === "Other" && !values.otherCourse) {
-      errors.otherCourse = "Please specify the course";
-    }
-    if (!values.message) {
-      errors.message = "Message is required";
-    }
+    // Validate all fields
+    const fieldNames = ["name", "email", "phone", "category", "courses", "otherCourse", "message"];
 
+    fieldNames.forEach((fieldName) => {
+      const error = validateField(fieldName, values[fieldName], values);
+      if (error) errors[fieldName] = error;
+    });
+    Object.keys(touched).forEach(fieldName => {
+      if (touched[fieldName]) {
+        const error = validateField(fieldName, values[fieldName], values);
+        if (error) errors[fieldName] = error;
+      }
+    });
     return errors;
   };
 
@@ -347,13 +184,21 @@ export default function EnquiryModal({ isOpen, onClose }) {
     const submissionData = {
       ...values,
       // If "Other" is selected, use the otherCourse value
-      service: values.service === "Other" ? values.otherCourse : values.service
+      courses: values.courses === "Other" ? values.otherCourse : values.courses
     };
 
     try {
       await dispatch(submitEnquiry(submissionData)).unwrap();
+
+      toast.success("Form submitted successfully!");
+
+      // ✅ Close modal only on success
+      setTimeout(() => {
+        onClose(false);
+      }, 3000);
     } catch (error) {
-      const errorMessage = error.response?.data?.message[0]?.value ||
+      const errorMessage =
+        error.response?.data?.message[0]?.value ||
         error.message ||
         "An error occurred while submitting the form";
       toast.error(errorMessage);
@@ -362,6 +207,7 @@ export default function EnquiryModal({ isOpen, onClose }) {
     }
   };
 
+
   if (!isOpen) return null;
 
   const FloatingInput = ({
@@ -369,11 +215,35 @@ export default function EnquiryModal({ isOpen, onClose }) {
     label,
     name,
     type = "text",
-    values = {},
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
     ...props
   }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values[name]; // Check if the field has a value
+
+    const handleChange = (e) => {
+      const selectedValue = e.target.value;
+      setFieldValue(name, selectedValue);
+
+      // Mark this field as touched
+      setFieldValue('touched', {
+        ...values.touched,
+        [name]: true
+      });
+
+      // Rest of your existing code...
+
+      // Don't mark dependent fields as touched when they're reset
+      if (name === 'category') {
+        setFieldValue("courses", "");
+        setFieldValue("otherCourse", "");
+        setShowOtherCourse(false);
+        // Don't set courses as touched here
+      }
+    }
 
     return (
       <div style={styles.fieldContainer}>
@@ -394,6 +264,7 @@ export default function EnquiryModal({ isOpen, onClose }) {
             name={name}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onChange={handleChange}
             style={styles.inputField}
             {...props}
           />
@@ -415,13 +286,60 @@ export default function EnquiryModal({ isOpen, onClose }) {
     label,
     name,
     options,
-    values = {},
+    values,
     setFieldValue,
+    setFieldError,
+    setFieldTouched,
     onChange,
     ...props
   }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values[name]; // Check if the field has a value
+
+    const handleChange = (e) => {
+      const selectedValue = e.target.value;
+      setFieldValue(name, selectedValue);
+
+      // Validate on change
+      const error = validateField(name, selectedValue, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+
+      // If name is 'category', filter services
+      if (name === 'category') {
+        if (selectedValue && courses && courses.length > 0) {
+          const relatedServices = courses.filter(
+            (courses) =>
+              courses.category &&
+              (courses.category._id === selectedValue ||
+                courses.category === selectedValue)
+          );
+          setFilteredServices(relatedServices);
+        } else {
+          setFilteredServices([]);
+        }
+
+        // Reset courses and otherCourse when category changes
+        setFieldValue("courses", "");
+        setFieldValue("otherCourse", "");
+        setShowOtherCourse(false);
+      }
+
+      // For courses dropdown, check if "Other" is selected
+      if (name === "courses") {
+        if (selectedValue === "Other") {
+          setShowOtherCourse(true);
+        } else {
+          setShowOtherCourse(false);
+          setFieldValue("otherCourse", "");
+        }
+      }
+
+      // Call custom onChange handler if provided
+      if (onChange) {
+        onChange(e);
+      }
+    };
 
     return (
       <div style={styles.fieldContainer}>
@@ -443,20 +361,7 @@ export default function EnquiryModal({ isOpen, onClose }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              onChange={(e) => {
-                if (onChange) {
-                  onChange(e);
-                }
-                setFieldValue(name, e.target.value);
-
-                // For service dropdown, check if "Other" is selected
-                if (name === "service" && e.target.value === "Other") {
-                  setShowOtherCourse(true);
-                } else if (name === "service") {
-                  setShowOtherCourse(false);
-                  setFieldValue("otherCourse", "");
-                }
-              }}
+              onChange={handleChange}
               style={{
                 ...styles.inputField,
                 appearance: "none",
@@ -470,12 +375,12 @@ export default function EnquiryModal({ isOpen, onClose }) {
                   {option.course_name || option.category_name || "Unnamed"}
                 </option>
               ))}
-              {name === "service" && <option value="Other">Other (Please specify)</option>}
+              {name === "courses" && <option value="Other">Other (Please specify)</option>}
             </Field>
             <label style={{
               ...styles.inputLabels,
               left: Icon ? "40px" : "12px",
-              ...((isFocused || hasValue) ? styles.inputLabelFloated : {}) // Apply floated style when focused or has value
+              ...((isFocused || hasValue) ? styles.inputLabelFloated : {})
             }}>
               {label}
             </label>
@@ -496,11 +401,24 @@ export default function EnquiryModal({ isOpen, onClose }) {
     icon: Icon,
     label,
     name,
-    values = {},
+    values,
+    setFieldValue,
+    setFieldError,
+    setFieldTouched,
     ...props
   }) => {
     const [isFocused, setIsFocused] = useState(false);
     const hasValue = values[name]; // Check if the field has a value
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setFieldValue(name, value);
+
+      // Validate on change
+      const error = validateField(name, value, values);
+      setFieldError(name, error);
+      setFieldTouched(name, true, false);
+    };
 
     return (
       <div style={styles.fieldContainer}>
@@ -523,6 +441,7 @@ export default function EnquiryModal({ isOpen, onClose }) {
               name={name}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
+              onChange={handleChange}
               style={styles.textareaField}
               {...props}
             />
@@ -547,8 +466,10 @@ export default function EnquiryModal({ isOpen, onClose }) {
         initialValues={initialValues}
         validate={validate}
         onSubmit={handleSubmit}
+        validateOnChange={true}
+        validateOnBlur={true}
       >
-        {({ values, setFieldValue }) => (
+        {({ values, setFieldValue, setFieldError, setFieldTouched }) => (
           <Form style={styles.form}>
             {/* Name */}
             <FloatingInput
@@ -557,6 +478,9 @@ export default function EnquiryModal({ isOpen, onClose }) {
               name="name"
               label="Your Name"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Email */}
@@ -566,6 +490,9 @@ export default function EnquiryModal({ isOpen, onClose }) {
               name="email"
               label="Your Email"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Phone */}
@@ -575,48 +502,34 @@ export default function EnquiryModal({ isOpen, onClose }) {
               name="phone"
               label="Your Phone"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Category dropdown */}
             <FloatingSelect
               icon={BusinessIcon}
-              name="business_service"
+              name="category"
               label="Select Category"
               options={categories || []}
+              values={values}
               setFieldValue={setFieldValue}
-              values={values} // Pass the values prop
-              onChange={(e) => {
-                const selectedBusinessServiceId = e.target.value;
-
-                if (selectedBusinessServiceId && courses && courses.length > 0) {
-                  const relatedServices = courses.filter(
-                    (service) =>
-                      service.category &&
-                      (service.category._id === selectedBusinessServiceId ||
-                        service.category === selectedBusinessServiceId)
-                  );
-
-                  setFilteredServices(relatedServices);
-                } else {
-                  setFilteredServices([]);
-                }
-
-                // Reset service and otherCourse when category changes
-                setFieldValue("service", "");
-                setFieldValue("otherCourse", "");
-                setShowOtherCourse(false);
-              }}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Course dropdown (conditionally rendered) */}
-            {values.business_service && (
+            {values.category && (
               <FloatingSelect
                 icon={CategoryIcon}
-                name="service"
+                name="courses"
                 label="Select Course"
                 options={filteredServices || []}
-                values={values} // Pass the values prop here too
+                values={values}
                 setFieldValue={setFieldValue}
+                setFieldError={setFieldError}
+                setFieldTouched={setFieldTouched}
               />
             )}
 
@@ -629,6 +542,9 @@ export default function EnquiryModal({ isOpen, onClose }) {
                   name="otherCourse"
                   label="Specify Course"
                   values={values}
+                  setFieldValue={setFieldValue}
+                  setFieldError={setFieldError}
+                  setFieldTouched={setFieldTouched}
                 />
               </div>
             )}
@@ -639,27 +555,73 @@ export default function EnquiryModal({ isOpen, onClose }) {
               name="message"
               label="Your Message"
               values={values}
+              setFieldValue={setFieldValue}
+              setFieldError={setFieldError}
+              setFieldTouched={setFieldTouched}
             />
 
             {/* Submit Button */}
-            <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+            <div
+              style={{
+                marginTop: "5px",
+                display: "flex",
+                justifyContent: "right",
+                width: "100%",
+              }}
+            >
               <button
                 type="submit"
                 disabled={isSubmitting}
                 style={{
-                  ...styles.submitButton,
-                  ...(isSubmitting ? styles.submitButtonDisabled : {})
+                  background: "#F2775E",
+                  color: "white",
+                  padding: "0.35em 1.2em 0.35em 1.2em",
+                  fontSize: "12px",
+                  fontWeight: "500",
+                  borderRadius: "0.9em",
+                  border: "none",
+                  letterSpacing: "0.05em",
+                  display: "flex",
+                  alignItems: "center",
+                  boxShadow: "inset 0 0 1.6em -0.6em #F2775E",
+                  overflow: "hidden",
+                  position: "relative",
+                  height: "2.8em",
+                  paddingRight: "3.3em",
+                  cursor: isSubmitting ? "default" : "pointer",
+                  transition: "transform 0.2s ease, opacity 0.2s ease",
+                  opacity: isSubmitting ? "0.8" : "1",
                 }}
               >
-                {isSubmitting ? "Submitting..." : "Submit"}
-                <span style={styles.submitIcon}>
-                  <ArrowForwardIcon style={{ color: "#f2775e" }} />
+                {isSubmitting ? "Submitting..." : "Get started"}
+                <span
+                  style={{
+                    background: "white",
+                    marginLeft: "50px",
+                    position: "absolute",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "2.2em",
+                    width: "2.2em",
+                    borderRadius: "50%",
+                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                    right: "0.3em",
+                    transition: "all 0.3s",
+                  }}
+                >
+                  <ArrowForwardIcon
+                    style={{
+                      color: "#f2775e",
+                      transition: "transform 0.3s",
+                    }}
+                  />
                 </span>
               </button>
             </div>
           </Form>
         )}
       </Formik>
-    </div>
+    </div >
   );
 }

@@ -497,10 +497,17 @@ const ServicesDropdown = () => {
                                   justifyContent: "center",
                                   textAlign: "justify",
                                 }}
-                              >
-                                {service.description ||
-                                  `Reach out to us through this service for personalized support.`}
-                              </p>
+                                dangerouslySetInnerHTML={{
+                                  __html: (
+                                    service.description ||
+                                    `Reach out to us through this service for personalized support.`
+                                  ).replace(
+                                    "SmartCliff empowers aspiring professionals with future-ready training programs",
+                                    "<strong>SmartCliff empowers aspiring professionals with future-ready training programs</strong>"
+                                  ),
+                                }}
+                              ></p>
+
                               <div
                                 style={{
                                   display: "flex",

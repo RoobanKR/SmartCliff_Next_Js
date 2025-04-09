@@ -185,10 +185,10 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .back-to-top {
-    width: 50px; /* Bigger button on small screens */
-    height: 50px;
+    width: 40px; /* Bigger button on small screens */
+    height: 40px;
     font-size: 22px;
-    right: 15px; /* Adjust position */
+    right: 10px; /* Adjust position */
     bottom: 15px;
   }
 }
@@ -198,7 +198,7 @@
     width: 30px;
     height: 30px;
     font-size: 18px;
-    right: 270px;
+    right: 10px;
     bottom: 10px;
   }
 }

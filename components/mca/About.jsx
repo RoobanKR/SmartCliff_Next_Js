@@ -24,7 +24,6 @@ export default function About({ collegeId, ids }) {
     dispatch(fetchAboutCollegeData());
   }, [dispatch]);
 
-  // console.log("idssss", ids);
 
   // Filter colleges based on collegeId parameter
   const matchedAboutColleges = aboutCollegeData.filter(

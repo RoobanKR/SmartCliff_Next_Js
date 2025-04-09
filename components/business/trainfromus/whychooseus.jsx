@@ -44,7 +44,6 @@ const SkillsetTable2 = () => {
   const hireFromUsData = learningJourneys.filter(
     (journey) => journey.type === "trainfromus"
   );
-  console.log("hireFromUsData", hireFromUsData);
   
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

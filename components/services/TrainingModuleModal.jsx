@@ -8,7 +8,7 @@ const TrainingModuleModal = ({
     selectedLevel,
     setSelectedLevel
 }) => {
-    const [activeTab, setActiveTab] = useState("levels"); // 'objective', 'levels', or 'summary'
+    const [activeTab, setActiveTab] = useState("objective"); // 'objective', 'levels', or 'summary'
 
     // Calculate total hours and days for the selected level
     const calculateTotals = () => {

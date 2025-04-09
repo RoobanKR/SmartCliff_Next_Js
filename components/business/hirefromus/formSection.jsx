@@ -14,7 +14,6 @@ export default function FormSection() {
         (state) => state.currentAvailability
     );
 
-    console.log("availabilities", availabilities);
 
 
     return (

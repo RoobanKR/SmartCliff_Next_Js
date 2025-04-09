@@ -52,11 +52,10 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
       },
     ],
     otherSkillset: "",
-    // traineeModel: ''
   };
 
   const VALIDATION_PATTERNS = {
-    name: /^[a-zA-Z.\s]*$/, // First letter capital, allows letters, spaces, and periods
+    name: /^[A-Za-z]+(?: [A-Za-z]+)*$/, // First letter capital, allows letters, spaces, and periods
     phone: /^[6-9]\d{0,9}$/,
     email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   };
@@ -101,11 +100,6 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
         }
         break;
 
-      case "traineeModel":
-        if (!value) {
-          error = "Trainee model is required";
-        }
-        break;
 
       default:
         if (name.startsWith("skillsetRequirements")) {
@@ -158,7 +152,7 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
       "mobile",
       "email",
       "enquiry",
-      "traineeModel",
+    
     ];
     fieldNames.forEach((fieldName) => {
       const error = validateField(fieldName, values[fieldName], values);
@@ -214,17 +208,17 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
 
     return errors;
   };
-
-  // Form submission handler
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    console.log("Submitting values:", values);
+    setIsSubmitting(true);
 
     try {
+      // Process the skillset requirements data
       const processedSkillsets = values.skillsetRequirements.map((req) => ({
         skillset: req.skillset === "Other" ? req.otherSkillset : req.skillset,
         resources: parseInt(req.resources, 10),
       }));
 
+      // Prepare the form data to submit
       const formDataToSubmit = {
         company_name: values.company_name,
         name: values.name,
@@ -234,27 +228,34 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
         enquiry: values.enquiry,
       };
 
-      const response = await dispatch(submitForm(formDataToSubmit));
 
-      if (response.payload.message[0].key === "success") {
+      // Dispatch the form submission action
+      const response = await dispatch(submitForm(formDataToSubmit)).unwrap();
+
+      // Handle successful response
+      if (response && response.message && response.message[0] && response.message[0].key === "success") {
         setShowSuccess(true);
         toast.success("Form submitted successfully!");
+        setTimeout(() => {
+          setShowModal(false);
+          resetForm();
+        }, 3000);
       } else {
-        toast.error(response.payload.message[0].value);
+        // Handle error in response
+        const errorMsg = response?.message?.[0]?.value || "Form submission failed";
+        toast.error(errorMsg);
       }
-      setTimeout(() => {
-        setShowModal(false);
-      }, 3000);
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message[0]?.value ||
-        error.message ||
-        "An error occurred while submitting the form";
+      console.error("Form submission error:", error);
+      const errorMessage = error?.message || "An error occurred while submitting the form";
       toast.error(errorMessage);
     } finally {
+      setSubmitting(false);
       setIsSubmitting(false);
     }
   };
+
+
 
   const FloatingInput = ({
     icon: Icon,
@@ -581,10 +582,22 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
   return (
     <div style={styles.container}>
       <ToastContainer />
-      <Formik
+      {/* <Formik
         initialValues={initialValues}
         validate={validate}
         onSubmit={handleSubmit}
+        validateOnChange={true}
+        validateOnBlur={true}
+      > */}
+      <Formik
+        initialValues={initialValues}
+        validate={(values) => {
+          const errors = validate(values);
+          return errors;
+        }}
+        onSubmit={(values, formikBag) => {
+          handleSubmit(values, formikBag);
+        }}
         validateOnChange={true}
         validateOnBlur={true}
       >
@@ -648,7 +661,7 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                 const canAddMoreSkillsets = (() => {
                   const lastSkillset =
                     values.skillsetRequirements[
-                      values.skillsetRequirements.length - 1
+                    values.skillsetRequirements.length - 1
                     ];
 
                   // If it's an "Other" skillset, check otherSkillset
@@ -741,7 +754,7 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                                   ...styles.inputLabel,
                                   left: "40px",
                                   ...(req.otherSkillsetFocused ||
-                                  req.otherSkillset
+                                    req.otherSkillset
                                     ? styles.inputLabelFloated
                                     : {}),
                                 }}

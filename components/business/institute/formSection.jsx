@@ -23,7 +23,6 @@ export default function FormSection() {
   );
  
  
-  // console.log("availabilities", availabilities);
  
   return (
     <section

@@ -9,18 +9,18 @@ import {
 import { fetchCourses } from "@/redux/slices/course/course";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
- 
+
 const SequentialDots = () => {
   const [dots, setDots] = useState(1);
- 
+
   useEffect(() => {
     const interval = setInterval(() => {
       setDots((prev) => (prev < 3 ? prev + 1 : 1));
     }, 300);
- 
+
     return () => clearInterval(interval);
   }, []);
- 
+
   return (
     <span
       style={{
@@ -33,7 +33,7 @@ const SequentialDots = () => {
     </span>
   );
 };
- 
+
 const CoursesDropdown = () => {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
@@ -42,12 +42,12 @@ const CoursesDropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
- 
+
   // Loading states for each course
   const [loadingStates, setLoadingStates] = useState({});
- 
+
   const [isHovered, setIsHovered] = useState(false);
- 
+
   useEffect(() => {
     if (
       isDropdownOpen &&
@@ -58,7 +58,7 @@ const CoursesDropdown = () => {
       setHoveredCategory(categories[0]._id);
     }
   }, [isDropdownOpen, categories, hoveredCategory]);
- 
+
   const coursesByCategory = {};
   if (courses && courses.length) {
     courses.forEach((course) => {
@@ -66,33 +66,33 @@ const CoursesDropdown = () => {
         course.category?._id ||
         (typeof course.category === "object" && course.category?._id) ||
         course.category;
- 
+
       if (!coursesByCategory[categoryId]) {
         coursesByCategory[categoryId] = [];
       }
       coursesByCategory[categoryId].push(course);
     });
   }
- 
+
   const isActive = (path) => pathname.startsWith(path);
- 
+
   // Check if a category is the "Placement Training" category
   const isPlacementTraining = (categoryId) => {
     if (!categories) return false;
-    const category = categories.find(cat => cat._id === categoryId);
+    const category = categories.find((cat) => cat._id === categoryId);
     return category && category.category_name === "Placement Training";
   };
- 
+
   // Function to handle course navigation with loading state
   const handleCourseClick = (e, courseId, courseSlug, categoryId) => {
     e.preventDefault();
- 
+
     // Set loading state for this specific course
     setLoadingStates((prev) => ({
       ...prev,
       [courseId]: true,
     }));
- 
+
     // If the category is Placement Training, navigate to static route
     if (isPlacementTraining(categoryId)) {
       setTimeout(() => {
@@ -105,13 +105,13 @@ const CoursesDropdown = () => {
       }, 800);
     }
   };
- 
+
   // Function to get icon based on course name
   const getIconFromCourseName = (courseName) => {
     // Default icon if none matches
     return "icon-book-open";
   };
- 
+
   return (
     <li
       className="menu-item-has-children "
@@ -273,7 +273,7 @@ const CoursesDropdown = () => {
                     ))}
                 </ul>
               </div>
- 
+
               {/* Right content area - Course cards */}
               <div
                 className="courses-content"
@@ -296,117 +296,109 @@ const CoursesDropdown = () => {
                     }}
                   >
                     {coursesByCategory[hoveredCategory].map((course) => (
-                     // Inside the CoursesDropdown component
- 
-// Existing code for the course card section with modifications
-<div
-  key={course._id}
-  onClick={(e) => {
-    // Only handle click if course isOpen is true
-    if (course.isOpen) {
-      handleCourseClick(e, course._id, course.slug, hoveredCategory);
-    }
-  }}
-  style={{
-    textDecoration: "none",
-    color: "inherit",
-    cursor: course.isOpen ? "pointer" : "default",
-    opacity: course.isOpen ? 1 : 0.7,
-  }}
->
-  <div
-    style={{
-      background: "#fff",
-      borderRadius: "16px",
-      boxShadow:
-        "5px 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)",
-      overflow: "hidden",
-      height: "auto", // Changed to auto-height for flexibility
-      maxHeight: "200px", // Maximum height for consistency
-      width: "320px", // Fixed width
-      display: "flex",
-      flexDirection: "column",
-      transition:
-        "transform 0.3s ease, box-shadow 0.3s ease",
-      position: "relative",
-      border: "1px solid #f0f0f0",
-    }}
-  >
-    {/* Course header with logo */}
-    <div
-      style={{
-        padding: "15px",
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-        borderBottom: "1px solid #f0f0f0",
-        height: "60px", // Fixed height for header
-      }}
-    >
-      <div
-        style={{
-          width: "30px",
-          height: "30px",
-          backgroundColor: "#f7f7f7",
-          borderRadius: "4px",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {course.image ? (
-          <Image
-            src={
-              course.image.startsWith("http")
-                ? course.image
-                : `/uploads/${course.image}`
-            }
-            alt={course.course_name}
-            width={32}
-            height={32}
-            style={{ objectFit: "contain" }}
-          />
-        ) : (
-          <i
-            className={getIconFromCourseName(
-              course.course_name
-            )}
-            style={{
-              fontSize: "24px",
-              color: "#a0a7b2",
-            }}
-          ></i>
-        )}
-      </div>
-      <h3
-        style={{
-          fontSize: "14px",
-          fontWeight: "600",
-          margin: "0",
-          color: "#333",
-          lineHeight: "1.4",
-        }}
-      >
-        {course.course_name}
-        {!course.isOpen && (
-          <span style={{
-            marginLeft: "8px",
-            color: "#f2775e",
-            fontSize: "12px",
-            padding: "2px 6px",
-            backgroundColor: "#fff0ee",
-            borderRadius: "4px",
-            fontWeight: "500"
-          }}>
-            Coming Soon
-          </span>
-        )}
-      </h3>
-    </div>
- 
-    {/* Course description - Only shown for Placement Training category */}
-    {isPlacementTraining(hoveredCategory) && (
+                      // Inside the CoursesDropdown component
+
+                      // Existing code for the course card section with modifications
+                      <div
+                        key={course._id}
+                        onClick={(e) => {
+                          // Only handle click if course isOpen is true
+                          if (course.isOpen) {
+                            handleCourseClick(
+                              e,
+                              course._id,
+                              course.slug,
+                              hoveredCategory
+                            );
+                          }
+                        }}
+                        style={{
+                          textDecoration: "none",
+                          color: "inherit",
+                          cursor: course.isOpen ? "pointer" : "default",
+                          opacity: course.isOpen ? 1 : 0.7,
+                        }}
+                      >
+                        <div
+                          style={{
+                            background: "#fff",
+                            borderRadius: "16px",
+                            boxShadow:
+                              "5px 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)",
+                            overflow: "hidden",
+                            height: "auto", // Changed to auto-height for flexibility
+                            maxHeight: "200px", // Maximum height for consistency
+                            width: "320px", // Fixed width
+                            display: "flex",
+                            flexDirection: "column",
+                            transition:
+                              "transform 0.3s ease, box-shadow 0.3s ease",
+                            position: "relative",
+                            border: "1px solid #f0f0f0",
+                          }}
+                        >
+                          {/* Course header with logo */}
+                          <div
+                            style={{
+                              padding: "15px",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "12px",
+                              borderBottom: "1px solid #f0f0f0",
+                              height: "60px", // Fixed height for header
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: "30px",
+                                height: "30px",
+                                backgroundColor: "#f7f7f7",
+                                borderRadius: "4px",
+                                overflow: "hidden",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {course.image ? (
+                                <Image
+                                  src={
+                                    course.image.startsWith("http")
+                                      ? course.image
+                                      : `/uploads/${course.image}`
+                                  }
+                                  alt={course.course_name}
+                                  width={32}
+                                  height={32}
+                                  style={{ objectFit: "contain" }}
+                                />
+                              ) : (
+                                <i
+                                  className={getIconFromCourseName(
+                                    course.course_name
+                                  )}
+                                  style={{
+                                    fontSize: "24px",
+                                    color: "#a0a7b2",
+                                  }}
+                                ></i>
+                              )}
+                            </div>
+                            <h3
+                              style={{
+                                fontSize: "14px",
+                                fontWeight: "600",
+                                margin: "0",
+                                color: "#333",
+                                lineHeight: "1.4",
+                              }}
+                            >
+                              {course.course_name}
+                            </h3>
+                          </div>
+
+                          {/* Course description - Only shown for Placement Training category */}
+                          {/* {isPlacementTraining(hoveredCategory) && (
       <div
         style={{
           padding: "15px",
@@ -433,7 +425,6 @@ const CoursesDropdown = () => {
             `Master ${course.course_name} with our comprehensive curriculum designed for industry professionals.`}
         </p>
  
-        {/* Learn More button - only shown if course isOpen is true */}
         {course.isOpen && (
           <div
             style={{
@@ -488,72 +479,89 @@ const CoursesDropdown = () => {
           </div>
         )}
       </div>
-    )}
- 
-    {/* For non-Placement Training courses but with isOpen true, show Learn More button */}
-    {!isPlacementTraining(hoveredCategory) && course.isOpen && (
-      <div
-        style={{
-          padding: "15px",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "14px",
-            fontWeight: "500",
-            color: "#0047AB",
-            display: "flex",
-            alignItems: "center",
-            position: "relative",
-          }}
-        >
-          {loadingStates[course._id] ? (
-            <>
-              <span>
-                Loading
-                <SequentialDots />
-              </span>
-              <span
-                style={{
-                  marginLeft: "8px",
-                  display: "inline-block",
-                  width: "16px",
-                  height: "16px",
-                  border: "2px solid rgba(0, 71, 171, 0.3)",
-                  borderRadius: "50%",
-                  borderTopColor: "#0047AB",
-                  animation: "spin 1s linear infinite",
-                }}
-              />
-              <style jsx>{`
-                @keyframes spin {
-                  to {
-                    transform: rotate(360deg);
-                  }
-                }
-              `}</style>
-            </>
-          ) : (
-            <>
-              Learn More
-              <i
-                className="icon-chevron-right"
-                style={{
-                  fontSize: "11px",
-                  marginLeft: "8px",
-                  color: "#0047AB",
-                  transition: "transform 0.2s ease",
-                }}
-              ></i>
-            </>
-          )}
-        </div>
-      </div>
-    )}
-  </div>
-</div>
+    )} */}
+
+                          {/* For non-Placement Training courses but with isOpen true, show Learn More button */}
+                          {!isPlacementTraining(hoveredCategory) && (
+                            <div
+                              style={{
+                                padding: "15px",
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              {course.isOpen ? (
+                                <div
+                                  style={{
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: "#0047AB",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    position: "relative",
+                                  }}
+                                >
+                                  {loadingStates[course._id] ? (
+                                    <>
+                                      <span>
+                                        Loading
+                                        <SequentialDots />
+                                      </span>
+                                      <span
+                                        style={{
+                                          marginLeft: "8px",
+                                          display: "inline-block",
+                                          width: "16px",
+                                          height: "16px",
+                                          border:
+                                            "2px solid rgba(0, 71, 171, 0.3)",
+                                          borderRadius: "50%",
+                                          borderTopColor: "#0047AB",
+                                          animation: "spin 1s linear infinite",
+                                        }}
+                                      />
+                                      <style jsx>{`
+                                        @keyframes spin {
+                                          to {
+                                            transform: rotate(360deg);
+                                          }
+                                        }
+                                      `}</style>
+                                    </>
+                                  ) : (
+                                    <>
+                                      Learn More
+                                      <i
+                                        className="icon-chevron-right"
+                                        style={{
+                                          fontSize: "11px",
+                                          marginLeft: "8px",
+                                          color: "#0047AB",
+                                          transition: "transform 0.2s ease",
+                                        }}
+                                      ></i>
+                                    </>
+                                  )}
+                                </div>
+                              ) : (
+                                <span
+                                  style={{
+                                    marginLeft: "8px",
+                                    color: "#f2775e",
+                                    fontSize: "12px",
+                                    padding: "2px 6px",
+                                    backgroundColor: "#fff0ee",
+                                    borderRadius: "4px",
+                                    fontWeight: "500",
+                                  }}
+                                >
+                                  Coming Soon
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 ) : (
@@ -588,6 +596,5 @@ const CoursesDropdown = () => {
     </li>
   );
 };
- 
+
 export default CoursesDropdown;
- 

@@ -359,7 +359,7 @@ export default function Page() {
           position: "fixed",
           top: isMobileView ? "110px" : "130px",
           zIndex: "9",
-          backgroundColor: "rgb(199, 199, 216)",
+          backgroundColor: "#EADBC8",
           padding: isMobileView ? "6px 0" : "8px 0",
           display: "flex",
           alignItems: "center",

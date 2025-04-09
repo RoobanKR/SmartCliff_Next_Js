@@ -56,7 +56,7 @@ export default function ExecutiveHighlights({ filteredHighlights }) {
         // backgroundColor: "#f8f9fa",
       }}
     >
-      <div className="container">
+      <div>
         <Swiper
           modules={[Pagination, Navigation, Autoplay]}
           spaceBetween={30}

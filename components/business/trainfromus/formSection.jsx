@@ -19,7 +19,6 @@ export default function FormSection() {
   const hireFromUsData = learningJourneys.filter(
     (journey) => journey.type === "trainfromus"
   );
-  console.log("hireFromUsData", hireFromUsData);
 
   return (
     <section
