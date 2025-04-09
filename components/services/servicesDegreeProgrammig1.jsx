@@ -296,15 +296,17 @@ export default function CsrDegreeProgram() {
                     }}
                   >
                     <div style={{ padding: "20px" }}>
-                      <Image
-                        width={510}
-                        height={360}
+                      <img
                         src={program.logo}
                         alt={program.program_name}
                         style={{
                           width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
+                          // height: "150px",
+                          objectFit: "contain", // 'cover' ensures the image fills the container without distortion
+                          display: "block",
+                          marginBottom: "20px",
+                          marginInline: "auto",
+                          borderRadius: "8px", // optional: gives slightly rounded corners
                           transition:
                             "transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)",
                         }}
@@ -352,7 +354,8 @@ export default function CsrDegreeProgram() {
                       </h3>
                     </div>
                   </div>
-
+ 
+ 
                   {/* Content */}
                   <div
                     style={{

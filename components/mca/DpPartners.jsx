@@ -90,16 +90,17 @@ export default function PartnersSection({ ids }) {
               whileHover={{ scale: 1.03 }}
             >
               <div>
-                <img
+              <img
                   src={partner.image}
                   alt={partner.name}
                   style={{
                     width: "100%",
                     height: "150px",
-                    // borderRadius: "50%",
-                    objectFit: "cover",
+                    objectFit: "contain", // 'cover' ensures the image fills the container without distortion
+                    display: "block",
                     marginBottom: "20px",
                     marginInline: "auto",
+                    borderRadius: "8px", // optional: gives slightly rounded corners
                   }}
                 />
                 <h3
@@ -109,7 +110,7 @@ export default function PartnersSection({ ids }) {
                     color: "#111827",
                   }}
                 >
-                  {partner.company}
+                  {partner.companyName}
                 </h3>
 
                 <span
