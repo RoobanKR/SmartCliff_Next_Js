@@ -398,88 +398,88 @@ const CoursesDropdown = () => {
                           </div>
 
                           {/* Course description - Only shown for Placement Training category */}
-                          {/* {isPlacementTraining(hoveredCategory) && (
-      <div
-        style={{
-          padding: "15px",
-          flex: "1",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "12px",
-            color: "#6B7280",
-            margin: "0 0 12px 0",
-            lineHeight: "1.5",
-            flex: "1",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "3",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {course.short_description ||
-            `Master ${course.course_name} with our comprehensive curriculum designed for industry professionals.`}
-        </p>
- 
-        {course.isOpen && (
-          <div
-            style={{
-              fontSize: "14px",
-              fontWeight: "500",
-              color: "#0047AB",
-              display: "flex",
-              alignItems: "center",
-              position: "relative",
-            }}
-          >
-            {loadingStates[course._id] ? (
-              <>
-                <span>
-                  Loading
-                  <SequentialDots />
-                </span>
-                <span
-                  style={{
-                    marginLeft: "8px",
-                    display: "inline-block",
-                    width: "16px",
-                    height: "16px",
-                    border: "2px solid rgba(0, 71, 171, 0.3)",
-                    borderRadius: "50%",
-                    borderTopColor: "#0047AB",
-                    animation: "spin 1s linear infinite",
-                  }}
-                />
-                <style jsx>{`
+                          {isPlacementTraining(hoveredCategory) && (
+                            <div
+                              style={{
+                                padding: "15px",
+                                flex: "1",
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <p
+                                style={{
+                                  fontSize: "12px",
+                                  color: "#6B7280",
+                                  margin: "0 0 12px 0",
+                                  lineHeight: "1.5",
+                                  flex: "1",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: "3",
+                                  WebkitBoxOrient: "vertical",
+                                }}
+                              >
+                                {course.short_description ||
+                                  `Master ${course.course_name} with our comprehensive curriculum designed for industry professionals.`}
+                              </p>
+
+                              {course.isOpen && (
+                                <div
+                                  style={{
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: "#0047AB",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    position: "relative",
+                                  }}
+                                >
+                                  {loadingStates[course._id] ? (
+                                    <>
+                                      <span>
+                                        Loading
+                                        <SequentialDots />
+                                      </span>
+                                      <span
+                                        style={{
+                                          marginLeft: "8px",
+                                          display: "inline-block",
+                                          width: "16px",
+                                          height: "16px",
+                                          border: "2px solid rgba(0, 71, 171, 0.3)",
+                                          borderRadius: "50%",
+                                          borderTopColor: "#0047AB",
+                                          animation: "spin 1s linear infinite",
+                                        }}
+                                      />
+                                      <style jsx>{`
                   @keyframes spin {
                     to {
                       transform: rotate(360deg);
                     }
                   }
                 `}</style>
-              </>
-            ) : (
-              <>
-                Learn More
-                <i
-                  className="icon-chevron-right"
-                  style={{
-                    fontSize: "11px",
-                    marginLeft: "8px",
-                    color: "#0047AB",
-                    transition: "transform 0.2s ease",
-                  }}
-                ></i>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    )} */}
+                                    </>
+                                  ) : (
+                                    <>
+                                      Learn More
+                                      <i
+                                        className="icon-chevron-right"
+                                        style={{
+                                          fontSize: "11px",
+                                          marginLeft: "8px",
+                                          color: "#0047AB",
+                                          transition: "transform 0.2s ease",
+                                        }}
+                                      ></i>
+                                    </>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
 
                           {/* For non-Placement Training courses but with isOpen true, show Learn More button */}
                           {!isPlacementTraining(hoveredCategory) && (

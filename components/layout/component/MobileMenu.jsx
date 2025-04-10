@@ -113,7 +113,7 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
           })),
       ],
     },
-    { title: "Review", href: "/reviews" },
+    { title: "History", href: "/history" },
     { title: "Career", href: "/career" },
     { title: "Contact", href: "/contact" },
   ];

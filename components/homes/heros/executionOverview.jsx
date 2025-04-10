@@ -3,7 +3,7 @@ import { getAllHomeServicesCount } from "@/redux/slices/home/homeService/homeSer
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
- 
+
 const AnimatedCounter = ({
   startValue = 0,
   endValue = 0,
@@ -11,22 +11,22 @@ const AnimatedCounter = ({
   isVisible = false,
 }) => {
   const [count, setCount] = useState(startValue);
- 
+
   useEffect(() => {
     if (!isVisible || endValue === 0) {
       setCount(startValue);
       return;
     }
- 
+
     setCount(startValue);
     const steps = Math.floor(duration / 16);
     const increment = (endValue - startValue) / steps;
     let currentCount = startValue;
     let timer;
- 
+
     const updateCounter = () => {
       currentCount += increment;
- 
+
       if (
         (increment > 0 && currentCount >= endValue) ||
         (increment < 0 && currentCount <= endValue)
@@ -37,15 +37,15 @@ const AnimatedCounter = ({
         setCount(Math.round(currentCount));
       }
     };
- 
+
     timer = setInterval(updateCounter, 16);
- 
+
     return () => clearInterval(timer);
   }, [startValue, endValue, duration, isVisible]);
- 
+
   return <>{count}</>;
 };
- 
+
 export default function HeroSection() {
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
@@ -53,12 +53,12 @@ export default function HeroSection() {
   const { homeServices, loading, error } = useSelector(
     (state) => state.homeServices
   );
- 
+
   // Fetch home services count
   useEffect(() => {
     dispatch(getAllHomeServicesCount());
   }, [dispatch]);
- 
+
   // Set up Intersection Observer to detect when counter section is visible
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,18 +77,18 @@ export default function HeroSection() {
         threshold: 0.1,
       }
     );
- 
+
     if (counterSectionRef.current) {
       observer.observe(counterSectionRef.current);
     }
- 
+
     return () => {
       if (counterSectionRef.current) {
         observer.unobserve(counterSectionRef.current);
       }
     };
   }, [counterSectionRef]);
- 
+
   // Initialize counters
   const counters = {
     b2b: 0,
@@ -96,7 +96,7 @@ export default function HeroSection() {
     csr: 0,
     b2c: 0,
   };
- 
+
   // Populate counters based on fetched home services
   if (homeServices.length > 0) {
     homeServices.forEach((service) => {
@@ -111,10 +111,10 @@ export default function HeroSection() {
       }
     });
   }
- 
+
   // Calculate total count
   const totalCount = counters.b2b + counters.b2i + counters.csr + counters.b2c;
- 
+
   return (
     <div
       className="hero-section"
@@ -185,7 +185,7 @@ export default function HeroSection() {
           >
             Our impact speaks for itself!{" "}
           </h3>
- 
+
           {/* Statistics Section */}
           <div
             style={{
@@ -238,7 +238,7 @@ export default function HeroSection() {
                 (B2B)
               </p>
             </div>
- 
+
             <div
               style={{
                 flex: "1 1 130px",
@@ -273,7 +273,7 @@ export default function HeroSection() {
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2I)</p>
             </div>
- 
+
             <div
               style={{
                 flex: "1 1 130px",
@@ -308,7 +308,7 @@ export default function HeroSection() {
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(CSR)</p>
             </div>
- 
+
             <div
               style={{
                 flex: "1 1 130px",
@@ -345,7 +345,7 @@ export default function HeroSection() {
             </div>
           </div>
         </div>
- 
+
         {/* Right Side - Image */}
         <div
           style={{
@@ -371,18 +371,18 @@ export default function HeroSection() {
       <div
         style={{
           width: "96vw",
-          margin: "1.5rem 0",
+          maxWidth: "100%",
+          margin: "1.5rem auto",
           textAlign: "center",
-          marginTop: "1rem",
-          padding: "0.8rem",
-          background: "linear-gradient(135deg, #FFF1DB 0%, #FCE6C9 100%)", // Soft Gradient
+          padding: "1rem",
+          background: "linear-gradient(135deg, #FFF1DB 0%, #FCE6C9 100%)",
           borderRadius: "16px",
-          boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.15)", // Deeper shadow for depth
+          boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.15)",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* Subtle Background Decorations */}
+        {/* Decorative circles */}
         <div
           style={{
             position: "absolute",
@@ -395,7 +395,6 @@ export default function HeroSection() {
             borderRadius: "50%",
           }}
         ></div>
- 
         <div
           style={{
             position: "absolute",
@@ -408,50 +407,45 @@ export default function HeroSection() {
             borderRadius: "50%",
           }}
         ></div>
- 
+
         <h2
           style={{
-            fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
+            fontSize: "clamp(1.5rem, 4vw, 2.2rem)",
             fontWeight: "bold",
-            color: "#405D72", // Muted navy for heading
+            color: "#405D72",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             gap: "0.5rem",
-            position: "relative",
+            marginBottom: "1rem",
           }}
         >
-          <span
-            style={{
-              position: "relative",
-              paddingBottom: "4px",
-            }}
-          >
+          <span style={{ position: "relative", paddingBottom: "4px" }}>
             Total Execution
             <span
               style={{
                 position: "absolute",
                 width: "100%",
                 height: "3px",
-                background: "#f27757", // Single underline in primary color
+                background: "#f27757",
                 bottom: "-2px",
                 left: "0",
                 borderRadius: "2px",
               }}
             ></span>
           </span>
- 
-          {/* Counter Section */}
+
           <span
             style={{
-              fontSize: "3rem",
+              fontSize: "clamp(2rem, 6vw, 3rem)",
               fontWeight: "bold",
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               color: "#f27757",
-              padding: "8px 16px",
+              padding: "0.5rem 1rem",
               borderRadius: "12px",
-              backdropFilter: "blur(6px)", // Glassmorphism
+              backdropFilter: "blur(6px)",
               transition: "transform 0.3s ease-in-out",
             }}
             onMouseEnter={(e) =>
@@ -463,7 +457,7 @@ export default function HeroSection() {
               className="icon-bar-chart"
               style={{
                 marginRight: "10px",
-                fontSize: "2rem",
+                fontSize: "clamp(1.5rem, 5vw, 2rem)",
                 color: "#f27757",
               }}
             ></i>
@@ -476,7 +470,7 @@ export default function HeroSection() {
           </span>
         </h2>
       </div>
- 
+
       {/* Media queries for responsive design */}
       <style jsx>{`
         @media (max-width: 768px) {
@@ -488,5 +482,4 @@ export default function HeroSection() {
     </div>
   );
 }
- 
- 
+

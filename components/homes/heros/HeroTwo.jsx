@@ -76,8 +76,8 @@ export default function HeroTwo() {
             <div
               className="swiper-slide"
               style={{
-                width: "100%",
-                height: "100vh",
+                width: "auto",
+                height: "auto",
                 justifyContent: "center",
                 background: "#e0e0e0",
               }}
@@ -104,8 +104,8 @@ export default function HeroTwo() {
             <div
               className="swiper-slide"
               style={{
-                width: "100%",
-                height: "100vh",
+                width: "auto",
+                height: "auto",
                 justifyContent: "center",
                 background: "#e0e0e0",
               }}

@@ -4,11 +4,29 @@ import { useEffect, useState } from "react";
 
 export default function HeroUIFour() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 1200,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Handle responsive detection
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth < 1024); // Assuming tablet is less than 1024px
     };
 
     // Set initial value
@@ -24,11 +42,12 @@ export default function HeroUIFour() {
   return (
     <section
       style={{
+        height: "100vh",
         display: "flex",
-        flexDirection: isMobile ? "column" : "row",
+        flexDirection: isTablet ? "column" : "row", // Changed from isMobile to isTablet
         alignItems: "center",
-        justifyContent: isMobile ? "center" : "space-between",
-        padding: isMobile ? "30px 20px" : "60px 80px",
+        justifyContent: isTablet ? "center" : "space-between", // Changed from isMobile to isTablet
+        padding: isTablet ? "30px 20px" : "60px 80px", // Changed from isMobile to isTablet
         borderRadius: "15px",
         marginTop: "3%",
         position: "relative",
@@ -49,8 +68,8 @@ export default function HeroUIFour() {
         }}
       ></div>
 
-      {/* Left Side - Bigger Images - Hidden on Mobile */}
-      {!isMobile && (
+      {/* Left Side - Bigger Images - Hidden on Tablet and Mobile */}
+      {!isTablet && ( // Changed from !isMobile to !isTablet
         <div
           style={{
             display: "flex",
@@ -157,16 +176,16 @@ export default function HeroUIFour() {
       {/* Right Side - Text & Button Section - Always Visible */}
       <div
         style={{
-          textAlign: isMobile ? "center" : "left",
+          textAlign: isTablet ? "center" : "left", // Changed from isMobile to isTablet
           width: "100%",
           maxWidth: "600px",
-          flex: isMobile ? "none" : 1,
-          paddingTop: isMobile ? "90px" : "0px",
+          flex: isTablet ? "none" : 1, // Changed from isMobile to isTablet
+          paddingTop: isTablet ? "90px" : "0px", // Changed from isMobile to isTablet
         }}
       >
         <h2
           style={{
-            fontSize: isMobile ? "32px" : "42px",
+            fontSize: isMobile ? "32px" : "42px", // Keep isMobile for font size
             fontWeight: "800",
             color: "#000",
             marginBottom: "20px",
@@ -180,7 +199,7 @@ export default function HeroUIFour() {
 
         <p
           style={{
-            fontSize: isMobile ? "18px" : "20px",
+            fontSize: isMobile ? "18px" : "20px", // Keep isMobile for font size
             color: "#333",
             marginBottom: "25px",
           }}
@@ -193,7 +212,7 @@ export default function HeroUIFour() {
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: isMobile ? "center" : "flex-start",
+            justifyContent: isTablet ? "center" : "flex-start", // Changed from isMobile to isTablet
             gap: "15px",
           }}
         >
@@ -202,9 +221,9 @@ export default function HeroUIFour() {
               style={{
                 backgroundColor: "#000",
                 color: "#fff",
-                fontSize: isMobile ? "16px" : "18px",
+                fontSize: isMobile ? "16px" : "18px", // Keep isMobile for font size
                 fontWeight: "600",
-                padding: isMobile ? "8px 16px" : "10px 20px",
+                padding: isMobile ? "8px 16px" : "10px 20px", // Keep isMobile for padding
                 borderRadius: "50px",
                 border: "none",
                 cursor: "pointer",
@@ -212,7 +231,7 @@ export default function HeroUIFour() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                width: isMobile ? "180px" : "200px",
+                width: isMobile ? "180px" : "200px", // Keep isMobile for width
                 gap: "10px",
               }}
               onMouseEnter={(e) => {
@@ -230,15 +249,15 @@ export default function HeroUIFour() {
               Learn More
               <div
                 style={{
-                  width: isMobile ? "36px" : "40px",
-                  height: isMobile ? "36px" : "40px",
+                  width: isMobile ? "36px" : "40px", // Keep isMobile for size
+                  height: isMobile ? "36px" : "40px", // Keep isMobile for size
                   backgroundColor: "#fff",
                   borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
-                  fontSize: isMobile ? "18px" : "20px",
+                  fontSize: isMobile ? "18px" : "20px", // Keep isMobile for font size
                   transition: "all 0.3s ease",
                   color: "#000",
                 }}

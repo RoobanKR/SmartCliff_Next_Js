@@ -26,6 +26,8 @@ export default function RootLayout({ children }) {
   const [isMoving, setIsMoving] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMouseDevice, setIsMouseDevice] = useState(true);
+
 
   const handleEnquiryClick = () => {
     setIsModalOpen(true); // Open modal instead of redirecting
@@ -51,7 +53,12 @@ export default function RootLayout({ children }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+
   useEffect(() => {
+    const isMouseDevice = window.matchMedia("(pointer: fine)").matches;
+
+    if (!isMouseDevice) return; // Skip adding mousemove listener on touch devices
+
     const handleMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY });
       setIsMoving(true);
@@ -63,6 +70,12 @@ export default function RootLayout({ children }) {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
+
+
+  useEffect(() => {
+    setIsMouseDevice(window.matchMedia("(pointer: fine)").matches);
+  }, []);
+
 
   useEffect(() => {
     let animationFrame;
@@ -90,29 +103,29 @@ export default function RootLayout({ children }) {
         <head />
         <body>
           <Context>
-            <div
-              style={{
-                position: "fixed",
-                width: isMoving ? "1rem" : "0.7rem",
-                height: isMoving ? "1rem" : "0.7rem",
-                backgroundColor: "#27eb62",
-                borderRadius: "50%",
-                mixBlendMode: "difference",
-                pointerEvents: "none",
-                zIndex: 9999,
-                transform: `translate(${mousePos.x - 6}px, ${
-                  mousePos.y - 6
-                }px)`,
-                transition:
-                  "transform 0.08s linear, width 0.2s ease, height 0.2s ease",
-                opacity: isMoving ? 1 : 0.5,
-              }}
-            ></div>
+            {isMouseDevice && (
+              <div
+                style={{
+                  position: "fixed",
+                  width: isMoving ? "1rem" : "0.7rem",
+                  height: isMoving ? "1rem" : "0.7rem",
+                  backgroundColor: "#27eb62",
+                  borderRadius: "50%",
+                  mixBlendMode: "difference",
+                  pointerEvents: "none",
+                  zIndex: 9999,
+                  transform: `translate(${mousePos.x - 6}px, ${mousePos.y - 6}px)`,
+                  transition:
+                    "transform 0.08s linear, width 0.2s ease, height 0.2s ease",
+                  opacity: isMoving ? 1 : 0.5,
+                }}
+              />
+            )}
 
             {/* Page Content */}
             {children}
             <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
-{/* 
+            {/* 
             <button
               className="learn-more"
               onClick={handleEnquiryClick}

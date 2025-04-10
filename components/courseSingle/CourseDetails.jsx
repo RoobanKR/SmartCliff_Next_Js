@@ -4,10 +4,10 @@ import FAQComponent from "./Faq";
 import { useEffect, useRef, useState } from "react";
 import { Star, StarBorder, StarHalf } from "@mui/icons-material";
 import { fetchAllFAQs } from "@/redux/slices/faq/faq";
- 
+
 export default function CourseDetailsSix() {
   const selectedCourse = useSelector((state) => state.courses.courses);
- 
+
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(1); // Default to Course Outline
   const [isMobileView, setIsMobileView] = useState(false);
@@ -18,7 +18,7 @@ export default function CourseDetailsSix() {
   const faq = useSelector((state) => state.faq.faq);
   const matchedCourseId = matchedCourse ? matchedCourse._id : null;
   const matchedFaqData = faq.filter((i) => i.course?._id === matchedCourseId);
- 
+
   // Updated menu items based on the new requirements
   const [menuItems, setMenuItems] = useState([
     { id: 1, text: "course outline", isActive: true },
@@ -26,11 +26,11 @@ export default function CourseDetailsSix() {
     { id: 3, text: "software tools", isActive: false },
     { id: 4, text: "FAQ", isActive: false },
   ]);
- 
+
   useEffect(() => {
     dispatch(fetchAllFAQs());
   }, [dispatch]);
- 
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const fullUrl = window.location.href;
@@ -48,10 +48,10 @@ export default function CourseDetailsSix() {
       window.removeEventListener("resize", handleResize);
     };
   }, [dispatch]);
- 
+
   const handleTabClick = (id) => {
     setActiveTab(id);
- 
+
     // Update active status in menuItems
     const updatedMenuItems = menuItems.map((item) => ({
       ...item,
@@ -59,7 +59,7 @@ export default function CourseDetailsSix() {
     }));
     setMenuItems(updatedMenuItems);
   };
- 
+
   const renderTabs = () => {
     if (isMobileView) {
       return (
@@ -131,9 +131,8 @@ export default function CourseDetailsSix() {
                         <button
                           key={i}
                           onClick={() => handleTabClick(elm.id)}
-                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${
-                            i !== 0 ? "ml-30" : ""
-                          }`}
+                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${i !== 0 ? "ml-30" : ""
+                            }`}
                           style={{
                             cursor: "pointer",
                             color: activeTab === elm.id ? "#5b2c6f" : "black",
@@ -162,7 +161,7 @@ export default function CourseDetailsSix() {
       );
     }
   };
- 
+
   // Render content based on active tab
   const renderTabContent = (tabId) => {
     switch (tabId) {
@@ -178,13 +177,13 @@ export default function CourseDetailsSix() {
         return null;
     }
   };
- 
+
   // Course Outline Component
   const CourseOutline = ({ matchedCourse }) => {
     if (!matchedCourse || !matchedCourse.courseOutline?.modules) {
       return <p>No course outline available.</p>;
     }
- 
+
     return (
       <div style={{ padding: "20px" }}>
         <ul style={{ listStyleType: "none", padding: 0 }}>
@@ -196,7 +195,7 @@ export default function CourseDetailsSix() {
                 padding: "12px 15px",
                 backgroundColor: "#f9f9f9",
                 borderLeft: "4px solid #5b2c6f",
-                borderRadius: "4px",
+                borderRadius: "8px",
                 boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
               }}
             >
@@ -206,13 +205,15 @@ export default function CourseDetailsSix() {
                     backgroundColor: "#5b2c6f",
                     color: "white",
                     borderRadius: "50%",
-                    width: "24px",
-                    height: "24px",
+                    minWidth: "32px",
+                    minHeight: "32px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     marginRight: "10px",
-                    fontSize: "14px",
+                    fontSize: "1rem", // responsive font size
+                    lineHeight: "1",
+                    flexShrink: 0,
                   }}
                 >
                   {index + 1}
@@ -225,7 +226,7 @@ export default function CourseDetailsSix() {
       </div>
     );
   };
- 
+
   // Course Summary Component
   const CourseSummary = ({ matchedCourse }) => {
     if (
@@ -235,7 +236,7 @@ export default function CourseDetailsSix() {
     ) {
       return <p>No course summary available.</p>;
     }
- 
+
     return (
       <div style={{ padding: "20px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -281,7 +282,7 @@ export default function CourseDetailsSix() {
       </div>
     );
   };
- 
+
   // Software Tools Component
   const SoftwareTools = ({ matchedCourse }) => {
     // This is placeholder. In a real implementation, you would fetch tool/software data
@@ -289,8 +290,8 @@ export default function CourseDetailsSix() {
     return (
       <div style={{ padding: "20px" }}>
         {matchedCourse &&
-        matchedCourse.tool_software &&
-        matchedCourse.tool_software.length > 0 ? (
+          matchedCourse.tool_software &&
+          matchedCourse.tool_software.length > 0 ? (
           <div
             style={{
               display: "grid",
@@ -324,16 +325,16 @@ export default function CourseDetailsSix() {
                     marginBottom: "10px",
                   }}
                 > */}
-                  <img
-                    style={{
-                      width: "2.5rem",
-                      height: "2.5rem",
-                      objectFit: "contain",
-                      marginBottom: "0.5rem",
-                    }}
-                    src={tool.image}
-                    alt={tool.software_name}
-                  />{" "}
+                <img
+                  style={{
+                    width: "2.5rem",
+                    height: "2.5rem",
+                    objectFit: "contain",
+                    marginBottom: "0.5rem",
+                  }}
+                  src={tool.image}
+                  alt={tool.software_name}
+                />{" "}
                 {/* </div> */}
                 <p style={{ textAlign: "center", margin: 0 }}>
                   {tool.software_name}
@@ -347,11 +348,11 @@ export default function CourseDetailsSix() {
       </div>
     );
   };
- 
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
   const textRef = useRef(null);
- 
+
   useEffect(() => {
     if (textRef.current) {
       const lineHeight = 21; // Approximate line height in pixels (adjust as needed)
@@ -359,7 +360,7 @@ export default function CourseDetailsSix() {
       setShowToggle(textRef.current.scrollHeight > maxHeight);
     }
   }, [matchedCourse?.short_description]);
- 
+
   return (
     <>
       <section
@@ -404,7 +405,7 @@ export default function CourseDetailsSix() {
                     >
                       {matchedCourse.short_description}
                     </p>
- 
+
                     {showToggle && (
                       <span
                         onClick={() => setIsExpanded(!isExpanded)}
@@ -421,12 +422,12 @@ export default function CourseDetailsSix() {
                       </span>
                     )}
                   </div>
- 
+
                   {/* Star Ratings */}
-                 
+
                 </div>
               )}
- 
+
               {/* Course Details */}
               <div style={{ marginTop: "20px" }}>
                 {[
@@ -505,7 +506,7 @@ export default function CourseDetailsSix() {
                 ))}
               </div>
             </div>
- 
+
             {/* Right Section (Smaller Image) */}
             <div
               style={{
@@ -531,13 +532,12 @@ export default function CourseDetailsSix() {
             </div>
           </div>
         </div>
- 
+
         {/* Course Tabs & Video */}
         {renderTabs()}
       </section>
     </>
   );
 }
- 
- 
- 
+
+

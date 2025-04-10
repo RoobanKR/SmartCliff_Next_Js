@@ -20,7 +20,7 @@ import ServicesDropdown from "./ServicesDropdown";
 import BusinessDropdown from "./BusinessDropdown";
 import { fetchCourses } from "@/redux/slices/course/course";
 import { fetchCategories } from "@/redux/slices/category/category";
- 
+
 export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
   const dispatch = useDispatch();
   const [menuItem, setMenuItem] = useState("");
@@ -29,7 +29,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
   const [isBusinessOpen, setIsBusinessOpen] = useState(false);
   const [isCorporateOpen, setIsCorporateOpen] = useState(false);
   const pathname = usePathname();
- 
+
   useEffect(() => {
     dispatch(getAllBusinessServices());
     dispatch(fetchDegreeProgramData());
@@ -37,7 +37,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
     dispatch(fetchCategories());
     dispatch(fetchCourses());
   }, [dispatch]);
- 
+
   useEffect(() => {
     menuList.forEach((elm) => {
       elm?.links?.forEach((elm2) => {
@@ -54,17 +54,16 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
       });
     });
   }, [pathname]);
- 
+
   return (
     <div
-      className={`header-menu js-mobile-menu-toggle ${
-        headerPosition ? headerPosition : ""
-      }`}
+      className={`header-menu js-mobile-menu-toggle ${headerPosition ? headerPosition : ""
+        }`}
     >
       <div className="header-menu__content">
         <div className="mobile-bg js-mobile-bg"></div>
- 
-        <div
+
+        {/* <div
           className="d-none xl:d-flex items-center px-20 py-20 border-bottom-light"
           style={{ fontFamily: "serif" }}
         >
@@ -74,9 +73,9 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
           <Link href="/signup" className="text-dark-1 ml-30">
             Sign Up
           </Link>
-        </div>
- 
-        <div className="menu js-navList">
+        </div> */}
+
+        <div className="menu js-navList" style={{ marginRight: "-30px" }}>
           <ul className={allClasses ? allClasses : ""}>
             <li
               className="menu-item-has-children"
@@ -103,15 +102,15 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                     hoveredLink === "/"
                       ? "#fff" // White text on hover
                       : pathname === "/"
-                      ? "#f2775e" // Active state text color
-                      : "#000", // Default text color (black)
+                        ? "#f2775e" // Active state text color
+                        : "#000", // Default text color (black)
                   transition: "all 0.3s ease",
                 }}
               >
                 Home
               </Link>
             </li>
- 
+
             <li
               className="menu-item-has-children"
               style={{
@@ -137,19 +136,19 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                     hoveredLink === "aboutUs"
                       ? "#fff" // White text on hover
                       : pathname === "/aboutUs"
-                      ? "#f2775e" // Active state text color
-                      : "#000", // Default text color (black)
+                        ? "#f2775e" // Active state text color
+                        : "#000", // Default text color (black)
                   transition: "all 0.3s ease",
                 }}
               >
                 About Us
               </Link>
             </li>
- 
+
             <ServicesDropdown />
             <CoursesDropdown />
             <BusinessDropdown />
- 
+
             <li
               className="menu-item-has-children"
               style={{
@@ -175,15 +174,15 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                     hoveredLink === "/history"
                       ? "#fff" // White text on hover
                       : pathname === "/history"
-                      ? "#f2775e" // Active state text color
-                      : "#000", // Default text color (black)
+                        ? "#f2775e" // Active state text color
+                        : "#000", // Default text color (black)
                   transition: "all 0.3s ease",
                 }}
               >
                 History
               </Link>
             </li>
- 
+
             <li
               className="menu-item-has-children"
               style={{
@@ -209,15 +208,15 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                     hoveredLink === "/career"
                       ? "#fff" // White text on hover
                       : pathname === "/career"
-                      ? "#f2775e" // Active state text color
-                      : "#000", // Default text color (black)
+                        ? "#f2775e" // Active state text color
+                        : "#000", // Default text color (black)
                   transition: "all 0.3s ease",
                 }}
               >
                 Career
               </Link>
             </li>
- 
+
             <li
               className="menu-item-has-children"
               style={{
@@ -243,8 +242,8 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                     hoveredLink === "/contact"
                       ? "#fff" // White text on hover
                       : pathname === "/contact"
-                      ? "#f2775e" // Active state text color
-                      : "#000", // Default text color (black)
+                        ? "#f2775e" // Active state text color
+                        : "#000", // Default text color (black)
                   transition: "all 0.3s ease",
                 }}
               >
@@ -255,7 +254,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
         </div>
         <MobileFooter />
       </div>
- 
+
       <div
         className="header-menu-close"
         data-el-toggle=".js-mobile-menu-toggle"
@@ -264,10 +263,9 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
           <div className="icon-close text-dark-1 text-16"></div>
         </div>
       </div>
- 
+
       <div className="header-menu-bg"></div>
     </div>
   );
 }
- 
- 
+

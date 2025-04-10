@@ -2,7 +2,6 @@
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
 import "swiper/css";
 import "swiper/css/pagination";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +12,7 @@ import { useRouter } from "next/navigation";
 import ModalVideoComponent from "@/components/common/ModalVideo";
 import ReactPlayer from "react-player";
 import Image from "next/image";
+
 
 export default function TestimonialsEight() {
   const router = useRouter();
@@ -29,7 +29,6 @@ export default function TestimonialsEight() {
 
   useEffect(() => {
     if (typeof window === "undefined") return; // Prevents error during SSR
-
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -56,13 +55,9 @@ export default function TestimonialsEight() {
     setShowSlider(true);
     setShowVideoSlider(true);
   }, []);
-
   const [expandedStates, setExpandedStates] = useState({});
   const [overflowingStates, setOverflowingStates] = useState({});
   const textRefs = useRef({});
-  const reviewsWithoutVideos = reviews.filter(review => !review.video);
-
-
   const reviewsWithVideos = reviews.filter(
     (review) =>
       review.video &&
@@ -72,6 +67,26 @@ export default function TestimonialsEight() {
         review.service?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // With this:
+  // For text testimonials (all reviews, taking first 3)
+  const textTestimonials = reviews
+    .filter(review =>
+      review.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.review?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.service?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .slice(0, 3);
+  // For video testimonials (only reviews with videos, taking first 3)
+  const videoTestimonials = reviews
+    .filter(review =>
+      review.video &&
+      (review.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.review?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.service?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
+    .slice(0, 3);
   useEffect(() => {
     dispatch(getAllReview());
   }, [dispatch]);
@@ -80,7 +95,7 @@ export default function TestimonialsEight() {
     const timer = setTimeout(() => {
       const newOverflowingStates = {};
 
-      reviewsWithVideos.slice(0, 3).forEach((review) => {
+      textTestimonials.forEach((review) => {
         const id = review._id || review.id;
         const ref = textRefs.current[id];
 
@@ -95,7 +110,7 @@ export default function TestimonialsEight() {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [reviewsWithVideos]);
+  }, [textTestimonials]);
 
 
   const toggleExpanded = (id) => {
@@ -143,14 +158,10 @@ export default function TestimonialsEight() {
     setCurrentVideoUrl(url);
     setIsOpen(true);
   };
-
-  // Synchronized navigation handlers
+  // Modify the existing functions to only control testimonials
   const handlePrevClick = () => {
     if (testimonialSwiperRef.current && testimonialSwiperRef.current.swiper) {
       testimonialSwiperRef.current.swiper.slidePrev();
-    }
-    if (videoSwiperRef.current && videoSwiperRef.current.swiper) {
-      videoSwiperRef.current.swiper.slidePrev();
     }
   };
 
@@ -158,10 +169,24 @@ export default function TestimonialsEight() {
     if (testimonialSwiperRef.current && testimonialSwiperRef.current.swiper) {
       testimonialSwiperRef.current.swiper.slideNext();
     }
+  };
+
+  // Add these new functions for video slider navigation
+  const handleVideoNextClick = () => {
     if (videoSwiperRef.current && videoSwiperRef.current.swiper) {
       videoSwiperRef.current.swiper.slideNext();
     }
   };
+
+  const handleVideoPrevClick = () => {
+    if (videoSwiperRef.current && videoSwiperRef.current.swiper) {
+      videoSwiperRef.current.swiper.slidePrev();
+    }
+  };
+  // First, let's create a condition that checks if video testimonials exist
+  const hasVideoTestimonials = reviewsWithVideos.length > 0;
+
+  // Then modify the main row and column structure to respond to this condition
   return (
     <>
       <section
@@ -274,9 +299,16 @@ export default function TestimonialsEight() {
           <div
             className="row justify-between items-center"
           >
+
+            {/* <div
+            // className="row justify-between items-center"
+            className={hasVideoTestimonials ? "col-xl-12 col-lg-8 col-md-9 row justify-between items-center" : "col-12"}
+            style={{
+              // maxWidth: "100%",
+            }}
+          > */}
             <div
-              className="col-xl-7 col-lg-6 col-md-9"
-              style={{
+              className={hasVideoTestimonials ? "col-xl-7 col-lg-6 col-md-9" : "col-12"} style={{
                 maxWidth: "100%",
               }}
             >
@@ -297,12 +329,24 @@ export default function TestimonialsEight() {
                     ref={testimonialSwiperRef}
                     spaceBetween={30}
                     slidesPerView={1}
+                    // slidesPerView={hasVideoTestimonials ? 1 : 2}
+                    // breakpoints={
+                    //   hasVideoTestimonials ?
+                    //     {} :
+                    //     {
+                    //       // When no videos, use breakpoints for responsive design
+                    //       320: { slidesPerView: 1 },
+                    //       768: { slidesPerView: 2 },
+                    //       1024: { slidesPerView: 3 }
+                    //     }
+                    // }
                     className="overflow-visible"
                     loop={false}
                     allowTouchMove={true}
                   >
                     {/* {combinedFilteredReviews.map((elm, i) => { */}
-                    {reviewsWithVideos.slice(0, 3).map((elm, i) => {
+                    {/* {reviewsWithVideos.slice(0, 3).map((elm, i) => { */}
+                    {textTestimonials.map((elm, i) => {
                       const reviewId = elm._id || elm.id || i;
                       return (
                         <SwiperSlide key={i}>
@@ -512,151 +556,189 @@ export default function TestimonialsEight() {
                 </div>
               </div>
             </div>
-
-            <div
-              className="col-lg-5"
-            >
-              <div
-                className="overflow-hidden js-section-slider video-testimonials-wrapper"
-                data-aos="fade-right"
-                data-aos-duration={1000}
-                style={{
-                  maxWidth: "100%",
-                  marginBottom: "20px"
-                }}
-              >
-                {showVideoSlider && reviewsWithVideos.length > 0 ? (
-                  <Swiper
-                    modules={[Navigation, Pagination]}
-                    pagination={{
-                      el: ".pagination-testimonials-eight",
-                      clickable: true,
-                    }}
-                    ref={videoSwiperRef}
-                    spaceBetween={30}
-                    slidesPerView={1}
-                    className="overflow-visible"
-                    loop={false}
-                    allowTouchMove={true}
-                  >
-                    {/* {filteredReviewsWithVideos.map((review, i) => ( */}
-                    {reviewsWithVideos.slice(0, 3).map((review, i) => (
-                      <SwiperSlide key={i}>
-                        <div
-                          style={{
-                            width: "100%",
-                            height: "270px",
-                            borderRadius: "10px",
-                            overflow: "hidden",
-                            position: "relative"
-                          }}
-                        >
-                          <video
-                            src={review.video}
-                            style={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              width: "100%",
-                              height: "300px",
-                              borderRadius: "10px",
-                              // backgroundColor: "#000",
-                              objectFit: "cover"
-                            }}
-                            onClick={() => openVideoModal(review.video)}
-                          />
-
-                          {/* Play button overlay with guaranteed click functionality */}
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: "50%",
-                              left: "50%",
-                              transform: "translate(-50%, -50%)",
-                              zIndex: 10,
-                              cursor: "pointer",
-                              pointerEvents: "auto" // Ensures clicks are registered
-                            }}
-                            onClick={() => openVideoModal(review.video)}
-                          >
+            {hasVideoTestimonials && (
+              <div className="col-lg-5">
+                <div
+                  className="overflow-hidden js-section-slider video-testimonials-wrapper"
+                  data-aos="fade-right"
+                  data-aos-duration={1000}
+                  style={{
+                    maxWidth: "100%",
+                    marginTop: "20px"
+                  }}
+                >
+                  {showVideoSlider && reviewsWithVideos.length > 0 ? (
+                    <>
+                      <Swiper
+                        modules={[Navigation, Pagination]}
+                        pagination={{
+                          // el: ".pagination-testimonials-eight",
+                          el: ".pagination-video-testimonials",
+                          clickable: true,
+                        }}
+                        ref={videoSwiperRef}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        className="overflow-visible"
+                        loop={false}
+                        allowTouchMove={true}
+                      >
+                        {videoTestimonials.map((review, i) => (
+                          <SwiperSlide key={i}>
                             <div
                               style={{
-                                backgroundColor: "#ffffff",
-                                borderRadius: "50%",
-                                boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-                                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                                width: "90px",
-                                height: "90px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center"
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = "scale(1.1)";
-                                e.currentTarget.style.boxShadow = "0 15px 25px rgba(0,0,0,0.15)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = "scale(1)";
-                                e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.1)";
+                                width: "100%",
+                                height: "270px",
+                                borderRadius: "10px",
+                                overflow: "hidden",
+                                position: "relative"
                               }}
                             >
+                              <video
+                                src={review.video}
+                                style={{
+                                  position: "absolute",
+                                  top: 0,
+                                  left: 0,
+                                  width: "100%",
+                                  height: "300px",
+                                  borderRadius: "10px",
+                                  // backgroundColor: "#000",
+                                  objectFit: "cover"
+                                }}
+                                onClick={() => openVideoModal(review.video)}
+                              />
+
+                              {/* Play button overlay with guaranteed click functionality */}
                               <div
                                 style={{
-                                  color: "#e8543e",
-                                  fontSize: "30px"
+                                  position: "absolute",
+                                  top: "50%",
+                                  left: "50%",
+                                  transform: "translate(-50%, -50%)",
+                                  zIndex: 10,
+                                  cursor: "pointer",
+                                  pointerEvents: "auto" // Ensures clicks are registered
                                 }}
+                                onClick={() => openVideoModal(review.video)}
                               >
-                                ▶
+                                <div
+                                  style={{
+                                    backgroundColor: "#ffffff",
+                                    borderRadius: "50%",
+                                    boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
+                                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                                    width: "90px",
+                                    height: "90px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = "scale(1.1)";
+                                    e.currentTarget.style.boxShadow = "0 15px 25px rgba(0,0,0,0.15)";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = "scale(1)";
+                                    e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.1)";
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      color: "#e8543e",
+                                      fontSize: "30px"
+                                    }}
+                                  >
+                                    ▶
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
 
-                          {/* Dark overlay that doesn't block click events */}
-                          <div
+                              {/* Dark overlay that doesn't block click events */}
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  top: 0,
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 0,
+                                  backgroundColor: "black",
+                                  opacity: 0.3,
+                                  borderRadius: "10px",
+                                  zIndex: 1,
+                                  pointerEvents: "none" // Ensures overlay doesn't block clicks
+                                }}
+                              />
+                            </div>
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
+                      <div
+                        className="d-flex x-gap-15 items-center pt-20"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "15px",
+                        }}
+                      >
+                        <div className="col-auto">
+                          <button
+                            className="d-flex items-center text-24 arrow-left-hover"
+                            onClick={handleVideoPrevClick}
                             style={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              backgroundColor: "black",
-                              opacity: 0.3,
-                              borderRadius: "10px",
-                              zIndex: 1,
-                              pointerEvents: "none" // Ensures overlay doesn't block clicks
+                              display: "flex",
+                              alignItems: "center",
                             }}
-                          />
+                          >
+                            <i className="icon icon-arrow-left"></i>
+                          </button>
                         </div>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                ) : (
-                  <div
-                    className="flex items-center justify-center p-10 border rounded-8"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "10px",
-                      border: "1px solid #ddd",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <p
+                        <div className="col-auto">
+                          <div className="pagination -arrows js-pagination pagination-video-testimonials"></div>
+                        </div>
+                        <div className="col-auto">
+                          <button
+                            className="d-flex items-center text-24 arrow-right-hover"
+                            onClick={handleVideoNextClick}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <i className="icon icon-arrow-right"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                      className="flex items-center justify-center p-10 border rounded-8"
                       style={{
-                        textAlign: "center",
-                        color: "#666",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                        borderRadius: "8px",
                       }}
                     >
-                      No video testimonials available
-                    </p>
-                  </div>
-                )}
+                      <p
+                        style={{
+                          textAlign: "center",
+                          color: "#666",
+                        }}
+                      >
+                        No video testimonials available
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
-      </section>
+      </section >
       <ModalVideoComponent
         isOpen={isOpen}
         setIsOpen={setIsOpen}
