@@ -117,37 +117,7 @@ const HeroUITwo = () => {
       }}
     >
       {/* Header */}
-      <header
-        style={{
-          position: "absolute",
-          top: `${20 * scaleFactor}px`,
-          left: 0,
-          width: "96%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: `${20 * scaleFactor}px`,
-          zIndex: 2,
-        }}
-      >
-        <div>
-          <Image
-            src="/logo.png"
-            alt="SHINE Logo"
-            width={60 * scaleFactor}
-            height={60 * scaleFactor}
-            style={{ borderRadius: `${10 * scaleFactor}px` }}
-          />
-        </div>
-        <div
-          style={{
-            fontSize: `${20 * scaleFactor}px`,
-            fontWeight: "bold",
-          }}
-        >
-          Career/Solutions
-        </div>
-      </header>
+     
 
       {/* SHINE Title - Centered */}
       <div
