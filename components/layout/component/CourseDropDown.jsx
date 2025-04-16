@@ -544,7 +544,8 @@ const CoursesDropdown = () => {
                                   )}
                                 </div>
                               ) : (
-                                <span
+                                <>
+                                {/* <span
                                   style={{
                                     marginLeft: "8px",
                                     color: "#f2775e",
@@ -556,7 +557,8 @@ const CoursesDropdown = () => {
                                   }}
                                 >
                                   Coming Soon
-                                </span>
+                                </span> */}
+                                </>
                               )}
                             </div>
                           )}

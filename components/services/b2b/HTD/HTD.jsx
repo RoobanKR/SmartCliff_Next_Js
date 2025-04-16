@@ -48,7 +48,7 @@ import {
 import CsrDegreeProgram from "../../servicesDegreeProgrammig1";
 import FormSection from "@/components/business/institute/formSection";
 import ServiceClient from "@/components/services/Clients";
-
+ 
 export default function HTD() {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const [messageOpen, setMessageOpen] = useState(false);
@@ -60,7 +60,7 @@ export default function HTD() {
     loading,
     error,
   } = useSelector((state) => state.serviceOpportunities);
-
+ 
   const servicesBusiness = useSelector(selectBusinessServices);
   const serviceProcessData = useSelector(selectProcessServices);
   const clients = useSelector(selectServiceClients);
@@ -76,9 +76,9 @@ export default function HTD() {
   const { tracks, isLoading, isError } = useSelector(
     selectPlacementTrainingTrackState
   );
-
+ 
   const [width, setWidth] = useState("100%");
-
+ 
   useEffect(() => {
     // Function to update width based on screen size
     const updateWidth = () => {
@@ -90,17 +90,17 @@ export default function HTD() {
         setWidth("100%");
       }
     };
-
+ 
     // Set width on initial load
     updateWidth();
-
+ 
     // Add event listener for window resize
     window.addEventListener("resize", updateWidth);
-
+ 
     // Cleanup event listener on component unmount
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
-
+ 
   useEffect(() => {
     dispatch(getAllServiceClients());
     dispatch(fetchExecutionHighlights());
@@ -112,47 +112,47 @@ export default function HTD() {
     dispatch(getAllServiceOpportunities());
     dispatch(getAllPlacementTrainingTracks());
   }, [dispatch]);
-
+ 
   const fullUrl = typeof window !== "undefined" ? window.location.href : "";
   const segments = fullUrl.split("/").filter(Boolean);
   const lastSegment = segments.pop();
   const secondLastSegment = segments.pop();
-
+ 
   const onematchingData = servicesBusiness.find(
     (i) => i.slug === secondLastSegment
   );
   const twomatchingService = services.find((i) => i.slug === lastSegment);
-
+ 
   const matchedServices = services.filter(
     (service) => service.business_services._id === onematchingData?._id
   );
   const finalMatchedService = matchedServices.find(
     (service) => service.slug === twomatchingService?.slug
   );
-
+ 
   const matchedexecutionOverviews = executionOverviews.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
-
+ 
   const PlacementTraining = tracks.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
-
+ 
   const matchedFaq = faq.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
-
+ 
   const matchedProcessData = serviceProcessData.filter(
     (i) => i.service === finalMatchedService?._id
   );
   const matchedExecutionHighlights = executionHighlights.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
-
+ 
   const matchedOppertunity = serviceOpportunities.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
-
+ 
   const matchedServiceClient = clients.filter(
     (i) => i.service === finalMatchedService?._id
   );
@@ -168,16 +168,16 @@ export default function HTD() {
     const serviceFaqs = faq.filter(
       (i) => i.service?._id === finalMatchedService?._id
     );
-
+ 
     if (serviceFaqs.length > 0) {
       return serviceFaqs;
     }
-
+ 
     return faq.filter((i) => i.business_service?._id === onematchingData?._id);
   };
-
+ 
   const finalFaqs = getMatchedFaqs();
-
+ 
   useEffect(() => {
     if (window.innerWidth < 990) {
       setIsSidebarClosed(true);
@@ -187,14 +187,14 @@ export default function HTD() {
         setIsSidebarClosed(true);
       }
     };
-
+ 
     window.addEventListener("resize", handleResize);
-
+ 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+ 
   const toggleSidebar = () => {
     setIsSidebarClosed(!isSidebarClosed);
   };
@@ -205,9 +205,9 @@ export default function HTD() {
       window.history.back();
     }
   };
-
+ 
   const availableSections = [];
-
+ 
   if (matchedServiceAbouts.length > 0) {
     availableSections.push({
       id: "learning-solutions",
@@ -216,6 +216,9 @@ export default function HTD() {
   }
   if (processSteps.length > 0) {
     availableSections.push({ id: "process-steps", title: "Process" });
+  }
+  if (PlacementTraining.length > 0) {
+    availableSections.push({ id: "training-tracks", title: "Training Tracks" });
   }
   if (matchedexecutionOverviews.length > 0) {
     availableSections.push({
@@ -229,20 +232,18 @@ export default function HTD() {
   //     title: "Execution Overview (By Domain)",
   //   });
   // }
-
+ 
   if (matchedOppertunity.length > 0) {
     availableSections.push({ id: "opportunities", title: "Opportunities" });
   }
   if (matchedServiceClient.length > 0) {
     availableSections.push({ id: "clients", title: "Clients" });
   }
-  if (PlacementTraining.length > 0) {
-    availableSections.push({ id: "training-tracks", title: "Training Tracks" });
-  }
+ 
   if (matchedFaq.length > 0) {
     availableSections.push({ id: "faq", title: "FAQ" });
   }
-
+ 
   return (
     <>
       <div className="main-content homeModeChange ">
@@ -333,7 +334,7 @@ export default function HTD() {
                         "transform 200ms cubic-bezier(0.3, 0.7, 0.4, 1)",
                     }}
                   ></span>
-
+ 
                   {/* Button Edge */}
                   <span
                     className="edge"
@@ -348,7 +349,7 @@ export default function HTD() {
                       boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2)",
                     }}
                   ></span>
-
+ 
                   {/* Button Front */}
                   <span
                     className="front"
@@ -393,7 +394,7 @@ export default function HTD() {
                         }}
                       />
                     </span>
-
+ 
                     {/* Button Text */}
                     <span
                       className="text-container"
@@ -410,7 +411,7 @@ export default function HTD() {
                   </span>
                 </button>
               </div>
-
+ 
               {secondLastSegment === "b2i" && lastSegment === "dp" ? (
                 <ServiceDegreeProgram />
               ) : secondLastSegment === "csr" ? (
@@ -426,7 +427,7 @@ export default function HTD() {
                   >
                     <PageLinks sections={availableSections} />
                   </div>
-
+ 
                   <div style={{ paddingTop: "120px" }}>
                     {matchedServiceAbouts.length > 0 && (
                       <div id="learning-solutions">
@@ -440,12 +441,18 @@ export default function HTD() {
                         <StepsOne processSteps={processSteps} />
                       </div>
                     )}
+                                        {PlacementTraining.length > 0 && (
+                      <div id="training-tracks">
+                        <TrainingTracksTable />
+                      </div>
+                    )}
+
                     {matchedexecutionOverviews.length > 0 && (
                       <div id="execution-overview">
                         <ExecutionOverview serviceId={services} />
                       </div>
                     )}
-
+ 
                     {filteredHighlights.length > 0 && (
                       <div>
                         <ExecutiveHighlights
@@ -467,13 +474,8 @@ export default function HTD() {
                         <Clients filteredClients={matchedServiceClient} />
                       </div>
                     )}
-                    {PlacementTraining.length > 0 && (
-                      <div id="training-tracks">
-                        <TrainingTracksTable />
-                      </div>
-                    )}
                     {secondLastSegment === "b2i" && <ServiceClient />}
-
+ 
                     {secondLastSegment === "b2i" && <FormSection />}
                     {matchedFaq.length > 0 && (
                       <div id="faq">
@@ -484,14 +486,14 @@ export default function HTD() {
                 </div>
               )}
             </div>
-
+ 
             <FooterTwo />
           </div>
         </div>
         {/* </div> */}
       </div>
       <Messages messageOpen={messageOpen} setMessageOpen={setMessageOpen} />
-
+ 
       <style jsx>{`
         @keyframes fadeSlide {
           from {
@@ -507,3 +509,5 @@ export default function HTD() {
     </>
   );
 }
+ 
+ 

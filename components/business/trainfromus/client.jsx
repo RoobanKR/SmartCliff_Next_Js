@@ -74,14 +74,102 @@ export default function Client() {
                 >
                   {trainFromUsData.map((elm, i) => (
                     <SwiperSlide key={i}>
-                      <div className="swiper-slide h-100 overflow-visible">
-                        <div className="infoCard -type-1" data-aos="fade-left" data-aos-duration={(i + 1) * 300}>
-                          <div className="infoCard__image">
-                            <Image width={150} height={100} style={{ width: "100%", objectFit: "contain" }} src={elm.image} alt="image" />
+                                           <div
+                        className="swiper-slide h-100 overflow-visible"
+                        style={{ width: "240px", padding: "10px" }}
+                      >
+                        <div
+                          className="infoCard"
+                          style={{
+                            background:
+                              "linear-gradient(to bottom right, #F9F9F9, #FFFDF9)",
+                            borderRadius: "16px",
+                            border: "1px solid #E0E0E0",
+                            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)", // Increased shadow intensity
+                            height: "330px",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            transition:
+                              "transform 0.3s ease, box-shadow 0.3s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform =
+                              "translateY(-6px)";
+                            e.currentTarget.style.boxShadow =
+                              "0 18px 36px rgba(0, 0, 0, 0.2)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow =
+                              "0 8px 24px rgba(0, 0, 0, 0.15)";
+                          }}
+                        >
+                          {/* Image Section */}
+                          <div
+                            style={{
+                              height: "160px",
+                              backgroundColor: "#fff",
+                              borderTopLeftRadius: "16px",
+                              borderTopRightRadius: "16px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              padding: "16px",
+                              borderBottom: "1px solid #E0E0E0",
+                            }}
+                          >
+                            <Image
+                              width={140}
+                              height={100}
+                              style={{
+                                objectFit: "contain",
+                                maxHeight: "100%",
+                                maxWidth: "100%",
+                              }}
+                              src={elm.image}
+                              alt="Service Image"
+                            />
                           </div>
-                          <h5 className="infoCard__title text-17 lh-15 mt-10">{elm.name}</h5>
+ 
+                          {/* Title Section */}
+                          <div
+                            style={{
+                              padding: "20px 16px",
+                              textAlign: "center",
+                              flexGrow: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              minHeight: "90px",
+                            }}
+                          >
+                            <h5
+                              style={{
+                                fontSize: "16px",
+                                color: "#4B4B4B",
+                                fontWeight: 600,
+                                letterSpacing: "0.3px",
+                                lineHeight: "1.4",
+                              }}
+                            >
+                              {elm.name}
+                            </h5>
+                          </div>
+ 
+                          {/* Bottom Accent */}
+                          <div
+                            style={{
+                              height: "8px",
+                              width: "100%",
+                              backgroundColor: "#DAC0A3",
+                              borderBottomLeftRadius: "16px",
+                              borderBottomRightRadius: "16px",
+                            }}
+                          ></div>
                         </div>
                       </div>
+ 
                     </SwiperSlide>
                   ))}
                 </Swiper>

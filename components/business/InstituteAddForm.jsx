@@ -123,7 +123,7 @@ export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
               }
             } else if (field === "resources") {
               if (!value) {
-                error = "Resources is required";
+                error = "No Of Resources is required";
               } else if (isNaN(value) || parseInt(value) <= 0) {
                 error = "Please enter a valid number of resources";
               }
@@ -724,7 +724,7 @@ export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
                           <ResourceInput
                             icon={InventoryIcon}
                             name={`services.${index}.resources`}
-                            label="Resources"
+                            label="No of Resources"
                             values={values}
                             setFieldValue={setFieldValue}
                             setFieldError={setFieldError}

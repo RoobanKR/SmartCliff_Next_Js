@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import HirefromusAddForm from "../HirefromusAddForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
-import Trainfromus from "../trainfromus";
-import InstituteAddForm from "../InstituteAddForm";
+import InstitutionAddForm from "../InstituteAddForm";
+import { useSelector } from "react-redux";
 
 export default function HeroSection({ scrollToSection }) {
   const [showModal, setShowModal] = useState(false);
@@ -20,6 +19,14 @@ export default function HeroSection({ scrollToSection }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const { learningJourneys } = useSelector(
+    (state) => state.learningJourney
+  );
+ 
+  // Filter only hirefromus type data
+  const hireFromUsData = learningJourneys.filter(
+    (journey) => journey.type === "institute"
+  );
 
   return (
     <div
@@ -57,7 +64,6 @@ export default function HeroSection({ scrollToSection }) {
       <div
         style={{
           position: "relative",
-          zIndex: 2,
           maxWidth: isMobile ? "100%" : "50%",
         }}
       >
@@ -69,7 +75,7 @@ export default function HeroSection({ scrollToSection }) {
             color: "#FACC15",
           }}
         >
-          “Empowering Institutes, Enabling Careers”
+          "Empowering Institutes, Enabling Careers"
         </h1>
         <p
           style={{
@@ -79,7 +85,7 @@ export default function HeroSection({ scrollToSection }) {
             color: "#E0E7FF",
           }}
         >
-          A degree alone isn't enough in today’s job market. We help educational
+          A degree alone isn't enough in today's job market. We help educational
           institutions equip students with industry-aligned training, ensuring
           they graduate as skilled professionals ready for the workforce.
         </p>
@@ -103,150 +109,144 @@ export default function HeroSection({ scrollToSection }) {
               border: "2px solid #FACC15",
               cursor: "pointer",
               position: "relative",
-              zIndex: "1051",
+              zIndex: "3",
               width: "auto",
             }}
-            onClick={() => {
-              if (typeof scrollToSection === "function") {
-                scrollToSection();
-              } else {
-                console.error(
-                  "❌ scrollToSection is NOT a function!",
-                  scrollToSection
-                );
-              }
-            }}
+            onClick={() => setShowModal(true)}
           >
-            Let’s Collaborate!
+            Let's Collaborate!
           </button>{" "}
         </div>
-        <AnimatePresence>
-          {showModal && (
-            <motion.div
-              style={{
-                position: "fixed",
-                top: 40,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(0, 0, 0, 0.75)",
-                backdropFilter: "blur(5px)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 100000,
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Modal Box - Perfectly Centered */}
+        
+  <AnimatePresence>
+            {showModal && (
               <motion.div
                 style={{
-                  backgroundColor: "#ffffff",
-                  padding: "20px 40px",
-                  borderRadius: "20px",
-                  width: "90%",
-                  maxHeight: "80vh",
-                  overflowY: "auto",
-                  boxShadow: "0 10px 40px rgba(0, 0, 0, 0.25)",
-                  position: "relative",
-                  zIndex: 10000,
-                  margin: "auto", // Added for perfect centering
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "rgba(0, 0, 0, 0.75)",
+                  backdropFilter: "blur(5px)",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 101,
+                  overflowY: "hidden",
+ 
                 }}
-                initial={{ y: 50, opacity: 0, scale: 0.95 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                exit={{ y: 50, opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
               >
-                {/* Modal Header */}
-                <div
+                {/* Modal Box - Perfectly Centered */}
+                <motion.div
                   style={{
+                    backgroundColor: "rgb(255, 255, 255)",
+                    padding: "20px 30px",
+                    borderRadius: "20px",
+                    width: "500px",
+                    height: "100%",
+                    position: "relative",
+                    zIndex: 10000,
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "25px",
-                    paddingBottom: "15px",
+                    flexDirection: "column", // Ensure proper layout
                   }}
+                  initial={{ y: 50, opacity: 0, scale: 0.95 }}
+                  animate={{ y: 0, opacity: 1, scale: 1 }}
+                  exit={{ y: 50, opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                  <h1
+                  {/* Modal Header */}
+                  <div
                     style={{
-                      fontSize: "40px",
-                      fontWeight: "normal",
-                      fontFamily: "'Dancing Script', cursive",
-                      color: "#000", // Black color for text
-                      margin: "0",
-                      display: "inline-block",
-                      position: "relative",
-                      padding: "0 0 10px 0 ",
-                    }}
-                  >
-                    Institute Enquiry Form
-                    <span
-                      style={{
-                        content: '""',
-                        position: "absolute",
-                        left: "0",
-                        bottom: "0",
-                        height: "5px",
-                        width: "55px",
-                        backgroundColor: "black",
-                      }}
-                    ></span>
-                    {/* Bottom Thin Line */}
-                    <span
-                      style={{
-                        content: '""',
-                        position: "absolute",
-                        left: "0",
-                        bottom: "2px",
-                        height: "1px",
-                        width: "95%",
-                        maxWidth: "255px",
-                        backgroundColor: "black",
-                      }}
-                    ></span>
-                  </h1>
-
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    style={{
-                      width: "35px",
-                      height: "35px",
-                      borderRadius: "8px",
-                      padding: "4px 6px",
-                      border: "none",
-                      backgroundColor: "#b91616",
                       display: "flex",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "18px",
-                      color: "white",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
+                      marginBottom: "15px",
+                      position: "sticky",
+                      top: "0",
+                      backgroundColor: "white",
+                      zIndex: 100,
+                      paddingBottom: "10px",
                     }}
                   >
-                    <FaTimes />
-                  </button>
-                </div>
-
-                {/* Modal Content */}
-                <div
-                  style={{
-                    maxHeight: "80vh",
-                    overflowY: "auto",
-                    scrollbarWidth: "thin", // For Firefox
-                    scrollbarColor: "#F2775Ergb(255, 0, 0)",
-                  }}
-                >
-                  <InstituteAddForm />
-                </div>
+                    <h1
+                      style={{
+                        fontSize: "30px",
+                        fontWeight: "normal",
+                        fontFamily: "'Dancing Script', cursive",
+                        color: "#000",
+                        margin: "0",
+                        position: "relative",
+                        padding: "0 0 10px 0",
+                      }}
+                    >
+                       Let’s Collaborate!
+                      <span
+                        style={{
+                          position: "absolute",
+                          left: "0",
+                          bottom: "0",
+                          height: "5px",
+                          width: "55px",
+                          backgroundColor: "black",
+                        }}
+                      ></span>
+                      {/* Bottom Thin Line */}
+                      <span
+                        style={{
+                          position: "absolute",
+                          left: "0",
+                          bottom: "2px",
+                          height: "1px",
+                          width: "95%",
+                          maxWidth: "255px",
+                          backgroundColor: "black",
+                        }}
+                      ></span>
+                    </h1>
+ 
+                    <button
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                      style={{
+                        width: "35px",
+                        height: "35px",
+                        borderRadius: "8px",
+                        padding: "4px 6px",
+                        border: "none",
+                        backgroundColor: "#b91616",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "18px",
+                        color: "white",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+ 
+                  {/* Modal Content */}
+                  <div
+                    style={{
+                      flexGrow: 1, // Takes remaining height
+                      overflowY: "auto",
+                      paddingRight: "10px",
+                      scrollbarWidth: "thin",
+                    }}
+                  >
+                    <InstitutionAddForm  setShowModal={setShowModal} hireFromUsData={hireFromUsData}/>
+                  </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
+          </AnimatePresence>
       </div>
 
       {/* Right-Side Image (Hidden in Mobile) */}

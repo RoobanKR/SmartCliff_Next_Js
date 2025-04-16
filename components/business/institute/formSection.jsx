@@ -62,7 +62,7 @@ export default function FormSection() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  zIndex: 100000,
+                  zIndex: 101,
                   overflowY: "hidden",
  
                 }}

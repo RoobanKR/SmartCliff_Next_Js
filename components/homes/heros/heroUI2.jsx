@@ -138,7 +138,7 @@ export default function HeroUIFour() {
                   marginBottom: "10px",
                 }}
               >
-                BEGIN CAREER AT SMARTCLIFF
+                BEGIN LEARNING AT SMARTCLIFF
               </p>
               <Image
                 src="/assets/img/about/img1.svg"
