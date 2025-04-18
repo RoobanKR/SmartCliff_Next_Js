@@ -1,4 +1,4 @@
-// footerSlice.js
+import { getAPIURL } from '@/utils/utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -7,7 +7,7 @@ export const fetchFooterData = createAsyncThunk(
   'footer/fetchFooterData',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:5353/getAll/footer');
+      const response = await axios.get( `${getAPIURL()}/getAll/footer`);
       return response.data.getAllFooter?.[0] || null;
     } catch (error) {
       console.error('Failed to fetch footer data:', error);
