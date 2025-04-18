@@ -1,21 +1,43 @@
-
 "use client";
-import React, { useState } from "react";
-import { footerLinks } from "../../../data/footerLinks";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import Socials from "@/components/common/Socials";
 import Image from "next/image";
+import Socials from "@/components/common/Socials";
+import { useDispatch, useSelector } from "react-redux";
+import { selectFooterData,selectFooterStatus,fetchFooterData } from "@/redux/slices/footer/footer";
 
 export default function FooterLinks({ allClasses }) {
+  const dispatch = useDispatch();
+  const footerData = useSelector(selectFooterData);
+  const status = useSelector(selectFooterStatus);
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchFooterData());
+    }
+  }, [dispatch, status]);
+
+  // Show loading or nothing while fetching
+  if (status === 'loading' || !footerData) return null; // or a loading spinner
+
+  const {
+    logo,
+    socials,
+    quickLinks,
+    support,
+    business,
+    contact,
+  } = footerData;
+
   return (
     <div className="row">
-      {/* Logo & Socials - Displayed First */}
+      {/* Logo & Socials */}
       <div className="col-xl-2 col-lg-5 col-md-6 mt-25">
         <div className="footer-header__logo">
           <Image
             width={160}
             height={70}
-            src="/assets/img/general/logo1.png"
+            src={logo}
             alt="logo"
           />
         </div>
@@ -23,144 +45,126 @@ export default function FooterLinks({ allClasses }) {
         <div className="footer-header-socials mt-30">
           <div className="footer-header-socials__list text-white d-flex items-center">
             <Socials
-              componentsClass={"size-40 d-flex justify-center items-center "}
+              componentsClass="size-40 d-flex justify-center items-center"
+              socials={socials}
             />
           </div>
         </div>
       </div>
 
-      {/* Footer Links */}
-      {footerLinks.map((elm, i) => (
+      {/* Quick Links & Support */}
+      {[...(quickLinks || []), ...(support || [])].map((section, i) => (
         <div key={i} className="col-xl-2 col-lg-4 col-md-6">
           <div
             className={allClasses || ""}
             style={{
-              borderBottom: "2px solid white", // Set the underline style
-              paddingBottom: "3px", // Add space between the title and the underline
-              marginBottom: "10px", // Optional: add some space below the title
+              borderBottom: "2px solid white",
+              paddingBottom: "3px",
+              marginBottom: "10px",
               width: "130px",
             }}
           >
-            {elm.title}
+            {section.title}
           </div>
           <div className="d-flex y-gap-10 text-white flex-column">
-            {elm.links.map((itm, index) => (
+            {section.links.map((link, index) => (
               <Link
                 key={index}
-                href={itm.href}
+                href={link.href}
                 style={{
                   textDecoration: "none",
                   padding: "5px 0",
                   display: "block",
                   transition: "color 0.3s ease",
+                  color: "white",
                 }}
                 onMouseOver={(e) => (e.currentTarget.style.color = "#0056b3")}
-                onMouseOut={(e) => (e.currentTarget.style.color = "black")}
+                onMouseOut={(e) => (e.currentTarget.style.color = "white")}
               >
-                {itm.label}
+                {link.label}
               </Link>
             ))}
           </div>
         </div>
       ))}
 
-      {/* Contact & Newsletter Section */}
-      <div className="col-xl-6 col-lg-8 col-md-12">
-        <div className="row">
-          {/* Contact Section */}
-          <div className="col-md-4">
-            <div
-              className={allClasses || ""}
-              style={{
-                borderBottom: "2px solid white",
-                paddingBottom: "3px",
-                marginBottom: "10px",
-                width: "130px",
-              }}
-            >
-              Business
-            </div>
-            <div style={{ marginTop: "15px" }}>
-              {/* Corporate Module */}
-              <div style={{ marginBottom: "15px" }}>
-                <div
-                  style={{
-                    fontWeight: "bold",
-                    color: "white",
-                    width: "150px",
-                  }}
-                >
-                  Corporate
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingLeft: "20px" }}>
-                  <Link
-                    href="/hirefromus"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none", color: "white", marginBottom: "5px" }}
-                  >
-                    <span style={{ color: "white" }}>➤ Hire From Us</span>
-                  </Link>
-                  <Link
-                    href="/trainfromus"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none", color: "white" }}
-                  >
-                    <span style={{ color: "white" }}>➤ Train From Us</span>
-                  </Link>
-                </div>
+      {/* Business Section */}
+      <div className="col-xl-2 col-lg-4 col-md-12">
+        <div
+          className={allClasses || ""}
+          style={{
+            borderBottom: "2px solid white",
+            paddingBottom: "3px",
+            marginBottom: "10px",
+            width: "130px",
+          }}
+        >
+          {business.title}
+        </div>
+        <div style={{ marginTop: "15px" }}>
+          {business.sections.map((section, i) => (
+            <div key={i} style={{ marginBottom: "15px" }}>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  color: "white",
+                  width: "150px",
+                }}
+              >
+                {section.title}
               </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: "10px",
+                  paddingLeft: "20px",
+                }}
+              >
+                {section.links.map((link, j) => (
+                  <Link
+                    key={j}
+                    href={link.href}
+                    rel="noopener noreferrer"
+                    style={{
+                      textDecoration: "none",
+                      color: "white",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    <span style={{ color: "white" }}>➤ {link.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
-              {/* Institution Module */}
-              <div>
-                <div
-                  style={{
-                    fontWeight: "bold",
-                    color: "white",
-                    width: "150px",
-                  }}
-                >
-                  Institution
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", marginTop: "10px", paddingLeft: "20px" }}>
-                  <Link
-                    href="/institute"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none", color: "white" }}
-                  >
-                    <span style={{ color: "white" }}>➤ Institute</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
+      {/* Contact Section */}
+      <div className="col-md-8 col-lg-4 text-white">
+        <div
+          className={allClasses || ""}
+          style={{
+            borderBottom: "2px solid white",
+            paddingBottom: "3px",
+            marginBottom: "10px",
+            width: "130px",
+          }}
+        >
+          {contact.title}
+        </div>
+        <div className="d-flex y-gap-10 flex-column">
+          <div className="d-flex align-items-center gap-2">
+            <i className="lucide lucide-phone"></i>
+            <span>{contact.phone}</span>
           </div>
-          <div className="col-md-8 text-white">
-            <div
-              className={allClasses || ""}
-              style={{
-                borderBottom: "2px solid white",
-                paddingBottom: "3px",
-                marginBottom: "10px",
-                width: "130px",
-              }}
-            >
-              Contact
-            </div>
-            <div className="d-flex y-gap-10 flex-column">
-              <div className="d-flex align-items-center gap-2">
-                <i className="lucide lucide-phone"></i>
-                <span>+91 811 007 7033</span>
-              </div>
-              <div className="d-flex align-items-start gap-2">
-                <i className="lucide lucide-map-pin"></i>
-                <span>
-                  SmartCliff Learning Solutions LLP, Indsil House, Thiruvenkatasamy Road, R S Puram, Coimbatore – 641002                 </span>
-              </div>
-            </div>
+          <div className="d-flex align-items-start gap-2">
+            <i className="lucide lucide-map-pin"></i>
+            <span>{contact.address}</span>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-

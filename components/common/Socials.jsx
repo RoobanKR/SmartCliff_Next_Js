@@ -1,23 +1,18 @@
-import Link from "next/link";
 
-import { socialMediaLinks } from "../../data/socialLinks";
-import React from "react";
-
-export default function Socials({ componentsClass, textSize }) {
+export default function Socials({ socials = [], componentsClass }) {
   return (
     <>
-      {socialMediaLinks.map((link, index) => (
-        <Link
-          key={index}
-          className={componentsClass ? componentsClass : ""}
-          href={link.href}
+      {socials.map((social, i) => (
+        <a
+          key={i}
+          href={social.url}
+          className={componentsClass}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <i className={`${link.iconClassName} ${textSize}`}></i>
-        </Link>
+          <i className={social.icon}></i>
+        </a>
       ))}
     </>
   );
 }
-

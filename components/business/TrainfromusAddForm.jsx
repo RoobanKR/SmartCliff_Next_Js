@@ -176,6 +176,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
 
     try {
       const processedResources = values.resourceRequirements.map((req) => ({
+        skillset: values.traineeModel,
         resources: parseInt(req.resources, 10),
       }));
 
@@ -184,7 +185,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
         name: values.name,
         mobile: values.mobile,
         email: values.email,
-        resourceRequirements: processedResources,
+        skillsetRequirements: processedResources,
         enquiry: values.enquiry,
         trainee_modal:
           values.traineeModel === "Other"
