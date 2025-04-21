@@ -37,6 +37,7 @@ const SequentialDots = () => {
 const CoursesDropdown = () => {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
+  const [hoveredLink, setHoveredLink] = useState(null);
   const courses = useSelector((state) => state.courses.courses);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -124,15 +125,30 @@ const CoursesDropdown = () => {
         setIsHovered(false); // Set hovered state to false on mouse leave
       }}
     >
-      <a data-barba className="courseMainLink" style={{ cursor: "pointer" }}>
-        <span style={{ color: isHovered ? "#f2775e" : "" }}>Programs</span>
+      <a
+        data-barba
+        className="courseMainLink"
+        style={{ cursor: "pointer" }}
+        onMouseOver={() => setHoveredLink("programs")}
+        onMouseOut={() => setHoveredLink(null)}
+      >
+        <span
+          style={{
+            color: isHovered || isActive("/programs") ? "#F3D66A" : "#fff", // Soft yellow text for active or hover
+          }}
+        >
+          Programs
+        </span>
         <motion.i
           className="icon-chevron-down text-13 ml-10"
           animate={isDropdownOpen ? { rotate: 180 } : { rotate: 0 }}
           transition={{ duration: 0.2 }}
-          style={{ color: isHovered || isActive("/business") ? "#f2775e" : "" }}
+          style={{
+            color: isHovered || isActive("/programs") ? "#F3D66A" : "#fff", // Soft yellow for icon on hover/active
+          }}
         />
       </a>
+
       <AnimatePresence>
         {isDropdownOpen && (
           <motion.div
@@ -284,7 +300,7 @@ const CoursesDropdown = () => {
                   height: "450px",
                   scrollbarWidth: "thin", // For Firefox
                   scrollbarColor: "#ccc transparent",
-                  backgroundColor: "#fff",
+                  backgroundColor: "#fff2c1",
                 }}
               >
                 {hoveredCategory && coursesByCategory[hoveredCategory] ? (
@@ -448,19 +464,20 @@ const CoursesDropdown = () => {
                                           display: "inline-block",
                                           width: "16px",
                                           height: "16px",
-                                          border: "2px solid rgba(0, 71, 171, 0.3)",
+                                          border:
+                                            "2px solid rgba(0, 71, 171, 0.3)",
                                           borderRadius: "50%",
                                           borderTopColor: "#0047AB",
                                           animation: "spin 1s linear infinite",
                                         }}
                                       />
                                       <style jsx>{`
-                  @keyframes spin {
-                    to {
-                      transform: rotate(360deg);
-                    }
-                  }
-                `}</style>
+                                        @keyframes spin {
+                                          to {
+                                            transform: rotate(360deg);
+                                          }
+                                        }
+                                      `}</style>
                                     </>
                                   ) : (
                                     <>
@@ -545,7 +562,7 @@ const CoursesDropdown = () => {
                                 </div>
                               ) : (
                                 <>
-                                {/* <span
+                                  {/* <span
                                   style={{
                                     marginLeft: "8px",
                                     color: "#f2775e",
@@ -558,6 +575,28 @@ const CoursesDropdown = () => {
                                 >
                                   Coming Soon
                                 </span> */}
+                                  <>
+                                    <span
+                                      style={{
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        cursor: "not-allowed", // shows disabled icon on hover
+                                        color: "#0047AB",
+                                      }}
+                                    >
+                                      Learn More
+                                      <i
+                                        className="icon-chevron-right"
+                                        style={{
+                                          fontSize: "11px",
+                                          marginLeft: "8px",
+                                          color: "#0047AB",
+                                          transition: "transform 0.2s ease",
+                                          pointerEvents: "none", // icon also can't be clicked
+                                        }}
+                                      ></i>
+                                    </span>
+                                  </>
                                 </>
                               )}
                             </div>

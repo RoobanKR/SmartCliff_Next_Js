@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 const BusinessDropdown = () => {
     const categories = useSelector(selectCategories);
     const pathname = usePathname();
+      const [hoveredLink, setHoveredLink] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     // State management
     const [isBusinessOpen, setIsBusinessOpen] = useState(false);
@@ -155,24 +157,32 @@ const BusinessDropdown = () => {
             onMouseLeave={handleMouseLeave}
         >
             {/* Main Business Link */}
-            <Link
-                href="#"
-                onClick={toggleBusinessDropdown}
-                className="flex items-center group transition-all duration-300"
-            >
-                <span
-                    className={`transition-colors duration-300 ${isActive("/business") || isHovered ? "text-orange-1" : ""
-                        }`}
-                >
-                    Business
-                </span>
-                <motion.i
-                    className="icon-chevron-down text-13 ml-10"
-                    animate={isBusinessOpen ? { rotate: 180 } : { rotate: 0 }}
-                    transition={{ duration: 0.2 }}
-                    style={{ color: isHovered || isActive("/business") ? "#f2775e" : "" }}
-                />
-            </Link>
+    <a
+  data-barba
+  className="courseMainLink"
+  style={{ cursor: "pointer" }}
+  onMouseOver={() => setHoveredLink("business")}
+  onMouseOut={() => setHoveredLink(null)}
+>
+  <span
+    style={{
+      color: isHovered || isActive("/business") ? "#F3D66A" : "#fff", // Soft yellow text for active or hover
+    }}
+  >
+    business
+  </span>
+  <motion.i
+    className="icon-chevron-down text-13 ml-10"
+    animate={isDropdownOpen ? { rotate: 180 } : { rotate: 0 }}
+    transition={{ duration: 0.2 }}
+    style={{
+      color: isHovered || isActive("/business") ? "#F3D66A" : "#fff", // Soft yellow for icon on hover/active
+    }}
+  />
+</a>
+
+
+
 
             {/* Main Dropdown Menu */}
             <AnimatePresence>

@@ -9,14 +9,14 @@ import SearchToggle from "../component/SearchToggle";
 
 export default function HeaderTwo({ onServiceSelect }) {
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
-  const [bgColor, setBgColor] = useState("#ffffff"); // Initially white
+  const [bgColor, setBgColor] = useState("#5b2c6f"); // Initially white
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        setBgColor("#FAF1E6"); // Change color when scrolled down
+        setBgColor("#5b2c6f"); // Change color when scrolled down
       } else {
-        setBgColor("#ffffff"); // Revert to white when at the top
+        setBgColor("#5b2c6f"); // Revert to white when at the top
       }
     };
 
@@ -45,7 +45,7 @@ export default function HeaderTwo({ onServiceSelect }) {
                   <Image
                     width={140}
                     height={50}
-                    src="/assets/img/general/logo.png"
+                    src="/assets/img/general/logo1.png"
                     alt="logo"
                   />
                 </Link>

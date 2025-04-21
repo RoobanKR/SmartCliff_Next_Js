@@ -57,8 +57,9 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
 
   return (
     <div
-      className={`header-menu js-mobile-menu-toggle ${headerPosition ? headerPosition : ""
-        }`}
+      className={`header-menu js-mobile-menu-toggle ${
+        headerPosition ? headerPosition : ""
+      }`}
     >
       <div className="header-menu__content">
         <div className="mobile-bg js-mobile-bg"></div>
@@ -78,16 +79,14 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
         <div className="menu js-navList" style={{ marginRight: "-30px" }}>
           <ul className={allClasses ? allClasses : ""}>
             <li
-              className="menu-item-has-children"
               style={{
                 textDecoration: pathname === "/" ? "underline" : "none",
-                textUnderlineOffset: "4px", // Adds spacing between text and underline
+                textUnderlineOffset: "4px",
               }}
             >
               <Link
                 data-barba
                 href="/"
-                className={pathname === "/" ? "activeMenu" : ""}
                 onMouseOver={() => setHoveredLink("/")}
                 onMouseOut={() => setHoveredLink(null)}
                 style={{
@@ -95,16 +94,25 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border:
-                    hoveredLink === "/"
-                      ? "2px solid #f2775e"
-                      : "2px solid transparent", // Orange border on hover
-                  color:
-                    hoveredLink === "/"
-                      ? "#fff" // White text on hover
-                      : pathname === "/"
-                        ? "#f2775e" // Active state text color
-                        : "#000", // Default text color (black)
+                    pathname === "/"
+                      ? "2px solid #F3D66A"
+                      : "2px solid transparent",
+                  backgroundColor:
+                    pathname === "/"
+                      ? "rgba(243, 214, 106, 0.3)" // Active soft yellow
+                      : hoveredLink === "/"
+                      ? "rgba(255, 255, 255, 0.15)" // Mild white on hover
+                      : "transparent",
                   transition: "all 0.3s ease",
+                  textDecoration: "none",
+                  color:
+                    pathname === "/" || hoveredLink === "/"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
+                  WebkitTextFillColor:
+                    pathname === "/" || hoveredLink === "/"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
                 }}
               >
                 Home
@@ -115,7 +123,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
               className="menu-item-has-children"
               style={{
                 textDecoration: pathname === "/aboutUs" ? "underline" : "none",
-                textUnderlineOffset: "4px", // Adds spacing between text and underline
+                textUnderlineOffset: "4px",
               }}
             >
               <Link
@@ -129,16 +137,25 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border:
-                    hoveredLink === "aboutUs"
-                      ? "2px solid #f2775e"
-                      : "2px solid transparent", // Orange border on hover
-                  color:
-                    hoveredLink === "aboutUs"
-                      ? "#fff" // White text on hover
-                      : pathname === "/aboutUs"
-                        ? "#f2775e" // Active state text color
-                        : "#000", // Default text color (black)
+                    pathname === "/aboutUs"
+                      ? "2px solid #F3D66A"
+                      : "2px solid transparent",
+                  backgroundColor:
+                    pathname === "/aboutUs"
+                      ? "rgba(243, 214, 106, 0.3)" // Active: soft yellow background
+                      : hoveredLink === "aboutUs"
+                      ? "rgba(255, 255, 255, 0.15)" // Mild white on hover
+                      : "transparent",
                   transition: "all 0.3s ease",
+                  textDecoration: "none",
+                  color:
+                    pathname === "/aboutUs" || hoveredLink === "aboutUs"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
+                  WebkitTextFillColor:
+                    pathname === "/aboutUs" || hoveredLink === "aboutUs"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
                 }}
               >
                 About Us
@@ -153,7 +170,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
               className="menu-item-has-children"
               style={{
                 textDecoration: pathname === "/history" ? "underline" : "none",
-                textUnderlineOffset: "4px", // Adds spacing between text and underline
+                textUnderlineOffset: "4px",
               }}
             >
               <Link
@@ -167,16 +184,25 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border:
-                    hoveredLink === "/history"
-                      ? "2px solid #f2775e"
-                      : "2px solid transparent", // Orange border on hover
-                  color:
-                    hoveredLink === "/history"
-                      ? "#fff" // White text on hover
-                      : pathname === "/history"
-                        ? "#f2775e" // Active state text color
-                        : "#000", // Default text color (black)
+                    pathname === "/history"
+                      ? "2px solid #F3D66A"
+                      : "2px solid transparent",
+                  backgroundColor:
+                    pathname === "/history"
+                      ? "rgba(243, 214, 106, 0.3)" // Active yellow
+                      : hoveredLink === "/history"
+                      ? "rgba(255, 255, 255, 0.15)" // Mild white on hover
+                      : "transparent",
                   transition: "all 0.3s ease",
+                  textDecoration: "none",
+                  color:
+                    pathname === "/history" || hoveredLink === "/history"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
+                  WebkitTextFillColor:
+                    pathname === "/history" || hoveredLink === "/history"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
                 }}
               >
                 History
@@ -187,7 +213,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
               className="menu-item-has-children"
               style={{
                 textDecoration: pathname === "/career" ? "underline" : "none",
-                textUnderlineOffset: "4px", // Adds spacing between text and underline
+                textUnderlineOffset: "4px",
               }}
             >
               <Link
@@ -201,16 +227,25 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border:
-                    hoveredLink === "/career"
-                      ? "2px solid #f2775e"
-                      : "2px solid transparent", // Orange border on hover
-                  color:
-                    hoveredLink === "/career"
-                      ? "#fff" // White text on hover
-                      : pathname === "/career"
-                        ? "#f2775e" // Active state text color
-                        : "#000", // Default text color (black)
+                    pathname === "/career"
+                      ? "2px solid #F3D66A"
+                      : "2px solid transparent",
+                  backgroundColor:
+                    pathname === "/career"
+                      ? "rgba(243, 214, 106, 0.3)" // Active state
+                      : hoveredLink === "/career"
+                      ? "rgba(255, 255, 255, 0.15)" // Mild white on hover
+                      : "transparent",
                   transition: "all 0.3s ease",
+                  textDecoration: "none",
+                  color:
+                    pathname === "/career" || hoveredLink === "/career"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
+                  WebkitTextFillColor:
+                    pathname === "/career" || hoveredLink === "/career"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
                 }}
               >
                 Career
@@ -221,7 +256,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
               className="menu-item-has-children"
               style={{
                 textDecoration: pathname === "/contact" ? "underline" : "none",
-                textUnderlineOffset: "4px", // Adds spacing between text and underline
+                textUnderlineOffset: "4px",
               }}
             >
               <Link
@@ -235,16 +270,25 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border:
-                    hoveredLink === "/contact"
-                      ? "2px solid #f2775e"
-                      : "2px solid transparent", // Orange border on hover
-                  color:
-                    hoveredLink === "/contact"
-                      ? "#fff" // White text on hover
-                      : pathname === "/contact"
-                        ? "#f2775e" // Active state text color
-                        : "#000", // Default text color (black)
+                    pathname === "/contact"
+                      ? "2px solid #F3D66A"
+                      : "2px solid transparent",
+                  backgroundColor:
+                    pathname === "/contact"
+                      ? "rgba(243, 214, 106, 0.3)" // Active background
+                      : hoveredLink === "/contact"
+                      ? "rgba(255, 255, 255, 0.15)" // Mild white on hover
+                      : "transparent",
                   transition: "all 0.3s ease",
+                  textDecoration: "none",
+                  color:
+                    pathname === "/contact" || hoveredLink === "/contact"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
+                  WebkitTextFillColor:
+                    pathname === "/contact" || hoveredLink === "/contact"
+                      ? "#F3D66A"
+                      : "#FFFFFF",
                 }}
               >
                 Contact
@@ -268,4 +312,3 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
     </div>
   );
 }
-

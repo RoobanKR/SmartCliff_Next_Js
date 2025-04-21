@@ -148,9 +148,12 @@ const CategoriesHomeOne = () => {
                       <div>
                         {servicesList.map((service, index) => (
                           <div key={index} className="service-item">
-                            <Link href={`/${item.slug}/${service.slug}`}>
-                              {service.title} 🔗
-                            </Link>
+                            <Link
+  href={`/${item.slug}/${service.slug}`}
+>
+  {service.title} 🔗
+</Link>
+
                             {servicesList.length > 1 &&
                               index < servicesList.length - 1 && (
                                 <div className="separator"></div>
@@ -321,7 +324,7 @@ const CategoriesHomeOne = () => {
         .service-item {
           font-size: 12px;
           font-weight: 500;
-          text-transform: uppercase;
+          color: #2c686f !important;
           letter-spacing: 0.5px;
           padding-bottom: 8px;
         }

@@ -14,7 +14,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import EnquiryModal from "@/components/common/EnquiryModal";
 import { FaTimes } from "react-icons/fa";
- 
+
 // SVG Components for card decorations
 const ScatteredSquaresIcon = () => (
   <svg
@@ -31,7 +31,7 @@ const ScatteredSquaresIcon = () => (
     <rect x="70" y="70" width="20" height="20" fill="#FF69B4" />
   </svg>
 );
- 
+
 const CirclesIcon = () => (
   <svg
     width="80"
@@ -45,7 +45,7 @@ const CirclesIcon = () => (
     <circle cx="70" cy="70" r="15" fill="#65C466" />
   </svg>
 );
- 
+
 const ScatteredStarsIcon = () => (
   <svg
     width="100"
@@ -68,7 +68,7 @@ const ScatteredStarsIcon = () => (
     />
   </svg>
 );
- 
+
 const ScatteredCirclesIcon = () => (
   <svg
     width="100"
@@ -83,18 +83,18 @@ const ScatteredCirclesIcon = () => (
     <circle cx="75" cy="75" r="12" fill="#FFD700" />
   </svg>
 );
- 
+
 const LoadingSpinner = () => {
   const [dotCount, setDotCount] = useState(1);
- 
+
   useEffect(() => {
     const interval = setInterval(() => {
       setDotCount((prev) => (prev < 3 ? prev + 1 : 1));
     }, 300); // Change dot count every 300ms
- 
+
     return () => clearInterval(interval);
   }, []);
- 
+
   return (
     <div
       style={{
@@ -136,18 +136,18 @@ const LoadingSpinner = () => {
     </div>
   );
 };
- 
+
 const SequentialDots = () => {
   const [dots, setDots] = useState(1);
- 
+
   useEffect(() => {
     const interval = setInterval(() => {
       setDots((prev) => (prev < 3 ? prev + 1 : 1));
     }, 300);
- 
+
     return () => clearInterval(interval);
   }, []);
- 
+
   return (
     <span
       style={{
@@ -160,10 +160,11 @@ const SequentialDots = () => {
     </span>
   );
 };
- 
+
 const ServicesDropdown = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [hoveredLink, setHoveredLink] = useState(null);
   const services = useSelector(selectServices);
   const businessServices = useSelector(selectBusinessServices);
   const [hoveredService, setHoveredService] = useState(null);
@@ -174,12 +175,12 @@ const ServicesDropdown = () => {
   const pathname = usePathname();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isActive = (path) => pathname.startsWith(path);
- 
+
   useEffect(() => {
     dispatch(getAllBusinessServices());
     dispatch(fetchServices());
   }, [dispatch]);
- 
+
   useEffect(() => {
     if (
       isDropdownOpen &&
@@ -190,32 +191,32 @@ const ServicesDropdown = () => {
       setHoveredService(businessServices[0]._id);
     }
   }, [isDropdownOpen, businessServices, hoveredService]);
- 
+
   // Track navigation events
   useEffect(() => {
     const handleRouteChangeStart = () => {
       setIsNavigating(true);
     };
- 
+
     const handleRouteChangeComplete = () => {
       setIsNavigating(false);
       setLoadingServiceId(null);
     };
- 
+
     // Subscribe to router events
     window.addEventListener("beforeunload", handleRouteChangeStart);
- 
+
     // For Next.js App Router
     const handlePathnameChange = () => {
       if (isNavigating) {
         handleRouteChangeComplete();
       }
     };
- 
+
     // Check if pathname has changed
     const currentPathname = pathname;
     let previousPathname = currentPathname;
- 
+
     const pathnameObserver = setInterval(() => {
       const newPathname = window.location.pathname;
       if (previousPathname !== newPathname) {
@@ -223,23 +224,23 @@ const ServicesDropdown = () => {
         handlePathnameChange();
       }
     }, 100);
- 
+
     return () => {
       window.removeEventListener("beforeunload", handleRouteChangeStart);
       clearInterval(pathnameObserver);
     };
   }, [pathname, isNavigating]);
- 
+
   // Find the current business service for slug
   const getCurrentBusinessService = (serviceId) => {
     return businessServices?.find((service) => service._id === serviceId);
   };
- 
+
   // Function to get a decoration for a card based on index
   const getCardDecoration = (index) => {
     // Cycle through 3 decoration styles
     const decorationIndex = index % 4;
- 
+
     switch (decorationIndex) {
       case 0:
         return <ScatteredCirclesIcon />;
@@ -261,16 +262,16 @@ const ServicesDropdown = () => {
       setIsModalOpen(true); // Open the modal instead of showing alert
       return; // Prevent navigation
     }
- 
+
     // Normal behavior for other services
     setLoadingServiceId(serviceId);
     setIsNavigating(true);
   };
- 
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
- 
+
   return (
     <li
       className="menu-item-has-children"
@@ -283,15 +284,30 @@ const ServicesDropdown = () => {
         setIsHovered(false);
       }}
     >
-      <a data-barba className="serviceMainLink" style={{ cursor: "pointer" }}>
-        <span style={{ color: isHovered ? "#f2775e" : "" }}>Services</span>
+      <a
+        data-barba
+        className="serviceMainLink"
+        style={{ cursor: "pointer" }}
+        onMouseOver={() => setHoveredLink("services")}
+        onMouseOut={() => setHoveredLink(null)}
+      >
+        <span
+          style={{
+            color: isHovered || isActive("/services") ? "#F3D66A" : "#fff", // Soft yellow text for active or hover
+          }}
+        >
+          Services
+        </span>
         <motion.i
           className="icon-chevron-down text-13 ml-10"
           animate={isDropdownOpen ? { rotate: 180 } : { rotate: 0 }}
           transition={{ duration: 0.2 }}
-          style={{ color: isHovered || isActive("/business") ? "#f2775e" : "" }}
+          style={{
+            color: isHovered || isActive("/services") ? "#F3D66A" : "#fff", // Soft yellow for icon on hover/active
+          }}
         />
       </a>
+
       <AnimatePresence>
         {isDropdownOpen && (
           <motion.div
@@ -415,7 +431,7 @@ const ServicesDropdown = () => {
                   ))}
                 </ul>
               </div>
- 
+
               {/* Right content area - UPDATED with decorative elements */}
               <div
                 className="services-content"
@@ -453,12 +469,12 @@ const ServicesDropdown = () => {
                           getCurrentBusinessService(hoveredService);
                         const isLoading = loadingServiceId === service._id;
                         const serviceUrl = `/${currentBusinessService?.slug}/${service.slug}`;
- 
+
                         // Check if this is a B2C enquiry form
                         const isB2CEnquiry =
                           currentBusinessService?.slug === "b2c" &&
                           service.slug === "enquiryform";
- 
+
                         // For B2C enquiry form, render the full width special card
                         if (isB2CEnquiry) {
                           return (
@@ -515,7 +531,7 @@ const ServicesDropdown = () => {
                                   }}
                                 />
                               </h2>
- 
+
                               {/* Description Box */}
                               <div
                                 style={{
@@ -544,7 +560,7 @@ const ServicesDropdown = () => {
                                   }}
                                 />
                               </div>
- 
+
                               {/* Button */}
                               <span
                                 onClick={(e) => {
@@ -577,7 +593,7 @@ const ServicesDropdown = () => {
                             </div>
                           );
                         }
- 
+
                         // For all other service cards, render the standard card
                         return (
                           <Link
@@ -590,7 +606,7 @@ const ServicesDropdown = () => {
                                 currentBusinessService?.slug,
                                 service.slug
                               );
- 
+
                               // Prevent default if it's our special case
                               if (isB2CEnquiry) {
                                 e.preventDefault();
@@ -694,7 +710,7 @@ const ServicesDropdown = () => {
                                     {service.title}
                                   </h3>
                                 </div>
- 
+
                                 {/* Text Content */}
                                 <div style={{ flex: "1" }}>
                                   {/* Description */}
@@ -717,7 +733,7 @@ const ServicesDropdown = () => {
                                   </p>
                                 </div>
                               </div>
- 
+
                               {/* Learn More button */}
                               {service.title !== "Degree Program" && (
                                 <div
@@ -800,7 +816,7 @@ const ServicesDropdown = () => {
         )}
       </AnimatePresence>
       {/* <EnquiryModal isOpen={isModalOpen} onClose={closeModal} /> */}
- 
+
       {isModalOpen && (
         <motion.div
           style={{
@@ -889,7 +905,7 @@ const ServicesDropdown = () => {
                   }}
                 ></span>
               </h1>
- 
+
               <button
                 type="button"
                 onClick={() => closeModal(false)}
@@ -912,7 +928,7 @@ const ServicesDropdown = () => {
                 <FaTimes />
               </button>
             </div>
- 
+
             {/* Modal Content */}
             <div
               style={{
@@ -930,7 +946,5 @@ const ServicesDropdown = () => {
     </li>
   );
 };
- 
+
 export default ServicesDropdown;
- 
- 

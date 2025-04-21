@@ -151,7 +151,7 @@ export default function ExecutiveOverview2() {
                     style={{
                       width: "52px",
                       height: "52px",
-                      background: "rgba(255, 255, 255, 0.15)", // Glass Effect
+                      background: "rgba(255, 255, 255, 0.06)", // Glass Effect
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
