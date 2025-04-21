@@ -12,7 +12,7 @@ export default function page() {
       <Preloader />
       <HeaderTwo />
       <div className="content-wrapper js-content-wrapper overflow-hidden">
-        <div className="banner__content mt-60">
+        <div className="banner__content mt-80">
           <Banner
             title={jsonData[13].title}
             description={jsonData[13].description}
