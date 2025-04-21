@@ -267,8 +267,9 @@ export default function CourseDetailsSix() {
               <tr
                 key={index}
                 style={{
-                  backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white",
+                  backgroundColor: item.elements === "Total in Hours" ? "#e8daef" : index % 2 === 0 ? "#f9f9f9" : "white",
                   borderBottom: "1px solid #ddd",
+                  fontWeight: item.elements === "Total in Hours" ? "bold" : "normal",
                 }}
               >
                 <td style={{ padding: "12px 15px" }}>{item.elements}</td>
