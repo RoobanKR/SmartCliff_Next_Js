@@ -124,6 +124,7 @@ export default function HeroSection() {
         padding: "1.5rem",
         color: "black",
       }}
+      ref={counterSectionRef}
     >
       {/* Main content container */}
       <div
@@ -195,7 +196,6 @@ export default function HeroSection() {
               marginTop: "2rem",
               justifyContent: "center",
             }}
-            ref={counterSectionRef}
           >
             <div
               style={{
@@ -370,105 +370,96 @@ export default function HeroSection() {
       </div>
       <div
         style={{
-          width: "96vw",
-          maxWidth: "100%",
+          width: "100%",
           margin: "1.5rem auto",
-          textAlign: "center",
-          padding: "1rem",
+          padding: "0.5rem",
           background: "linear-gradient(135deg, #FFF1DB 0%, #FCE6C9 100%)",
-          borderRadius: "16px",
-          boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.15)",
+          borderRadius: "14px",
           position: "relative",
-          overflow: "hidden",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
-        {/* Decorative circles */}
+        {/* Image Section */}
         <div
           style={{
-            position: "absolute",
-            top: "-30px",
-            left: "-30px",
-            width: "80px",
-            height: "80px",
-            background: "#f27757",
-            opacity: 0.2,
-            borderRadius: "50%",
-          }}
-        ></div>
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-40px",
-            right: "-40px",
-            width: "100px",
-            height: "100px",
-            background: "#405D72",
-            opacity: 0.15,
-            borderRadius: "50%",
-          }}
-        ></div>
-
-        <h2
-          style={{
-            fontSize: "clamp(1.5rem, 4vw, 2.2rem)",
-            fontWeight: "bold",
-            color: "#405D72",
+            flex: "1 1 260px",
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
-            gap: "0.5rem",
-            marginBottom: "1rem",
           }}
         >
-          <span style={{ position: "relative", paddingBottom: "4px" }}>
-            Total Execution
-            <span
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "3px",
-                background: "#f27757",
-                bottom: "-2px",
-                left: "0",
-                borderRadius: "2px",
-              }}
-            ></span>
-          </span>
-
-          <span
+          <img
+            src="/assets/img/home-1/newhero/Collab.png"
+            alt="Learning Illustration"
             style={{
-              fontSize: "clamp(2rem, 6vw, 3rem)",
-              fontWeight: "bold",
+              maxWidth: "45%",
+              height: "auto",
+            }}
+          />
+        </div>
+
+        {/* Text Section */}
+        <div
+          style={{
+            flex: "1 1 260px",
+            paddingRight: "0.75rem",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "clamp(1.2rem, 3.5vw, 1.8rem)",
+              color: "#405D72",
+              fontWeight: 600,
+              marginBottom: "0.5rem",
+            }}
+          >
+            Empowering Growth Through Real Execution
+          </h2>
+          <p
+            style={{
+              fontSize: "0.95rem",
+              color: "#555",
+              maxWidth: "400px",
+              lineHeight: "1.4",
+            }}
+          >
+            Every execution counts. From enrollments to completions, our total
+            execution reflects real outcomes, not just signups. This is where
+            learning meets results.
+          </p>
+
+          {/* Count */}
+          <div
+            style={{
+              marginTop: "1rem",
+              fontSize: "clamp(1.5rem, 4vw, 2rem)",
+              fontWeight: 700,
+              color: "#f27757",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              color: "#f27757",
-              padding: "0.5rem 1rem",
-              borderRadius: "12px",
-              backdropFilter: "blur(6px)",
-              transition: "transform 0.3s ease-in-out",
+              gap: "0.4rem",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             <i
-              className="icon-bar-chart"
-              style={{
-                marginRight: "10px",
-                fontSize: "clamp(1.5rem, 5vw, 2rem)",
-                color: "#f27757",
-              }}
-            ></i>
+              className="icon-users"
+              style={{ fontSize: "1.5rem", color: "#f27757" }}
+            />
             <AnimatedCounter
               startValue={0}
               endValue={totalCount}
               duration={2000}
               isVisible={isVisible}
             />
-          </span>
-        </h2>
+            <span style={{ fontSize: "0.95rem", color: "#405D72" }}>
+              Total Execution
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Media queries for responsive design */}
@@ -482,4 +473,3 @@ export default function HeroSection() {
     </div>
   );
 }
-

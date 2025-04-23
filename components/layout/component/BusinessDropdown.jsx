@@ -112,7 +112,7 @@ const BusinessDropdown = () => {
     borderRadius: "5px",
     boxShadow: "0 5px 15px rgba(0,0,0,0.03)",
     border: "1px solid rgba(248, 248, 252, 0.97)",
-    background: " rgba(240, 112, 87, 0.54)",
+    background: " rgb(240, 112, 87)",
     padding: "6px 0",
     marginLeft: "10px",
     marginRight: "10px",
