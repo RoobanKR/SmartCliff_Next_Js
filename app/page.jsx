@@ -10,7 +10,7 @@ import ExecutionOvervirewHome from "@/components/homes/heros/executionOverview";
 import CategoriesHomeOne from "@/components/homes/heros/serviceOverview";
 import WhySmartcliff from "@/components/homes/about/whysmartcliff";
 import ExecutiveOverview2 from "@/components/homes/heros/executionOverview2";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, X } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getPopUpNotification } from "@/redux/slices/popUp/popUp";
@@ -28,6 +28,8 @@ export default function HomePage() {
   );
   const [showPopup, setShowPopup] = useState(false);
   const [openPopups, setOpenPopups] = useState([]);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
   useEffect(() => {
     dispatch(getPopUpNotification());
@@ -43,44 +45,6 @@ export default function HomePage() {
 
   const closePopup = () => {
     setShowPopup(false);
-  };
-
-  const swiperStyles = {
-    container: {
-      padding: "0px 0",
-      position: "relative",
-    },
-    pagination: {
-      bottom: "-10px",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "10px",
-    },
-    paginationBullet: {
-      width: "10px",
-      height: "10px",
-      backgroundColor: "#ccc",
-      borderRadius: "50%",
-      opacity: 0.5,
-      cursor: "pointer",
-      transition: "all 0.3s ease",
-    },
-    paginationBulletActive: {
-      width: "20px",
-      height: "10px",
-      backgroundColor: "#007bff",
-      borderRadius: "5px",
-      opacity: 1,
-    },
-    navigationButton: {
-      color: "#007bff",
-      backgroundColor: "rgba(0, 123, 255, 0.1)",
-      width: "40px",
-      height: "40px",
-      borderRadius: "50%",
-      transition: "all 0.3s ease",
-    },
   };
 
   return (
@@ -107,9 +71,9 @@ export default function HomePage() {
             style={{
               background: "linear-gradient(135deg, #3a0ca3, #0f0f0f)",
               borderRadius: "16px",
-              padding: "24px",
-              maxWidth: "600px", // reduced from 850px
-              width: "90%",
+              padding: "15px",
+              maxWidth: "1000px",
+              width: "95%",
               position: "relative",
               boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -117,6 +81,7 @@ export default function HomePage() {
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
+              justifyContent: "space-between",
             }}
           >
             {/* Close Button */}
@@ -128,28 +93,39 @@ export default function HomePage() {
                 right: "16px",
                 background: "none",
                 border: "none",
+                padding: "8px",
+                borderRadius: "50%",
                 cursor: "pointer",
                 color: "#ffffffb0",
+                zIndex: 10000,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
               aria-label="Close"
             >
-              <FaTimes size={26} />
+              <FaTimes size={26} style={{ pointerEvents: "none" }} />
             </button>
 
-            {/* Swiper Wrapper */}
-            <div className="relative w-full">
+            {/* Swiper Content */}
+            <div style={{ flexGrow: 1, width: "100%" }}>
               {openPopups.length > 1 ? (
                 <Swiper
                   modules={[Pagination, Navigation, Autoplay]}
                   spaceBetween={20}
                   slidesPerView={1}
+                  onInit={(swiper) => {
+                    // Attach navigation manually after refs are available
+                    if (swiper.params.navigation) {
+                      swiper.params.navigation.prevEl = prevRef.current;
+                      swiper.params.navigation.nextEl = nextRef.current;
+                      swiper.navigation.init();
+                      swiper.navigation.update();
+                    }
+                  }}
                   pagination={{
                     el: ".executive-pagination",
                     clickable: true,
-                  }}
-                  navigation={{
-                    nextEl: ".icon-arrow-right-executive",
-                    prevEl: ".icon-arrow-left-executive",
                   }}
                   autoplay={{
                     delay: 3000,
@@ -165,30 +141,60 @@ export default function HomePage() {
               ) : (
                 <PopupCard popup={openPopups[0]} />
               )}
-
-              {/* Arrows */}
-              {openPopups.length > 1 && (
-                <>
-                  <button
-                    className="icon-arrow-left-executive absolute left-[-30px] top-1/2 transform -translate-y-1/2 z-10 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white transition duration-300"
-                    aria-label="Previous"
-                  >
-                    <ArrowLeft size={24} />
-                  </button>
-
-                  <button
-                    className="icon-arrow-right-executive absolute right-[-30px] top-1/2 transform -translate-y-1/2 z-10 rounded-full bg-white/10 hover:bg-white/20 p-3 text-white transition duration-300"
-                    aria-label="Next"
-                  >
-                    <ArrowRight size={24} />
-                  </button>
-                </>
-              )}
             </div>
 
-            {/* Pagination Centered at Bottom */}
+            {/* Navigation and Pagination */}
             {openPopups.length > 1 && (
-              <div className="executive-pagination flex justify-center items-center gap-2 mt-6" />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "20px",
+                  marginTop: "20px",
+                  marginBottom: "10px",
+                }}
+              >
+                <button
+                  ref={prevRef}
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    border: "none",
+                    padding: "6px",
+                    borderRadius: "9999px",
+                    cursor: "pointer",
+                    color: "#ffffff",
+                  }}
+                  aria-label="Previous"
+                >
+                  <ArrowLeft size={24} />
+                </button>
+
+                <div
+                  className="executive-pagination"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                />
+
+                <button
+                  ref={nextRef}
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    border: "none",
+                    padding: "6px",
+                    borderRadius: "9999px",
+                    cursor: "pointer",
+                    color: "#ffffff",
+                  }}
+                  aria-label="Next"
+                >
+                  <ArrowRight size={24} />
+                </button>
+              </div>
             )}
           </div>
         </div>
