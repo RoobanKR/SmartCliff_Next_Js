@@ -131,8 +131,9 @@ export default function CourseDetailsSix() {
                         <button
                           key={i}
                           onClick={() => handleTabClick(elm.id)}
-                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${i !== 0 ? "ml-30" : ""
-                            }`}
+                          className={`tabs__button js-tabs-button js-update-pin-scene ml-30 ${
+                            i !== 0 ? "ml-30" : ""
+                          }`}
                           style={{
                             cursor: "pointer",
                             color: activeTab === elm.id ? "#5b2c6f" : "black",
@@ -267,9 +268,15 @@ export default function CourseDetailsSix() {
               <tr
                 key={index}
                 style={{
-                  backgroundColor: item.elements === "Total in Hours" ? "#e8daef" : index % 2 === 0 ? "#f9f9f9" : "white",
+                  backgroundColor:
+                    item.elements === "Total in Hours"
+                      ? "#e8daef"
+                      : index % 2 === 0
+                      ? "#f9f9f9"
+                      : "white",
                   borderBottom: "1px solid #ddd",
-                  fontWeight: item.elements === "Total in Hours" ? "bold" : "normal",
+                  fontWeight:
+                    item.elements === "Total in Hours" ? "bold" : "normal",
                 }}
               >
                 <td style={{ padding: "12px 15px" }}>{item.elements}</td>
@@ -291,8 +298,8 @@ export default function CourseDetailsSix() {
     return (
       <div style={{ padding: "20px" }}>
         {matchedCourse &&
-          matchedCourse.tool_software &&
-          matchedCourse.tool_software.length > 0 ? (
+        matchedCourse.tool_software &&
+        matchedCourse.tool_software.length > 0 ? (
           <div
             style={{
               display: "grid",
@@ -425,7 +432,6 @@ export default function CourseDetailsSix() {
                   </div>
 
                   {/* Star Ratings */}
-
                 </div>
               )}
 
@@ -540,5 +546,3 @@ export default function CourseDetailsSix() {
     </>
   );
 }
-
-

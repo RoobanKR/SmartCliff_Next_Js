@@ -68,7 +68,9 @@ import currentAvailabilityReducer from "./slices/bussiness/currentAvailbility/cu
 import homeExecutionHighlightsReducer from "./slices/home/homeExecutionHighlights/homeExecutionHighlights";
 // import companyReducer from "./slices/";
 import companyReducer from "./slices/mca/companyDetails/companyDetails";
-import footerReducer from "./slices/footer/footer"
+import footerReducer from "./slices/footer/footer";
+import popupNotificationReducer from "./slices/popUp/popUp";
+import contactPageReducer from "./slices/contactPage/contactPage";
 
 export default configureStore({
   reducer: {
@@ -141,7 +143,8 @@ export default configureStore({
     currentAvailability: currentAvailabilityReducer,
     homeExecutionHighlights: homeExecutionHighlightsReducer,
     companies: companyReducer,
-    footer:footerReducer,
-
+    footer: footerReducer,
+    popupNotification: popupNotificationReducer,
+    contactPage: contactPageReducer,
   },
 });

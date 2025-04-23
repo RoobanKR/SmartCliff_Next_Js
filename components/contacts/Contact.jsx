@@ -19,7 +19,7 @@ import {
   submitContact,
 } from "@/redux/slices/contact/contact";
 import dynamic from "next/dynamic";
-import { contactDetails } from "@/data/contactLinks";
+import { getAllContactPages } from "@/redux/slices/contactPage/contactPage";
 
 const MapComponent = dynamic(() => import("./Map"), {
   ssr: false,
@@ -35,6 +35,11 @@ export default function ContactPage() {
   } = useSelector(selectContact);
   const [showMap, setShowMap] = useState(false);
   const [showEnquiry, setShowEnquiry] = useState(false);
+  const contactPages =
+    useSelector((state) => state?.contactPage?.contactPages) || [];
+
+    console.log("contactPages",contactPages);
+    
 
   // Contact form data
   const [formData, setFormData] = useState({
@@ -47,6 +52,18 @@ export default function ContactPage() {
   useEffect(() => {
     setShowMap(true);
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(getAllContactPages());
+      } catch (error) {
+        console.error("Error fetching contact pages:", error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
+
 
   // Handle success response
   useEffect(() => {
@@ -124,19 +141,20 @@ export default function ContactPage() {
           <div className="row y-gap-50 justify-between">
             <div className="col-lg-4">
               <div className="y-gap-30 pt-10 lg:pt-10">
-                {contactDetails.map((elm, i) => (
+                {contactPages.map((elm, i) => (
                   <div key={i} className="d-flex items-center">
                     <div
                       className="d-flex justify-center items-center size-60 rounded-full"
                       style={{ background: "#edecec" }}
                     >
-                      <Image width={30} height={30} src={elm.icon} alt="icon" />
+                      <Image
+                        width={30}
+                        height={30}
+                        src={elm.image}
+                        alt="icon"
+                      />
                     </div>
-                    <div className="ml-20 fw-600">
-                      {elm.address
-                        ? `${elm.address.split(" ").join(" ")} `
-                        : elm.email || elm.phoneNumber}
-                    </div>
+                    <div className="ml-20 fw-600">{elm.contact}</div>
                   </div>
                 ))}
               </div>

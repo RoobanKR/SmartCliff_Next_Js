@@ -47,7 +47,7 @@ export default function PageLinks({ dark, sections }) {
     <section
       className={`breadcrumbs ${dark ? "bg-dark-1" : ""}`}
       style={{
-        marginTop: window.innerWidth <= 768 ? "-40px" : "50px",
+        marginTop: window.innerWidth <= 768 ? "-75px" : "50px",
         backgroundColor: "#f5f0ff",
         position: "sticky",
         top: 0,
@@ -62,7 +62,7 @@ export default function PageLinks({ dark, sections }) {
         msOverflowStyle: "none", // Hides scrollbar for IE/Edge
       }}
     >
-      <div style={{ display: "flex",  gap: "10px", width: "100%", }}>
+      <div style={{ display: "flex", gap: "10px", width: "100%" }}>
         {sections &&
           sections.map((section, index) => (
             <div
