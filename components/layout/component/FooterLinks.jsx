@@ -4,7 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import Socials from "@/components/common/Socials";
 import { useDispatch, useSelector } from "react-redux";
-import { selectFooterData,selectFooterStatus,fetchFooterData } from "@/redux/slices/footer/footer";
+import {
+  selectFooterData,
+  selectFooterStatus,
+  fetchFooterData,
+} from "@/redux/slices/footer/footer";
 
 export default function FooterLinks({ allClasses }) {
   const dispatch = useDispatch();
@@ -12,34 +16,22 @@ export default function FooterLinks({ allClasses }) {
   const status = useSelector(selectFooterStatus);
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (status === "idle") {
       dispatch(fetchFooterData());
     }
   }, [dispatch, status]);
 
   // Show loading or nothing while fetching
-  if (status === 'loading' || !footerData) return null; // or a loading spinner
+  if (status === "loading" || !footerData) return null; // or a loading spinner
 
-  const {
-    logo,
-    socials,
-    quickLinks,
-    support,
-    business,
-    contact,
-  } = footerData;
+  const { logo, socials, quickLinks, support, business, contact } = footerData;
 
   return (
     <div className="row">
       {/* Logo & Socials */}
       <div className="col-xl-2 col-lg-5 col-md-6 mt-25">
         <div className="footer-header__logo">
-          <Image
-            width={160}
-            height={70}
-            src={logo}
-            alt="logo"
-          />
+          <Image width={160} height={70} src={logo} alt="logo" />
         </div>
 
         <div className="footer-header-socials mt-30">
@@ -132,7 +124,7 @@ export default function FooterLinks({ allClasses }) {
                       marginBottom: "5px",
                     }}
                   >
-                    <span style={{ color: "white" }}>➤ {link.label}</span>
+                    <span style={{ color: "white" }}> - {link.label}</span>
                   </Link>
                 ))}
               </div>

@@ -1,19 +1,76 @@
 "use client";
-import gsap from "gsap";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import gsap from "gsap";
+
 export default function LearningSolutions({ matchedServiceAbouts }) {
+  const imageContainerRef = useRef(null);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!imageContainerRef.current || !sectionRef.current) return;
+
+    const handleScroll = () => {
+      const section = sectionRef.current;
+      const imageContainer = imageContainerRef.current;
+
+      const sectionRect = section.getBoundingClientRect();
+      const sectionTop = sectionRect.top;
+      const sectionBottom = sectionRect.bottom;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate when to fix and unfix the image
+      if (sectionTop <= 100 && sectionBottom >= viewportHeight) {
+        // Fix the image
+        gsap.to(imageContainer, {
+          position: "fixed",
+          top: "100px",
+          bottom: "auto",
+          width: imageContainer.offsetWidth,
+          duration: 0.3,
+        });
+      } else {
+        // Reset to absolute positioning at bottom when section exits view
+        if (sectionBottom < viewportHeight) {
+          gsap.to(imageContainer, {
+            position: "absolute",
+            top: "auto",
+            bottom: "0",
+            duration: 0.3,
+          });
+        } else if (sectionTop > 100) {
+          // Reset to absolute positioning at top when section enters view
+          gsap.to(imageContainer, {
+            position: "absolute",
+            top: "0",
+            bottom: "auto",
+            duration: 0.3,
+          });
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <section className="layout-pb-md js-mouse-move-container">
+    <section
+      className="layout-pb-md js-mouse-move-container relative"
+      ref={sectionRef}
+      style={{ minHeight: "100vh" }}
+    >
       <div className="container">
         <div className="row y-gap-30 align-items-start">
+          {/* Left Content */}
           {matchedServiceAbouts.map((item, index) => (
-            <div className="col-lg-6 order-2 order-lg-1">
+            <div key={index} className="col-lg-6 order-2 order-lg-1">
               <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
                 {item.heading}
               </h2>
-              <p className="text-dark-1 mt-10" style={{textAlign:"justify"}}>{item.subHeading}</p>
+              <p className="text-dark-1 mt-10" style={{ textAlign: "justify" }}>
+                {item.subHeading}
+              </p>
 
               <div className="row y-gap-20 pt-30">
                 {item.feature.map((elm, i) => (
@@ -22,12 +79,12 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                       <div
                         className={`featureIcon__icon ${elm.iconBg}`}
                         style={{
-                          width: "70px", // Adjust width if needed
-                          height: "70px", // Adjust height if needed
+                          width: "70px",
+                          height: "70px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          borderRadius: "50%", // Optional: if you want a circular icon
+                          borderRadius: "50%",
                           backgroundColor: "#f5f0ff",
                         }}
                       >
@@ -53,23 +110,37 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
             </div>
           ))}
 
+          {/* Right Image */}
           <div className="col-lg-6 order-1 order-lg-2">
-            <div className="elements-image">
-              {/* Main Dynamic Image */}
-              {matchedServiceAbouts[0]?.images?.length > 0 && (
-              <div
-              data-move="60"
-              className="elements-image__main mt-70 js-mouse-move"
+            <div
+              className="elements-image h-full relative"
+              style={{ height: "100%" }}
             >
-              <img
-                className="js-mouse-move rounded responsive-image"
-                data-move="40"
-                src={
-                  matchedServiceAbouts[0].images[0] || "/fallback-image.jpg"
-                }
-                alt="Main image"
-              />
-            </div>
+              {matchedServiceAbouts[0]?.images?.length > 0 && (
+                <div
+                  ref={imageContainerRef}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    width: "100%",
+                  }}
+                >
+                  <div
+                    data-move="60"
+                    className="elements-image__main js-mouse-move"
+                  >
+                    <img
+                      className="js-mouse-move rounded responsive-image"
+                      data-move="40"
+                      src={
+                        matchedServiceAbouts[0].images[0] ||
+                        "/fallback-image.jpg"
+                      }
+                      alt="Main image"
+                    />
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -78,4 +149,3 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
     </section>
   );
 }
-

@@ -181,7 +181,7 @@ export default function HeroUIFour() {
           width: "100%",
           maxWidth: "600px",
           flex: isTablet ? "none" : 1, // Use isTablet instead of isMobile
-          paddingTop: isTablet ? "90px" : "0px", // Use isTablet instead of isMobile
+          paddingTop: isMobile ? "10px" : isTablet ? "50px" : "0px",
         }}
       >
         <h2
@@ -224,7 +224,7 @@ export default function HeroUIFour() {
                 color: "#fff",
                 fontSize: isMobile ? "16px" : "18px", // Keep isMobile for font size
                 fontWeight: "600",
-                padding: isMobile ? "8px 16px" : "10px 20px", // Keep isMobile for padding
+                padding: isMobile ? "5px 10px" : "5px 12px", // Keep isMobile for padding
                 borderRadius: "50px",
                 border: "none",
                 cursor: "pointer",
@@ -232,7 +232,7 @@ export default function HeroUIFour() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                width: isMobile ? "180px" : "200px", // Keep isMobile for width
+                width: isMobile ? "160px" : "180px", // Keep isMobile for width
                 gap: "10px",
               }}
               onMouseEnter={(e) => {
