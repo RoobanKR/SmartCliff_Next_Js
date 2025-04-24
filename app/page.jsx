@@ -71,17 +71,19 @@ export default function HomePage() {
             style={{
               background: "linear-gradient(135deg, #3a0ca3, #0f0f0f)",
               borderRadius: "16px",
-              padding: "15px",
+              padding: "24px", // Reduced padding
               maxWidth: "1000px",
               width: "95%",
+              maxHeight: "85vh", // Limit vertical space
+              overflowY: "auto", // Allow scroll if content overflows
               position: "relative",
               boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
               color: "#ffffff",
-              overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
+              justifyContent: "center",
+              gap: "16px",
             }}
           >
             {/* Close Button */}
@@ -108,14 +110,13 @@ export default function HomePage() {
             </button>
 
             {/* Swiper Content */}
-            <div style={{ flexGrow: 1, width: "100%" }}>
+            <div style={{ width: "100%" }}>
               {openPopups.length > 1 ? (
                 <Swiper
                   modules={[Pagination, Navigation, Autoplay]}
                   spaceBetween={20}
                   slidesPerView={1}
                   onInit={(swiper) => {
-                    // Attach navigation manually after refs are available
                     if (swiper.params.navigation) {
                       swiper.params.navigation.prevEl = prevRef.current;
                       swiper.params.navigation.nextEl = nextRef.current;
@@ -151,8 +152,7 @@ export default function HomePage() {
                   justifyContent: "center",
                   alignItems: "center",
                   gap: "20px",
-                  marginTop: "20px",
-                  marginBottom: "10px",
+                  marginTop: "10px", // Reduced spacing
                 }}
               >
                 <button
@@ -222,48 +222,37 @@ function PopupCard({ popup }) {
   return (
     <div
       style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "20px",
-        alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        height: "100%",
+        padding: "0 10px",
       }}
     >
-      <div style={{ textAlign: "center" }}>
-        <img
-          src={popup.image}
-          alt="Popup"
-          style={{
-            width: "100%",
-            maxWidth: "200px", // reduced from 320px
-            borderRadius: "12px",
-            objectFit: "cover",
-            boxShadow: "0 4px 10px rgba(255, 255, 255, 0.08)",
-          }}
-        />
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <h2
-          style={{
-            fontSize: "22px", // reduced from 28px
-            fontWeight: "700",
-            color: "#FACC15",
-            marginBottom: "10px",
-          }}
-        >
-          {popup.title}
-        </h2>
-        <p
-          style={{
-            color: "#e5e7eb",
-            fontSize: "14px", // slightly smaller
-            lineHeight: "1.5",
-            marginBottom: "20px",
-          }}
-        >
-          {popup.description}
-        </p>
-        {popup.link && (
+      <h2
+        style={{
+          fontSize: "20px",
+          fontWeight: "700",
+          color: "#FACC15",
+          marginBottom: "8px",
+          textAlign: "center",
+        }}
+      >
+        {popup.title}
+      </h2>
+      <p
+        style={{
+          color: "#e5e7eb",
+          fontSize: "14px",
+          lineHeight: "1.6",
+          textAlign: "center",
+          marginBottom: popup.link ? "12px" : "0",
+        }}
+      >
+        {popup.description}
+      </p>
+      {popup.link && (
+        <div style={{ textAlign: "center" }}>
           <a
             href={popup.link}
             target="_blank"
@@ -277,8 +266,8 @@ function PopupCard({ popup }) {
           >
             Apply Now →
           </a>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

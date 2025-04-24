@@ -85,21 +85,7 @@ export default function HeroTwo() {
               <HeroUITwo />
             </div>
           </SwiperSlide>
-          {/* Slide 3: HeroUIOne */}
-          {/* <SwiperSlide>
-            <div
-              className="swiper-slide"
-              style={{
-                width: "100%",
-                height: "100vh",
-                justifyContent: "center",
-                background: "#e0e0e0",
-              }}
-            >
-              <HeroUIThree />
-            </div>
-          </SwiperSlide>{" "} */}
-          {/* Slide 4: HeroUIOne */}
+
           <SwiperSlide>
             <div
               className="swiper-slide"
@@ -118,10 +104,10 @@ export default function HeroTwo() {
 
       {/* Navigation Buttons */}
       <button
-        className="swiper-prev hero-slider-prev button -white-20 text-white size-60 rounded-full d-flex justify-center items-center"
+        className="swiper-prev hero-slider-prev button -white-20 text-white size-50 rounded-full d-flex justify-center items-center"
         style={{
           position: "absolute",
-          top: "50%",
+          top: "55%",
           left: "20px",
           transform: "translateY(-50%)",
           zIndex: 10,
@@ -135,10 +121,10 @@ export default function HeroTwo() {
       </button>
 
       <button
-        className="swiper-next hero-slider-next button -white-20 text-white size-60 rounded-full d-flex justify-center items-center"
+        className="swiper-next hero-slider-next button -white-20 text-white size-50 rounded-full d-flex justify-center items-center"
         style={{
           position: "absolute",
-          top: "50%",
+          top: "55%",
           right: "20px",
           transform: "translateY(-50%)",
           zIndex: 10,

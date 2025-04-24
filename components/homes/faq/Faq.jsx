@@ -51,7 +51,7 @@ export default function FAQComponent({ faq }) {
                   <div key={faqItem._id}>
                     <div
                       onClick={() => toggleAccordion(faqItem._id)}
-                      style={{background:"#ffe9a9"}}
+                      style={{background:"#dbdbdb"}}
                       className={`accordion__button py-20 mt-10 px-30 ${
                         activeItemId === faqItem._id ? "is-active" : ""
                       }`}
@@ -81,7 +81,7 @@ export default function FAQComponent({ faq }) {
                           : {}
                       }
                     >
-                      <div className="accordion__content__inner px-10 py-10" style={{background:"#e4ceff",borderRadius: "12px", marginTop:"5px"}}>
+                      <div className="accordion__content__inner px-10 py-10" style={{background:"#ffe9a9",borderRadius: "12px", marginTop:"5px"}}>
                         <div className="y-gap-20">
                           <div className="d-flex justify-between">
                             <div className="d-flex items-center">
