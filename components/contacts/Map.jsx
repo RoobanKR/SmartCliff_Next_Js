@@ -13,7 +13,7 @@ export default function MapComponent() {
       }}
     >
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.184590182568!2d76.94251937355544!3d11.009644054851648!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba8591eefc56b9d%3A0x95a4642b32007ee7!2sNILGIRIS%20SUPER%20MARKET%20-%20SNV%20HOLDINGS%20PRIVATE%20LIMITED-!5e1!3m2!1sen!2sin!4v1743164672537!5m2!1sen!2sin"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13036.667941385793!2d76.94229576564375!3d11.010357771411226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba8590b89fdb05f%3A0x4874f32fe1c2c1b6!2sSmartCliff%20Learning%20Solutions%20LLP!5e0!3m2!1sen!2sin!4v1745989276395!5m2!1sen!2sin"
         width="100%"
         height="100%"
         style={{ border: 0 }}

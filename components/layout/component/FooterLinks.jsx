@@ -151,6 +151,10 @@ export default function FooterLinks({ allClasses }) {
             <i className="lucide lucide-phone"></i>
             <span>{contact.phone}</span>
           </div>
+          <div className="d-flex align-items-center gap-2">
+            <i className="lucide lucide-phone"></i>
+            <span>{contact.secondaryNumber}</span>
+          </div>
           <div className="d-flex align-items-start gap-2">
             <i className="lucide lucide-map-pin"></i>
             <span>{contact.address}</span>

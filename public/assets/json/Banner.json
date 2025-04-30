@@ -72,6 +72,11 @@
   {
     "description": "Get answers to common questions about our services and policies",
     "imageUrl": "/assets/img/about-1/review.png"
+  },
+  {
+    "title": "Privacy Policy",
+    "description": "use and protection of your Personal Information",
+    "imageUrl": "/assets/img/about-1/review.png"
   }
 ]
  

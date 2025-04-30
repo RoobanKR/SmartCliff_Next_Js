@@ -18,7 +18,7 @@ export default function FooterTwo() {
           <div className="row justify-between items-center y-gap-20">
             <div className="col-auto">
               <div className="footer-footer__copyright text-white d-flex items-center h-100">
-                © {new Date().getFullYear()} Smartcliff. All Right Reserved.
+                © {new Date().getFullYear()} Smartcliff. All rights reserved.
               </div>
             </div>
           </div>

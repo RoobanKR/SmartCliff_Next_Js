@@ -171,8 +171,7 @@ export default function HeroSection() {
               opacity: 0.8,
             }}
           >
-            Unbeatable Execution! / Our Success Metrics! We take pride in our
-            seamless and results-driven execution. With a well-structured
+             With a well-structured
             approach, expert trainers, and industry-relevant content, we deliver
             impactful learning experiences that drive success.
           </p>
