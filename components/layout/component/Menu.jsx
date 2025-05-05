@@ -142,7 +142,7 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
             <BusinessDropdown />
 
             <li className="menu-item-has-children">
-              <NavLink href="/history">History</NavLink>
+              <NavLink href="/gallery">Gallery</NavLink>
             </li>
 
             <li className="menu-item-has-children">

@@ -91,7 +91,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                         <Image
                           width={30}
                           height={30}
-                          src={elm.icon || "/fallback-icon.jpg"}
+                          src={elm.icon}
                           alt="icon"
                         />
                       </div>

@@ -99,36 +99,11 @@ const CategoriesHomeOne = () => {
                           margin: "8px 0",
                         }}
                       >
-                        {item.title}
+                        {item.name}
                       </h3>
                       {/* <span>{item.title.split(" ")[0]}</span> */}
                     </div>{" "}
-                    <p>
-                      ({" "}
-                      {item.logo ? (
-                        <img
-                          src={item.logo}
-                          alt={item.name}
-                          className="icon-image"
-                          style={{
-                            width: "20px",
-                            height: "20px",
-                            marginRight: "7px",
-                            verticalAlign: "middle",
-                          }}
-                        />
-                      ) : (
-                        <i
-                          className="icon-briefcase"
-                          style={{
-                            marginRight: "7px",
-                            fontSize: "16px",
-                            verticalAlign: "middle",
-                          }}
-                        ></i>
-                      )}
-                      {item.name} {" "})
-                    </p>{" "}
+                 
                   </div>
                 </div>
 

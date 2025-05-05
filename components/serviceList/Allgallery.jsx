@@ -2,9 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGallery } from "@/redux/slices/gallery/gallery";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper";
 
 export default function AllGalleryList() {
   const [currentYear, setCurrentYear] = useState("All Years");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
   const dispatch = useDispatch();
   const gallery = useSelector((state) => state.gallery.gallery);
 
@@ -20,6 +28,58 @@ export default function AllGalleryList() {
   useEffect(() => {
     dispatch(getAllGallery());
   }, [dispatch]);
+  
+  // Add event listener for keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!modalOpen) return;
+      
+      if (e.key === 'ArrowRight') {
+        nextImage();
+      } else if (e.key === 'ArrowLeft') {
+        prevImage();
+      } else if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalOpen, selectedImages]);
+
+  // Function to open modal with all images
+  const openModal = (images, event) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    setSelectedImages(images);
+    setCurrentImageIndex(0);
+    setModalOpen(true);
+    // Prevent scrolling when modal is open
+    document.body.style.overflow = "hidden";
+  };
+
+  // Function to close modal
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedImages([]);
+    // Re-enable scrolling
+    document.body.style.overflow = "auto";
+  };
+
+  // Navigate to next image
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === selectedImages.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  // Navigate to previous image
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? selectedImages.length - 1 : prev - 1
+    );
+  };
 
   return (
     <div style={{ padding: "20px", marginTop: "70px" }}>
@@ -120,26 +180,40 @@ export default function AllGalleryList() {
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              {/* Image */}
+              {/* Single Index Image (Only show first image) */}
               <div
                 style={{
                   overflow: "hidden",
                   borderRadius: "12px 12px 0 0",
                   height: "200px",
                 }}
+                onClick={(e) => openModal(elm.images, e)}
               >
                 <img
-                  src={elm.image}
-                  alt={elm.name}
+                  src={elm.images[0]}
+                  alt={`${elm.name} thumbnail`}
                   style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                    transition: "transform 0.4s ease-in-out",
                   }}
-                  onMouseOver={(e) => (e.target.style.transform = "scale(1.1)")}
-                  onMouseOut={(e) => (e.target.style.transform = "scale(1)")}
                 />
+                {elm.images.length > 1 && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "80px",
+                      right: "10px",
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      color: "white",
+                      borderRadius: "4px",
+                      padding: "4px 8px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    +{elm.images.length - 1} more
+                  </div>
+                )}
               </div>
 
               {/* Content */}
@@ -188,6 +262,166 @@ export default function AllGalleryList() {
           </div>
         )}
       </div>
+
+      {/* Modal for displaying all images */}
+      {modalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+            padding: "20px",
+          }}
+          onClick={closeModal}
+        >
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "800px",
+              height: "auto",
+              aspectRatio: "4/3",
+              maxHeight: "90vh",
+              overflow: "hidden",
+              backgroundColor: "#000",
+              borderRadius: "8px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Image container */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src={selectedImages[currentImageIndex]}
+                alt={`Gallery image ${currentImageIndex + 1}`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+
+            {/* Navigation buttons */}
+            <button
+              onClick={prevImage}
+              style={{
+                position: "absolute",
+                left: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                backgroundColor: "rgba(91, 44, 111, 0.7)",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                fontSize: "18px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer",
+                zIndex: 2,
+                "@media (max-width: 600px)": {
+                  width: "30px",
+                  height: "30px",
+                  fontSize: "14px",
+                },
+              }}
+            >
+              &#10094;
+            </button>
+            
+            <button
+              onClick={nextImage}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                backgroundColor: "rgba(91, 44, 111, 0.7)",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                fontSize: "18px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer",
+                zIndex: 2,
+                "@media (max-width: 600px)": {
+                  width: "30px",
+                  height: "30px",
+                  fontSize: "14px",
+                },
+              }}
+            >
+              &#10095;
+            </button>
+            
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "30px",
+                height: "30px",
+                fontSize: "16px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer",
+                zIndex: 2,
+              }}
+            >
+              &#10005;
+            </button>
+            
+            {/* Image counter */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "15px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                color: "white",
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                padding: "5px 10px",
+                borderRadius: "15px",
+                fontSize: "14px",
+                zIndex: 2,
+              }}
+            >
+              {currentImageIndex + 1} / {selectedImages.length}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

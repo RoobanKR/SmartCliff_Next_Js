@@ -15830,3 +15830,19 @@ table.table td {
   transform: rotate(90deg);
   transition: transform 0.4s ease;
 }
+
+
+.custom-swiper .swiper-button-next,
+.custom-swiper .swiper-button-prev {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(91, 44, 111, 0.8); /* Optional for better visibility */
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+}
+
+.custom-swiper .swiper-button-next::after,
+.custom-swiper .swiper-button-prev::after {
+  font-size: 16px; /* Adjust arrow symbol size */
+}
