@@ -16,14 +16,30 @@ export default function AllGalleryList() {
   const dispatch = useDispatch();
   const gallery = useSelector((state) => state.gallery.gallery);
 
+  // Sort gallery by date (newest first)
+  const sortedGallery = [...gallery].sort((a, b) => {
+    // Sort by year first (descending)
+    if (a.year !== b.year) {
+      return b.year - a.year;
+    }
+    
+    // If same year, sort by month
+    const months = [
+      "January", "February", "March", "April", "May", "June", 
+      "July", "August", "September", "October", "November", "December"
+    ];
+    
+    return months.indexOf(b.month) - months.indexOf(a.month);
+  });
+
   // Extract unique years from gallery data
-  const availableYears = [...new Set(gallery.map((item) => item.year))];
+  const availableYears = [...new Set(sortedGallery.map((item) => item.year))].sort((a, b) => b - a);
 
   // Filter gallery items based on selected year
   const filteredGallery =
     currentYear === "All Years"
-      ? gallery
-      : gallery.filter((item) => item.year === currentYear);
+      ? sortedGallery
+      : sortedGallery.filter((item) => item.year === currentYear);
 
   useEffect(() => {
     dispatch(getAllGallery());
@@ -45,7 +61,7 @@ export default function AllGalleryList() {
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [modalOpen, selectedImages]);
+  }, [modalOpen, currentImageIndex, selectedImages]);
 
   // Function to open modal with all images
   const openModal = (images, event) => {
@@ -122,9 +138,7 @@ export default function AllGalleryList() {
         >
           All Years
         </button>
-        {availableYears
-          .sort((a, b) => b - a)
-          .map((year) => (
+        {availableYears.map((year) => (
             <button
               key={year}
               style={{
@@ -339,11 +353,6 @@ export default function AllGalleryList() {
                 alignItems: "center",
                 cursor: "pointer",
                 zIndex: 2,
-                "@media (max-width: 600px)": {
-                  width: "30px",
-                  height: "30px",
-                  fontSize: "14px",
-                },
               }}
             >
               &#10094;
@@ -368,11 +377,6 @@ export default function AllGalleryList() {
                 alignItems: "center",
                 cursor: "pointer",
                 zIndex: 2,
-                "@media (max-width: 600px)": {
-                  width: "30px",
-                  height: "30px",
-                  fontSize: "14px",
-                },
               }}
             >
               &#10095;

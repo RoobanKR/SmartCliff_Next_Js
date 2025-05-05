@@ -17,6 +17,7 @@ import store from "@/redux/store";
 import { useRouter } from "next/navigation";
 import EnquiryModal from "@/components/common/EnquiryModal";
 import { FaWhatsapp } from "react-icons/fa";
+import { trackPageVisit } from "@/components/visitore/visitore";
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -28,14 +29,26 @@ export default function RootLayout({ children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMouseDevice, setIsMouseDevice] = useState(true);
 
-
-  const handleEnquiryClick = () => {
-    setIsModalOpen(true); // Open modal instead of redirecting
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // Track page visit
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      trackPageVisit({ page: url });
+    };
+
+    // Track initial page visit
+    trackPageVisit({ page: window.location.pathname });
+
+    // Track subsequent navigations
+    router.events?.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events?.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router]);
 
   useEffect(() => {
     AOS.init({
@@ -52,30 +65,6 @@ export default function RootLayout({ children }) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-
-  useEffect(() => {
-    const isMouseDevice = window.matchMedia("(pointer: fine)").matches;
-
-    if (!isMouseDevice) return; // Skip adding mousemove listener on touch devices
-
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-      setIsMoving(true);
-
-      clearTimeout(window.cursorTimeout);
-      window.cursorTimeout = setTimeout(() => setIsMoving(false), 100);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-
-  useEffect(() => {
-    setIsMouseDevice(window.matchMedia("(pointer: fine)").matches);
-  }, []);
-
 
   useEffect(() => {
     let animationFrame;
@@ -126,20 +115,6 @@ export default function RootLayout({ children }) {
             {children}
             <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
             {/* 
-            <button
-              className="learn-more"
-              onClick={handleEnquiryClick}
-              style={{ background: "#E91E63" }}
-            >
-              <img
-                src="/assets/img/enquiry.png"
-                alt="Enquiry Icon"
-                width="20"
-                height="20"
-                className="svg-icon"
-              />
-              <span className="label">Enquiry</span>
-            </button> */}
 
             {/* Back to Top Button */}
             {showScrollButton && (

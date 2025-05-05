@@ -78,6 +78,7 @@ export default function HTD() {
   );
  
   const [width, setWidth] = useState("100%");
+  const [contentPadding, setContentPadding] = useState("120px");
  
   useEffect(() => {
     // Function to update width based on screen size
@@ -99,6 +100,44 @@ export default function HTD() {
  
     // Cleanup event listener on component unmount
     return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+ 
+ 
+  useEffect(() => {
+    // Function to update width and padding based on screen size
+    const updateDimensions = () => {
+      // For width
+      if (window.innerWidth <= 320) {
+        setWidth("90%");
+      } else if (window.innerWidth <= 768) {
+        setWidth("95%");
+      } else {
+        setWidth("100%");
+      }
+ 
+      // For padding - Only apply 120px for laptop screens (992px to 1440px is common laptop range)
+      if (window.innerWidth >= 992 && window.innerWidth <= 1440) {
+        setContentPadding("120px");
+      } else if (window.innerWidth > 1440) {
+        // For larger screens, perhaps a bit more padding
+        setContentPadding("140px");
+      } else if (window.innerWidth >= 768) {
+        // For tablets
+        setContentPadding("2px");
+      } else {
+        // For mobile
+        setContentPadding("2px");
+      }
+    };
+ 
+    // Set dimensions on initial load
+    updateDimensions();
+ 
+    // Add event listener for window resize
+    window.addEventListener("resize", updateDimensions);
+ 
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", updateDimensions);
   }, []);
  
   useEffect(() => {
@@ -254,9 +293,8 @@ export default function HTD() {
           setIsSidebarClosed={setIsSidebarClosed}
         />
         <div
-          className={`dashboard -home-9 px-0 js-dashboard-home-9 ${
-            isSidebarClosed ? "-is-sidebar-hidden" : ""
-          } `}
+          className={`dashboard -home-9 px-0 js-dashboard-home-9 ${isSidebarClosed ? "-is-sidebar-hidden" : ""
+            } `}
         >
           <div
             className="dashboard__sidebar -base scroll-bar-1 border-right-light lg:px-30"
@@ -428,7 +466,8 @@ export default function HTD() {
                     <PageLinks sections={availableSections} />
                   </div>
  
-                  <div style={{ paddingTop: "120px" }}>
+                  {/* <div style={{ paddingTop: "120px" }}> */}
+                  <div style={{ paddingTop: contentPadding }}>
                     {matchedServiceAbouts.length > 0 && (
                       <div id="learning-solutions">
                         <LearningSolutions
@@ -441,12 +480,12 @@ export default function HTD() {
                         <StepsOne processSteps={processSteps} />
                       </div>
                     )}
-                                        {PlacementTraining.length > 0 && (
+                    {PlacementTraining.length > 0 && (
                       <div id="training-tracks">
                         <TrainingTracksTable />
                       </div>
                     )}
-
+ 
                     {matchedexecutionOverviews.length > 0 && (
                       <div id="execution-overview">
                         <ExecutionOverview serviceId={services} />
@@ -509,5 +548,6 @@ export default function HTD() {
     </>
   );
 }
+ 
  
  
