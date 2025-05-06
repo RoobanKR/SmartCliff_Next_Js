@@ -14,8 +14,7 @@ export default function LearningJourney({ hireFromUsData }) {
                 Models
               </h2>
               <p className="sectionTitle__text">
-                Elevate your graduates to industry-ready professionals / Beyond
-                Graduation: Preparing Students for Career Success
+              Fueling business growth with skilled,  job-ready graduates.
               </p>
             </div>
           </div>

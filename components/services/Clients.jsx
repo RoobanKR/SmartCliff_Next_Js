@@ -46,9 +46,9 @@ export default function ServiceClient() {
         <div className="row y-gap-20 justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle">
-              <h2 style={{ fontSize: "34px", fontWeight: "bold", color: "#334155" }}>Our Valued Clients</h2>
+              <h2 style={{ fontSize: "34px", fontWeight: "bold", color: "#334155" }}>Our Institution Partners</h2>
               <p className="sectionTitle__text">
-                We partner with diverse industries, including manufacturing, IT, healthcare, retail, and finance, to provide skilled, job-ready talent. Trusted by startups to large enterprises, our hiring and training solutions ensure businesses get industry-ready professionals who drive growth.
+              We collaborate with educational institutions to bridge the gap between academia and industry through customized training programs. Trusted by our institutional partners, our initiatives empower students with practical skills, ensuring they graduate industry-ready and equipped for the future.
               </p>
             </div>
           </div>

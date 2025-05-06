@@ -180,7 +180,7 @@ export default function Home({ ids }) {
       >
         <div className="program-subtitle">
           <span className="subtitle-line"></span>
-          <span className="subtitle-text"> Sponsership Details</span>
+          <span className="subtitle-text"> Sponsorship Details</span>
           <span className="subtitle-line"></span>
         </div>
       </div>

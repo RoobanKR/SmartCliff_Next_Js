@@ -69,7 +69,7 @@ export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
 
       case "institute_name":
         if (!value) {
-          error = "Institute name is required";
+          error = "Institution name is required";
         } else if (!VALIDATION_PATTERNS.name.test(value)) {
           error = "Invalid institute name";
         }
@@ -622,12 +622,12 @@ export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
       >
         {({ values, setFieldValue, setFieldError, setFieldTouched }) => (
           <Form style={styles.form}>
-            {/* Institute Name */}
+            {/* Institution Name */}
             <FloatingInput
               icon={BusinessIcon}
               type="text"
               name="institute_name"
-              label="Institute Name"
+              label="Institution Name"
               values={values}
               setFieldValue={setFieldValue}
               setFieldError={setFieldError}

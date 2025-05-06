@@ -142,7 +142,7 @@ export default function CsrDegreeProgram() {
                     padding: "10px 20px",
                     borderRadius: "30px",
                     border: "none",
-                    background: yearFilter === "" ? "#5B2C6F" : "transparent",
+                    background: yearFilter === "" ? "rgb(48, 96, 114)" : "transparent",
                     color: yearFilter === "" ? "white" : "#333",
                     fontWeight: "600",
                     fontSize: "14px",
@@ -150,7 +150,7 @@ export default function CsrDegreeProgram() {
                     transition: "all 0.3s ease",
                     boxShadow:
                       yearFilter === ""
-                        ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                        ? "0 5px 15px rgb(48, 96, 114)"
                         : "none",
                     position: "relative",
                     overflow: "hidden",
@@ -178,7 +178,7 @@ export default function CsrDegreeProgram() {
                       borderRadius: "30px",
                       border: "none",
                       background:
-                        yearFilter === year ? "#5B2C6F" : "transparent",
+                        yearFilter === year ? "rgb(48, 96, 114)" : "transparent",
                       color: yearFilter === year ? "white" : "#333",
                       fontWeight: "600",
                       fontSize: "14px",
@@ -186,7 +186,7 @@ export default function CsrDegreeProgram() {
                       transition: "all 0.3s ease",
                       boxShadow:
                         yearFilter === year
-                          ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                          ? "0 5px 15px rgb(48, 96, 114)"
                           : "none",
                       position: "relative",
                       overflow: "hidden",
@@ -268,7 +268,7 @@ export default function CsrDegreeProgram() {
                       position: "absolute",
                       top: "20px",
                       right: "-35px",
-                      background: "#306072",
+                      background: "rgb(48, 96, 114)",
                       color: "white",
                       padding: "5px 40px",
                       transform: "rotate(45deg)",

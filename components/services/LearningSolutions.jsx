@@ -1,18 +1,32 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
  
 export default function LearningSolutions({ matchedServiceAbouts }) {
   const imageContainerRef = useRef(null);
   const sectionRef = useRef(null);
+  const [isComponentMounted, setIsComponentMounted] = useState(false);
+ 
+  // Set mounted state after component mounts
+  useEffect(() => {
+    setIsComponentMounted(true);
+    return () => setIsComponentMounted(false);
+  }, []);
  
   useEffect(() => {
-    if (!imageContainerRef.current || !sectionRef.current) return;
- 
+    // Exit early if refs aren't ready or component isn't mounted
+    if (!isComponentMounted || !imageContainerRef.current || !sectionRef.current) return;
+    
     const handleScroll = () => {
+      // Guard clause for safety
+      if (!sectionRef.current) return;
+      
       const section = sectionRef.current;
       const imageContainer = imageContainerRef.current;
+      
+      // Guard clause for imageContainer
+      if (!imageContainer) return;
  
       const sectionRect = section.getBoundingClientRect();
       const sectionTop = sectionRect.top;
@@ -50,9 +64,12 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
       }
     };
  
+    // Initial check
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isComponentMounted]); // Added isComponentMounted dependency
  
   return (
     <>
@@ -72,7 +89,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
         <div className="container">
           <div className="row y-gap-30 align-items-start">
             {/* Left Content */}
-            {matchedServiceAbouts.map((item, index) => (
+            {matchedServiceAbouts && matchedServiceAbouts.map((item, index) => (
               <div key={index} className="col-lg-6 order-2 order-lg-1">
                 <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
                   {item.heading}
@@ -82,11 +99,11 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                 </p>
  
                 <div className="row y-gap-20 pt-30">
-                  {item.feature.map((elm, i) => (
+                  {item.feature && item.feature.map((elm, i) => (
                     <div key={i} className="col-12">
                       <div className="featureIcon -type-1 d-flex">
                         <div
-                          className={`featureIcon__icon ${elm.iconBg}`}
+                          className={`featureIcon__icon ${elm.iconBg || ''}`}
                           style={{
                             width: "70px",
                             height: "70px",
@@ -100,16 +117,16 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                           <Image
                             width={30}
                             height={30}
-                            src={elm.icon}
+                            src={elm.icon || '/placeholder.png'}
                             alt="icon"
                           />
                         </div>
                         <div className="featureIcon__content ml-20 mt-10">
                           <h4 className="text-17 fw-500">{elm.title}</h4>
                           <p className="mt-5">
-                            {elm.description.split(" ").slice(0, 5).join(" ")}{" "}
+                            {elm.description && elm.description.split(" ").slice(0, 5).join(" ")}{" "}
                             <br className="lg:d-none" />
-                            {elm.description.split(" ").slice(5).join(" ")}
+                            {elm.description && elm.description.split(" ").slice(5).join(" ")}
                           </p>
                         </div>
                       </div>
@@ -125,7 +142,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                 className="elements-image h-full relative"
                 style={{ height: "100%" }}
               >
-                {matchedServiceAbouts[0]?.images?.length > 0 && (
+                {matchedServiceAbouts && matchedServiceAbouts[0]?.images?.length > 0 && (
                   <div
                     ref={imageContainerRef}
                     className="hide-image-on-mobile"
@@ -160,5 +177,3 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
     </>
   );
 }
- 
- 

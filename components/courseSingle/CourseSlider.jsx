@@ -59,7 +59,7 @@ export default function CourseSlider() {
             <div className="sectionTitle ">
               <h2 className="sectionTitle__title ">Explore Related Courses</h2>
               <p className="sectionTitle__text ">
-                Expand Your Knowledge with These Courses
+                Expand your knowledge with these Courses
               </p>
             </div>
           </div>

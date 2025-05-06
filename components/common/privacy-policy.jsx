@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
                   <ol className="list-decimal ml-5">
                     <li className="mt-6" style={{fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"25px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>1.</span>
-                      <span style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}> Smartcliff, committed to the ethical collection, retention and use of information that you provide to us about yourself ("Personal Information") on this site ("Site")
+                      <span style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}> SmartCliff, committed to the ethical collection, retention and use of information that you provide to us about yourself ("Personal Information") on this site ("Site")
                       </span>
                     </li>
                     
@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
                         </li>
                         <li className="flex items-start">
                           <span className="text-red-400 mr-2 mt-1" style={{color:"#f79c8d",fontSize:"25px"}}>●{"   "}</span>
-                          Any other details Smartcliff may require
+                          Any other details SmartCliff may require
                         </li>
                       </ul>
                     </li>
@@ -91,13 +91,13 @@ export default function PrivacyPolicy() {
                     
                     <li className="mt-6" style={{fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"20px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>3.</span>
-                      <span style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}> The General Information is not Personal Information. Smartcliff's tracking system does not record personal information about individuals or link this information to any Personal Information collected from you.              
+                      <span style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}> The General Information is not Personal Information. SmartCliff's tracking system does not record personal information about individuals or link this information to any Personal Information collected from you.              
                       </span>
                     </li>
                     
                     <li className="mt-6" style={{fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"20px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>4.</span>
-                      <span style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}> The General Information is used by Smartcliff for statistical analysis, for tracking overall traffic patterns on the Site and to gauge the public interest in Smartcliff and the Site. Such General Information may be shared by Smartcliff with any person, at Smartcliff's discretion.
+                      <span style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}> The General Information is used by SmartCliff for statistical analysis, for tracking overall traffic patterns on the Site and to gauge the public interest in SmartCliff and the Site. Such General Information may be shared by SmartCliff with any person, at SmartCliff's discretion.
                       </span>
                     </li>                
                     
@@ -115,7 +115,7 @@ export default function PrivacyPolicy() {
                         <li className="mt-3">
                           <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>ii.</span>
                           Information gathered may include date and time of visits, pages viewed, time spent at the site, and the site visited just before 
-                          and just after the Smartcliff site.
+                          and just after the SmartCliff site.
                         </li>
                         
                         <li className="mt-3 font-medium">
@@ -142,7 +142,7 @@ export default function PrivacyPolicy() {
                         <li className="mt-3">
                           <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>iv.</span>
                           Customers may choose not to accept cookies. Your browser may be set to accept cookies automatically, but can be changed to decline
-                          them. Please note that declining cookies may affect your ability to use the site. Smartcliff does not control or guarantee the
+                          them. Please note that declining cookies may affect your ability to use the site. SmartCliff does not control or guarantee the
                           effectiveness of browser-based tools for managing cookies.
                         </li>
                         
@@ -154,7 +154,7 @@ export default function PrivacyPolicy() {
                         
                         <li className="mt-3">
                           <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>vi.</span>
-                          NOTE: Some product features and services provided by Smartcliff require you to accept a cookie in order to be able to use the
+                          NOTE: Some product features and services provided by SmartCliff require you to accept a cookie in order to be able to use the
                           particular functionality or service. These cookies are used for security purposes or to facilitate navigation.
                         </li>
                       </ol>
@@ -170,19 +170,19 @@ export default function PrivacyPolicy() {
                   <h2 className="font-medium" style={{fontSize:"25px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>6. USAGE OF INFORMATION</h2>
                   
                   <p className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
-                    Personal information will be used by Smartcliff for internal purposes including the following:
+                    Personal information will be used by SmartCliff for internal purposes including the following:
                   </p>
                   
                   <ol className="list-decimal ml-8 mt-4">
                     <li className="mt-2" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>1.</span> 
-                      Sending you inter alia emails, features, promotional material, surveys, brochures, catalogues, Smartcliff Annual Report, Smartcliff-in -
-                      Action, reminders for donations, regular updates on the utilisation of donations by Smartcliff and other updates.
+                      Sending you inter alia emails, features, promotional material, surveys, brochures, catalogues, SmartCliff Annual Report, SmartCliff-in -
+                      Action, reminders for donations, regular updates on the utilisation of donations by SmartCliff and other updates.
                     </li>
                     
                     <li className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>2.</span> 
-                      Processing your donations to Smartcliff
+                      Processing your donations to SmartCliff
                     </li>
                     
                     <li className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
@@ -192,7 +192,7 @@ export default function PrivacyPolicy() {
                     
                     <li className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>4.</span> 
-                      Evaluating and administering the Site and Smartcliff's activities, responding to any problems that may arise and gauging visitor
+                      Evaluating and administering the Site and SmartCliff's activities, responding to any problems that may arise and gauging visitor
                       trends on the Site.
                     </li>
                   </ol>
@@ -202,33 +202,33 @@ export default function PrivacyPolicy() {
                   <ol className="list-decimal ml-8 mt-4">
                     <li className="mt-2" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>1.</span> 
-                      Within Smartcliff, access to Personal Information collected by Smartcliff will be given only to those persons who are authorised by
-                      Smartcliff and third parties hired by Smartcliff to perform administrative services. Smartcliff will provide access to third parties for
-                      inter alia entering and managing Personal Information in Smartcliff's Database, processing your orders or donations preparing
-                      address labels, sending emails, which require such third parties to have access to your Personal Information. Smartcliff cannot
-                      guarantee that such parties will keep your Personal Information confidential and Smartcliff will not be liable in any manner for any
+                      Within SmartCliff, access to Personal Information collected by SmartCliff will be given only to those persons who are authorised by
+                      SmartCliff and third parties hired by SmartCliff to perform administrative services. SmartCliff will provide access to third parties for
+                      inter alia entering and managing Personal Information in SmartCliff's Database, processing your orders or donations preparing
+                      address labels, sending emails, which require such third parties to have access to your Personal Information. SmartCliff cannot
+                      guarantee that such parties will keep your Personal Information confidential and SmartCliff will not be liable in any manner for any
                       loss of confidentiality attributable to such third parties.
                     </li>
                     
                     <li className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>2.</span> 
-                      Smartcliff may share Personal Information with any of persons who are associated with Smartcliff, including companies and non-
-                      governmental organisations affiliated with Smartcliff in any manner. Smartcliff will retain ownership rights over such information and
+                      SmartCliff may share Personal Information with any of persons who are associated with SmartCliff, including companies and non-
+                      governmental organisations affiliated with SmartCliff in any manner. SmartCliff will retain ownership rights over such information and
                       will share only such portions of the Personal Information as it deems fit.
                     </li>
                     
                     <li className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>3.</span> 
-                      Smartcliff is not liable in any manner whatsoever for the loss, damage(whether direct, indirect, consequential or incidental) or harm
-                      caused to you by the misuse of your Personal Information by a third party who is not an employee of Smartcliff.
+                      SmartCliff is not liable in any manner whatsoever for the loss, damage(whether direct, indirect, consequential or incidental) or harm
+                      caused to you by the misuse of your Personal Information by a third party who is not an employee of SmartCliff.
                     </li>
                     
                     <li className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>4.</span> 
-                      Notwithstanding anything contained herein or any other contract between you and Smartcliff, Smartcliff reserves the right to disclose
+                      Notwithstanding anything contained herein or any other contract between you and SmartCliff, SmartCliff reserves the right to disclose
                       any Personal Information about you without notice or consent as needed to satisfy any requirement of law, regulation, legal request
-                      or legal investigation, to conduct investigations of breaches of law, to protect the Site, to protect Smartcliff and it's property, to fulfill
-                      your requests, to protect our visitors and other persons and if required by the policy of Smartcliff.
+                      or legal investigation, to conduct investigations of breaches of law, to protect the Site, to protect SmartCliff and it's property, to fulfill
+                      your requests, to protect our visitors and other persons and if required by the policy of SmartCliff.
                     </li>
                   </ol>
                   
@@ -237,12 +237,12 @@ export default function PrivacyPolicy() {
                   <ol className="list-decimal ml-8 mt-4">
                     <li className="mt-2" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>1.</span> 
-                      Smartcliff endeavours to use up-to-date security measures to protect your Personal Information.
+                      SmartCliff endeavours to use up-to-date security measures to protect your Personal Information.
                     </li>
                     
                     <li className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
                       <span className="font-medium" style={{fontSize:"19px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>2.</span> 
-                      Smartcliff however does not make any express or implied warranty with respect to the security measures that it may employ from
+                      SmartCliff however does not make any express or implied warranty with respect to the security measures that it may employ from
                       time to time for the protection of the Personal Information.
                     </li>
                   </ol>
@@ -250,7 +250,7 @@ export default function PrivacyPolicy() {
                   <h2 className="font-medium mt-8" style={{fontSize:"25px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>9. VARIATION OF THE PRIVACY POLICY</h2>
                   
                   <p className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
-                    Smartcliff shall be absolutely entitled at its sole discretion from time to time to add to, alter, delete or modify any of the terms and
+                    SmartCliff shall be absolutely entitled at its sole discretion from time to time to add to, alter, delete or modify any of the terms and
                     conditions contained herein. Such changes, additions, alterations, deletions or modifications shall be binding on you once you visit the Site
                     after the Privacy Policy has been so amended.
                   </p>
@@ -258,13 +258,13 @@ export default function PrivacyPolicy() {
                   <h2 className="font-medium mt-8" style={{fontSize:"25px",color:"rgb(139, 102, 168)",fontWeight:"600"}}>10. COPYRIGHT PROTECTION</h2>
                   
                   <p className="mt-4" style={{fontWeight:"100",color:"rgb(33, 37, 41)",fontSize:"17px",lineHeight:"1.5",fontFamily:"Montserrat, sans-serif"}}>
-                    All content on this Site including graphics, text, icons, interfaces, audio clips, logos, images and software is the property of Smartcliff and/or
+                    All content on this Site including graphics, text, icons, interfaces, audio clips, logos, images and software is the property of SmartCliff and/or
                     its content suppliers and is protected by Indian and international copyright laws. The arrangement and compilation (meaning the
-                    collection, arrangement, and assembly) of all content on this Site is the exclusive property of Smartcliff and protected by Indian and
+                    collection, arrangement, and assembly) of all content on this Site is the exclusive property of SmartCliff and protected by Indian and
                     international copyright laws. Permission is given to use the resources of this Site only for the purposes of making enquiries, making a
-                    donation or placing an order for the purchase of Smartcliff products. Any other use, including the reproduction, modification, distribution,
-                    transmission, republication, display or performance, of the content on this Site can only be made with the express permission of Smartcliff.
-                    All other trademarks, brands and copyrights other than those belonging to Smartcliff belong to their respective owners and are their
+                    donation or placing an order for the purchase of SmartCliff products. Any other use, including the reproduction, modification, distribution,
+                    transmission, republication, display or performance, of the content on this Site can only be made with the express permission of SmartCliff.
+                    All other trademarks, brands and copyrights other than those belonging to SmartCliff belong to their respective owners and are their
                     property.
                   </p>
                 </div>

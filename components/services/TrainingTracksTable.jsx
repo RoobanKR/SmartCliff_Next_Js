@@ -65,7 +65,7 @@ const TrainingTracksTable = () => {
           color: "#333",
           margin: "0",
           textAlign: "left",
-        }}>Training Modal</h2>
+        }}>Training Model</h2>
       </div>
 
       <div style={{ overflowX: "auto" }}>
@@ -132,7 +132,7 @@ const TrainingTracksTable = () => {
                 position: "relative",
                 width: "15%",
                 textAlign: "center"
-              }}>No of Days</th>
+              }}>No.of Days</th>
               <th style={{
                 backgroundColor: "#553982",
                 color: "white",

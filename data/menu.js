@@ -128,7 +128,7 @@ export const menuList = [
         ],
       },
 
-      { href: "/institute", label: "Institute" },
+      { href: "/institute", label: "Institution" },
     ],
   },
 ];

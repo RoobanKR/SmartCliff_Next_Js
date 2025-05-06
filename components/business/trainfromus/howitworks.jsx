@@ -63,7 +63,7 @@ export default function HowItWorks() {
           padding: isMobile ? "0 10px" : "0"
         }}
       >
-        A simple and effective hiring process to get the best talent.
+        A simple and effective process to get the best talent.
       </p>
  
       {hireFromUsData.length === 5 && !isMobile && !isTablet ? (

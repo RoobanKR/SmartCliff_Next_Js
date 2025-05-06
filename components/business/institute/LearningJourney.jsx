@@ -9,12 +9,11 @@ export default function LearningJourney({ hireFromUsData }) {
           <div className="col-auto">
             <div className="sectionTitle">
               <h2 className="sectionTitle__title">
-                Our <span style={{ color: "#f2775e" }}>Institute</span> Training
+                Our <span style={{ color: "#f2775e" }}>Institution</span> Training
                 Models
               </h2>
               <p className="sectionTitle__text">
-                Elevate your graduates to industry-ready professionals / Beyond
-                Graduation: Preparing Students for Career Success
+                Elevate your graduates to industry-ready professionals
               </p>
             </div>
           </div>

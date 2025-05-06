@@ -727,7 +727,7 @@ export const teachers = [
   {
     id: 3,
     imageSrc: "/assets/img/home-3/masthead/icons/b2.svg",
-    name: "Business to Institute",
+    name: "Business to Institution",
     jobTitle: "(B2I)",
   },
 ];

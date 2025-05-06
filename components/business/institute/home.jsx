@@ -75,7 +75,7 @@ export default function HeroSection({ scrollToSection }) {
             color: "#FACC15",
           }}
         >
-          "Empowering Institutes, Enabling Careers"
+          Empowering Institutions, Enabling Careers
         </h1>
         <p
           style={{

@@ -5,21 +5,19 @@ export default function StepsOne({ processSteps }) {
   return (
     <section className="layout-pt-sm layout-pb-sm">
       <div className="container">
-        <div className="row y-gap-20 justify-center text-center">
+        <div className="row y-gap-10 justify-center text-center">
           <div className="col-auto">
             <div className="">
               <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
                 Service Process
               </h2>
-              <p className="sectionTitle__text">
-                10,000+ unique online course list designs
-              </p>
+             
             </div>
           </div>
         </div>
 
         {/* Process Steps in Rows of 3 */}
-        <div className="d-flex flex-column gap-40 pt-60 lg:pt-40" >
+        <div className="d-flex flex-column gap-40 pt-20 lg:pt-40" >
           {Array.from({ length: Math.ceil(processSteps.length / 3) }).map(
             (_, rowIndex) => (
               <div key={rowIndex} className="row y-gap-50 justify-center">

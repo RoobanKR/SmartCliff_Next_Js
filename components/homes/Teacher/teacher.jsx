@@ -41,7 +41,7 @@ export default function Teachers() {
                 <div className="-el-1">
                   <div className="bg-white rounded-8 px-40 py-40">
                     <div className="text-18 text-dark-1 lh-11 fw-500">
-                      <span className="text-purple-1">Smartcliff</span> Services{" "}
+                      <span className="text-purple-1">SmartCliff</span> Services{" "}
                     </div>
 
                     <div className="y-gap-20 pt-25">

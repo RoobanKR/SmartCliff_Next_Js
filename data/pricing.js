@@ -1,6 +1,6 @@
 export const pricingData = [
   {
-    type: "Smartcliff MCA",
+    type: "SmartCliff MCA",
     price: 0,
     period: "",
 

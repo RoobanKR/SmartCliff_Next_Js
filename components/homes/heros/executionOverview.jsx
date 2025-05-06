@@ -152,8 +152,8 @@ export default function HeroSection() {
               lineHeight: "1.2",
             }}
           >
-            <span style={{ color: "#f27757" }}> Unbeatable Execution!</span> /
-            Our Success Metrics!
+            <span style={{ color: "#f27757" }}> Our Success Metrics!</span> 
+            
           </h1>
           <h3
             style={{
@@ -226,7 +226,7 @@ export default function HeroSection() {
                   opacity: 0.8,
                 }}
               >
-                Business to Business
+                Corporate
               </p>
               <p
                 style={{
@@ -268,7 +268,7 @@ export default function HeroSection() {
                   opacity: 0.8,
                 }}
               >
-                Business to Institute
+                Institution
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2I)</p>
             </div>
@@ -338,7 +338,7 @@ export default function HeroSection() {
                   opacity: 0.8,
                 }}
               >
-                Business to Client
+                Learners
               </p>
               <p style={{ fontSize: "1rem", opacity: 0.8 }}>(B2C)</p>
             </div>

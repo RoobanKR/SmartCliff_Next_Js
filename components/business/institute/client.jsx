@@ -33,9 +33,7 @@ export default function Client({ instituteFromUsData }) {
         <div className="row y-gap-20 justify-center text-center">
           <div className="col-auto">
             <div className="sectionTitle">
-              <h2 className="sectionTitle__title">
-                Our Valued <span style={{ color: "#f2775e" }}>Clients</span>
-              </h2>
+            <h2 style={{ fontSize: "34px", fontWeight: "bold", color: "#334155" }}>Our <span style={{ color: "#f2775e" }}>Institution</span> Partners</h2>
             </div>
           </div>
         </div>
