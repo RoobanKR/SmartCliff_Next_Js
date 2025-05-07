@@ -228,8 +228,6 @@ export default function TestimonialsEight() {
               textAlign: isMobile ? "center" : "left",
             }}
           >
-            Trusted by Many: See What Our{" "}
-            <br style={{ display: isMobile ? "none" : "block" }} />
             <span
               className="text-orange-1"
               style={{
@@ -237,7 +235,7 @@ export default function TestimonialsEight() {
                 display: isMobile ? "block" : "inline",
               }}
             >
-              Users Say
+              Success Speaks
             </span>
           </h2>
           <div
@@ -374,7 +372,7 @@ export default function TestimonialsEight() {
                                     marginBottom: "5px",
                                   }}
                                 >
-                                  Batch :
+                                  Company :
                                   <span
                                     className="text-18 fw-500 text-orange-1"
                                     style={{

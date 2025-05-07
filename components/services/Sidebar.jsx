@@ -53,7 +53,7 @@ export default function Sidebar() {
               }}
             >
               {matchedService
-                ? `${matchedService.title} (${matchedService.name})`
+                ? `${matchedService.name}`
                 : "Service Not Found"}
             </h2>
           </div>
