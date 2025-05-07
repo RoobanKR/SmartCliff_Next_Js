@@ -486,19 +486,19 @@ export default function HTD() {
                       </div>
                     )}
  
-                    {matchedexecutionOverviews.length > 0 && (
+                    {/* {matchedexecutionOverviews.length > 0 && (
                       <div id="execution-overview">
                         <ExecutionOverview serviceId={services} />
                       </div>
                     )}
- 
-                    {filteredHighlights.length > 0 && (
+  */}
+                    {/* {filteredHighlights.length > 0 && (
                       <div>
                         <ExecutiveHighlights
                           filteredHighlights={filteredHighlights}
                         />
                       </div>
-                    )}
+                    )} */}
                     <div id="opportunities">
                       {matchedOppertunity.length > 0 && (
                         <div id="opportunities">

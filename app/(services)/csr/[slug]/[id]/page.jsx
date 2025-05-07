@@ -80,22 +80,22 @@ export default function Page() {
     ) || [];
   const finalHighlights =
     ourProgram?.filter(
-      (highlight) => highlight.degree_program._id === selectedProgramId
+      (highlight) => highlight?.degree_program?._id === selectedProgramId
     ) || [];
   const finalProgramOutcome =
     outcomes?.filter(
-      (outcome) => outcome.degree_program._id === selectedProgramId
+      (outcome) => outcome?.degree_program?._id === selectedProgramId
     ) || [];
   const finalTarget =
     targetStudents?.filter(
-      (target) => target.degree_program._id === selectedProgramId
+      (target) => target?.degree_program?._id === selectedProgramId
     ) || [];
   const finalSponsor =
     ourSponsors?.filter(
-      (sponsor) => sponsor.degree_program._id === selectedProgramId
+      (sponsor) => sponsor?.degree_program?._id === selectedProgramId
     ) || [];
   const selectedAboutCollege = aboutCollegeData.find(
-    (program) => program._id === selectedProgramId
+    (program) => program?._id === selectedProgramId
   );
   const filteredFAQ = faq.filter(
     (item) =>
@@ -171,7 +171,6 @@ export default function Page() {
         { label: "Highlights", ref: highlightsRef },
         { label: "Program Outcome", ref: outcomeRef },
         { label: "Target Students", ref: targetRef },
-        { label: "Sponsors", ref: sponsorsRef },
         { label: "FAQ", ref: faqRef },
       ];
 
@@ -405,9 +404,9 @@ export default function Page() {
               ...(finalTarget.length > 0
                 ? [{ label: "Target Students", ref: targetRef }]
                 : []),
-              ...(finalSponsor.length > 0
-                ? [{ label: "Sponsors", ref: sponsorsRef }]
-                : []),
+              // ...(finalSponsor.length > 0
+              //   ? [{ label: "Sponsors", ref: sponsorsRef }]
+              //   : []),
               ...(filteredFAQ.length > 0
                 ? [{ label: "FAQ", ref: faqRef }]
                 : []),
@@ -483,11 +482,11 @@ export default function Page() {
           </div>
         )}
 
-        {finalSponsor.length > 0 && (
+        {/* {finalSponsor.length > 0 && (
           <div ref={sponsorsRef}>
             <SponsorsSection ids={selectedProgramId} />
           </div>
-        )}
+        )} */}
 
         {filteredFAQ.length > 0 && (
           <div ref={faqRef}>

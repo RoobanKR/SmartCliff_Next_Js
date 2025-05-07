@@ -129,7 +129,7 @@ export default function PartnersSection({ ids }) {
                   {partner.type}
                 </span>
 
-                <p
+                {/* <p
                   style={{
                     fontSize: "14px",
                     color: "#6b7280",
@@ -138,7 +138,7 @@ export default function PartnersSection({ ids }) {
                 >
                   {partner.description ||
                     "Trusted industry leader and innovator."}
-                </p>
+                </p> */}
               </div>
 
               <a

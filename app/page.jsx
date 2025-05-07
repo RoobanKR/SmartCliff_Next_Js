@@ -20,6 +20,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Navigation, Pagination } from "swiper";
+import HomeClient from "@/components/homes/client/homeClient";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -94,8 +95,8 @@ export default function HomePage() {
               onClick={closePopup}
               style={{
                 position: "absolute",
-                top: "16px",
-                right: "16px",
+                top: "-4px",
+                right: "0px",
                 background: "none",
                 border: "none",
                 padding: "8px",
@@ -212,6 +213,8 @@ export default function HomePage() {
         <ExecutiveOverview2 />
         <WhySmartcliff />
         <CategoriesHomeOne />
+        <HomeClient />
+
         <TestimonialsEight />
         <Hiring />
         <FrequentlyAskedQuestion />

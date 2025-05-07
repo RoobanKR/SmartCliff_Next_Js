@@ -499,7 +499,7 @@ export default function ServiceDegreeProgram() {
                   color: "#ddd",
                 }}
               >
-                🔍
+                🚧
               </div>
               <h3
                 style={{
@@ -509,7 +509,8 @@ export default function ServiceDegreeProgram() {
                   marginBottom: "15px",
                 }}
               >
-                No programs found
+                Page Under Construction
+
               </h3>
               <p
                 style={{
@@ -519,8 +520,8 @@ export default function ServiceDegreeProgram() {
                   margin: "0 auto",
                 }}
               >
-                Try adjusting your filter criteria or check back later for new
-                programs.
+              We're working hard to bring this page to life. Please check back
+              soon!
               </p>
             </div>
           )}

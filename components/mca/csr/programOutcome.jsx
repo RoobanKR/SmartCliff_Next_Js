@@ -86,7 +86,7 @@ const RightSideImage = ({ isMobile }) => (
       }}
     />
   </div>
-);
+)
 
 const TestimonialsSection = ({ ids }) => {
   const dispatch = useDispatch();
@@ -94,7 +94,7 @@ const TestimonialsSection = ({ ids }) => {
   const programId = params.id;
   const outcomes = useSelector((state) => state.outcomes.outcomes);
   const filteredOutcomes =
-    outcomes?.filter((partner) => partner.degree_program._id === ids) || [];
+    outcomes?.filter((partner) => partner?.degree_program?._id === ids) || [];
 
   useEffect(() => {
     dispatch(getAllOutcomes());

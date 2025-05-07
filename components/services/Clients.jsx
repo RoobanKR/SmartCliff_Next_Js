@@ -79,7 +79,7 @@ export default function ServiceClient() {
                           <div className="infoCard__image">
                             <Image width={150} height={100} style={{ width: "100%", objectFit: "contain" }} src={elm.image} alt="image" />
                           </div>
-                          <h5 className="infoCard__title text-17 lh-15 mt-10">{elm.name}</h5>
+                          {/* <h5 className="infoCard__title text-17 lh-15 mt-10">{elm.name}</h5> */}
                         </div>
                       </div>
                     </SwiperSlide>
