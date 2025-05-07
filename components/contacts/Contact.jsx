@@ -9,6 +9,9 @@ import {
   FaCommentDots,
   FaSpinner,
   FaTimes,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaBuilding,
 } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +23,7 @@ import {
 } from "@/redux/slices/contact/contact";
 import dynamic from "next/dynamic";
 import { getAllContactPages } from "@/redux/slices/contactPage/contactPage";
+import { getAllAddress } from "@/redux/slices/contactPage/address";
 
 const MapComponent = dynamic(() => import("./Map"), {
   ssr: false,
@@ -35,11 +39,13 @@ export default function ContactPage() {
   } = useSelector(selectContact);
   const [showMap, setShowMap] = useState(false);
   const [showEnquiry, setShowEnquiry] = useState(false);
+
+  // Get contact pages from redux state
   const contactPages =
     useSelector((state) => state?.contactPage?.contactPages) || [];
 
-    console.log("contactPages",contactPages);
-    
+  // Get address data from redux state
+  const addressData = useSelector((state) => state?.address?.addresses) || [];
 
   // Contact form data
   const [formData, setFormData] = useState({
@@ -52,18 +58,19 @@ export default function ContactPage() {
   useEffect(() => {
     setShowMap(true);
   }, []);
+
+  // Fetch contact pages and address data
   useEffect(() => {
     const fetchData = async () => {
       try {
         await dispatch(getAllContactPages());
+        await dispatch(getAllAddress()); // Fetch address data
       } catch (error) {
-        console.error("Error fetching contact pages:", error);
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [dispatch]);
-
-
 
   // Handle success response
   useEffect(() => {
@@ -139,7 +146,32 @@ export default function ContactPage() {
       <section className="layout-pb-sm">
         <div className="container">
           <div className="row y-gap-50 justify-between">
-            <div className="col-lg-4">
+            <div className="col-lg-6">
+              {/* Address information section */}
+              {addressData && addressData.length > 0 && (
+                <div className="address-section mb-30">
+                  <h3 className="text-24 fw-600 mb-20">Our Address</h3>
+                  <div className="d-flex items-center mb-15">
+                    <div
+                      className="d-flex justify-center items-center size-60 rounded-full"
+                      style={{ background: "#edecec" }}
+                    >
+                      <Image
+                        width={30}
+                        height={30}
+                        src={addressData[0]?.image}
+                        alt="icon"
+                      />{" "}
+                    </div>
+                    <div className="ml-30">
+                      <div className="fw-600">{addressData[0]?.street}</div>
+                      <div className="fw-600">{addressData[0]?.address}</div>
+                      <div className="fw-600">{addressData[0]?.city}</div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="y-gap-30 pt-10 lg:pt-10">
                 {contactPages.map((elm, i) => (
                   <div key={i} className="d-flex items-center">
@@ -154,21 +186,19 @@ export default function ContactPage() {
                         alt="icon"
                       />
                     </div>
-                    <div className="ml-20 fw-600">{elm.contact}</div>
+                    <div className="ml-30 fw-600">{elm.contact}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="col-lg-7 mb-30">
+            <div className="col-lg-5 mb-30">
+              <h3 className="text-24 fw-600 mb-20">Send us a message</h3>
               <form
-                className="contact-form row y-gap-30 pt-30 lg:pt-20"
+                className="contact-form row y-gap-30 pt-10"
                 onSubmit={handleSubmit}
               >
                 <div className="col-md-6">
-                  {/* <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                    Name
-                  </label> */}
                   <input
                     required
                     type="text"
@@ -179,9 +209,6 @@ export default function ContactPage() {
                   />
                 </div>
                 <div className="col-md-6">
-                  {/* <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                    Email Address
-                  </label> */}
                   <input
                     required
                     type="email"
@@ -192,9 +219,6 @@ export default function ContactPage() {
                   />
                 </div>
                 <div className="col-12">
-                  {/* <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                    Message
-                  </label> */}
                   <textarea
                     required
                     name="message"

@@ -67,25 +67,28 @@ export default function HomePage() {
             zIndex: 9999,
           }}
         >
-          <div
-            style={{
-              background: "linear-gradient(135deg, #3a0ca3, #0f0f0f)",
-              borderRadius: "16px",
-              padding: "24px", // Reduced padding
-              maxWidth: "1000px",
-              width: "95%",
-              maxHeight: "85vh", // Limit vertical space
-              overflowY: "auto", // Allow scroll if content overflows
-              position: "relative",
-              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              color: "#ffffff",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: "16px",
-            }}
-          >
+<div
+  style={{
+    backgroundImage: "url('/assets/img/about-1/bckimg13.jpg')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    borderRadius: "16px",
+    padding: "24px",
+    maxWidth: "1000px",
+    width: "95%",
+    maxHeight: "85vh",
+    overflowY: "auto",
+    position: "relative",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    color: "#ffffff",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    gap: "16px",
+  }}
+>
             {/* Close Button */}
             <button
               onClick={closePopup}
@@ -98,7 +101,7 @@ export default function HomePage() {
                 padding: "8px",
                 borderRadius: "50%",
                 cursor: "pointer",
-                color: "#ffffffb0",
+                color: "red",
                 zIndex: 10000,
                 display: "flex",
                 alignItems: "center",
@@ -163,7 +166,7 @@ export default function HomePage() {
                     padding: "6px",
                     borderRadius: "9999px",
                     cursor: "pointer",
-                    color: "#ffffff",
+                    color: "black",
                   }}
                   aria-label="Previous"
                 >
@@ -188,7 +191,7 @@ export default function HomePage() {
                     padding: "6px",
                     borderRadius: "9999px",
                     cursor: "pointer",
-                    color: "#ffffff",
+                    color: "black",
                   }}
                   aria-label="Next"
                 >
@@ -242,8 +245,8 @@ function PopupCard({ popup }) {
       </h2>
       <p
         style={{
-          color: "#e5e7eb",
-          fontSize: "14px",
+          color: "black",
+          fontSize: "16px",
           lineHeight: "1.6",
           textAlign: "center",
           marginBottom: popup.link ? "12px" : "0",
@@ -252,19 +255,19 @@ function PopupCard({ popup }) {
         {popup.description}
       </p>
       {popup.link && (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", }}>
           <a
             href={popup.link}
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              color: "#FACC15",
+             
               textDecoration: "underline",
               fontWeight: "600",
               fontSize: "14px",
             }}
           >
-            Apply Now →
+        <span style={{color:"black"}}>   {popup.button} → </span>
           </a>
         </div>
       )}

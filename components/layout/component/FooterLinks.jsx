@@ -9,15 +9,18 @@ import {
   selectFooterStatus,
   fetchFooterData,
 } from "@/redux/slices/footer/footer";
+import { getAllAddress } from "@/redux/slices/contactPage/address";
 
 export default function FooterLinks({ allClasses }) {
   const dispatch = useDispatch();
   const footerData = useSelector(selectFooterData);
   const status = useSelector(selectFooterStatus);
+  const addressData = useSelector((state) => state?.address?.addresses) || [];
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchFooterData());
+      dispatch(getAllAddress()); // Fetch address data
     }
   }, [dispatch, status]);
 
@@ -155,9 +158,22 @@ export default function FooterLinks({ allClasses }) {
             <i className="lucide lucide-phone"></i>
             <span>{contact.secondaryNumber}</span>
           </div>
-          <div className="d-flex align-items-start gap-2">
-            <i className="lucide lucide-map-pin"></i>
-            <span>{contact.address}</span>
+          <div className="d-flex align-items-center gap-2">
+            <i className="lucide lucide-mail"></i>
+            <span>{contact.email}</span>
+          </div>
+          <div className="d-flex align-items-center gap-2">
+            <i className="lucide lucide-mail"></i>
+            <span>{addressData[0]?.street}</span>
+          </div>
+          
+          <div className="d-flex align-items-center gap-2">
+            <i className="lucide lucide-mail"></i>
+            <span>{addressData[0]?.address}</span>
+          </div>
+          <div className="d-flex align-items-center gap-2">
+            <i className="lucide lucide-mail"></i>
+            <span>{addressData[0]?.city}</span>
           </div>
         </div>
       </div>

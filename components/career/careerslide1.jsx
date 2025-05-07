@@ -29,14 +29,14 @@ export default function CareerSlideOne() {
   const renderTitle = (title) => {
     if (!title) return null;
  
-    const parts = title.split(/(Courses)/);
+    const parts = title.split(/(professionals.|educators )/i);
  
     return (
       <h3 className="text-30 md:text-30 lh-11">
         {parts.map((part, index) =>
-          part === "Courses" ? (
+          part.toLowerCase() === "professionals." || part.toLowerCase() === "educators " ? (
             <span key={index} style={{ color: "#f07057" }}>
-              Courses
+              {part}
             </span>
           ) : (
             <span key={index}>{part}</span>

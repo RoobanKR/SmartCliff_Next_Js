@@ -71,7 +71,7 @@ import companyReducer from "./slices/mca/companyDetails/companyDetails";
 import footerReducer from "./slices/footer/footer";
 import popupNotificationReducer from "./slices/popUp/popUp";
 import contactPageReducer from "./slices/contactPage/contactPage";
-
+import addressReducer from "./slices/contactPage/address";
 export default configureStore({
   reducer: {
     userSignIn: userSignInSlice,
@@ -146,5 +146,7 @@ export default configureStore({
     footer: footerReducer,
     popupNotification: popupNotificationReducer,
     contactPage: contactPageReducer,
+    address: addressReducer, // Add this line
+
   },
 });
