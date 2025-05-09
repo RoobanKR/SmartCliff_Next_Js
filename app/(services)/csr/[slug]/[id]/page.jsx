@@ -240,7 +240,7 @@ export default function Page() {
         className="navigation-controls"
         style={{
           position: "fixed",
-          top: isMobileView ? "60px" : "65px",
+          top: isMobileView ? "45px" : "55px",
           zIndex: "10",
           backgroundColor: "rgb(229, 226, 236)",
           padding: isMobileView ? "6px 0" : "8px 0",
@@ -356,7 +356,7 @@ export default function Page() {
         className="section-navigation"
         style={{
           position: "fixed",
-          top: isMobileView ? "110px" : "130px",
+          top: isMobileView ? "100px" : "120px",
           zIndex: "9",
           backgroundColor: "#EADBC8",
           padding: isMobileView ? "6px 0" : "8px 0",

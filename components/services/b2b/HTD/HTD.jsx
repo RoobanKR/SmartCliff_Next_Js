@@ -246,7 +246,7 @@ export default function HTD() {
   };
  
   const availableSections = [];
- 
+
   if (matchedServiceAbouts.length > 0) {
     availableSections.push({
       id: "learning-solutions",
@@ -259,12 +259,12 @@ export default function HTD() {
   if (PlacementTraining.length > 0) {
     availableSections.push({ id: "training-tracks", title: "Training Tracks" });
   }
-  if (matchedexecutionOverviews.length > 0) {
-    availableSections.push({
-      id: "execution-overview",
-      title: "Execution Overview",
-    });
-  }
+  // if (matchedexecutionOverviews.length > 0) {
+  //   availableSections.push({
+  //     id: "execution-overview",
+  //     title: "Execution Overview",
+  //   });
+  // }
   // if (filteredHighlights.length > 0) {
   //   availableSections.push({
   //     id: "execution-highlights",
@@ -275,10 +275,15 @@ export default function HTD() {
   if (matchedOppertunity.length > 0) {
     availableSections.push({ id: "opportunities", title: "Opportunities" });
   }
-  if (matchedServiceClient.length > 0) {
-    availableSections.push({ id: "clients", title: "Clients" });
+  if (secondLastSegment === "b2i") {
+    availableSections.push({ id: "client", title: "Client" });
   }
- 
+  
+  // Add Company section only for csr segment
+  if (secondLastSegment === "csr") {
+    availableSections.push({ id: "executionoverview", title: "Execution Overview" });
+  }
+
   if (matchedFaq.length > 0) {
     availableSections.push({ id: "faq", title: "FAQ" });
   }
@@ -452,9 +457,11 @@ export default function HTD() {
  
               {secondLastSegment === "b2i" && lastSegment === "dp" ? (
                 <ServiceDegreeProgram />
-              ) : secondLastSegment === "csr" ? (
-                <CsrDegreeProgram />
-              ) : (
+              ) 
+              // : secondLastSegment === "csr" ? (
+              //   <CsrDegreeProgram />
+              // ) 
+              : (
                 <div>
                   <div
                     style={{
@@ -508,14 +515,22 @@ export default function HTD() {
                         </div>
                       )}
                     </div>
-                    {matchedServiceClient.length > 0 && (
+                    {/* {matchedServiceClient.length > 0 && (
                       <div id="clients">
                         <Clients filteredClients={matchedServiceClient} />
                       </div>
-                    )}
-                    {secondLastSegment === "b2i" && <ServiceClient />}
+                    )} */}
+                    {secondLastSegment === "b2i" &&( <div id="client"><ServiceClient /></div>)}
  
                     {secondLastSegment === "b2i" && <FormSection />}
+
+                    {/* Add Company section for csr */}
+                    {secondLastSegment === "csr" && (
+                      <div id="executionoverview">
+                        <CsrDegreeProgram />
+                      </div>
+                    )}
+
                     {matchedFaq.length > 0 && (
                       <div id="faq">
                         <FAQComponent faq={matchedFaq} />
@@ -548,6 +563,3 @@ export default function HTD() {
     </>
   );
 }
- 
- 
- 

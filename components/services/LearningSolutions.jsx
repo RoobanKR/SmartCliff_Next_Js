@@ -84,7 +84,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
       <section
         className="layout-pb-md js-mouse-move-container relative"
         ref={sectionRef}
-        style={{ minHeight: "100vh" }}
+        // style={{ minHeight: "100vh" }}
       >
         <div className="container">
           <div className="row y-gap-30 align-items-start">

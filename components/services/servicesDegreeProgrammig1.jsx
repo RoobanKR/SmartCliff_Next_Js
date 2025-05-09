@@ -16,13 +16,14 @@ import { FaCalendarAlt } from "react-icons/fa";
 import Banner from "../common/Banner";
 import { fetchAllCompanies } from "@/redux/slices/companyDetails/companyDetails";
 
-export default function CsrDegreeProgram() {
+export default function CsrDegreeProgram({serviceId }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
   const degreeProgramData = useSelector(
     (state) => state.degreeProgram.degreeProgramData
   );
+  console.log("CsrDegreeProgram rendering with serviceId:", serviceId);
 
   const degreeCompanyDetails = useSelector(
     (state) => state.companies.companies
@@ -57,6 +58,7 @@ export default function CsrDegreeProgram() {
     (service) => service.service?._id === final?._id
   );
 
+
   useEffect(() => {
     dispatch(fetchServices());
     dispatch(getAllServiceClients());
@@ -87,10 +89,31 @@ export default function CsrDegreeProgram() {
 
     // Note: We don't need to reset loading state as the component will unmount during navigation
   };
+  if (!matchedDegree || matchedDegree.length === 0) {
+    return (
+      <div style={{ 
+        padding: "50px 0", 
+        textAlign: "center",
+        minHeight: "300px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+        <h3 style={{ fontSize: "24px", color: "#333", marginBottom: "15px" }}>
+          No Company Data Available
+        </h3>
+        <p style={{ fontSize: "16px", color: "#666", maxWidth: "600px", margin: "0 auto" }}>
+          There are currently no company details available for this service. Please check back later.
+        </p>
+      </div>
+    );
+  }
+  
   const featuredItems = filteredPrograms || [];
   return (
     <>
-      <div className="banner__content mt-60">
+      {/* <div className="banner__content mt-60">
         {jsonData[3] && (
           <Banner
             title={jsonData[12].title}
@@ -98,10 +121,11 @@ export default function CsrDegreeProgram() {
             imageUrl={jsonData[12].imageUrl}
           />
         )}
-      </div>
+      </div> */}
 
       {/* Filter Section */}
       {featuredItems.length > 0 && (
+        
         <div
           style={{
             position: "sticky",
@@ -109,6 +133,58 @@ export default function CsrDegreeProgram() {
             animation: "slideInDown 0.6s ease 0.5s forwards",
           }}
         >
+           <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+          
+        >
+          <div style={{ width: "100%" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: window.innerWidth < 768 ? "column" : "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                padding: window.innerWidth < 768 ? "20px 10px" : "20px 50px",
+                gap: window.innerWidth < 768 ? "30px" : "0",
+              }}
+            >
+              {/* Execution Overview */}
+              <div
+                style={{
+                  textAlign: "center",
+                  flex: window.innerWidth < 768 ? "0 0 100%" : "1",
+                  order: window.innerWidth < 768 ? "-1" : "0",
+                  marginLeft: window.innerWidth < 768 ? "0px" : "70px",
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: window.innerWidth < 768 ? "20px" : "29px",
+                    margin: 0,
+                    marginBottom: "20px"
+                  }}
+                >
+                  Execution Overview
+                </h2>
+              </div>
+            </div>
+
+            <p
+              style={{
+                marginTop: window.innerWidth < 768 ? "-20px" : "-30px", color: "#EC5228", fontWeight: "bold",
+                marginLeft: window.innerWidth < 768 ? "0px" : "30px",
+              }}
+            >
+
+            </p>
+          </div>
+        </div>
           <div className="container">
             <div
               style={{
@@ -149,9 +225,9 @@ export default function CsrDegreeProgram() {
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     boxShadow:
-                      yearFilter === ""
-                        ? "0 5px 15px rgb(48, 96, 114)"
-                        : "none",
+                    yearFilter === ""
+                      ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                      : "none",
                     position: "relative",
                     overflow: "hidden",
                   }}
@@ -185,9 +261,9 @@ export default function CsrDegreeProgram() {
                       cursor: "pointer",
                       transition: "all 0.3s ease",
                       boxShadow:
-                        yearFilter === year
-                          ? "0 5px 15px rgb(48, 96, 114)"
-                          : "none",
+                      yearFilter === year
+                        ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                        : "none",
                       position: "relative",
                       overflow: "hidden",
                     }}
@@ -487,47 +563,8 @@ export default function CsrDegreeProgram() {
           </div>
 
           {/* No results message */}
-          {featuredItems.length === 0 && (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "60px 20px",
-                animation: "fadeIn 0.5s ease",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "90px",
-                  marginBottom: "20px",
-                  color: "#ffb74d", // construction yellow-orange
-                }}
-              >
-                🚧
-              </div>
-              <h3
-                style={{
-                  fontSize: "26px",
-                  fontWeight: "700",
-                  color: "#444",
-                  marginBottom: "15px",
-                }}
-              >
-                Page Under Construction
-              </h3>
-              <p
-                style={{
-                  fontSize: "16px",
-                  color: "#666",
-                  maxWidth: "500px",
-                  margin: "0 auto",
-                }}
-              >
-                We're working hard to bring this page to life. Please check back
-                soon!
-              </p>
-            </div>
-          )}
         </div>
+        
       </section>
 
       {/* Animation keyframes */}

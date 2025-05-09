@@ -14,7 +14,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import EnquiryModal from "@/components/common/EnquiryModal";
 import { FaTimes } from "react-icons/fa";
-
+ 
 // SVG Components for card decorations
 const ScatteredSquaresIcon = () => (
   <svg
@@ -31,7 +31,7 @@ const ScatteredSquaresIcon = () => (
     <rect x="70" y="70" width="20" height="20" fill="#FF69B4" />
   </svg>
 );
-
+ 
 const CirclesIcon = () => (
   <svg
     width="80"
@@ -45,7 +45,7 @@ const CirclesIcon = () => (
     <circle cx="70" cy="70" r="15" fill="#65C466" />
   </svg>
 );
-
+ 
 const ScatteredStarsIcon = () => (
   <svg
     width="100"
@@ -68,7 +68,7 @@ const ScatteredStarsIcon = () => (
     />
   </svg>
 );
-
+ 
 const ScatteredCirclesIcon = () => (
   <svg
     width="100"
@@ -83,18 +83,18 @@ const ScatteredCirclesIcon = () => (
     <circle cx="75" cy="75" r="12" fill="#FFD700" />
   </svg>
 );
-
+ 
 const LoadingSpinner = () => {
   const [dotCount, setDotCount] = useState(1);
-
+ 
   useEffect(() => {
     const interval = setInterval(() => {
       setDotCount((prev) => (prev < 3 ? prev + 1 : 1));
     }, 300); // Change dot count every 300ms
-
+ 
     return () => clearInterval(interval);
   }, []);
-
+ 
   return (
     <div
       style={{
@@ -136,18 +136,18 @@ const LoadingSpinner = () => {
     </div>
   );
 };
-
+ 
 const SequentialDots = () => {
   const [dots, setDots] = useState(1);
-
+ 
   useEffect(() => {
     const interval = setInterval(() => {
       setDots((prev) => (prev < 3 ? prev + 1 : 1));
     }, 300);
-
+ 
     return () => clearInterval(interval);
   }, []);
-
+ 
   return (
     <span
       style={{
@@ -160,7 +160,7 @@ const SequentialDots = () => {
     </span>
   );
 };
-
+ 
 const ServicesDropdown = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -175,12 +175,12 @@ const ServicesDropdown = () => {
   const pathname = usePathname();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isActive = (path) => pathname.startsWith(path);
-
+ 
   useEffect(() => {
     dispatch(getAllBusinessServices());
     dispatch(fetchServices());
   }, [dispatch]);
-
+ 
   useEffect(() => {
     if (
       isDropdownOpen &&
@@ -191,32 +191,32 @@ const ServicesDropdown = () => {
       setHoveredService(businessServices[0]._id);
     }
   }, [isDropdownOpen, businessServices, hoveredService]);
-
+ 
   // Track navigation events
   useEffect(() => {
     const handleRouteChangeStart = () => {
       setIsNavigating(true);
     };
-
+ 
     const handleRouteChangeComplete = () => {
       setIsNavigating(false);
       setLoadingServiceId(null);
     };
-
+ 
     // Subscribe to router events
     window.addEventListener("beforeunload", handleRouteChangeStart);
-
+ 
     // For Next.js App Router
     const handlePathnameChange = () => {
       if (isNavigating) {
         handleRouteChangeComplete();
       }
     };
-
+ 
     // Check if pathname has changed
     const currentPathname = pathname;
     let previousPathname = currentPathname;
-
+ 
     const pathnameObserver = setInterval(() => {
       const newPathname = window.location.pathname;
       if (previousPathname !== newPathname) {
@@ -224,23 +224,23 @@ const ServicesDropdown = () => {
         handlePathnameChange();
       }
     }, 100);
-
+ 
     return () => {
       window.removeEventListener("beforeunload", handleRouteChangeStart);
       clearInterval(pathnameObserver);
     };
   }, [pathname, isNavigating]);
-
+ 
   // Find the current business service for slug
   const getCurrentBusinessService = (serviceId) => {
     return businessServices?.find((service) => service._id === serviceId);
   };
-
+ 
   // Function to get a decoration for a card based on index
   const getCardDecoration = (index) => {
     // Cycle through 3 decoration styles
     const decorationIndex = index % 4;
-
+ 
     switch (decorationIndex) {
       case 0:
         return <ScatteredCirclesIcon />;
@@ -262,16 +262,16 @@ const ServicesDropdown = () => {
       setIsModalOpen(true); // Open the modal instead of showing alert
       return; // Prevent navigation
     }
-
+ 
     // Normal behavior for other services
     setLoadingServiceId(serviceId);
     setIsNavigating(true);
   };
-
+ 
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
+ 
   return (
     <li
       className="menu-item-has-children"
@@ -287,7 +287,7 @@ const ServicesDropdown = () => {
       <a
         data-barba
         className="serviceMainLink"
-        style={{ cursor: "pointer",marginTop:"3px" }}
+        style={{ cursor: "pointer", marginTop: "3px" }}
         onMouseOver={() => setHoveredLink("services")}
         onMouseOut={() => setHoveredLink(null)}
       >
@@ -307,7 +307,7 @@ const ServicesDropdown = () => {
           }}
         />
       </a>
-
+ 
       <AnimatePresence>
         {isDropdownOpen && (
           <motion.div
@@ -431,7 +431,7 @@ const ServicesDropdown = () => {
                   ))}
                 </ul>
               </div>
-
+ 
               {/* Right content area - UPDATED with decorative elements */}
               <div
                 className="services-content"
@@ -445,506 +445,657 @@ const ServicesDropdown = () => {
                   backgroundColor: "#fff",
                 }}
               >
-                {hoveredService &&
-                services?.filter(
-                  (service) =>
-                    service.business_services &&
-                    service.business_services._id === hoveredService
-                ).length > 0 ? (
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(2, 1fr)",
-                      gap: "20px",
-                    }}
-                  >
-                    {services
-                      .filter(
+                {hoveredService && (
+                  <>
+                    {/* Find the current business service to get its slug */}
+                    {(() => {
+                      const currentBusinessService =
+                        getCurrentBusinessService(hoveredService);
+                      return currentBusinessService?.slug === "csr" ? (
+                        <div
+                          style={{
+                            gridColumn: "span 2",
+                            background:
+                              "linear-gradient(to bottom right,rgb(254, 255, 240), #FFFFFF)",
+                            padding: "28px",
+                            borderRadius: "16px",
+                            boxShadow: "0 6px 16px rgba(0, 0, 0, 0.05)",
+                            borderLeft: "6px solid #F5C45E",
+                            borderRight: "6px solid #F5C45E",
+                            position: "relative",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            transition:
+                              "transform 0.2s ease, box-shadow 0.2s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform =
+                              "translateY(-4px)";
+                            e.currentTarget.style.boxShadow =
+                              "0 12px 24px rgba(0, 0, 0, 0.1)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow =
+                              "0 6px 16px rgba(0, 0, 0, 0.05)";
+                          }}
+                        >
+                          {/* Title */}
+                          <h2
+                            style={{
+                              fontSize: "20px",
+                              fontWeight: 700,
+                              color: "#1E3A8A",
+                              marginBottom: "14px",
+                              position: "relative",
+                              display: "inline-block",
+                            }}
+                          >
+                            {currentBusinessService?.title}
+                            <span
+                              style={{
+                                display: "block",
+                                width: "40px",
+                                height: "3px",
+                                backgroundColor: "#F5C45E",
+                                marginTop: "6px",
+                                borderRadius: "2px",
+                              }}
+                            />
+                          </h2>
+ 
+                          {/* Description Box */}
+                          <div
+                            style={{
+                              border: "1px dashed rgb(254, 246, 191)",
+                              backgroundColor: "rgb(240, 239, 234)",
+                              padding: "16px",
+                              borderRadius: "8px",
+                              marginBottom: "20px",
+                            }}
+                          >
+                            <p
+                              style={{
+                                fontSize: "14.5px",
+                                color: "#1E40AF",
+                                lineHeight: "1.75",
+                                textAlign: "justify",
+                              }}
+                            >
+                              {currentBusinessService?.description}
+                            </p>
+                          </div>
+ 
+                          {/* Only display the first matching service */}
+                          {(() => {
+                            const firstService = services.find(
+                              (service) =>
+                                service.business_services &&
+                                service.business_services._id === hoveredService
+                            );
+ 
+                            if (!firstService) return null;
+ 
+                            const currentBusinessService =
+                              getCurrentBusinessService(hoveredService);
+                            const serviceUrl = `/${currentBusinessService?.slug}/${firstService.slug}`;
+ 
+                            return (
+                              <Link
+                                key={firstService._id}
+                                href={serviceUrl}
+                                passHref
+                                onClick={(e) => {
+                                  handleLearnMoreClick(
+                                    firstService._id,
+                                    currentBusinessService?.slug,
+                                    firstService.slug
+                                  );
+                               
+                                }}
+                                style={{
+                                  textDecoration: "none",
+                                  color: "inherit",
+                                }}
+                              >
+                                <span
+                                  onClick={(e) => {
+                                    handleLearnMoreClick(
+                                      currentBusinessService?.slug
+                                    );
+                                  }}
+                                  style={{
+                                    color: "#AD8F72",
+                                    fontSize: "14.5px",
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                    textDecoration: "underline",
+                                    textUnderlineOffset: "4px",
+                                    transition: "color 0.3s ease",
+                                    alignSelf: "flex-start",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = "#916E50";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = "#AD8F72";
+                                  }}
+                                >
+                                  Read More
+                                </span>
+                              </Link>
+                            );
+                          })()}
+                        </div>
+                      ) : // Show other business service details
+                      services?.filter(
                         (service) =>
                           service.business_services &&
                           service.business_services._id === hoveredService
-                      )
-                      .map((service, index) => {
-                        const currentBusinessService =
-                          getCurrentBusinessService(hoveredService);
-                        const isLoading = loadingServiceId === service._id;
-                        const serviceUrl = `/${currentBusinessService?.slug}/${service.slug}`;
+                      ).length > 0 ? (
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(2, 1fr)",
+                          gap: "20px",
+                        }}
+                      >
+                        {services
+                          .filter(
+                            (service) =>
+                              service.business_services &&
+                              service.business_services._id === hoveredService
+                          )
+                          .map((service, index) => {
+                            const currentBusinessService =
+                              getCurrentBusinessService(hoveredService);
+                            const isLoading =
+                              loadingServiceId === service._id;
+                            const serviceUrl = `/${currentBusinessService?.slug}/${service.slug}`;
 
-                        // Check if this is a B2C enquiry form
-                        const isB2CEnquiry =
-                          currentBusinessService?.slug === "b2c" &&
-                          service.slug === "enquiryform";
+                            // Check if this is a B2C enquiry form
+                            const isB2CEnquiry =
+                              currentBusinessService?.slug === "b2c" &&
+                              service.slug === "enquiryform";
 
-                        // For B2C enquiry form, render the full width special card
-                        if (isB2CEnquiry) {
-                          return (
-                            <div
-                              key={service._id}
-                              style={{
-                                gridColumn: "span 2",
-                                background:
-                                  "linear-gradient(to bottom right,rgb(254, 255, 240), #FFFFFF)",
-                                padding: "32px",
-                                borderRadius: "16px",
-                                boxShadow: "0 6px 16px rgba(0, 0, 0, 0.05)",
-                                borderLeft: "6px solid #F5C45E", // Blue accent
-                                position: "relative",
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                transition:
-                                  "transform 0.2s ease, box-shadow 0.2s ease",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.transform =
-                                  "translateY(-4px)";
-                                e.currentTarget.style.boxShadow =
-                                  "0 12px 24px rgba(0, 0, 0, 0.1)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.transform =
-                                  "translateY(0)";
-                                e.currentTarget.style.boxShadow =
-                                  "0 6px 16px rgba(0, 0, 0, 0.05)";
-                              }}
-                            >
-                              {/* Title */}
-                              <h2
-                                style={{
-                                  fontSize: "20px",
-                                  fontWeight: 700,
-                                  color: "#1E3A8A", // Darker blue for contrast
-                                  marginBottom: "14px",
-                                  position: "relative",
-                                  display: "inline-block",
-                                }}
-                              >
-                                {service.title}
-                                <span
+                            // For B2C enquiry form, render the full width special card
+                            if (isB2CEnquiry) {
+                              return (
+                                <div
+                                  key={service._id}
                                   style={{
-                                    display: "block",
-                                    width: "40px",
-                                    height: "3px",
-                                    backgroundColor: "#F5C45E", // Blue underline
-                                    marginTop: "6px",
-                                    borderRadius: "2px",
+                                    gridColumn: "span 2",
+                                    background:
+                                      "linear-gradient(to bottom right,rgb(254, 255, 240), #FFFFFF)",
+                                    padding: "32px",
+                                    borderRadius: "16px",
+                                    boxShadow:
+                                      "0 6px 16px rgba(0, 0, 0, 0.05)",
+                                    borderLeft: "6px solid #F5C45E",
+                                    borderRight: "6px solid #F5C45E",
+                                    position: "relative",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "space-between",
+                                    transition:
+                                      "transform 0.2s ease, box-shadow 0.2s ease",
                                   }}
-                                />
-                              </h2>
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform =
+                                      "translateY(-4px)";
+                                    e.currentTarget.style.boxShadow =
+                                      "0 12px 24px rgba(0, 0, 0, 0.1)";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform =
+                                      "translateY(0)";
+                                    e.currentTarget.style.boxShadow =
+                                      "0 6px 16px rgba(0, 0, 0, 0.05)";
+                                  }}
+                                >
+                                  {/* Title */}
+                                  <h2
+                                    style={{
+                                      fontSize: "20px",
+                                      fontWeight: 700,
+                                      color: "#1E3A8A", // Darker blue for contrast
+                                      marginBottom: "14px",
+                                      position: "relative",
+                                      display: "inline-block",
+                                    }}
+                                  >
+                                    {service.title}
+                                    <span
+                                      style={{
+                                        display: "block",
+                                        width: "40px",
+                                        height: "3px",
+                                        backgroundColor: "#F5C45E", // Blue underline
+                                        marginTop: "6px",
+                                        borderRadius: "2px",
+                                      }}
+                                    />
+                                  </h2>
 
-                              {/* Description Box */}
-                              <div
-                                style={{
-                                  border: "1px dashed rgb(254, 246, 191)",
-                                  backgroundColor: "rgb(240, 239, 234)",
-                                  padding: "16px",
-                                  borderRadius: "8px",
-                                  marginBottom: "20px",
-                                }}
-                              >
-                                <p
-                                  style={{
-                                    fontSize: "14.5px",
-                                    color: "#1E40AF",
-                                    lineHeight: "1.75",
-                                    textAlign: "justify",
-                                  }}
-                                  dangerouslySetInnerHTML={{
-                                    __html: (
-                                      service.description ||
-                                      `Reach out to us through this service for personalized support.`
-                                    ).replace(
-                                      "SmartCliff empowers aspiring professionals with future-ready training programs",
-                                      `<strong style="color:#1E3A8A;">SmartCliff empowers aspiring professionals with future-ready training programs</strong>`
-                                    ),
-                                  }}
-                                />
-                              </div>
+                                  {/* Description Box */}
+                                  <div
+                                    style={{
+                                      border: "1px dashed rgb(254, 246, 191)",
+                                      backgroundColor: "rgb(240, 239, 234)",
+                                      padding: "16px",
+                                      borderRadius: "8px",
+                                      marginBottom: "20px",
+                                    }}
+                                  >
+                                    <p
+                                      style={{
+                                        fontSize: "14.5px",
+                                        color: "#1E40AF",
+                                        lineHeight: "1.75",
+                                        textAlign: "justify",
+                                      }}
+                                      dangerouslySetInnerHTML={{
+                                        __html: (
+                                          service.description ||
+                                          `Reach out to us through this service for personalized support.`
+                                        ).replace(
+                                          "SmartCliff empowers aspiring professionals with future-ready training programs",
+                                          `<strong style="color:#1E3A8A;">SmartCliff empowers aspiring professionals with future-ready training programs</strong>`
+                                        ),
+                                      }}
+                                    />
+                                  </div>
 
-                              {/* Button */}
-                              <span
+                                  {/* Button */}
+                                  <span
+                                    onClick={(e) => {
+                                      handleLearnMoreClick(
+                                        service._id,
+                                        currentBusinessService?.slug,
+                                        service.slug
+                                      );
+                                      e.preventDefault();
+                                    }}
+                                    style={{
+                                      color: "#AD8F72",
+                                      fontSize: "14.5px",
+                                      fontWeight: 600,
+                                      cursor: "pointer",
+                                      textDecoration: "underline",
+                                      textUnderlineOffset: "4px",
+                                      transition: "color 0.3s ease",
+                                      alignSelf: "flex-start",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      e.currentTarget.style.color = "#916E50"; // Slightly darker on hover
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.currentTarget.style.color = "#AD8F72";
+                                    }}
+                                  >
+                                    Enquiry Now
+                                  </span>
+                                </div>
+                              );
+                            }
+
+                            // For all other service cards, render the standard card
+                            return (
+                              <Link
+                                key={service._id}
+                                href={serviceUrl}
+                                passHref
                                 onClick={(e) => {
                                   handleLearnMoreClick(
                                     service._id,
                                     currentBusinessService?.slug,
                                     service.slug
                                   );
-                                  e.preventDefault();
-                                }}
-                                style={{
-                                  color: "#AD8F72",
-                                  fontSize: "14.5px",
-                                  fontWeight: 600,
-                                  cursor: "pointer",
-                                  textDecoration: "underline",
-                                  textUnderlineOffset: "4px",
-                                  transition: "color 0.3s ease",
-                                  alignSelf: "flex-start",
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.color = "#916E50"; // Slightly darker on hover
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.color = "#AD8F72";
-                                }}
-                              >
-                                Enquiry Now
-                              </span>
-                            </div>
-                          );
-                        }
 
-                        // For all other service cards, render the standard card
-                        return (
-                          <Link
-                            key={service._id}
-                            href={serviceUrl}
-                            passHref
-                            onClick={(e) => {
-                              handleLearnMoreClick(
-                                service._id,
-                                currentBusinessService?.slug,
-                                service.slug
-                              );
-
-                              // Prevent default if it's our special case
-                              if (isB2CEnquiry) {
-                                e.preventDefault();
-                              }
-                            }}
-                            style={{
-                              textDecoration: "none",
-                              color: "inherit",
-                            }}
-                          >
-                            <div
-                              style={{
-                                background: "#fff",
-                                borderRadius: "16px",
-                                boxShadow:
-                                  "5px 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)",
-                                overflow: "hidden",
-                                height: "180px",
-                                maxWidth: "400px",
-                                display: "flex",
-                                flexDirection: "column",
-                                transition:
-                                  "transform 0.3s ease, box-shadow 0.3s ease",
-                                padding: "20px 20px",
-                                position: "relative",
-                                border: "1px solid #f0f0f0",
-                              }}
-                              className="hover:shadow-lg hover:-translate-y-1"
-                            >
-                              {/* Decorative element positioned at right side */}
-                              <div
+                                  // Prevent default if it's our special case
+                                  if (isB2CEnquiry) {
+                                    e.preventDefault();
+                                  }
+                                }}
                                 style={{
-                                  position: "absolute",
-                                  top: "120px",
-                                  right: "-20px",
-                                  opacity: 0.9,
-                                  zIndex: "0",
+                                  textDecoration: "none",
+                                  color: "inherit",
                                 }}
                               >
-                                {getCardDecoration(index)}
-                              </div>
-                              {/* Content container with an image on the left */}
-                              <div
-                                style={{
-                                  zIndex: "1",
-                                }}
-                              >
-                                {/* Service Image (Left of heading) */}
                                 <div
                                   style={{
+                                    background: "#fff",
+                                    borderRadius: "16px",
+                                    boxShadow:
+                                      "5px 1px 5px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19)",
+                                    overflow: "hidden",
+                                    height: "180px",
+                                    maxWidth: "400px",
                                     display: "flex",
-                                    zIndex: "1",
+                                    flexDirection: "column",
+                                    transition:
+                                      "transform 0.3s ease, box-shadow 0.3s ease",
+                                    padding: "20px 20px",
+                                    position: "relative",
+                                    border: "1px solid #f0f0f0",
                                   }}
+                                  className="hover:shadow-lg hover:-translate-y-1"
                                 >
+                                  {/* Decorative element positioned at right side */}
                                   <div
                                     style={{
-                                      flexShrink: "0",
-                                      width: "50px",
-                                      height: "50px",
-                                      marginRight: "15px",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      borderRadius: "50%",
-                                      overflow: "hidden",
+                                      position: "absolute",
+                                      top: "120px",
+                                      right: "-20px",
+                                      opacity: 0.9,
+                                      zIndex: "0",
                                     }}
                                   >
-                                    {service.icon ? (
-                                      <Image
-                                        src={service.icon}
-                                        alt={service.title}
-                                        width={30}
-                                        height={30}
-                                        style={{ objectFit: "cover" }}
-                                      />
-                                    ) : (
-                                      <i
-                                        className="icon-briefcase"
-                                        style={{
-                                          fontSize: "28px",
-                                          color: "#498bfa",
-                                        }}
-                                      ></i>
-                                    )}
+                                    {getCardDecoration(index)}
                                   </div>
-                                  <h3
+                                  {/* Content container with an image on the left */}
+                                  <div
                                     style={{
-                                      fontSize: "15px",
-                                      fontWeight: "600",
-                                      color: "#002856",
-                                      marginTop: "8px",
-                                      marginBottom: "10px",
-                                      lineHeight: "1.3",
-                                      overflow: "hidden",
-                                      textOverflow: "ellipsis",
-                                      display: "-webkit-box",
-                                      WebkitLineClamp: "2",
-                                      WebkitBoxOrient: "vertical",
+                                      zIndex: "1",
                                     }}
                                   >
-                                    {service.title}
-                                  </h3>
-                                </div>
-
-                                {/* Text Content */}
-                                <div style={{ flex: "1" }}>
-                                  {/* Description */}
-                                  <p
-                                    style={{
-                                      fontSize: "12px",
-                                      color: "#6B7280",
-                                      margin: "0 0 12px 0",
-                                      lineHeight: "1.5",
-                                      flex: "1",
-                                      overflow: "hidden",
-                                      textOverflow: "ellipsis",
-                                      display: "-webkit-box",
-                                      WebkitLineClamp: "3",
-                                      WebkitBoxOrient: "vertical",
-                                    }}
-                                  >
-                                    {service.description ||
-                                      `Comprehensive ${service.title} solutions tailored to your business needs.`}
-                                  </p>
-                                </div>
-                              </div>
-
-                              {/* Learn More button */}
-                              {service.title !== "Degree Program" && (
-                                <div
-                                  style={{
-                                    marginTop: "auto",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    position: "relative",
-                                    zIndex: "1",
-                                  }}
-                                >
-                                  {isLoading ? (
-                                    <>
-                                      <LoadingSpinner />
-                                      <span style={{ marginLeft: "8px" }}>
-                                        Loading
-                                        <SequentialDots />
-                                      </span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <span
+                                    {/* Service Image (Left of heading) */}
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        zIndex: "1",
+                                      }}
+                                    >
+                                      <div
                                         style={{
-                                          fontSize: "14px",
-                                          fontWeight: "500",
-                                          color: "#0047AB",
+                                          flexShrink: "0",
+                                          width: "50px",
+                                          height: "50px",
+                                          marginRight: "15px",
                                           display: "flex",
                                           alignItems: "center",
+                                          justifyContent: "center",
+                                          borderRadius: "50%",
+                                          overflow: "hidden",
                                         }}
                                       >
-                                        {isB2CEnquiry
-                                          ? "Enquiry Now"
-                                          : "Read More"}
-                                      </span>
-                                      <i
-                                        className="icon-chevron-right"
+                                        {service.icon ? (
+                                          <Image
+                                            src={service.icon}
+                                            alt={service.title}
+                                            width={30}
+                                            height={30}
+                                            style={{ objectFit: "cover" }}
+                                          />
+                                        ) : (
+                                          <i
+                                            className="icon-briefcase"
+                                            style={{
+                                              fontSize: "28px",
+                                              color: "#498bfa",
+                                            }}
+                                          ></i>
+                                        )}
+                                      </div>
+                                      <h3
                                         style={{
-                                          fontSize: "11px",
-                                          marginLeft: "8px",
-                                          color: "#0047AB",
-                                          transition: "transform 0.2s ease",
+                                          fontSize: "15px",
+                                          fontWeight: "600",
+                                          color: "#002856",
+                                          marginTop: "8px",
+                                          marginBottom: "10px",
+                                          lineHeight: "1.3",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                          display: "-webkit-box",
+                                          WebkitLineClamp: "2",
+                                          WebkitBoxOrient: "vertical",
                                         }}
-                                      ></i>
-                                    </>
+                                      >
+                                        {service.title}
+                                      </h3>
+                                    </div>
+
+                                    {/* Text Content */}
+                                    <div style={{ flex: "1" }}>
+                                      {/* Description */}
+                                      <p
+                                        style={{
+                                          fontSize: "12px",
+                                          color: "#6B7280",
+                                          margin: "0 0 12px 0",
+                                          lineHeight: "1.5",
+                                          flex: "1",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                          display: "-webkit-box",
+                                          WebkitLineClamp: "3",
+                                          WebkitBoxOrient: "vertical",
+                                        }}
+                                      >
+                                        {service.description ||
+                                          `Comprehensive ${service.title} solutions tailored to your business needs.`}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  {/* Learn More button */}
+                                  {service.title !== "Degree Program" && (
+                                    <div
+                                      style={{
+                                        marginTop: "auto",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        position: "relative",
+                                        zIndex: "1",
+                                      }}
+                                    >
+                                      {isLoading ? (
+                                        <>
+                                          <LoadingSpinner />
+                                          <span style={{ marginLeft: "8px" }}>
+                                            Loading
+                                            <SequentialDots />
+                                          </span>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <span
+                                            style={{
+                                              fontSize: "14px",
+                                              fontWeight: "500",
+                                              color: "#0047AB",
+                                              display: "flex",
+                                              alignItems: "center",
+                                            }}
+                                          >
+                                            {isB2CEnquiry
+                                              ? "Enquiry Now"
+                                              : "Read More"}
+                                          </span>
+                                          <i
+                                            className="icon-chevron-right"
+                                            style={{
+                                              fontSize: "11px",
+                                              marginLeft: "8px",
+                                              color: "#0047AB",
+                                              transition:
+                                                "transform 0.2s ease",
+                                            }}
+                                          ></i>
+                                        </>
+                                      )}
+                                    </div>
                                   )}
                                 </div>
-                              )}
-                            </div>
-                          </Link>
-                        );
-                      })}
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "350px",
-                      color: "#777",
-                    }}
-                  >
-                    <i
-                      className="icon-briefcase"
-                      style={{
-                        fontSize: "40px",
-                        color: "#ddd",
-                        marginBottom: "15px",
-                      }}
-                    ></i>
-                    {hoveredService
-                      ? "No services available in this category"
-                      : "Select a category to view services"}
-                  </div>
-                )}
-              </div>
+                              </Link>
+                            );
+                          })}
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: "350px",
+                          color: "#777",
+                        }}
+                      >
+                        <i
+                          className="icon-briefcase"
+                          style={{
+                            fontSize: "40px",
+                            color: "#ddd",
+                            marginBottom: "15px",
+                          }}
+                        ></i>
+                        {hoveredService
+                          ? "No services available in this category"
+                          : "Select a category to view services"}
+                      </div>
+                    );
+                  })()}
+                </>
+              )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* <EnquiryModal isOpen={isModalOpen} onClose={closeModal} /> */}
-
-      {isModalOpen && (
-        <motion.div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.75)",
-            backdropFilter: "blur(5px)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 100000,
-            overflowY: "hidden",
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          {/* Modal Box - Perfectly Centered */}
-          <motion.div
-            style={{
-              backgroundColor: "rgb(255, 255, 255)",
-              padding: "20px 30px",
-              borderRadius: "20px",
-              width: "500px",
-              height: "95%",
-              position: "relative",
-              zIndex: 10000,
-              display: "flex",
-              flexDirection: "column", // Ensure proper layout
-            }}
-            initial={{ y: 50, opacity: 0, scale: 0.95 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 50, opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            {/* Modal Header */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "15px",
-                position: "sticky",
-                top: "0",
-                backgroundColor: "white",
-                zIndex: 100,
-                paddingBottom: "10px",
-              }}
-            >
-              <h1
-                style={{
-                  fontSize: "30px",
-                  fontWeight: "normal",
-                  fontFamily: "'Dancing Script', cursive",
-                  color: "#000",
-                  margin: "0",
-                  position: "relative",
-                  padding: "0 0 10px 0",
-                }}
-              >
-                Enquiry Form
-                <span
-                  style={{
-                    position: "absolute",
-                    left: "0",
-                    bottom: "0",
-                    height: "5px",
-                    width: "55px",
-                    backgroundColor: "black",
-                  }}
-                ></span>
-                {/* Bottom Thin Line */}
-                <span
-                  style={{
-                    position: "absolute",
-                    left: "0",
-                    bottom: "2px",
-                    height: "1px",
-                    width: "95%",
-                    maxWidth: "255px",
-                    backgroundColor: "black",
-                  }}
-                ></span>
-              </h1>
-
-              <button
-                type="button"
-                onClick={() => closeModal(false)}
-                style={{
-                  width: "35px",
-                  height: "35px",
-                  borderRadius: "8px",
-                  padding: "4px 6px",
-                  border: "none",
-                  backgroundColor: "#b91616",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "18px",
-                  color: "white",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                }}
-              >
-                <FaTimes />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <div
-              style={{
-                flexGrow: 1, // Takes remaining height
-                overflowY: "auto",
-                paddingRight: "10px",
-                scrollbarWidth: "thin",
-              }}
-            >
-              <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
-            </div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
-    </li>
-  );
+    </AnimatePresence>
+    {/* <EnquiryModal isOpen={isModalOpen} onClose={closeModal} /> */}
+
+    {isModalOpen && (
+      <motion.div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.75)",
+          backdropFilter: "blur(5px)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 100000,
+          overflowY: "hidden",
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Modal Box - Perfectly Centered */}
+        <motion.div
+          style={{
+            backgroundColor: "rgb(255, 255, 255)",
+            padding: "20px 30px",
+            borderRadius: "20px",
+            width: "500px",
+            height: "95%",
+            position: "relative",
+            zIndex: 10000,
+            display: "flex",
+            flexDirection: "column", // Ensure proper layout
+          }}
+          initial={{ y: 50, opacity: 0, scale: 0.95 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          exit={{ y: 50, opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          {/* Modal Header */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "15px",
+              position: "sticky",
+              top: "0",
+              backgroundColor: "white",
+              zIndex: 100,
+              paddingBottom: "10px",
+            }}
+          >
+            <h1
+              style={{
+                fontSize: "30px",
+                fontWeight: "normal",
+                fontFamily: "'Dancing Script', cursive",
+                color: "#000",
+                margin: "0",
+                position: "relative",
+                padding: "0 0 10px 0",
+              }}
+            >
+              Enquiry Form
+              <span
+                style={{
+                  position: "absolute",
+                  left: "0",
+                  bottom: "0",
+                  height: "5px",
+                  width: "55px",
+                  backgroundColor: "black",
+                }}
+              ></span>
+              {/* Bottom Thin Line */}
+              <span
+                style={{
+                  position: "absolute",
+                  left: "0",
+                  bottom: "2px",
+                  height: "1px",
+                  width: "95%",
+                  maxWidth: "255px",
+                  backgroundColor: "black",
+                }}
+              ></span>
+            </h1>
+
+            <button
+              type="button"
+              onClick={() => closeModal(false)}
+              style={{
+                width: "35px",
+                height: "35px",
+                borderRadius: "8px",
+                padding: "4px 6px",
+                border: "none",
+                backgroundColor: "#b91616",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "18px",
+                color: "white",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <FaTimes />
+            </button>
+          </div>
+
+          {/* Modal Content */}
+          <div
+            style={{
+              flexGrow: 1, // Takes remaining height
+              overflowY: "auto",
+              paddingRight: "10px",
+              scrollbarWidth: "thin",
+            }}
+          >
+            <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
+          </div>
+        </motion.div>
+      </motion.div>
+    )}
+  </li>
+);
 };
 
 export default ServicesDropdown;
+
