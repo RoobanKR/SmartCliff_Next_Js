@@ -3,18 +3,18 @@ import gsap from "gsap";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 export default function LearningSolutions({ matchedServiceAbouts }) {
   return (
     <section className="layout-pb-md js-mouse-move-container">
       <div className="container">
         <div className="row y-gap-30 align-items-start">
           {matchedServiceAbouts.map((item, index) => (
-            <div className="col-lg-6 order-2 order-lg-1">
+            <div key={index} className="col-lg-6 order-2 order-lg-1">
               <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
                 {item.heading}
               </h2>
               <p className="text-dark-1 mt-10" style={{ textAlign: "justify" }}>{item.subHeading}</p>
-
               <div className="row y-gap-20 pt-30">
                 {item.feature.map((elm, i) => (
                   <div key={i} className="col-12">
@@ -22,12 +22,12 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                       <div
                         className={`featureIcon__icon ${elm.iconBg}`}
                         style={{
-                          width: "70px", // Adjust width if needed
-                          height: "70px", // Adjust height if needed
+                          width: "70px",
+                          height: "70px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          borderRadius: "50%", // Optional: if you want a circular icon
+                          borderRadius: "50%",
                           backgroundColor: "#f5f0ff",
                         }}
                       >
@@ -38,24 +38,27 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                           alt="icon"
                         />
                       </div>
-            <div className="featureIcon__content ml-20 mt-10">
-              <h4 className="text-17 fw-500">{elm.title}</h4>
-              <p className="mt-5">
-                {elm.description && elm.description.map((desc, index) => (
-                  <span key={index}>
-                    {desc}
-                    {index < elm.description.length - 1 && <br />}
-                  </span>
-                ))}
-              </p>
-            </div>
+                      <div className="featureIcon__content ml-20 mt-10">
+                        <h4 className="text-17 fw-500">{elm.title}</h4>
+                        <p className="mt-5">
+                          {Array.isArray(elm.description) ? (
+                            elm.description.map((desc, index) => (
+                              <span key={index}>
+                                {desc}
+                                {index < elm.description.length - 1 && <br />}
+                              </span>
+                            ))
+                          ) : (
+                            <span>{elm.description}</span>
+                          )}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           ))}
-
           <div className="col-lg-6 order-1 order-lg-2">
             <div className="elements-image">
               {/* Main Dynamic Image */}
@@ -81,4 +84,3 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
     </section>
   );
 }
-
