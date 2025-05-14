@@ -1,7 +1,5 @@
 "use client";
-import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
@@ -9,22 +7,80 @@ import {
   fetchServices,
   selectServices,
 } from "@/redux/slices/services/services/Services";
-import jsonData from "../../public/assets/json/Banner.json";
 import { selectBusinessServices } from "@/redux/slices/services/services/businessServices";
 import { getAllServiceClients } from "@/redux/slices/services/services/clientServices";
-import { FaCalendarAlt } from "react-icons/fa";
-import Banner from "../common/Banner";
+import { FaCalendarAlt, FaTimes } from "react-icons/fa";
 import { fetchAllCompanies } from "@/redux/slices/companyDetails/companyDetails";
+import Page1 from "@/app/(services)/csr/[slug]/page1";
 
-export default function CsrDegreeProgram({serviceId }) {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const pathname = usePathname();
-  const degreeProgramData = useSelector(
-    (state) => state.degreeProgram.degreeProgramData
+// Program Details Modal Component
+const ProgramDetailsModal = ({ program, isOpen, onClose }) => {
+  if (!isOpen || !program) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0,0,0,0.7)",
+        display: "flex",
+        justifyContent: "center",
+        zIndex: 1000,
+        opacity: 0,
+        animation: "fadeIn 0.3s ease forwards",
+        inset: "0"
+      }}
+      onClick={onClose}
+    >
+      
+      <div
+        style={{
+          backgroundColor: "white",
+          borderRadius: "20px",
+          width: "90%",
+          overflow: "auto",
+          position: "relative",
+          height: "95vh",
+          top:20,
+          boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+          transform: "translateY(30px)",
+          opacity: 0,
+          animation: "slideUpIn 0.4s ease 0.1s forwards",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            background: "none",
+            border: "none",
+            fontSize: "24px",
+            cursor: "pointer",
+            color: "#333",
+            zIndex: 10,
+          }}
+        >
+          <FaTimes />
+        </button>
+
+        {/* Program Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "30px" }}>
+          <Page1 programId={program?._id} />
+        </div>
+      </div>
+    </div>
   );
-  console.log("CsrDegreeProgram rendering with serviceId:", serviceId);
+};
 
+export default function CsrDegreeProgram({ serviceId }) {
+  const dispatch = useDispatch();
   const degreeCompanyDetails = useSelector(
     (state) => state.companies.companies
   );
@@ -35,6 +91,10 @@ export default function CsrDegreeProgram({serviceId }) {
   const [yearFilter, setYearFilter] = useState(""); // State for selected year
   const [loadingStates, setLoadingStates] = useState({});
 
+  // New state for modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState(null);
+
   const fullUrl = typeof window !== "undefined" ? window.location.href : "";
   const segments = fullUrl.split("/").filter(Boolean);
   const lastSegment = segments.pop();
@@ -43,21 +103,16 @@ export default function CsrDegreeProgram({serviceId }) {
     (i) => i.slug === secondLastSegment
   );
   const matchId = services.filter(
-    (i) => i.business_services._id === onematchingData._id
+    (i) => i.business_services._id === onematchingData?._id
   );
   const twomatchingService = services.find((i) => i.slug === lastSegment);
   const final = matchId.find(
     (service) => service.slug === twomatchingService?.slug
   );
 
-  const matchedDegrees = degreeProgramData.filter(
-    (service) => service.service?._id === final?._id
-  );
-
   const matchedDegree = degreeCompanyDetails.filter(
     (service) => service.service?._id === final?._id
   );
-
 
   useEffect(() => {
     dispatch(fetchServices());
@@ -65,6 +120,7 @@ export default function CsrDegreeProgram({serviceId }) {
     dispatch(fetchDegreeProgramData());
     dispatch(fetchAllCompanies());
   }, [dispatch]);
+
   // Extract unique years from degree programs
   const uniqueYears = [
     ...new Set(matchedDegree?.map((item) => item.year)),
@@ -75,24 +131,33 @@ export default function CsrDegreeProgram({serviceId }) {
     ? matchedDegree?.filter((program) => program.year === yearFilter)
     : matchedDegree;
 
-  const handleProgramClick = (programId, e) => {
-    e.preventDefault(); // Prevent default Link behavior
+  // Modified function to handle program click - opens modal instead of navigating
+  const handleProgramClick = (program, e) => {
+    e.preventDefault(); // Prevent default link behavior
 
-    // Set loading state for this specific program
+    // Show loading state briefly for better UX
     setLoadingStates((prev) => ({
       ...prev,
-      [programId]: true,
+      [program._id]: true,
     }));
 
-    // Navigate programmatically
-    router.push(`${pathname}/${programId}`);
+    // Short timeout to show loading indicator briefly for better UX
+    setTimeout(() => {
+      setSelectedProgram(program);
+      setModalOpen(true);
 
-    // Note: We don't need to reset loading state as the component will unmount during navigation
+      // Reset loading state
+      setLoadingStates((prev) => ({
+        ...prev,
+        [program._id]: false,
+      }));
+    }, 300);
   };
+
   if (!matchedDegree || matchedDegree.length === 0) {
     return (
-      <div style={{ 
-        padding: "50px 0", 
+      <div style={{
+        padding: "50px 0",
         textAlign: "center",
         minHeight: "300px",
         display: "flex",
@@ -109,23 +174,12 @@ export default function CsrDegreeProgram({serviceId }) {
       </div>
     );
   }
-  
+
   const featuredItems = filteredPrograms || [];
   return (
     <>
-      {/* <div className="banner__content mt-60">
-        {jsonData[3] && (
-          <Banner
-            title={jsonData[12].title}
-            description={jsonData[12].description}
-            imageUrl={jsonData[12].imageUrl}
-          />
-        )}
-      </div> */}
-
       {/* Filter Section */}
       {featuredItems.length > 0 && (
-        
         <div
           style={{
             position: "sticky",
@@ -133,63 +187,63 @@ export default function CsrDegreeProgram({serviceId }) {
             animation: "slideInDown 0.6s ease 0.5s forwards",
           }}
         >
-           <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-          
-        >
-          <div style={{ width: "100%" }}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: window.innerWidth < 768 ? "column" : "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
-                padding: window.innerWidth < 768 ? "20px 10px" : "20px 50px",
-                gap: window.innerWidth < 768 ? "30px" : "0",
-              }}
-            >
-              {/* Execution Overview */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ width: "100%" }}>
               <div
                 style={{
-                  textAlign: "center",
-                  flex: window.innerWidth < 768 ? "0 0 100%" : "1",
-                  order: window.innerWidth < 768 ? "-1" : "0",
-                  marginLeft: window.innerWidth < 768 ? "0px" : "70px",
+                  display: "flex",
+                  flexDirection: typeof window !== "undefined" && window.innerWidth < 768 ? "column" : "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  padding: typeof window !== "undefined" && window.innerWidth < 768 ? "20px 10px" : "20px 50px",
+                  gap: typeof window !== "undefined" && window.innerWidth < 768 ? "30px" : "0",
                 }}
               >
-                <h2
+                {/* Execution Overview */}
+                <div
                   style={{
-                    fontSize: window.innerWidth < 768 ? "20px" : "29px",
-                    margin: 0,
-                    marginBottom: "20px"
+                    textAlign: "center",
+                    flex: typeof window !== "undefined" && window.innerWidth < 768 ? "0 0 100%" : "1",
+                    order: typeof window !== "undefined" && window.innerWidth < 768 ? "-1" : "0",
+                    marginLeft: typeof window !== "undefined" && window.innerWidth < 768 ? "0px" : "70px",
                   }}
                 >
-                  Execution Overview
-                </h2>
+                  <h2
+                    style={{
+                      fontSize: typeof window !== "undefined" && window.innerWidth < 768 ? "20px" : "29px",
+                      margin: 0,
+                      marginBottom: "20px"
+                    }}
+                  >
+                    Execution Overview
+                  </h2>
+                </div>
               </div>
+
+              <p
+                style={{
+                  marginTop: typeof window !== "undefined" && window.innerWidth < 768 ? "-20px" : "-30px",
+                  color: "#EC5228",
+                  fontWeight: "bold",
+                  marginLeft: typeof window !== "undefined" && window.innerWidth < 768 ? "0px" : "30px",
+                }}
+              >
+
+              </p>
             </div>
-
-            <p
-              style={{
-                marginTop: window.innerWidth < 768 ? "-20px" : "-30px", color: "#EC5228", fontWeight: "bold",
-                marginLeft: window.innerWidth < 768 ? "0px" : "30px",
-              }}
-            >
-
-            </p>
           </div>
-        </div>
           <div className="container">
             <div
               style={{
                 display: "flex",
-                // justifyContent: "space-between",
                 alignItems: "center",
                 flexWrap: "wrap",
                 gap: "15px",
@@ -225,9 +279,9 @@ export default function CsrDegreeProgram({serviceId }) {
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     boxShadow:
-                    yearFilter === ""
-                      ? "0 5px 15px rgba(91, 44, 111, 0.2)"
-                      : "none",
+                      yearFilter === ""
+                        ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                        : "none",
                     position: "relative",
                     overflow: "hidden",
                   }}
@@ -261,9 +315,9 @@ export default function CsrDegreeProgram({serviceId }) {
                       cursor: "pointer",
                       transition: "all 0.3s ease",
                       boxShadow:
-                      yearFilter === year
-                        ? "0 5px 15px rgba(91, 44, 111, 0.2)"
-                        : "none",
+                        yearFilter === year
+                          ? "0 5px 15px rgba(91, 44, 111, 0.2)"
+                          : "none",
                       position: "relative",
                       overflow: "hidden",
                     }}
@@ -298,7 +352,7 @@ export default function CsrDegreeProgram({serviceId }) {
             style={{
               display: "grid",
               gridTemplateColumns:
-                window.innerWidth <= 768
+                typeof window !== "undefined" && window.innerWidth <= 768
                   ? "1fr"
                   : "repeat(auto-fill, minmax(300px, 1fr))",
               gap: "30px",
@@ -313,7 +367,7 @@ export default function CsrDegreeProgram({serviceId }) {
                   transform: `perspective(1000px) rotateY(10deg) translateZ(-50px)`,
                   animation: `cardAppear 0.6s ease ${index * 0.1}s forwards`,
                   height: "100%", // Fixed height for the entire card
-                
+
                 }}
               >
                 <div
@@ -459,9 +513,8 @@ export default function CsrDegreeProgram({serviceId }) {
                       </div>
                     </div>
 
-                    <a
-                      href={`${pathname}/${program._id}`}
-                      onClick={(e) => handleProgramClick(program._id, e)}
+                    <button
+                      onClick={(e) => handleProgramClick(program, e)}
                       style={{
                         display: "inline-block",
                         marginTop: "15px",
@@ -555,17 +608,21 @@ export default function CsrDegreeProgram({serviceId }) {
                           e.currentTarget.style.left = "-100%";
                         }}
                       ></span>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
-          {/* No results message */}
         </div>
-        
       </section>
+
+      {/* Program Details Modal */}
+      <ProgramDetailsModal
+        program={selectedProgram}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
 
       {/* Animation keyframes */}
       <style jsx>{`
@@ -630,6 +687,22 @@ export default function CsrDegreeProgram({serviceId }) {
           100% {
             transform: translate(0, 0);
           }
+        }
+        
+        @keyframes slideUpIn {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
       `}</style>
     </>

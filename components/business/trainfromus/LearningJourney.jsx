@@ -24,7 +24,7 @@ export default function LearningJourney({ hireFromUsData }) {
           {hireFromUsData.map((elm, i) => (
             <div key={i} className="col-lg-3 col-md-6">
               <div className="coursesCard -type-3 text-center">
-                <div className="coursesCard__icon bg-green-3">
+                <div className="coursesCard__icon bg-light-4">
                   <Image width={50} height={50} src={elm.image} alt="icon" />
                 </div>
 

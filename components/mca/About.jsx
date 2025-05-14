@@ -31,12 +31,11 @@ export default function About({ collegeId, ids }) {
   );
 
   const selectedAboutCollege = aboutCollegeData.find(
-    (program) => program._id === ids
+    (program) => program?._id === ids
   );
-
   // Determine which data to display based on the URL segment
   let displayData = [];
-  if (thirdLastSegment === "csr" && selectedAboutCollege) {
+  if (secondLastSegment === "csr" && selectedAboutCollege) {
     displayData = [selectedAboutCollege];
   } else if (thirdLastSegment === "b2i" && matchedAboutColleges.length > 0) {
     displayData = matchedAboutColleges;

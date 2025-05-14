@@ -133,7 +133,7 @@ export default function HeroSection({
             color: "#FACC15",
           }}
         >
-          Hire Top Talent Effortlessly with Hire From Us
+          Hire top talent effortlessly with Hire From Us
         </h1>
         <p
           style={{

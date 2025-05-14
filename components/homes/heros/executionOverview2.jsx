@@ -161,15 +161,7 @@ export default function ExecutiveOverview2() {
                     >
                       {highlight.stack}
                     </h3>
-                    <p
-                      style={{
-                        margin: "4px 0 0",
-                        fontSize: "15px",
-                        color: "#6b7280", // slate-500
-                      }}
-                    >
-                      Placement Category
-                    </p>
+                    
                   </div>
                 </div>
  

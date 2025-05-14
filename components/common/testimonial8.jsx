@@ -380,7 +380,7 @@ export default function TestimonialsEight() {
                                     }}
                                   >
                                     {" "}
-                                    {elm?.batch}
+                                    {elm?.company}
                                   </span>
                                 </p>
                                 <p
@@ -390,7 +390,7 @@ export default function TestimonialsEight() {
                                     marginBottom: "10px",
                                   }}
                                 >
-                                  Role :
+                                  Batch :
                                   <span
                                     className="text-18 fw-500 text-orange-1"
                                     style={{

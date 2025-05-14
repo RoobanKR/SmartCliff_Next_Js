@@ -100,7 +100,7 @@ export default function CourseSlider() {
                               fill
                               style={{ objectFit: "cover" }}
                             />
-                            <div className="coursesCard__image_overlay rounded-8"></div>
+                            {/* <div className="coursesCard__image_overlay rounded-8"></div> */}
                           </div>
                         </div>
                         <div className="h-100 pt-15">
@@ -112,7 +112,7 @@ export default function CourseSlider() {
                               {course.course_name}
                             </Link>
                           </div>
-                          <div className="d-flex x-gap-10 items-center pt-10">
+                          {/* <div className="d-flex x-gap-10 items-center pt-10">
                             <div className="d-flex items-center">
                               <div className="mr-8">
                                 <Image
@@ -154,7 +154,7 @@ export default function CourseSlider() {
                                 {course.mode_of_training}
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>

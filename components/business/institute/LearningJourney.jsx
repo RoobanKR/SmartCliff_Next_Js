@@ -9,8 +9,8 @@ export default function LearningJourney({ hireFromUsData }) {
           <div className="col-auto">
             <div className="sectionTitle">
               <h2 className="sectionTitle__title">
-                Our <span style={{ color: "#f2775e" }}>Institution</span> Training
-                Models
+                Our <span style={{ color: "#f2775e" }}>Institution</span>{" "}
+                Training Models
               </h2>
               <p className="sectionTitle__text">
                 Elevate your graduates to industry-ready professionals
@@ -23,7 +23,7 @@ export default function LearningJourney({ hireFromUsData }) {
           {hireFromUsData.map((elm, i) => (
             <div key={i} className="col-lg-3 col-md-6">
               <div className="coursesCard -type-3 text-center">
-                <div className="coursesCard__icon bg-green-3">
+                <div className="coursesCard__icon bg-light-4">
                   <Image width={50} height={50} src={elm.image} alt="icon" />
                 </div>
 

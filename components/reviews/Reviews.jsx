@@ -81,7 +81,7 @@ export default function Reviews() {
     const sourceReviews = activeTab === "text" ? textReviews : videoReviews;
  
     sourceReviews.forEach(review => {
-      if (review.batch) batchSet.add(review.batch);
+      if (review.company) batchSet.add(review.company);
     });
  
     return ["All Batches", ...Array.from(batchSet).sort()];
@@ -102,11 +102,11 @@ export default function Reviews() {
   const batchOptions = getBatchesByTab();
   const roleOptions = getRolesByTab();
  
-  // Filter reviews based on search term, active tab, selected batch, and selected role
+  // Filter reviews based on search term, active tab, selected company, and selected role
   const filterReviews = (reviewsList) => {
     return reviewsList.filter(review => {
-      // First filter by batch if a specific batch is selected
-      if (selectedBatch !== "All Batches" && review.batch !== selectedBatch) {
+      // First filter by company if a specific company is selected
+      if (selectedBatch !== "All Batches" && review.company !== selectedBatch) {
         return false;
       }
  
@@ -117,7 +117,7 @@ export default function Reviews() {
  
       // Then filter by search term
       return (
-        review.batch?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         review.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         review.role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (review.review?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -212,8 +212,8 @@ export default function Reviews() {
     }
   };
  
-  const handleBatchChange = (batch) => {
-    setSelectedBatch(batch);
+  const handleBatchChange = (company) => {
+    setSelectedBatch(company);
     setCurrentPage(1);
     setIsBatchDropdownOpen(false);
   };
@@ -334,7 +334,7 @@ export default function Reviews() {
       }}>
         {/* Filters Container */}
         <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
-          {/* Batch Filter Dropdown */}
+          {/* Company Filter Dropdown */}
           <div style={{ position: "relative", minWidth: "200px" }} ref={batchDropdownRef}>
             <div
               style={{
@@ -354,7 +354,7 @@ export default function Reviews() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <FilterList fontSize="small" style={{ color: "#5b2c6f" }} />
-                <span>Filter By Batch</span>
+                <span>Filter By Company</span>
               </div>
               <KeyboardArrowDown fontSize="small" style={{
                 transform: isBatchDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
@@ -379,21 +379,21 @@ export default function Reviews() {
                 scrollbarWidth: "thin",
                 scrollbarColor: "#a0a0a0 #f1f1f1"
               }}>
-                {batchOptions.map((batch) => (
+                {batchOptions.map((company) => (
                   <div
-                    key={batch}
+                    key={company}
                     style={{
                       padding: "10px 15px",
                       cursor: "pointer",
-                      backgroundColor: selectedBatch === batch ? "#f3f4f6" : "transparent",
-                      borderLeft: selectedBatch === batch ? "3px solid #5b2c6f" : "3px solid transparent",
+                      backgroundColor: selectedBatch === company ? "#f3f4f6" : "transparent",
+                      borderLeft: selectedBatch === company ? "3px solid #5b2c6f" : "3px solid transparent",
                       transition: "all 0.2s ease",
                     }}
-                    onClick={() => handleBatchChange(batch)}
+                    onClick={() => handleBatchChange(company)}
                     onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f3f4f6"}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = selectedBatch === batch ? "#f3f4f6" : "transparent"}
+                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = selectedBatch === company ? "#f3f4f6" : "transparent"}
                   >
-                    {batch}
+                    {company}
                   </div>
                 ))}
               </div>
@@ -420,7 +420,7 @@ export default function Reviews() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <Person fontSize="small" style={{ color: "#5b2c6f" }} />
-                <span>Filter By Role</span>
+                <span>Filter By Batch</span>
               </div>
               <KeyboardArrowDown fontSize="small" style={{
                 transform: isRoleDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
@@ -524,7 +524,7 @@ export default function Reviews() {
             fontWeight: "500",
             animation: "fadeInLeft 0.3s ease",
           }}>
-            Batch: {selectedBatch}
+            Company: {selectedBatch}
             <span
               style={{ marginLeft: "5px", cursor: "pointer", fontWeight: "bold" }}
               onClick={() => handleBatchChange("All Batches")}
@@ -545,7 +545,7 @@ export default function Reviews() {
             fontWeight: "500",
             animation: "fadeInLeft 0.3s ease",
           }}>
-            Role: {selectedRole}
+            Batch: {selectedRole}
             <span
               style={{ marginLeft: "5px", cursor: "pointer", fontWeight: "bold" }}
               onClick={() => handleRoleChange("All Roles")}
@@ -660,22 +660,23 @@ export default function Reviews() {
                               marginTop: "8px",
                             }}
                           >
-                            Role :{" "}
+                            Batch :{" "}
                           </span>
                           {review?.role}
                         </p>
-                        <p>
-                          <span
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: "15px",
-                              marginTop: "8px",
-                            }}
-                          >
-                            Batch :{" "}
-                          </span>
-                          {review?.batch}
-                        </p>
+                       {/* Replace the existing company display with this dynamic version */}
+<p>
+  <span
+    style={{
+      fontWeight: "bold",
+      fontSize: "15px",
+      marginTop: "8px",
+    }}
+  >
+    {review?.type === "institution" ? "Institution" : "Company"} :{" "}
+  </span>
+  {review?.type === "institution" ? review?.institution : review?.company}
+</p>
                         <div
                           style={{
                             marginTop: "12px",
@@ -831,12 +832,12 @@ export default function Reviews() {
                       </div>
  
                       <p style={{ margin: "8px 0", fontSize: "15px" }}>
-                        <span style={{ fontWeight: "bold" }}>Role: </span>
+                        <span style={{ fontWeight: "bold" }}>Batch: </span>
                         {review.role}
                       </p>
                       <p style={{ margin: "8px 0", fontSize: "15px" }}>
-                        <span style={{ fontWeight: "bold" }}>Batch: </span>
-                        {review.batch}
+                        <span style={{ fontWeight: "bold" }}>{review?.type === "institution" ? "Institution" : "Company"} :{" "} </span>
+                        {review?.type === "institution" ? review?.institution : review?.company}
                       </p>
                       <div style={{ marginTop: "12px" }}>
                         <p

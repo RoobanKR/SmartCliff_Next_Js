@@ -69,12 +69,12 @@ const styles = {
   },
   inputLabel: {
     position: "absolute",
-    left: "40px",
+    left: "50px",
     top: "10px",
     fontSize: "12px",
     color: "#666",
-    backgroundColor: " #f9f9f9",
-    padding: "0 4px",
+    // backgroundColor: " #f9f9f9",
+    padding: "0 13px",
     transition: "all 0.3s ease",
     pointerEvents: "none"
   },
@@ -333,7 +333,7 @@ const FloatingSelect = ({
             }}
             {...props}
           >
-            <option value="">Select {label}</option>
+            <option value="" style={{color:"#666"}}>Select</option>
             {options && options.map((option) => (
               <option key={typeof option === 'string' ? option : option.job_position} value={typeof option === 'string' ? option : option.job_position}>
                 {typeof option === 'string' ? option : option.job_position}

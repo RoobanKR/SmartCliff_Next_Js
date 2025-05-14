@@ -68,7 +68,7 @@ export default function HeroSection({ scrollToSection }) {
             color: "#FACC15",
           }}
         >
-          Train Top Talent Effortlessly with Train From Us
+          Train top talent effortlessly with Train From Us
         </h1>
         <p
           style={{

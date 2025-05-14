@@ -5,19 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/swiper-bundle.min.css";
 
-// Layout components
-import HeaderTwo from "@/components/layout/headers/HeaderTwo";
-import FooterTwo from "@/components/layout/footers/Footer";
-import Preloader from "@/components/common/Preloader";
-
 // MCA components
 import About from "@/components/mca/About";
 import PartnersSection from "@/components/mca/DpPartners";
-import SponsorsSection from "@/components/mca/DpSponsor";
-import ProgrammeHighlights from "@/components/mca/csr/programHighlights";
-import TestimonialsSection from "@/components/mca/csr/programOutcome";
 import TargetStudentsSection from "@/components/mca/csr/targetStudents";
-import FAQComponent from "@/components/courseSingle/Faq";
 
 // Redux actions
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
@@ -31,11 +22,8 @@ import { getAllTargetStudents } from "@/redux/slices/mca/targetStudent/targetStu
 
 SwiperCore.use([Navigation, Pagination]);
 
-export default function Page() {
+export default function Page1({ programId }) {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const { id } = useParams();
-  const programId = useParams().id;
 
   // State
   const [activeSection, setActiveSection] = useState("");
@@ -45,64 +33,30 @@ export default function Page() {
   const navLinksRef = useRef(null);
 
   // Section refs
-  const aboutRef = useRef(null);
+  const aboutRefs = useRef(null);
   const partnersRef = useRef(null);
-  const highlightsRef = useRef(null);
-  const outcomeRef = useRef(null);
   const targetRef = useRef(null);
-  const sponsorsRef = useRef(null);
-  const faqRef = useRef(null);
   const sectionNavRef = useRef(null);
 
   // Redux selectors
   const { ourPartners } = useSelector((state) => state.ourPartners);
-  const { ourSponsors } = useSelector((state) => state.ourSponsors);
-  const ourProgram = useSelector((state) => state.ourProgram.ourProgram);
-  const outcomes = useSelector((state) => state.outcomes.outcomes);
   const { targetStudents } = useSelector((state) => state.targetStudent);
   const degreeProgramData = useSelector(
     (state) => state.degreeProgram.degreeProgramData
   );
-  const faq = useSelector((state) => state.faq.faq);
-  const aboutCollegeData = useSelector(
-    (state) => state.aboutCollege.aboutCollegeData
-  );
-
   // Matched program data based on URL id
   const matchedData = degreeProgramData.filter(
-    (item) => item.company?._id === id
+    (item) => item.company?._id === programId
   );
-
   // Filtered data based on selected program ID
   const finalPartners =
     ourPartners?.filter(
       (partner) => partner.degree_program._id === selectedProgramId
     ) || [];
-  const finalHighlights =
-    ourProgram?.filter(
-      (highlight) => highlight?.degree_program?._id === selectedProgramId
-    ) || [];
-  const finalProgramOutcome =
-    outcomes?.filter(
-      (outcome) => outcome?.degree_program?._id === selectedProgramId
-    ) || [];
   const finalTarget =
     targetStudents?.filter(
       (target) => target?.degree_program?._id === selectedProgramId
     ) || [];
-  const finalSponsor =
-    ourSponsors?.filter(
-      (sponsor) => sponsor?.degree_program?._id === selectedProgramId
-    ) || [];
-  const selectedAboutCollege = aboutCollegeData.find(
-    (program) => program?._id === selectedProgramId
-  );
-  const filteredFAQ = faq.filter(
-    (item) =>
-      selectedAboutCollege &&
-      String(item.degree_program) === String(selectedAboutCollege._id)
-  );
-
   // Section navigation active state
   const [activeSectionNav, setActiveSectionNav] = useState("About");
 
@@ -112,10 +66,7 @@ export default function Page() {
       fetchDegreeProgramData(),
       fetchAllOurSponsors(),
       fetchAboutCollegeData(),
-      fetchOurPrograms(),
-      getAllOutcomes(),
       getAllTargetStudents(),
-      fetchAllFAQs(),
       fetchAllOurPartners(),
     ];
 
@@ -166,12 +117,9 @@ export default function Page() {
 
       // Check which section is in view for the section navigation
       const contentSections = [
-        { label: "About", ref: aboutRef },
+        { label: "About", ref: aboutRefs },
         { label: "Partners", ref: partnersRef },
-        { label: "Highlights", ref: highlightsRef },
-        { label: "Program Outcome", ref: outcomeRef },
         { label: "Target Students", ref: targetRef },
-        { label: "FAQ", ref: faqRef },
       ];
 
       for (const section of contentSections) {
@@ -222,18 +170,8 @@ export default function Page() {
     }
   };
 
-  const handleBack = () => {
-    const fullUrl = window.location.pathname;
-    const segments = fullUrl.split("/").filter(Boolean);
-    segments.pop();
-    const previousRoute = segments.length > 0 ? `/${segments.join("/")}` : "/";
-    router.push(previousRoute);
-  };
-
   return (
-    <div className="main-content overflow-hidden">
-      <Preloader />
-      <HeaderTwo />
+    <div className="main-content">
 
       {/* Navigation Bar */}
       <div
@@ -250,41 +188,6 @@ export default function Page() {
           marginTop: "10px",
         }}
       >
-        {/* Back Button */}
-        <button
-          onClick={handleBack}
-          className="back-button"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "5px",
-            color: "black",
-            border: "2px solid black",
-            padding: isMobileView ? "3px 5px" : "6px 12px",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontSize: isMobileView ? "10px" : "14px",
-            fontWeight: "600",
-            transition: "all 0.3s ease",
-            marginLeft: "8px",
-          }}
-        >
-          <svg
-            width={isMobileView ? "12" : "18"}
-            height={isMobileView ? "12" : "18"}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          <span className="button-text">Back</span>
-        </button>
-
         {/* Navigation Links */}
         <div
           style={{
@@ -391,32 +294,19 @@ export default function Page() {
             }}
           >
             {[
-              { label: "About", ref: aboutRef },
+              { label: "About", ref: aboutRefs },
               ...(finalPartners.length > 0
                 ? [{ label: "Partners", ref: partnersRef }]
                 : []),
-              ...(finalHighlights.length > 0
-                ? [{ label: "Highlights", ref: highlightsRef }]
-                : []),
-              ...(finalProgramOutcome.length > 0
-                ? [{ label: "Program Outcome", ref: outcomeRef }]
-                : []),
               ...(finalTarget.length > 0
                 ? [{ label: "Target Students", ref: targetRef }]
-                : []),
-              // ...(finalSponsor.length > 0
-              //   ? [{ label: "Sponsors", ref: sponsorsRef }]
-              //   : []),
-              ...(filteredFAQ.length > 0
-                ? [{ label: "FAQ", ref: faqRef }]
                 : []),
             ].map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToContentSection(item.ref, item.label)}
-                className={`section-button ${
-                  activeSectionNav === item.label ? "active" : ""
-                }`}
+                className={`section-button ${activeSectionNav === item.label ? "active" : ""
+                  }`}
                 style={{
                   position: "relative",
                   background: "none",
@@ -448,13 +338,13 @@ export default function Page() {
           </div>
         </div>
       </div>
-
+      {/* main content */}
       <div
-        className="content-wrapper js-content-wrapper overflow-hidden mt-80"
+        className="content-wrapper js-content-wrapper overflow-auto "
         style={{ marginTop: "160px" }}
       >
         {/* Content Sections with refs */}
-        <div ref={aboutRef}>
+        <div ref={aboutRefs}>
           <About ids={selectedProgramId} />
         </div>
 
@@ -463,40 +353,13 @@ export default function Page() {
             <PartnersSection ids={selectedProgramId} />
           </div>
         )}
-
-        {finalHighlights.length > 0 && (
-          <div ref={highlightsRef}>
-            <ProgrammeHighlights ids={selectedProgramId} />
-          </div>
-        )}
-
-        {finalProgramOutcome.length > 0 && (
-          <div ref={outcomeRef}>
-            <TestimonialsSection ids={selectedProgramId} />
-          </div>
-        )}
-
         {finalTarget.length > 0 && (
           <div ref={targetRef}>
             <TargetStudentsSection ids={selectedProgramId} />
           </div>
         )}
-
-        {/* {finalSponsor.length > 0 && (
-          <div ref={sponsorsRef}>
-            <SponsorsSection ids={selectedProgramId} />
-          </div>
-        )} */}
-
-        {filteredFAQ.length > 0 && (
-          <div ref={faqRef}>
-            <FAQComponent faq={filteredFAQ} />
-          </div>
-        )}
-
-        <br />
-        <FooterTwo />
       </div>
     </div>
   );
 }
+

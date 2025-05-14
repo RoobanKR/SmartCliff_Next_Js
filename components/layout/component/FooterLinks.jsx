@@ -37,7 +37,7 @@ export default function FooterLinks({ allClasses }) {
           <Image width={160} height={70} src={logo} alt="logo" />
         </div>
 
-        <div className="footer-header-socials mt-30">
+        <div className="footer-header-socials mt-30 ml-10">
           <div className="footer-header-socials__list text-white d-flex items-center">
             <Socials
               componentsClass="size-40 d-flex justify-center items-center"

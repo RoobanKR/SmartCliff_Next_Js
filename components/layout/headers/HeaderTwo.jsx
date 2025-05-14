@@ -43,8 +43,8 @@ export default function HeaderTwo({ onServiceSelect }) {
               <div className="header__logo ">
                 <Link href="/">
                   <Image
-                    width={140}
-                    height={50}
+                    width={200}
+                    height={70}
                     src="/assets/img/general/logo1.png"
                     alt="logo"
                   />

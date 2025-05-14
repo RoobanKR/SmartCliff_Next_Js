@@ -1,179 +1,84 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import gsap from "gsap";
- 
+import Image from "next/image";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 export default function LearningSolutions({ matchedServiceAbouts }) {
-  const imageContainerRef = useRef(null);
-  const sectionRef = useRef(null);
-  const [isComponentMounted, setIsComponentMounted] = useState(false);
- 
-  // Set mounted state after component mounts
-  useEffect(() => {
-    setIsComponentMounted(true);
-    return () => setIsComponentMounted(false);
-  }, []);
- 
-  useEffect(() => {
-    // Exit early if refs aren't ready or component isn't mounted
-    if (!isComponentMounted || !imageContainerRef.current || !sectionRef.current) return;
-    
-    const handleScroll = () => {
-      // Guard clause for safety
-      if (!sectionRef.current) return;
-      
-      const section = sectionRef.current;
-      const imageContainer = imageContainerRef.current;
-      
-      // Guard clause for imageContainer
-      if (!imageContainer) return;
- 
-      const sectionRect = section.getBoundingClientRect();
-      const sectionTop = sectionRect.top;
-      const sectionBottom = sectionRect.bottom;
-      const viewportHeight = window.innerHeight;
- 
-      // Calculate when to fix and unfix the image
-      if (sectionTop <= 100 && sectionBottom >= viewportHeight) {
-        // Fix the image
-        gsap.to(imageContainer, {
-          position: "fixed",
-          top: "100px",
-          bottom: "auto",
-          width: imageContainer.offsetWidth,
-          duration: 0.3,
-        });
-      } else {
-        // Reset to absolute positioning at bottom when section exits view
-        if (sectionBottom < viewportHeight) {
-          gsap.to(imageContainer, {
-            position: "absolute",
-            top: "100px",
-            bottom: "0",
-            duration: 0.3,
-          });
-        } else if (sectionTop > 100) {
-          // Reset to absolute positioning at top when section enters view
-          gsap.to(imageContainer, {
-            position: "absolute",
-            top: "0",
-            bottom: "auto",
-            duration: 0.3,
-          });
-        }
-      }
-    };
- 
-    // Initial check
-    handleScroll();
-    
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isComponentMounted]); // Added isComponentMounted dependency
- 
   return (
-    <>
-      <style>{`
-        /* Hide image container on screen width <= 1024px (tablets and smaller) */
-        @media (max-width: 1024px) {
-          .hide-image-on-mobile {
-            display: none !important;
-          }
-        }
-      `}</style>
-      <section
-        className="layout-pb-md js-mouse-move-container relative"
-        ref={sectionRef}
-        // style={{ minHeight: "100vh" }}
-      >
-        <div className="container">
-          <div className="row y-gap-30 align-items-start">
-            {/* Left Content */}
-            {matchedServiceAbouts && matchedServiceAbouts.map((item, index) => (
-              <div key={index} className="col-lg-6 order-2 order-lg-1">
-                <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
-                  {item.heading}
-                </h2>
-                <p className="text-dark-1 mt-10" style={{ textAlign: "justify" }}>
-                  {item.subHeading}
-                </p>
- 
-                <div className="row y-gap-20 pt-30">
-                  {item.feature && item.feature.map((elm, i) => (
-                    <div key={i} className="col-12">
-                      <div className="featureIcon -type-1 d-flex">
-                        <div
-                          className={`featureIcon__icon ${elm.iconBg || ''}`}
-                          style={{
-                            width: "70px",
-                            height: "70px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            borderRadius: "50%",
-                            backgroundColor: "#f5f0ff",
-                          }}
-                        >
-                          <Image
-                            width={30}
-                            height={30}
-                            src={elm.icon || '/placeholder.png'}
-                            alt="icon"
-                          />
-                        </div>
-                        <div className="featureIcon__content ml-20 mt-10">
-                          <h4 className="text-17 fw-500">{elm.title}</h4>
-                          <p className="mt-5">
-                            {elm.description && elm.description.split(" ").slice(0, 5).join(" ")}{" "}
-                            <br className="lg:d-none" />
-                            {elm.description && elm.description.split(" ").slice(5).join(" ")}
-                          </p>
-                        </div>
+    <section className="layout-pb-md js-mouse-move-container">
+      <div className="container">
+        <div className="row y-gap-30 align-items-start">
+          {matchedServiceAbouts.map((item, index) => (
+            <div className="col-lg-6 order-2 order-lg-1">
+              <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
+                {item.heading}
+              </h2>
+              <p className="text-dark-1 mt-10" style={{ textAlign: "justify" }}>{item.subHeading}</p>
+
+              <div className="row y-gap-20 pt-30">
+                {item.feature.map((elm, i) => (
+                  <div key={i} className="col-12">
+                    <div className="featureIcon -type-1 d-flex">
+                      <div
+                        className={`featureIcon__icon ${elm.iconBg}`}
+                        style={{
+                          width: "70px", // Adjust width if needed
+                          height: "70px", // Adjust height if needed
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: "50%", // Optional: if you want a circular icon
+                          backgroundColor: "#f5f0ff",
+                        }}
+                      >
+                        <Image
+                          width={30}
+                          height={30}
+                          src={elm.icon || "/fallback-icon.jpg"}
+                          alt="icon"
+                        />
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
- 
-            {/* Right Image */}
-            <div className="col-lg-6 order-1 order-lg-2">
-              <div
-                className="elements-image h-full relative"
-                style={{ height: "100%" }}
-              >
-                {matchedServiceAbouts && matchedServiceAbouts[0]?.images?.length > 0 && (
-                  <div
-                    ref={imageContainerRef}
-                    className="hide-image-on-mobile"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
-                      width: "100%",
-                    }}
-                  >
-                    <div
-                      data-move="60"
-                      className="elements-image__main js-mouse-move"
-                    >
-                      <img
-                        className="js-mouse-move rounded responsive-image"
-                        data-move="40"
-                        src={
-                          matchedServiceAbouts[0].images[0] ||
-                          "/fallback-image.jpg"
-                        }
-                        alt="Main image"
-                      />
+            <div className="featureIcon__content ml-20 mt-10">
+              <h4 className="text-17 fw-500">{elm.title}</h4>
+              <p className="mt-5">
+                {elm.description && elm.description.map((desc, index) => (
+                  <span key={index}>
+                    {desc}
+                    {index < elm.description.length - 1 && <br />}
+                  </span>
+                ))}
+              </p>
+            </div>
                     </div>
                   </div>
-                )}
+                ))}
               </div>
+            </div>
+          ))}
+
+          <div className="col-lg-6 order-1 order-lg-2">
+            <div className="elements-image">
+              {/* Main Dynamic Image */}
+              {matchedServiceAbouts[0]?.images?.length > 0 && (
+                <div
+                  data-move="60"
+                  className="elements-image__main js-mouse-move"
+                >
+                  <img
+                    className="js-mouse-move rounded responsive-image"
+                    data-move="40"
+                    src={
+                      matchedServiceAbouts[0].images[0] || "/fallback-image.jpg"
+                    }
+                    alt="Main image"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
+
