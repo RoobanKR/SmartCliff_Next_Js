@@ -4,12 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useRouter } from "next/navigation";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import "swiper/swiper-bundle.min.css";
-
 // MCA components
 import About from "@/components/mca/About";
 import PartnersSection from "@/components/mca/DpPartners";
 import TargetStudentsSection from "@/components/mca/csr/targetStudents";
-
 // Redux actions
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
 import { fetchAllFAQs } from "@/redux/slices/faq/faq";
@@ -19,6 +17,8 @@ import { fetchAllOurSponsors } from "@/redux/slices/degreeProgram/dpSponsor";
 import { fetchOurPrograms } from "@/redux/slices/mca/ourProgram/ourProgram";
 import { getAllOutcomes } from "@/redux/slices/mca/outcomes/Outcomes";
 import { getAllTargetStudents } from "@/redux/slices/mca/targetStudent/targetStudent";
+import Beneficiaries from "@/components/mca/csr/beneficiaries";
+import { getAllDPBeneficiaries } from "@/redux/slices/mca/beneficiaries/beneficiaries";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -41,6 +41,7 @@ export default function Page1({ programId }) {
   // Redux selectors
   const { ourPartners } = useSelector((state) => state.ourPartners);
   const { targetStudents } = useSelector((state) => state.targetStudent);
+  const { dpBeneficiaries, loading, error } = useSelector((state) => state.dpBeneficiaries);
   const degreeProgramData = useSelector(
     (state) => state.degreeProgram.degreeProgramData
   );
@@ -57,6 +58,13 @@ export default function Page1({ programId }) {
     targetStudents?.filter(
       (target) => target?.degree_program?._id === selectedProgramId
     ) || [];
+  const beneficiarie =
+    dpBeneficiaries?.filter(
+      (target) => target?.degree_program?._id === selectedProgramId
+    ) || [];
+
+  console.log("beneficiarie", beneficiarie);
+
   // Section navigation active state
   const [activeSectionNav, setActiveSectionNav] = useState("About");
 
@@ -68,6 +76,7 @@ export default function Page1({ programId }) {
       fetchAboutCollegeData(),
       getAllTargetStudents(),
       fetchAllOurPartners(),
+      getAllDPBeneficiaries()
     ];
 
     actions.forEach((action) => dispatch(action));
@@ -158,18 +167,6 @@ export default function Page1({ programId }) {
       setActiveSection(section);
     }
   };
-
-  // Section navigation handler
-  const scrollToContentSection = (ref, section) => {
-    if (ref?.current) {
-      window.scrollTo({
-        top: ref.current.offsetTop - 180, // Account for both nav bars
-        behavior: "smooth",
-      });
-      setActiveSectionNav(section);
-    }
-  };
-
   return (
     <div className="main-content">
 
@@ -178,14 +175,14 @@ export default function Page1({ programId }) {
         className="navigation-controls"
         style={{
           position: "fixed",
-          top: isMobileView ? "45px" : "55px",
+          top: isMobileView ? "0px" : "0px",
           zIndex: "10",
           backgroundColor: "rgb(229, 226, 236)",
           padding: isMobileView ? "6px 0" : "8px 0",
           display: "flex",
           alignItems: "center",
           width: "100%",
-          marginTop: "10px",
+          // margin:"10px"
         }}
       >
         {/* Navigation Links */}
@@ -252,97 +249,7 @@ export default function Page1({ programId }) {
           </div>
         </div>
       </div>
-
-      {/* Section Navigation Bar - NEW */}
-      <div
-        ref={sectionNavRef}
-        className="section-navigation"
-        style={{
-          position: "fixed",
-          top: isMobileView ? "100px" : "120px",
-          zIndex: "9",
-          backgroundColor: "#EADBC8",
-          padding: isMobileView ? "6px 0" : "8px 0",
-          display: "flex",
-          alignItems: "center",
-          width: "100%",
-          justifyContent: "center",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-            position: "relative",
-            overflow: "hidden",
-            width: "100%",
-            justifyContent: "center",
-          }}
-        >
-          <div
-            className="section-links"
-            style={{
-              display: "flex",
-              gap: isMobileView ? "10px" : "20px",
-              overflowX: "auto",
-              flex: 1,
-              scrollBehavior: "smooth",
-              padding: "0 20px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {[
-              { label: "About", ref: aboutRefs },
-              ...(finalPartners.length > 0
-                ? [{ label: "Partners", ref: partnersRef }]
-                : []),
-              ...(finalTarget.length > 0
-                ? [{ label: "Target Students", ref: targetRef }]
-                : []),
-            ].map((item) => (
-              <button
-                key={item.label}
-                onClick={() => scrollToContentSection(item.ref, item.label)}
-                className={`section-button ${activeSectionNav === item.label ? "active" : ""
-                  }`}
-                style={{
-                  position: "relative",
-                  background: "none",
-                  border: "none",
-                  fontSize: isMobileView ? "11px" : "14px",
-                  fontWeight: activeSectionNav === item.label ? "700" : "600",
-                  cursor: "pointer",
-                  paddingBottom: "4px",
-                  color: activeSectionNav === item.label ? "#1E40AF" : "#666",
-                  transition: "all 0.3s ease",
-                  flexShrink: 0,
-                }}
-              >
-                {item.label}
-                <span
-                  className="underline"
-                  style={{
-                    position: "absolute",
-                    bottom: "0",
-                    left: "0",
-                    width: activeSectionNav === item.label ? "100%" : "0",
-                    height: "2px",
-                    backgroundColor: "#1E40AF",
-                    transition: "width 0.3s ease-in-out",
-                  }}
-                />
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* main content */}
-      <div
-        className="content-wrapper js-content-wrapper overflow-auto "
-        style={{ marginTop: "160px" }}
-      >
+      <div >
         {/* Content Sections with refs */}
         <div ref={aboutRefs}>
           <About ids={selectedProgramId} />
@@ -356,6 +263,11 @@ export default function Page1({ programId }) {
         {finalTarget.length > 0 && (
           <div ref={targetRef}>
             <TargetStudentsSection ids={selectedProgramId} />
+          </div>
+        )}
+        {beneficiarie.length > 0 && (
+          <div>
+            <Beneficiaries ids={selectedProgramId} />
           </div>
         )}
       </div>

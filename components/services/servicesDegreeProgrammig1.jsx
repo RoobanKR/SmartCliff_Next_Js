@@ -18,6 +18,7 @@ const ProgramDetailsModal = ({ program, isOpen, onClose }) => {
   if (!isOpen || !program) return null;
 
   return (
+
     <div
       style={{
         position: "fixed",
@@ -28,56 +29,190 @@ const ProgramDetailsModal = ({ program, isOpen, onClose }) => {
         backgroundColor: "rgba(0,0,0,0.7)",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center", // vertically center
         zIndex: 1000,
-        opacity: 0,
         animation: "fadeIn 0.3s ease forwards",
-        inset: "0"
       }}
       onClick={onClose}
     >
-      
+
+      {/* Modal Box */}
       <div
         style={{
           backgroundColor: "white",
           borderRadius: "20px",
           width: "90%",
-          overflow: "auto",
-          position: "relative",
           height: "95vh",
-          top:20,
+          position: "relative",
+          overflow: "auto",
+          scrollbarWidth: "none", // for Firefox
+          msOverflowStyle: "none",
           boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
-          transform: "translateY(30px)",
-          opacity: 0,
           animation: "slideUpIn 0.4s ease 0.1s forwards",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
-        <button
+
+        {/* Close Button - stays fixed inside the modal */}
+        {/* <button
           onClick={onClose}
           style={{
-            position: "absolute",
-            top: "20px",
-            right: "20px",
-            background: "none",
+            position: "absolute", // 👈 key
+            top: "7px",
+            right: "10px",
+            background: "rgb(244, 80, 80)",
             border: "none",
-            fontSize: "24px",
+            fontSize: "14px",
             cursor: "pointer",
-            color: "#333",
-            zIndex: 10,
+            borderRadius: "50%",
+            padding: "5px",
+            // boxShadow: "0 2px 5px rgba(0,0,0,0.3)",
+            zIndex: 1000,
+            width:"30px"
           }}
         >
-          <FaTimes />
+          <FaTimes color="white" />
+        </button> */}
+
+
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "12px",
+            background: "#f45050",
+            border: "none",
+            fontSize: "14px",
+            cursor: "pointer",
+            borderRadius: "50%",
+            width: "32px",
+            height: "32px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.2s ease",
+            zIndex: 1000,
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            outline: "none"
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = "#e04040"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "#f45050"}
+          onFocus={(e) => e.currentTarget.style.background = "#e04040"}
+          onBlur={(e) => e.currentTarget.style.background = "#f45050"}
+        >
+          <FaTimes
+            color="white"
+            size={14}
+            style={{
+              transition: "transform 0.2s ease",
+            }}
+          />
         </button>
 
-        {/* Program Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "30px" }}>
+        {/* Scrollable Content */}
+        <div
+          style={{
+            overflowY: "auto",
+            maxHeight: "100%",
+            padding: "20px 0px 20px 0px", // padding-top for the fixed button space
+          }}
+        >
           <Page1 programId={program?._id} />
         </div>
       </div>
     </div>
+
   );
 };
+
+
+
+// In your second file (paste-2.txt), replace the ProgramDetailsModal component with this:
+
+// Program Details Modal Component
+// const ProgramDetailsModal = ({ program, isOpen, onClose }) => {
+//   if (!isOpen || !program) return null;
+
+//   return (
+//     <div
+//       style={{
+//         position: "fixed",
+//         top: 0,
+//         left: 0,
+//         right: 0,
+//         bottom: 0,
+//         backgroundColor: "rgba(0,0,0,0.7)",
+//         display: "flex",
+//         justifyContent: "center",
+//         alignItems: "center",
+//         zIndex: 1000,
+//         animation: "fadeIn 0.3s ease forwards",
+//       }}
+//       onClick={onClose}
+//     >
+//       {/* Modal Box */}
+//       <div
+//         style={{
+//           backgroundColor: "white", // Changed from red to white
+//           borderRadius: "20px",
+//           width: "90%",
+//           maxWidth: "1200px", // Added max-width for better appearance on large screens
+//           height: "90vh",
+//           position: "relative",
+//           overflow: "hidden", // Changed from auto to hidden
+//           boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+//           animation: "slideUpIn 0.4s ease 0.1s forwards",
+//         }}
+//         onClick={(e) => e.stopPropagation()}
+//       >
+//         {/* Close Button - stays fixed inside the modal */}
+//         <button
+//           onClick={onClose}
+//           style={{
+//             position: "fixed", // Changed from absolute to fixed
+//             top: "5vh", // Positioning relative to viewport
+//             right: "calc(5% + 20px)", // Positioning relative to modal edge
+//             background: "#5B2C6F",
+//             border: "none",
+//             fontSize: "24px",
+//             cursor: "pointer",
+//             borderRadius: "50%",
+//             padding: "8px",
+//             width: "40px",
+//             height: "40px",
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "center",
+//             color: "white",
+//             boxShadow: "0 2px 5px rgba(0,0,0,0.3)",
+//             zIndex: 1002, // Higher than modal content
+//           }}
+//         >
+//           <FaTimes />
+//         </button>
+
+//         {/* Scrollable Content */}
+//         <div
+//           style={{
+//             height: "100%",
+//             width: "100%",
+//             overflow: "auto", // Hide overflow
+//             position: "relative",
+//           }}
+//         >
+
+//             <div style={{
+//               position: "relative", // Changed to relative
+//             }}>
+//               <Page1 programId={program?._id} />
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
 export default function CsrDegreeProgram({ serviceId }) {
   const dispatch = useDispatch();

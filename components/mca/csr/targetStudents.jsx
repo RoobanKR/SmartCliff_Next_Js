@@ -97,7 +97,7 @@ const PageWithFixedBackground = ({ ids }) => {
         style={{
           display: "flex",
           justifyContent: "center",
-          gap: "20px",
+          gap: "30px",
           flexWrap: "wrap",
         }}
       >
@@ -105,7 +105,7 @@ const PageWithFixedBackground = ({ ids }) => {
           <div
             key={index}
             style={{
-              width: "250px",
+              width: "230px",
               borderRadius: "15px",
               padding: "20px",
               backgroundColor: card.bgColor,
@@ -120,17 +120,58 @@ const PageWithFixedBackground = ({ ids }) => {
               src={card.icon}
               alt={card.title}
               style={{
-                width: "100%",
+                width: "70%",
+                // height:"50%",
                 borderRadius: "10px",
                 marginBottom: "15px",
               }}
             />
-            <h3 style={{ fontSize: "16px", marginBottom: "10px" }}>
+            <h3 style={{ fontSize: "14px", marginBottom: "10px" }}>
               {card.description}
             </h3>
-            <p style={{ fontSize: "14px", opacity: "0.8" }}>{card.title}</p>
           </div>
         ))}
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "30px",
+            flexWrap: "wrap",
+            marginTop:"200px"
+          }}
+        >
+          {filteredOutcomes.map((card, index) => (
+            <div
+              key={index}
+              style={{
+                width: "230px",
+                borderRadius: "15px",
+                padding: "20px",
+                backgroundColor: " #f4e5d3",
+                color: "#fff",
+                textAlign: "center",
+                boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
+                transition: "all 0.3s ease-in-out",
+                cursor: "pointer",
+              }}
+            >
+              <img
+                src={filteredOutcomes[0].icon}
+                alt={card.title}
+                style={{
+                  width: "70%",
+                  // height:"50%",
+                  borderRadius: "10px",
+                  marginBottom: "15px",
+                }}
+              />
+              <h3 style={{ fontSize: "14px", marginBottom: "10px" }}>
+                {card.description}
+              </h3>
+            </div>
+          ))}
+        </div>
       </div>
       <style jsx>{`
         .program-subtitle {
