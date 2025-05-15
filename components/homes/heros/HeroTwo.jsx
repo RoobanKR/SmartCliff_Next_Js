@@ -72,7 +72,7 @@ export default function HeroTwo() {
             </div>
           </SwiperSlide>
           {/* Slide 2: HeroUIOne */}
-          <SwiperSlide>
+          {/* <SwiperSlide>
             <div
               className="swiper-slide"
               style={{
@@ -84,7 +84,7 @@ export default function HeroTwo() {
             >
               <HeroUITwo />
             </div>
-          </SwiperSlide>
+          </SwiperSlide> */}
 
           <SwiperSlide>
             <div
