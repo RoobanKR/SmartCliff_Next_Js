@@ -23,6 +23,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import { createTrainFromUs } from "@/redux/slices/hiring/trainFromUs/trainFromus";
 
 import { styles } from "./formStyle";
+import { color } from "framer-motion";
 
 export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
   const dispatch = useDispatch();
@@ -338,6 +339,7 @@ export default function TrainFromUsAddForm({ hireFromUsData, setShowModal }) {
                 ...styles.inputField,
                 appearance: "none",
                 paddingRight: "40px",
+                color:"#666"
               }}
             >
               <option value="">{label}</option>

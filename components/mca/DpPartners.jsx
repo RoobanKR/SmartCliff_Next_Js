@@ -120,48 +120,49 @@ export default function PartnersSection({ ids }) {
               </div>
 
               <a
-                href={partner.websiteLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  marginTop: "15px",
-                  padding: "8px 12px",
-                  background: "#3b82f6",
-                  color: "#ffffff",
-                  borderRadius: "20px",
-                  fontWeight: 500,
-                  fontSize: "14px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "6px",
-                  textDecoration: "none",
-                  transition: "background  0.3s ease, transform 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.05)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                }}
-              >
-                Visit Website
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  />
-                </svg>
-              </a>
+  href={partner.websiteLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    marginTop: "15px",
+    padding: "8px 12px",
+    background: "#3b82f6",
+    color: "#ffffff", // ✅ fixed
+    borderRadius: "20px",
+    fontWeight: 500,
+    fontSize: "14px",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px",
+    textDecoration: "none",
+    transition: "background  0.3s ease, transform 0.3s ease",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "scale(1.05)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "scale(1)";
+  }}
+>
+  Visit Website
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M14 5l7 7m0 0l-7 7m7-7H3"
+    />
+  </svg>
+</a>
+
             </motion.div>
           ))}
         </motion.div>

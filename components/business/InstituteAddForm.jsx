@@ -24,6 +24,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import { createInstitute } from "@/redux/slices/hiring/institute/institute";
 
 import { styles } from "./formStyle";
+import { color } from "framer-motion";
 
 export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
   const dispatch = useDispatch();
@@ -364,6 +365,7 @@ export default function InstitutionAddForm({ setShowModal, hireFromUsData }) {
                 ...styles.inputField,
                 appearance: "none",
                 paddingRight: "40px",
+                color:"#666"
               }}
             >
               <option value="">Select {label}</option>

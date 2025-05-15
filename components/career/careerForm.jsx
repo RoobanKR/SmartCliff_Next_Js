@@ -21,6 +21,7 @@ import {
 import { addCareerForm } from "@/redux/slices/career/careerForm";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { color } from "framer-motion";
 
 const styles = {
   container: {
@@ -69,7 +70,7 @@ const styles = {
   },
   inputLabel: {
     position: "absolute",
-    left: "50px",
+    left: "-50px",
     top: "10px",
     fontSize: "12px",
     color: "#666",
@@ -329,7 +330,8 @@ const FloatingSelect = ({
             style={{
               ...styles.inputField,
               appearance: "none",
-              paddingRight: "40px"
+              paddingRight: "40px",
+              color:"#666"
             }}
             {...props}
           >

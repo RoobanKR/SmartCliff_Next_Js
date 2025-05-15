@@ -540,7 +540,8 @@ const ServicesDropdown = () => {
                             const currentBusinessService =
                               getCurrentBusinessService(hoveredService);
                             const serviceUrl = `/${currentBusinessService?.slug}/${firstService.slug}`;
- 
+   const isLoading = loadingServiceId === firstService._id;
+
                             return (
                               <Link
                                 key={firstService._id}
@@ -566,15 +567,17 @@ const ServicesDropdown = () => {
                                     );
                                   }}
                                   style={{
-                                    color: "#AD8F72",
-                                    fontSize: "14.5px",
-                                    fontWeight: 600,
-                                    cursor: "pointer",
-                                    textDecoration: "underline",
-                                    textUnderlineOffset: "4px",
-                                    transition: "color 0.3s ease",
-                                    alignSelf: "flex-start",
-                                  }}
+          color: "#AD8F72",
+          fontSize: "14.5px",
+          fontWeight: 600,
+          cursor: "pointer",
+          textDecoration: "underline",
+          textUnderlineOffset: "4px",
+          transition: "color 0.3s ease",
+          alignSelf: "flex-start",
+          display: "flex",
+          alignItems: "center"
+        }}
                                   onMouseEnter={(e) => {
                                     e.currentTarget.style.color = "#916E50";
                                   }}
@@ -582,8 +585,27 @@ const ServicesDropdown = () => {
                                     e.currentTarget.style.color = "#AD8F72";
                                   }}
                                 >
-                                  Read More
-                                </span>
+{isLoading ? (
+          <>
+            <LoadingSpinner />
+            <span style={{ marginLeft: "8px" }}>
+              Loading<SequentialDots />
+            </span>
+          </>
+        ) : (
+          <>
+            Read More
+            <i
+              className="icon-chevron-right"
+              style={{
+                fontSize: "11px",
+                marginLeft: "8px",
+                color: "#AD8F72",
+                transition: "transform 0.2s ease",
+              }}
+            ></i>
+          </>
+        )}                                </span>
                               </Link>
                             );
                           })()}

@@ -20,6 +20,7 @@ import { getAPIURL } from "@/utils/utils";
 import { submitForm } from "@/redux/slices/hirefromus/Hirefromus";
 
 import { styles } from "./formStyle";
+import { color } from "framer-motion";
 
 export default function HireFromUsForm({ availabilities, setShowModal }) {
   const dispatch = useDispatch();
@@ -403,6 +404,7 @@ export default function HireFromUsForm({ availabilities, setShowModal }) {
                 ...styles.inputField,
                 appearance: "none",
                 paddingRight: "40px",
+                color:"#666"
               }}
             >
               <option value="">{label}</option>
