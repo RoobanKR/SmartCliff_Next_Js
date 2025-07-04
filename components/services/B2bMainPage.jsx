@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { learningPathSix } from "../../data/learningPaths";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import {
-  fetchServices,
   selectServices,
 } from "@/redux/slices/services/services/Services";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { selectBusinessServices } from "@/redux/slices/services/services/businessServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faSpinner } from "@fortawesome/free-solid-svg-icons";

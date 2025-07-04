@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { blogs } from "@/data/blog";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "next/navigation";
 import { getAllGallery } from "@/redux/slices/services/gallery/Gallery";
 
 export default function Gallery({ serviceId }) {
