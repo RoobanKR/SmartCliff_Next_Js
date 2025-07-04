@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { testimonialsTwo } from "@/data/tesimonials";
 import TestimonialCard from "../common/TestimonialCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "next/navigation";

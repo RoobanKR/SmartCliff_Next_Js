@@ -2,14 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllBusinessServices,
-  selectBusinessServices,
-} from "@/redux/slices/services/services/businessServices";
-import {
-  fetchServices,
-  selectServices,
-} from "@/redux/slices/services/services/Services";
+
 import {
   resetEnquiryState,
   selectEnquiry,
@@ -24,11 +17,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import MessageIcon from '@mui/icons-material/Message';
-import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CategoryIcon from '@mui/icons-material/Category';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import { selectCategories } from "@/redux/slices/category/category";
 import { styles } from "../business/formStyle"
@@ -42,8 +33,6 @@ const VALIDATION_PATTERNS = {
 
 export default function EnquiryModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
-  const services = useSelector(selectServices);
-  const businessServices = useSelector(selectBusinessServices);
   const categories = useSelector(selectCategories);
 
   const courses = useSelector((state) => state.courses.courses);
@@ -65,10 +54,6 @@ export default function EnquiryModal({ isOpen, onClose }) {
   };
 
   // Load data on component mount
-  useEffect(() => {
-    dispatch(getAllBusinessServices());
-    dispatch(fetchServices());
-  }, [dispatch]);
 
   // Handle success and error messages
   useEffect(() => {

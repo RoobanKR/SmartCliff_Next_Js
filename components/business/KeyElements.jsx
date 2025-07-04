@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { topCategoriesTwo } from "@/data/topCategories";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllKeyElements } from "@/redux/slices/bussiness/keyElements/keyElements";

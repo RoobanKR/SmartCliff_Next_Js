@@ -44,7 +44,7 @@ export default function HeroSection({ scrollToSection }) {
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundImage: "url('/assets/img/home-1/hero/bg.png')",
+          backgroundImage: "url('/assets/img/home-1/hero/bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.2,
@@ -259,7 +259,7 @@ export default function HeroSection({ scrollToSection }) {
           }}
         >
           <img
-            src="/assets/img/about-1/hfu.png"
+            src="/assets/img/about-1/hfu.webp"
             alt="Business Professionals"
             style={{
               width: "100%",

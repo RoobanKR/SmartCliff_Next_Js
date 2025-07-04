@@ -1,7 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+export const metadata = {
+  title: 'Page not found || Smartcliff - Professional Learning And Development company',
+  description:
+    'Elevate your e-learning content with Smartcliff, the most impressive',
+  
+}
 export default function NotFound() {
+  
   return (
     <section className="no-page layout-pt-lg layout-pb-lg bg-beige-1">
       <div className="container">

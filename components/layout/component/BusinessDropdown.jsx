@@ -230,7 +230,7 @@ const BusinessDropdown = () => {
                     variants={dropdownVariants}
                     style={nestedDropdownStyles}
                   >
-                    {menuList[4].links[0].links.map((item, idx) => (
+                    {menuList[0].links[0].links.map((item, idx) => (
                       <motion.li
                         key={idx}
                         variants={itemVariants}
@@ -251,7 +251,7 @@ const BusinessDropdown = () => {
             </li>
 
             {/* Other Business Menu Items */}
-            {menuList[4].links
+            {menuList[0].links
               .filter((item) => item.href)
               .map((item, idx) => (
                 <motion.li

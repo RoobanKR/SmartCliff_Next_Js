@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import HirefromusAddForm from "../HirefromusAddForm";
 import { useSelector } from "react-redux";
-import Trainfromus from "../trainfromus";
 import InstitutionAddForm from "../InstituteAddForm";
  
 export default function FormSection() {

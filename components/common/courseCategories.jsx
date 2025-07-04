@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { topCatagoriesFour } from "@/data/topCategories";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategories } from "@/redux/slices/category/category";
 

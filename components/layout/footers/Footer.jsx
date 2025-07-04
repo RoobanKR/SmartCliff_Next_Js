@@ -1,8 +1,5 @@
 import React from "react";
-import Socials from "@/components/common/Socials";
-import Image from "next/image";
 import FooterLinks from "../component/FooterLinks";
-import Links from "@/components/common/links";
 
 export default function FooterTwo() {
   return (

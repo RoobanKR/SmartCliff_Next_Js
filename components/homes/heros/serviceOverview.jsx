@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -45,19 +44,9 @@ const CategoriesHomeOne = () => {
     }));
   };
 
-  const staticImages = [
-    "https://images.ctfassets.net/ukazlt65o6hl/4zPcyKVokZYqoB755gFnt4/f54b0598af98427baeb5d324b989e0d5/Banner_Image_B2B_Customer_Service.png",
-    "https://fluentsupport.com/wp-content/uploads/2022/03/b2c-customer-service-scaled.jpg",
-    "https://assets.tradeholders.com/img/services/6217SDB7.jpg",
-    "https://serviqbiz.in/assets/img/service/csr.jpg",
-  ];
-
   return (
     <div className="categories-container">
-      {/* Background design on right end */}
       <div className="background-image"></div>
-
-      {/* Heading & Description */}
       <div className="heading-section">
         <h2>
           Our <span className="highlight">Services</span>

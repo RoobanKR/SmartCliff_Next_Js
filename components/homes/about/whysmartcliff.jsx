@@ -1,6 +1,4 @@
 "use client";
-import { learningPathSix } from "@/data/learningPaths";
-import { getAllAboutUs } from "@/redux/slices/aboutUs/aboutUs";
 import { getAllWCU } from "@/redux/slices/whyThis/whyThis";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";

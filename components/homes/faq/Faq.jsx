@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { lessonItems } from "@/data/aboutcourses";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllFAQs, selectFAQs, selectStatus } from "@/redux/slices/faq/faq";
 

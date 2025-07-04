@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Messages from "@/components/layout/component/Messages";
 import Preloader from "@/components/common/Preloader";
-import HeaderSeven from "@/components/layout/headers/HeaderSeven";
 import Sidebar from "@/components/services/Sidebar";
 import FooterTwo from "@/components/layout/footers/Footer";
 import ServiceOverview from "@/components/services/ServiceOverview";
@@ -15,7 +14,6 @@ import {
 } from "@/redux/slices/services/services/Services";
 import { useDispatch, useSelector } from "react-redux";
 import ExecutiveHighlights from "@/components/services/ExecutiveHighlights";
-import Testimonial from "@/components/services/Testmonial";
 import FAQComponent from "@/components/courseSingle/Faq";
 import { fetchAllFAQs } from "@/redux/slices/faq/faq";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,12 +22,12 @@ import ServiceOverview1 from "@/components/serviceList/ServiceOverview";
 import ExecutiveHighlights1 from "@/components/serviceList/ExecutiveHighlights";
 import Clients1 from "@/components/serviceList/Clients";
 import Gallery1 from "@/components/serviceList/Gallery";
-import TestimonialsFour1 from "@/components/serviceList/Testimonial";
 import ExecutionOverview1 from "@/components/serviceList/ExecutionOverview";
 import TabComponent from "@/components/services/ManagedCampus/TabComponent";
 import Banner from "@/components/common/Banner";
 import jsonData from "../../../../../public/assets/json/Banner.json";
 import { useParams } from "next/navigation";
+import TestimonialsFour1 from "@/components/serviceList/Testimonial";
 
 export default function HomeNine() {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
@@ -78,11 +76,7 @@ export default function HomeNine() {
     <>
       <div className="main-content homeModeChange ">
         <Preloader />
-        <HeaderSeven
-          setMessageOpen={setMessageOpen}
-          setIsSidebarClosed={setIsSidebarClosed}
-        />
-
+      
         <div className="content-wrapper js-content-wrapper">
           <div
             className={`dashboard -home-9 px-0 js-dashboard-home-9 ${

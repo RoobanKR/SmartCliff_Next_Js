@@ -7,10 +7,9 @@ import "swiper/css/pagination";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllReview } from "@/redux/slices/review/review";
-import { ChevronRight, ExpandLess, ExpandMore } from "@mui/icons-material";
+import {  ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import ModalVideoComponent from "@/components/common/ModalVideo";
-import ReactPlayer from "react-player";
 import Image from "next/image";
 
 
@@ -21,9 +20,7 @@ export default function TestimonialsEight() {
   const [currentVideoId, setCurrentVideoId] = useState("LlCwHnp3kL4");
   const [showSlider, setShowSlider] = useState(false);
   const [showVideoSlider, setShowVideoSlider] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const reviewsPerPage = 6;
   const reviews = useSelector((state) => state.reviews.reviews);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -32,14 +29,10 @@ export default function TestimonialsEight() {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-
-    // Set initial value only on the client side
     handleResize();
 
-    // Add event listener for window resize
     window.addEventListener("resize", handleResize);
 
-    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -66,9 +59,6 @@ export default function TestimonialsEight() {
         review.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         review.service?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
-
-  // With this:
-  // For text testimonials (all reviews, taking first 3)
   const textTestimonials = reviews
     .filter(review =>
       review.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -77,7 +67,6 @@ export default function TestimonialsEight() {
       review.service?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .slice(0, 3);
-  // For video testimonials (only reviews with videos, taking first 3)
   const videoTestimonials = reviews
     .filter(review =>
       review.video &&

@@ -68,9 +68,11 @@ export default function HomePage() {
             zIndex: 9999,
           }}
         >
-<div
-  style={{
-    backgroundImage: "url('/assets/img/about-1/bckimg13.jpg')",
+<div                  style={{
+                    backgroundImage: openPopups[0].image
+                      ? `url('${openPopups[0].image}')`
+                      : "url('/assets/img/about-1/bckimg13.webp')",
+
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -239,7 +241,7 @@ function PopupCard({ popup }) {
         style={{
           fontSize: "20px",
           fontWeight: "700",
-          color: "#FACC15",
+          color: "#9c3a7c",
           marginBottom: "8px",
           textAlign: "center",
         }}
@@ -259,19 +261,34 @@ function PopupCard({ popup }) {
       </p>
       {popup.link && (
         <div style={{ textAlign: "center", }}>
-          <a
-            href={popup.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-             
-              textDecoration: "underline",
-              fontWeight: "600",
-              fontSize: "14px",
-            }}
-          >
-        <span style={{color:"black"}}>   {popup.button} → </span>
-          </a>
+    <a
+  href={popup.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: "inline-block",
+    padding: "8px 20px",
+    backgroundColor: "#9c3a7c",
+    color: "#000",
+    fontWeight: "600",
+    fontSize: "14px",
+    borderRadius: "6px",
+    textDecoration: "none",
+    transition: "all 0.3s ease",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    marginTop: "12px",
+    border: "1px solid rgba(0,0,0,0.1)",
+    textAlign: "center",
+    minWidth: "120px",
+    ':hover': {
+      backgroundColor: "#EAB308",
+      transform: "translateY(-1px)",
+      boxShadow: "0 4px 6px rgba(0,0,0,0.15)",
+    }
+  }}
+>
+  {popup.button}
+</a>
         </div>
       )}
     </div>

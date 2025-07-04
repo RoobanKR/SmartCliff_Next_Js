@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { lessonItems } from "@/data/aboutcourses";
 
 export default function FAQComponent({ faq }) {
   const [activeItemId, setActiveItemId] = useState(null);

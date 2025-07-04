@@ -1,6 +1,5 @@
 import Preloader from "@/components/common/Preloader";
 import FooterTwo from "@/components/layout/footers/Footer";
-import HeaderSeven from "@/components/layout/headers/HeaderSeven";
 import jsonData from "../../../public/assets/json/Banner.json";
 import Banner from "@/components/common/Banner";
 import Reviews from "@/components/reviews/Reviews";

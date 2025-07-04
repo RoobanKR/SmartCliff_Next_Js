@@ -1,17 +1,33 @@
 import Banner from "@/components/common/Banner";
-import PageLinks from "@/components/common/PageLinks";
 import Preloader from "@/components/common/Preloader";
 import Contact from "@/components/contacts/Contact";
 import FooterTwo from "@/components/layout/footers/Footer";
-import HeaderSeven from "@/components/layout/headers/HeaderSeven";
 import React from "react";
 import jsonData from "../../../public/assets/json/Banner.json";
 import HeaderTwo from "@/components/layout/headers/HeaderTwo";
-import Banner2 from "@/components/common/Banner2";
+
+export const metadata = {
+  title: "Contact Us | SmartCliff",
+  description: "Get in touch with us today.",
+  openGraph: {
+    title: "Contact Us | SmartCliff",
+    description: "Get in touch with us today.",
+    url: "https://smartcliff.in/contact",
+    type: "website",
+    images: [
+      {
+        url: "https://smartcliff.in/images/contact-preview.webp", // Replace this with your actual image URL
+        width: 1200,
+        height: 630,
+        alt: "SmartCliff Contact Page Preview",
+      },
+    ],
+  },
+};
 
 export default function page() {
   return (
-    <div className="main-content  ">
+    <div className="main-content">
       <Preloader />
       <HeaderTwo />
       <div className="content-wrapper js-content-wrapper overflow-hidden">
@@ -24,9 +40,9 @@ export default function page() {
         </div>
 
         <Contact />
-
         <FooterTwo />
       </div>
     </div>
   );
 }
+

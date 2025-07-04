@@ -112,49 +112,6 @@ export default function CourseSlider() {
                               {course.course_name}
                             </Link>
                           </div>
-                          {/* <div className="d-flex x-gap-10 items-center pt-10">
-                            <div className="d-flex items-center">
-                              <div className="mr-8">
-                                <Image
-                                  width={16}
-                                  height={17}
-                                  src="/assets/img/coursesCards/icons/1.svg"
-                                  alt="icon"
-                                />
-                              </div>
-                              <div className="text-14 lh-1">
-                                {course.projects || course.projects} Projects
-                              </div>
-                            </div>
- 
-                            <div className="d-flex items-center">
-                              <div className="mr-8">
-                                <Image
-                                  width={16}
-                                  height={17}
-                                  src="/assets/img/coursesCards/icons/2.svg"
-                                  alt="icon"
-                                />
-                              </div>
-                              <div className="text-14 lh-1">
-                                {course.duration}
-                              </div>
-                            </div>
- 
-                            <div className="d-flex items-center">
-                              <div className="mr-8">
-                                <Image
-                                  width={16}
-                                  height={17}
-                                  src="/assets/img/coursesCards/icons/3.svg"
-                                  alt="icon"
-                                />
-                              </div>
-                              <div className="text-14 lh-1">
-                                {course.mode_of_training}
-                              </div>
-                            </div>
-                          </div> */}
                         </div>
                       </div>
                     </div>

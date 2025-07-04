@@ -4,7 +4,6 @@ import CourseDetailsSix from "@/components/courseSingle/CourseDetails";
 import CourseSlider from "@/components/courseSingle/CourseSlider";
 import FooterTwo from "@/components/layout/footers/Footer";
 
-import HeaderSeven from "@/components/layout/headers/HeaderSeven";
 import HeaderTwo from "@/components/layout/headers/HeaderTwo";
 import React from "react";
 

@@ -17,7 +17,6 @@ import {
 } from "@/redux/slices/category/category";
 import { fetchCourses } from "@/redux/slices/course/course";
 import { menuList } from "@/data/menu";
-import EnquiryModal from "@/components/common/EnquiryModal";
 import { FaTimes } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -100,12 +99,12 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
       links: [
         {
           title: "Corporate",
-          links: menuList[4].links[0].links.map((item) => ({
+          links: menuList[0].links[0].links.map((item) => ({
             label: item.label,
             href: item.href,
           })),
         },
-        ...menuList[4].links
+        ...menuList[0].links
           .filter((item) => item.href)
           .map((item) => ({
             title: item.label,
@@ -562,7 +561,6 @@ export default function MobileMenu({ setActiveMobileMenu, activeMobileMenu }) {
                 scrollbarWidth: "thin",
               }}
             >
-              <EnquiryModal isOpen={isModalOpen} onClose={closeModal} />
             </div>
           </motion.div>
         </motion.div>

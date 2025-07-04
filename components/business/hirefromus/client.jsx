@@ -4,7 +4,6 @@ import { Navigation, Pagination, Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import React from "react";
-import Image from "next/image";
 
 export default function Client({ trainFromUsData }) {
   const [showSlider, setShowSlider] = useState(false);
@@ -55,9 +54,9 @@ export default function Client({ trainFromUsData }) {
                           data-aos-duration={(i + 1) * 300}
                         >
                           <div className="infoCard__image">
-                            <Image
-                              width={150}
-                              height={100}
+                            <img
+                              width="150"
+                              height="100"
                               style={{ width: "100%", objectFit: "contain" }}
                               src={elm.image}
                               alt="image"

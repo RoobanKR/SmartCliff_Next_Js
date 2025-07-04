@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { schoolAchievement } from "@/data/achievements";
 import { fetchExecutionHighlights } from "@/redux/slices/services/executionHighlights/Execution_Highlights";
 import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";

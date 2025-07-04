@@ -1,13 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Messages from "@/components/layout/component/Messages";
+// import Messages from "@/components/layout/component/Messages";
 import Preloader from "@/components/common/Preloader";
-import HeaderSeven from "@/components/layout/headers/HeaderSeven";
 import Sidebar from "@/components/services/Sidebar";
 import FooterTwo from "@/components/layout/footers/Footer";
-import Clients from "@/components/services/Clients";
-import ExecutionOverview from "@/components/services/ExecutionOverview";
-import Gallery from "@/components/services/Gallery";
 import {
   fetchServices,
   selectServices,
@@ -76,7 +72,10 @@ export default function HTD() {
   const { tracks, isLoading, isError } = useSelector(
     selectPlacementTrainingTrackState
   );
- 
+  
+ const degreeCompanyDetails = useSelector(
+    (state) => state.companies.companies
+  );
   const [width, setWidth] = useState("100%");
   const [contentPadding, setContentPadding] = useState("120px");
  
@@ -169,10 +168,11 @@ export default function HTD() {
     (service) => service.slug === twomatchingService?.slug
   );
  
-  const matchedexecutionOverviews = executionOverviews.filter(
+  const matchedexecutionOverviews = degreeCompanyDetails.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
  
+
   const PlacementTraining = tracks.filter(
     (i) => i.service?._id === finalMatchedService?._id
   );
@@ -259,18 +259,6 @@ export default function HTD() {
   if (PlacementTraining.length > 0) {
     availableSections.push({ id: "training-tracks", title: "Training Tracks" });
   }
-  // if (matchedexecutionOverviews.length > 0) {
-  //   availableSections.push({
-  //     id: "execution-overview",
-  //     title: "Execution Overview",
-  //   });
-  // }
-  // if (filteredHighlights.length > 0) {
-  //   availableSections.push({
-  //     id: "execution-highlights",
-  //     title: "Execution Overview (By Domain)",
-  //   });
-  // }
  
   if (matchedOppertunity.length > 0) {
     availableSections.push({ id: "opportunities", title: "Opportunities" });
@@ -280,7 +268,7 @@ export default function HTD() {
   }
   
   // Add Company section only for csr segment
-  if (secondLastSegment === "csr") {
+  if (matchedexecutionOverviews.length > 0) {
     availableSections.push({ id: "executionoverview", title: "Execution Overview" });
   }
 
@@ -458,9 +446,7 @@ export default function HTD() {
               {secondLastSegment === "b2i" && lastSegment === "dp" ? (
                 <ServiceDegreeProgram />
               ) 
-              // : secondLastSegment === "csr" ? (
-              //   <CsrDegreeProgram />
-              // ) 
+            
               : (
                 <div>
                   <div
@@ -492,20 +478,6 @@ export default function HTD() {
                         <TrainingTracksTable />
                       </div>
                     )}
- 
-                    {/* {matchedexecutionOverviews.length > 0 && (
-                      <div id="execution-overview">
-                        <ExecutionOverview serviceId={services} />
-                      </div>
-                    )}
-  */}
-                    {/* {filteredHighlights.length > 0 && (
-                      <div>
-                        <ExecutiveHighlights
-                          filteredHighlights={filteredHighlights}
-                        />
-                      </div>
-                    )} */}
                     <div id="opportunities">
                       {matchedOppertunity.length > 0 && (
                         <div id="opportunities">
@@ -515,12 +487,7 @@ export default function HTD() {
                         </div>
                       )}
                     </div>
-                    {/* {matchedServiceClient.length > 0 && (
-                      <div id="clients">
-                        <Clients filteredClients={matchedServiceClient} />
-                      </div>
-                    )} */}
-                    {secondLastSegment === "b2i" &&( <div id="client"><ServiceClient /></div>)}
+                      {secondLastSegment === "b2i" &&( <div id="client"><ServiceClient /></div>)}
  
                     {secondLastSegment === "b2i" && <FormSection />}
 
@@ -546,7 +513,7 @@ export default function HTD() {
         </div>
         {/* </div> */}
       </div>
-      <Messages messageOpen={messageOpen} setMessageOpen={setMessageOpen} />
+      {/* <Messages messageOpen={messageOpen} setMessageOpen={setMessageOpen} /> */}
  
       <style jsx>{`
         @keyframes fadeSlide {

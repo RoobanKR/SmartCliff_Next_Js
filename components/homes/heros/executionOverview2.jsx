@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllHomeExecutionHighlights } from "@/redux/slices/home/homeExecutionHighlights/homeExecutionHighlights";
- 
+
 export default function ExecutiveOverview2() {
   const dispatch = useDispatch();
   const homeExecutionHighlights = useSelector(
@@ -17,7 +17,7 @@ export default function ExecutiveOverview2() {
   useEffect(() => {
     dispatch(getAllHomeExecutionHighlights());
   }, [dispatch]);
- 
+
   const swiperStyles = {
     container: {
       padding: "0px 0",
@@ -56,7 +56,7 @@ export default function ExecutiveOverview2() {
     },
   };
   const colors = ["#A2D2FF"];
- 
+
   return (
     <section
       style={{
@@ -141,15 +141,15 @@ export default function ExecutiveOverview2() {
                       boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
                     }}
                   >
-                    <Image
+                    <img
                       src={highlight.image}
                       alt="icon"
-                      width={34}
-                      height={34}
+                      width="34px"
+                      height="34px"
                       style={{ objectFit: "contain" }}
                     />
                   </div>
- 
+
                   <div>
                     <h3
                       style={{
@@ -161,10 +161,9 @@ export default function ExecutiveOverview2() {
                     >
                       {highlight.stack}
                     </h3>
-                    
                   </div>
                 </div>
- 
+
                 {/* Divider */}
                 <div
                   style={{
@@ -173,7 +172,7 @@ export default function ExecutiveOverview2() {
                     backgroundColor: "#e5e7eb",
                   }}
                 />
- 
+
                 {/* Bottom Stats Section */}
                 <div
                   style={{
@@ -208,7 +207,7 @@ export default function ExecutiveOverview2() {
             </SwiperSlide>
           ))}
         </Swiper>
- 
+
         {/* Navigation Controls */}
         <div className="d-flex justify-center x-gap-15 items-center pt-40">
           <div className="col-auto">
@@ -229,5 +228,3 @@ export default function ExecutiveOverview2() {
     </section>
   );
 }
- 
- 

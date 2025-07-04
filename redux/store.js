@@ -1,44 +1,26 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userSignInSlice from "./slices/user/Signin";
-import userSignUpSlice from "./slices/user/Signup";
-import superAdminSignUpSlice from "./slices/superAdminRegister/superAdminRegister";
-import adminSignUpSlice from "./slices/adminRegister/adminRegister";
 import categoryReducer from "./slices/category/category";
-import careerOpportunitiesReducer from "./slices/careerOppertunities/careerOppertunities";
 import softwareToolsReducer from "./slices/softwareTools/softwareTools";
 import faqReducer from "./slices/faq/faq";
-import instructorReducer from "./slices/instructor/instructor";
 import courseReducer from "./slices/course/course";
-import courseModuleReducer from "./slices/courseModules/courseModules";
 import ourProgramReducer from "./slices/mca/ourProgram/ourProgram";
 import aboutCollegeReducer from "./slices/mca/aboutCollege/aboutCollege";
-import qualificationLearningReducer from "./slices/mca/qualificationLearning/qualificationLearning";
 import semesterReducer from "./slices/mca/semester/Semester";
-import assessmentReducer from "./slices/mca/assesment/Assesment";
 import targetStudentReducer from "./slices/mca/targetStudent/targetStudent";
-import programFeesReducer from "./slices/mca/programFees/ProgramFees";
-import eligibilityCriteriaReducer from "./slices/mca/eligibility/Eligibility";
 import degreeProgramReducer from "./slices/mca/degreeProgram/DegreeProgram";
-import admissionProcessReducer from "./slices/mca/admissionProcess/AdmissionProcess";
 import outcomeReducer from "./slices/mca/outcomes/Outcomes";
-import highlightReducer from "./slices/mca/highlights/Highlights";
-import programApplyReducer from "./slices/programApply/programApply";
 import serviceReducer from "./slices/services/services/Services";
 import businessServiceReducer from "./slices/services/services/businessServices";
 import clientReducer from "./slices/services/client/Client";
 import executionHighlightsReducer from "./slices/services/executionHighlights/Execution_Highlights";
 import executionOverviewsReducer from "./slices/services/executionOverview/ExecutionOverview";
 import testimonialReducer from "./slices/services/testimonial/Testimonial";
-import batchesReducer from "./slices/batch/batches";
-import entrollBatchReducer from "./slices/entrollBatches/entrollBatch";
 import hirefromusReducer from "./slices/hirefromus/Hirefromus";
-import hiringReducer from "./slices/hiring/hiring/hiring";
 import managedCampusReducer from "./slices/services/managedCampus/managedCampus";
 import keyElementsReducer from "./slices/bussiness/keyElements/keyElements";
 import placementTestimonialReducer from "./slices/bussiness/placementTestimonial/placementTestimonial";
 import trainfromusReducer from "./slices/hiring/trainFromUs/trainFromus";
 import instituteReducer from "./slices/hiring/institute/institute";
-import engagedGovernanceReducer from "./slices/hiring/engagedGovernance/engagedGovernance";
 import ServiceAboutSlice from "./slices/services/services/aboutServices";
 import ServiceProcessSlice from "./slices/services/services/processServices";
 import serviceClientReducer from "./slices/services/services/clientServices";
@@ -76,30 +58,16 @@ import dpBeneficiariesReducer from "./slices/mca/beneficiaries/beneficiaries"
 
 export default configureStore({
   reducer: {
-    userSignIn: userSignInSlice,
-    userSignUp: userSignUpSlice,
-    superAdminRegister: superAdminSignUpSlice,
-    adminRegister: adminSignUpSlice,
     category: categoryReducer,
-    careerOpportunities: careerOpportunitiesReducer,
     softwareTools: softwareToolsReducer,
     faq: faqReducer,
-    instructors: instructorReducer,
     courses: courseReducer,
-    courseModule: courseModuleReducer,
     ourProgram: ourProgramReducer,
     aboutCollege: aboutCollegeReducer,
-    qualificationLearning: qualificationLearningReducer,
     semester: semesterReducer,
-    assessments: assessmentReducer,
     targetStudent: targetStudentReducer,
-    programFees: programFeesReducer,
-    eligibilityCriteria: eligibilityCriteriaReducer,
     degreeProgram: degreeProgramReducer,
-    admissionProcess: admissionProcessReducer,
     outcomes: outcomeReducer,
-    highlight: highlightReducer,
-    programApply: programApplyReducer,
     service: serviceReducer,
     businessService: businessServiceReducer,
     aboutService: ServiceAboutSlice,
@@ -109,19 +77,14 @@ export default configureStore({
     executionHighlights: executionHighlightsReducer,
     executionOverviews: executionOverviewsReducer,
     testimonial: testimonialReducer,
-    entrollBatch: entrollBatchReducer,
-    batches: batchesReducer,
     hirefromus: hirefromusReducer,
     trainfromus: trainfromusReducer,
-    hiring: hiringReducer,
     managedCampus: managedCampusReducer,
     serviceOpportunities: serviceOpportunityReducer,
     keyElements: keyElementsReducer,
     placementTestimonial: placementTestimonialReducer,
     institute: instituteReducer,
     colleges: collegesReducer,
-
-    engagedGovernance: engagedGovernanceReducer,
     enquiry: enquiryReducer,
     contact: contactReducer,
     careerForm: careerFormReducer,

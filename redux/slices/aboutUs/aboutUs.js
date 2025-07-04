@@ -211,3 +211,37 @@ export const { resetAboutUs, clearUpdateStatus } = aboutUsSlice.actions;
 export const selectAboutUsState = (state) => state.aboutUs;
 
 export default aboutUsSlice.reducer;
+
+
+
+
+
+
+// import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// import Axios from "axios";
+// import { getAPIURL } from "../../../utils/utils";
+// export const  apiUrl = process.env.NEXT_PUBLIC_API_URL;
+// const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// import config from "../../../utils/utils"; // Import the centralized config
+
+// // 2. For debugging, check if any environment variables are loading
+// console.log('Environment check:', {
+//   NODE_ENV: process.env.NODE_ENV,
+//   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+//   NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME
+// });
+
+
+// export const getAllAboutUs = createAsyncThunk(
+//   "aboutUs/getAllAboutUs",
+//   async () => {
+//     try {
+//       console.log('API_URL being used:', config.apiUrl); // Use the config object
+//       const response = await Axios.get(`${config.apiUrl}/getAll/about/aboutus`);
+//       return response.data.getAllAboutUs;
+//     } catch (error) {
+//       console.error('API request failed:', error);
+//       throw error;
+//     }
+//   }
+// );

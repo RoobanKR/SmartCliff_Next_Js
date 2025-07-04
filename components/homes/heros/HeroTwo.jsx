@@ -8,10 +8,7 @@ import "swiper/css/pagination";
 import { useEffect, useState } from "react";
 
 import React from "react";
-import { featureTwo } from "../../../data/features";
-import { slidesData } from "../../../data/hero";
 import { useRouter } from "next/navigation";
-import HeroUITwo from "./heroUI2";
 import HeroUIOne from "./heroUI1";
 import HeroUIFour from "./heroUI4";
 import HeroUIThree from "./heroUI3";
@@ -57,7 +54,6 @@ export default function HeroTwo() {
             height: "100%",
           }}
         >
-          {/* Slide 1: HeroUITwo */}
           <SwiperSlide>
             <div
               className="swiper-slide"
@@ -71,20 +67,6 @@ export default function HeroTwo() {
               <HeroUIOne />
             </div>
           </SwiperSlide>
-          {/* Slide 2: HeroUIOne */}
-          {/* <SwiperSlide>
-            <div
-              className="swiper-slide"
-              style={{
-                width: "auto",
-                height: "auto",
-                justifyContent: "center",
-                background: "#e0e0e0",
-              }}
-            >
-              <HeroUITwo />
-            </div>
-          </SwiperSlide> */}
 
           <SwiperSlide>
             <div

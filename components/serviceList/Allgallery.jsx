@@ -212,22 +212,7 @@ export default function AllGalleryList() {
                     objectFit: "cover",
                   }}
                 />
-                {elm.images.length > 1 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: "80px",
-                      right: "10px",
-                      backgroundColor: "rgba(0,0,0,0.6)",
-                      color: "white",
-                      borderRadius: "4px",
-                      padding: "4px 8px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    +{elm.images.length - 1} more
-                  </div>
-                )}
+              
               </div>
 
               {/* Content */}
@@ -267,6 +252,26 @@ export default function AllGalleryList() {
                 >
                   {elm.month} {elm.year}
                 </div>
+                  {elm.images.length > 1 && (
+                     <div
+                onClick={(e) => openModal(elm.images, e)}
+              >
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "20px",
+                      right: "10px",
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      color: "white",
+                      borderRadius: "4px",
+                      padding: "4px 8px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    +{elm.images.length - 1} more
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))

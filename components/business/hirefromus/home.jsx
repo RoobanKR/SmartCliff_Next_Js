@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import HirefromusAddForm from "../HirefromusAddForm";
 import { motion, AnimatePresence } from "framer-motion";
@@ -53,7 +52,6 @@ export default function HeroSection({
         backgroundColor: "#0A192F",
       }}
     >
-      {/* Background Image */}
       <div
         style={{
           position: "absolute",
@@ -61,7 +59,7 @@ export default function HeroSection({
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundImage: "url('/assets/img/home-1/hero/bg.png')",
+          backgroundImage: "url('/assets/img/home-1/hero/bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 0.2,
@@ -305,7 +303,6 @@ export default function HeroSection({
         </AnimatePresence>
       </div>
 
-      {/* Right-Side Image (Hidden in Mobile) */}
       {!isMobile && (
         <div
           style={{
@@ -315,7 +312,7 @@ export default function HeroSection({
           }}
         >
           <img
-            src="/assets/img/about-1/hfu.png"
+            src="/assets/img/about-1/hfu.webp"
             alt="Business Professionals"
             style={{
               width: "100%",

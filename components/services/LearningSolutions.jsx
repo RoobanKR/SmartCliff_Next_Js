@@ -2,13 +2,12 @@
 import gsap from "gsap";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function LearningSolutions({ matchedServiceAbouts }) {
   return (
     <section className="layout-pb-md js-mouse-move-container">
       <div className="container">
-        <div className="row y-gap-30 align-items-start">
+        <div className="row y-gap-30 align-items-center">
           {matchedServiceAbouts.map((item, index) => (
             <div key={index} className="col-lg-6 order-2 order-lg-1">
               <h2 className="text-25 lg:text-10 md:text-30 text-dark-1">
@@ -18,7 +17,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
               <div className="row y-gap-20 pt-30">
                 {item.feature.map((elm, i) => (
                   <div key={i} className="col-12">
-                    <div className="featureIcon -type-1 d-flex">
+                    <div className="featureIcon -type-1 d-flex align-items-center">
                       <div
                         className={`featureIcon__icon ${elm.iconBg}`}
                         style={{
@@ -29,6 +28,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                           justifyContent: "center",
                           borderRadius: "50%",
                           backgroundColor: "#f5f0ff",
+                          flexShrink: 0
                         }}
                       >
                         <Image
@@ -38,9 +38,9 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
                           alt="icon"
                         />
                       </div>
-                      <div className="featureIcon__content ml-20 mt-10">
+                      <div className="featureIcon__content ml-20">
                         <h4 className="text-17 fw-500">{elm.title}</h4>
-                        <p className="mt-5">
+                        <p className="mt-2">
                           {Array.isArray(elm.description) ? (
                             elm.description.map((desc, index) => (
                               <span key={index}>
@@ -59,7 +59,7 @@ export default function LearningSolutions({ matchedServiceAbouts }) {
               </div>
             </div>
           ))}
-          <div className="col-lg-6 order-1 order-lg-2">
+          <div className="col-lg-6 order-1 order-lg-2 d-flex justify-content-center align-items-center">
             <div className="elements-image">
               {/* Main Dynamic Image */}
               {matchedServiceAbouts[0]?.images?.length > 0 && (

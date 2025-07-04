@@ -70,12 +70,12 @@ const styles = {
   },
   inputLabel: {
     position: "absolute",
-    left: "-50px",
+    left: "50px",
     top: "10px",
     fontSize: "12px",
     color: "#666",
-    // backgroundColor: " #f9f9f9",
-    padding: "0 13px",
+    backgroundColor: "#f9f9f9",
+    padding: "0 4px",
     transition: "all 0.3s ease",
     pointerEvents: "none"
   },
@@ -294,7 +294,7 @@ const FloatingSelect = ({
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const hasSelectedValue = values && values[name];
+  const hasSelectedValue = values && values[name] && values[name] !== '';
 
   const handleChange = (e) => {
     const selectedValue = e.target.value;
@@ -305,6 +305,17 @@ const FloatingSelect = ({
     setFieldError(name, error);
     setFieldTouched(name, true, false);
   };
+
+const getLabelLeft = () => {
+    if (name === 'gender') {
+      return "13px"; // Special padding for gender field
+    }
+     if (name === 'job_position') {
+      return "13px"; // Special padding for gender field
+    }
+    return Icon ? "40px" : "12px"; 
+  };
+
 
   return (
     <div style={styles.fieldContainer}>
@@ -330,30 +341,49 @@ const FloatingSelect = ({
             style={{
               ...styles.inputField,
               appearance: "none",
-              paddingRight: "40px",
-              color:"#666"
+              paddingRight: "30px",
+              paddingLeft: Icon ? "12px" : "12px",
+              color: hasSelectedValue ? "#333" : "#666"
             }}
             {...props}
           >
-            <option value="" style={{color:"#666"}}>Select</option>
-            {options && options.map((option) => (
-              <option key={typeof option === 'string' ? option : option.job_position} value={typeof option === 'string' ? option : option.job_position}>
+            {/* Default empty option */}
+            <option value="" disabled hidden>
+              {/* This creates the placeholder effect */}
+            </option>
+            
+            {/* Gender options */}
+            {name === 'gender' && (
+              <>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </>
+            )}
+            
+            {/* Job position options */}
+            {name === 'job_position' && options && options.map((option) => (
+              <option 
+                key={typeof option === 'string' ? option : option.job_position} 
+                value={typeof option === 'string' ? option : option.job_position}
+              >
                 {typeof option === 'string' ? option : option.job_position}
               </option>
             ))}
           </Field>
+          
           <label style={{
             ...styles.inputLabel,
-            left: Icon ? "40px" : "12px",
+            left: getLabelLeft(),
             ...((isFocused || hasSelectedValue) ? styles.inputLabelFloated : {})
           }}>
             {label}
           </label>
+          
           <div style={{
             ...styles.selectArrow,
             ...(isFocused ? styles.selectArrowFocused : {})
           }}>
-            {/* You can add an arrow icon here */}
+            <span style={{ fontSize: '12px' }}></span>
           </div>
         </div>
       </div>
@@ -545,7 +575,6 @@ export default function CareerEnquiryForm({ closeModal }) {
               icon={WcIcon}
               name="gender"
               label="Gender"
-              options={['Male', 'Female', 'Other']}
               values={values}
               setFieldValue={setFieldValue}
               setFieldError={setFieldError}

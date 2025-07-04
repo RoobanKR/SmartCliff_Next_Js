@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { usePathname, useRouter } from "next/navigation";
 import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
 import {
   fetchServices,
@@ -9,7 +8,7 @@ import {
 } from "@/redux/slices/services/services/Services";
 import { selectBusinessServices } from "@/redux/slices/services/services/businessServices";
 import { getAllServiceClients } from "@/redux/slices/services/services/clientServices";
-import { FaCalendarAlt, FaTimes } from "react-icons/fa";
+import {  FaTimes } from "react-icons/fa";
 import { fetchAllCompanies } from "@/redux/slices/companyDetails/companyDetails";
 import Page1 from "@/app/(services)/csr/[slug]/page1";
 
@@ -291,22 +290,45 @@ export default function CsrDegreeProgram({ serviceId }) {
 
   if (!matchedDegree || matchedDegree.length === 0) {
     return (
-      <div style={{
-        padding: "50px 0",
-        textAlign: "center",
-        minHeight: "300px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-        <h3 style={{ fontSize: "24px", color: "#333", marginBottom: "15px" }}>
-          No Company Data Available
-        </h3>
-        <p style={{ fontSize: "16px", color: "#666", maxWidth: "600px", margin: "0 auto" }}>
-          There are currently no company details available for this service. Please check back later.
-        </p>
-      </div>
+       <div
+              style={{
+                textAlign: "center",
+                padding: "50px 20px",
+                animation: "fadeIn 0.5s ease",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "80px",
+                  marginBottom: "20px",
+                  color: "#ddd",
+                }}
+              >
+                🚧
+              </div>
+              <h3
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "600",
+                  color: "#555",
+                  marginBottom: "15px",
+                }}
+              >
+                Page Under Construction
+
+              </h3>
+              <p
+                style={{
+                  fontSize: "16px",
+                  color: "#777",
+                  maxWidth: "500px",
+                  margin: "0 auto",
+                }}
+              >
+              We're working hard to bring this page to life. Please check back
+              soon!
+              </p>
+            </div>
     );
   }
 

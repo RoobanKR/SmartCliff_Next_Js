@@ -1,11 +1,9 @@
 "use client";
-import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 // import 'swiper/swiper.min.css';
-import { testimonials } from "../../data/tesimonials";
 import { counters } from "../../data/count";
 import { getAllTestimonials } from "@/redux/slices/bussiness/placementTestimonial/placementTestimonial";
 // SwiperCore.use([Pagination]);
@@ -33,7 +31,7 @@ export default function PlacementTestimonial() {
   useEffect(() => {
     setShowSlider(true);
   }, []);
-  
+
   return (
     <section className="layout-pt-sm mt-80 layout-pb-sm bg-purple-1">
       <div className="container ">
@@ -88,15 +86,13 @@ export default function PlacementTestimonial() {
                   >
                     <div className="testimonials__content">
                       <h4 className="testimonials__title">Great Work</h4>
-                      <p className="testimonials__text">
-                        {`“${elm.review}”`}
-                      </p>
+                      <p className="testimonials__text">{`“${elm.review}”`}</p>
 
                       <div className="testimonials-footer">
                         <div className="testimonials-footer__image">
-                          <Image
-                            width={60}
-                            height={60}
+                          <img
+                            width="60"
+                            height="60"
                             src={elm.image}
                             alt="image"
                           />

@@ -2,7 +2,6 @@
 
 import { fetchWCYHires } from "@/redux/slices/bussiness/whyCanYou/whyCanYou";
 import { CircularProgress } from "@mui/material";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -83,9 +82,9 @@ export default function HiringCategories() {
                 }}
               >
                 <span style={{ fontSize: "30px", color: "#FACC15" }}>
-                  <Image
-                    width={50}
-                    height={50}
+                  <img
+                    width="50"
+  height="50"
                     src={category.icon}
                     alt="icon"
                   />
@@ -110,8 +109,6 @@ export default function HiringCategories() {
           )}
         </div>
       </div>
-
-      {/* Right Section - Image */}
       <div
         style={{
           flex: 1,
@@ -120,15 +117,15 @@ export default function HiringCategories() {
           marginTop: isMobile ? "20px" : "0px",
         }}
       >
-        {hireFromUsData.length > 0 && (
-          <Image
-            src={hireFromUsData[0].image} // Use the main image from the first hireFromUs data
-            alt="Hiring Process"
-            width={isMobile ? 300 : 450} // Adjust for mobile
-            height={isMobile ? 300 : 450}
-            style={{ borderRadius: "10px" }}
-          />
-        )}
+{hireFromUsData.length > 0 && (
+  <img
+    src={hireFromUsData[0].image} // Use the main image from the first hireFromUs data
+    alt="Hiring Process"
+    width={isMobile ? 300 : 450} // Adjust for mobile
+    height={isMobile ? 300 : 450}
+    style={{ borderRadius: "10px" }}
+  />
+)}
       </div>
     </div>
   );

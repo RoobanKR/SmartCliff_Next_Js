@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import MobileFooter from "./MobileFooter";
 import { menuList } from "@/data/menu";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { fetchDegreeProgramData } from "@/redux/slices/mca/degreeProgram/DegreeProgram";
-import { fetchServices } from "@/redux/slices/services/services/Services";
-import { getAllBusinessServices } from "@/redux/slices/services/services/businessServices";
 import CoursesDropdown from "./CourseDropDown";
 import ServicesDropdown from "./ServicesDropdown";
 import BusinessDropdown from "./BusinessDropdown";
-import { fetchCourses } from "@/redux/slices/course/course";
-import { fetchCategories } from "@/redux/slices/category/category";
 
-export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
+export default function Menu({ allClasses, headerPosition }) {
   const dispatch = useDispatch();
   const [menuItem, setMenuItem] = useState("");
   const [submenu, setSubmenu] = useState("");
@@ -21,13 +15,6 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
   const [hoveredLink, setHoveredLink] = useState(null);
   const pathname = usePathname();
 
-  useEffect(() => {
-    dispatch(getAllBusinessServices());
-    dispatch(fetchDegreeProgramData());
-    dispatch(fetchServices());
-    dispatch(fetchCategories());
-    dispatch(fetchCourses());
-  }, [dispatch]);
 
   useEffect(() => {
     // Set the active link based on pathname initially
@@ -154,7 +141,6 @@ export default function Menu({ allClasses, headerPosition, onServiceSelect }) {
             </li>
           </ul>
         </div>
-        <MobileFooter />
       </div>
 
       <div

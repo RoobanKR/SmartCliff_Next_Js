@@ -63,7 +63,7 @@ export default function AdmissionProcess() {
                 width={750}
                 height={850}
                 style={{ height: "100%", width: "100%" }}
-                src="/assets/img/curriculam2.jpg"
+                src="/assets/img/curriculam2.webp"
                 alt="Curriculum Image"
               />
             </div>

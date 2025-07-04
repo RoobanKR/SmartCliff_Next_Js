@@ -131,7 +131,7 @@ export default function B2bMainPage() {
                     left: "0",
                     right: "0",
                     bottom: "0",
-                    backgroundImage: "url('/assets/img/home-1/hero/img1.jpg')",
+                    backgroundImage: "url('/assets/img/home-1/hero/img1.webp')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     filter: "blur(10px)", // Apply blur effect to background

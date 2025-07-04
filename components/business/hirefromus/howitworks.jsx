@@ -1,7 +1,6 @@
 "use client";
  
 import { fetchAllHowItWorks } from "@/redux/slices/bussiness/howItWorks/howItWorks";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
  
@@ -100,7 +99,7 @@ export default function HowItWorks() {
                     color: "#FACC15",
                   }}
                 >
-                  <Image width={50} height={50} src={step.image} alt="icon" />
+                  <img width="50" height="50" src={step.image} alt="icon" />
                 </div>
                 <h3
                   style={{
@@ -158,7 +157,7 @@ export default function HowItWorks() {
                     color: "#FACC15",
                   }}
                 >
-                  <Image width={50} height={50} src={step.image} alt="icon" />
+                  <img width="50" height="50" src={step.image} alt="icon" />
                 </div>
                 <h3
                   style={{
@@ -221,7 +220,7 @@ export default function HowItWorks() {
                   color: "#FACC15",
                 }}
               >
-                <Image width={50} height={50} src={step.image} alt="icon" />
+                  <img width="50" height="50" src={step.image} alt="icon" />
               </div>
               <h3
                 style={{
@@ -281,7 +280,7 @@ export default function HowItWorks() {
                   color: "#FACC15",
                 }}
               >
-                <Image width={50} height={50} src={step.image} alt="icon" />
+                  <img width="50" height="50" src={step.image} alt="icon" />
               </div>
               <h3
                 style={{
