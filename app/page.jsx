@@ -68,30 +68,30 @@ export default function HomePage() {
             zIndex: 9999,
           }}
         >
-<div                  style={{
-                    backgroundImage: openPopups[0].image
-                      ? `url('${openPopups[0].image}')`
-                      : "url('/assets/img/about-1/bckimg13.webp')",
-
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    borderRadius: "16px",
-    padding: "24px",
-    maxWidth: "1000px",
-    width: "95%",
-    maxHeight: "85vh",
-    overflowY: "auto",
-    position: "relative",
-    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    color: "#ffffff",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    gap: "16px",
-  }}
->
+          <div
+            style={{
+              backgroundImage: openPopups[0].image
+                ? `url('${openPopups[0].image}')`
+                : "url('/assets/img/about-1/bckimg13.webp')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              borderRadius: "16px",
+              padding: "24px",
+              maxWidth: "1000px",
+              width: "95%",
+              maxHeight: "85vh",
+              overflowY: "auto",
+              position: "relative",
+              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.5)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              color: "#ffffff",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: "16px",
+            }}
+          >
             {/* Close Button */}
             <button
               onClick={closePopup}
@@ -158,7 +158,7 @@ export default function HomePage() {
                   justifyContent: "center",
                   alignItems: "center",
                   gap: "20px",
-                  marginTop: "10px", // Reduced spacing
+                  marginTop: "10px",
                 }}
               >
                 <button
@@ -205,6 +205,13 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      {/* Inline Script Tag */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `(function(ss,ex){ window.ldfdr=window.ldfdr||function(){(ldfdr._q=ldfdr._q||[]).push([].slice.call(arguments));}; (function(d,s){ fs=d.getElementsByTagName(s)[0]; function ce(src){ var cs=d.createElement(s); cs.src=src; cs.async=1; fs.parentNode.insertBefore(cs,fs); }; ce('https://sc.lfeeder.com/lftracker_v1_'+ss+(ex?'_'+ex:'')+'.js'); })(document,'script'); })('3P1w24dKwoP7mY5n');`
+        }}
+      />
 
       {/* Page content */}
       <Preloader />
@@ -260,35 +267,40 @@ function PopupCard({ popup }) {
         {popup.description}
       </p>
       {popup.link && (
-        <div style={{ textAlign: "center", }}>
-    <a
-  href={popup.link}
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    display: "inline-block",
-    padding: "8px 20px",
-    backgroundColor: "#9c3a7c",
-    color: "#000",
-    fontWeight: "600",
-    fontSize: "14px",
-    borderRadius: "6px",
-    textDecoration: "none",
-    transition: "all 0.3s ease",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-    marginTop: "12px",
-    border: "1px solid rgba(0,0,0,0.1)",
-    textAlign: "center",
-    minWidth: "120px",
-    ':hover': {
-      backgroundColor: "#EAB308",
-      transform: "translateY(-1px)",
-      boxShadow: "0 4px 6px rgba(0,0,0,0.15)",
-    }
-  }}
->
-  {popup.button}
-</a>
+        <div style={{ textAlign: "center" }}>
+          <a
+            href={popup.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              padding: "8px 20px",
+              backgroundColor: "#9c3a7c",
+              color: "#000",
+              fontWeight: "600",
+              fontSize: "14px",
+              borderRadius: "6px",
+              textDecoration: "none",
+              transition: "all 0.3s ease",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+              marginTop: "12px",
+              border: "1px solid rgba(0,0,0,0.1)",
+              textAlign: "center",
+              minWidth: "120px",
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = "#EAB308";
+              e.target.style.transform = "translateY(-1px)";
+              e.target.style.boxShadow = "0 4px 6px rgba(0,0,0,0.15)";
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = "#9c3a7c";
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+            }}
+          >
+            {popup.button}
+          </a>
         </div>
       )}
     </div>
