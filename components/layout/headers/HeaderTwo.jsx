@@ -5,6 +5,7 @@ import MobileMenu from "../component/MobileMenu";
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import Script from "next/script";
 
 export default function HeaderTwo({ onServiceSelect }) {
     const [activeMobileMenu, setActiveMobileMenu] = useState(false);
@@ -30,7 +31,25 @@ export default function HeaderTwo({ onServiceSelect }) {
         }
     };
 
-    return (
+   return (
+  <>
+    <Script id="leadfeeder-script">
+      {`(function(ss,ex){
+        window.ldfdr = window.ldfdr || function(){
+          (ldfdr._q = ldfdr._q || []).push([].slice.call(arguments));
+        };
+        (function(d,s){
+          var fs = d.getElementsByTagName(s)[0];
+          function ce(src){
+            var cs = d.createElement(s);
+            cs.src = src;
+            cs.async = 1;
+            fs.parentNode.insertBefore(cs, fs);
+          };
+          ce('https://sc.lfeeder.com/lftracker_v1_' + ss + (ex ? '_' + ex : '') + '.js');
+        })(document, 'script');
+      })('3P1w24dKwoP7mY5n');`}
+    </Script>
         <header
             className="header -type-5 js-header"
             style={{ background: bgColor }}
@@ -83,6 +102,7 @@ export default function HeaderTwo({ onServiceSelect }) {
                 </div>
             </div>
         </header>
+           </>
     );
 }
 
