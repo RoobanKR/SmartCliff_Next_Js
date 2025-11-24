@@ -16,6 +16,8 @@ import store from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 import { trackPageVisit } from "@/components/visitore/visitore";
+import Head from "next/head";
+
 import Script from "next/script";
 
 export default function RootLayout({ children }) {
