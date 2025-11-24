@@ -87,9 +87,59 @@ export default function RootLayout({ children }) {
 
   return (
     <Provider store={store}>
+      
       <html lang="en">
         <head />
+ <Head>
+          {/* Visitor Queue CSS */}
+          <link
+            rel="dns-prefetch"
+            href="//t.visitorqueue.com"
+          />
+          <link
+            rel="stylesheet"
+            href="https://p.visitorqueue.com/styles/a517ad7c-2d95-481e-9516-89f6dc83752e.css"
+            id="vq_flick_styles"
+          />
 
+          {/* Inline script must be converted to Script tag */}
+          <Script id="vq-init">
+            {`function vqIt(){return 'fe';}`}
+          </Script>
+
+          <Script id="vq-trackid">
+            {`function vqTrackId(){return 'a517ad7c-2d95-481e-9516-89f6dc83752e';}`}
+          </Script>
+
+          {/* VisitorQueue main script */}
+          <Script id="visitorqueue-tracking">
+            {`
+              (function(d, e) {
+                var el = d.createElement(e);
+                el.setAttribute('id', 'vq_tracking');
+                el.setAttribute('src', '//t.visitorqueue.com/p/tracking.min.js?id=' + vqTrackId());
+                el.setAttribute('async', 1);
+                el.setAttribute('data-id', vqTrackId());
+                d.getElementsByTagName(e)[0].parentNode.appendChild(el);
+              })(document, 'script');
+            `}
+          </Script>
+
+          {/* Personalisation Script */}
+          <Script id="vq-personalisation">
+            {`
+              function vqTrackPc(){return 1;}
+              (function(d, e) {
+                var el = d.createElement(e);
+                el.setAttribute('id', 'vq_personalisation');
+                el.setAttribute('src', '//personalisation.visitorqueue.com/p/personalisation.min.js?id=' + vqTrackId());
+                el.setAttribute('async', 1);
+                el.setAttribute('data-id', vqTrackId());
+                d.getElementsByTagName(e)[0].parentNode.appendChild(el);
+              })(document, 'script');
+            `}
+          </Script>
+        </Head>
         <body>
           {/* Mouse Follower */}
           {isMouseDevice && (
@@ -153,24 +203,7 @@ export default function RootLayout({ children }) {
             <FaWhatsapp color="white" size={19} />
           </a>
 
-          {/* LeadFeeder Script */}
-          <Script id="leadfeeder-script" strategy="afterInteractive">
-            {`(function(ss, ex){
-              window.ldfdr = window.ldfdr || function(){
-                (ldfdr._q = ldfdr._q || []).push([].slice.call(arguments));
-              };
-              (function(d, s){
-                fs = d.getElementsByTagName(s)[0];
-                function ce(src){
-                  var cs = d.createElement(s);
-                  cs.src = src;
-                  cs.async = 1;
-                  fs.parentNode.insertBefore(cs, fs);
-                };
-                ce('https://sc.lfeeder.com/lftracker_v1_' + ss + (ex ? '_' + ex : '') + '.js');
-              })(document, 'script');
-            })('3P1w24dKwoP7mY5n');`}
-          </Script>
+         
         </body>
       </html>
     </Provider>
