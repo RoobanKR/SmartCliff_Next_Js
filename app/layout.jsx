@@ -16,8 +16,6 @@ import store from "@/redux/store";
 import { useRouter } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 import { trackPageVisit } from "@/components/visitore/visitore";
-import Head from "next/head";
-
 import Script from "next/script";
 
 export default function RootLayout({ children }) {
@@ -92,49 +90,6 @@ export default function RootLayout({ children }) {
       
       <html lang="en">
         <head />
- <Head>
-  {/* Prefetch & Styles */}
-  <link rel="dns-prefetch" href="//t.visitorqueue.com" />
-  <link
-    rel="stylesheet"
-    href="https://p.visitorqueue.com/styles/92078e11-d8dd-4ea4-a8ec-e3eb5382259a.css"
-    id="vq_flick_styles"
-  />
-
-  {/* Required function vqIt */} 
-  <Script id="vq-it">{`function vqIt(){return 'fe';}`}</Script>
-
-  {/* Track ID function */}
-  <Script id="vq-trackid">{`
-    function vqTrackId(){return '92078e11-d8dd-4ea4-a8ec-e3eb5382259a';}
-  `}</Script>
-
-  {/* VisitorQueue tracking script */}
-  <Script id="vq-tracking">{`
-    (function(d, e) {
-      var el = d.createElement(e);
-      el.setAttribute('id', 'vq_tracking');
-      el.setAttribute('src', '//t.visitorqueue.com/p/tracking.min.js?id=' + vqTrackId());
-      el.setAttribute('async', 1);
-      el.setAttribute('data-id', vqTrackId());
-      d.getElementsByTagName(e)[0].parentNode.appendChild(el);
-    })(document, 'script');
-  `}</Script>
-
-  {/* Track PC + personalisation */}
-  <Script id="vq-pc">{`function vqTrackPc(){return 1;}`}</Script>
-
-  <Script id="vq-personalisation">{`
-    (function(d, e) {
-      var el = d.createElement(e);
-      el.setAttribute('id', 'vq_personalisation');
-      el.setAttribute('src', '//personalisation.visitorqueue.com/p/personalisation.min.js?id=' + vqTrackId());
-      el.setAttribute('async', 1);
-      el.setAttribute('data-id', vqTrackId());
-      d.getElementsByTagName(e)[0].parentNode.appendChild(el);
-    })(document, 'script');
-  `}</Script>
-</Head>
 
         <body>
           {/* Mouse Follower */}
@@ -199,7 +154,24 @@ export default function RootLayout({ children }) {
             <FaWhatsapp color="white" size={19} />
           </a>
 
-         
+          {/* LeadFeeder Script */}
+          <Script id="leadfeeder-script" strategy="afterInteractive">
+            {`(function(ss, ex){
+              window.ldfdr = window.ldfdr || function(){
+                (ldfdr._q = ldfdr._q || []).push([].slice.call(arguments));
+              };
+              (function(d, s){
+                fs = d.getElementsByTagName(s)[0];
+                function ce(src){
+                  var cs = d.createElement(s);
+                  cs.src = src;
+                  cs.async = 1;
+                  fs.parentNode.insertBefore(cs, fs);
+                };
+                ce('https://sc.lfeeder.com/lftracker_v1_' + ss + (ex ? '_' + ex : '') + '.js');
+              })(document, 'script');
+            })('3P1w24dKwoP7mY5n');`}
+          </Script>
         </body>
       </html>
     </Provider>
